@@ -1,7 +1,22 @@
 <extend name="Base/common"/>
-
+<block name="style">
+    <style type="text/css">
+        .banner { position: relative; overflow: auto; }
+        .banner li { list-style: none; }
+        .banner ul li { float: left; }
+    </style>
+    <!--<link href="__CSS__/carousel.css" rel="stylesheet">-->
+</block>
 <block name="header">
+
     <header class="jumbotron subhead" id="overview">
+        <div class="banner">
+            <ul>
+                <li>This is a slide.</li>
+                <li>This is another slide.</li>
+                <li>This is a final slide.</li>
+            </ul>
+        </div>
         <div class="container">
             <h2>源自相同起点，演绎不同精彩！</h2>
             <p class="lead"></p>
@@ -10,8 +25,8 @@
 </block>
 
 <block name="side">
-<!-- 左侧 nav
-================================================== -->
+    <!-- 左侧 nav
+    ================================================== -->
     <div class="span3 bs-docs-sidebar">
         <ul class="nav nav-list bs-docs-sidenav">
             {:W('Category/lists', array(1, true))}
@@ -36,7 +51,7 @@
                     <span class="pull-right">
                         <span class="author">{$article.uid|get_username}</span>
                         <span>于 {$article.create_time|date='Y-m-d H:i',###}</span> 发表在 <span>
-                        <a href="{:U('Article/lists?category='.get_category_name($article['category_id']))}">{$article.category_id|get_category_title}</a></span> ( 阅读：{$article.view} )
+                            <a href="{:U('Article/lists?category='.get_category_name($article['category_id']))}">{$article.category_id|get_category_title}</a></span> ( 阅读：{$article.view} )
                     </span>
                 </div>
                 <hr/>
@@ -44,5 +59,15 @@
 
         </section>
     </div>
-        </div>
+</div>
+</block>
+
+<block name="script">
+    <!--<script type="text/javascript" src="__JS__/docs.min.js"></script>-->
+    <script type="text/javascript" src="__STATIC__/unslider/unslider.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.banner').unslider();
+        });
+    </script>
 </block>

@@ -12,6 +12,8 @@
  * 所有系统级别的配置
  */
 return array(
+    'TMPL_CACHE_ON' => false,//关闭模版缓存
+    'DB_FIELD_CACHE'=>false,//关闭字段缓存 以上+app_debug=true关闭所有缓存
     /* 模块相关配置 */
     'AUTOLOAD_NAMESPACE' => array('Addons' => ONETHINK_ADDON_PATH), //扩展模块列表
     'DEFAULT_MODULE'     => 'Home',
