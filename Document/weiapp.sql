@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-02-13 16:55:41
+Date: 2015-02-14 17:33:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,7 +65,7 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
@@ -84,6 +84,17 @@ INSERT INTO `weiapp_action_log` VALUES ('11', '9', '1', '2130706433', 'channel',
 INSERT INTO `weiapp_action_log` VALUES ('12', '9', '1', '2130706433', 'channel', '6', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423799028');
 INSERT INTO `weiapp_action_log` VALUES ('13', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-13 16:06登录了后台', '1', '1423814812');
 INSERT INTO `weiapp_action_log` VALUES ('14', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-13 16:08登录了后台', '1', '1423814901');
+INSERT INTO `weiapp_action_log` VALUES ('15', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 10:32登录了后台', '1', '1423881175');
+INSERT INTO `weiapp_action_log` VALUES ('16', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 10:33登录了后台', '1', '1423881189');
+INSERT INTO `weiapp_action_log` VALUES ('17', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 10:33登录了后台', '1', '1423881200');
+INSERT INTO `weiapp_action_log` VALUES ('18', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 10:34登录了后台', '1', '1423881246');
+INSERT INTO `weiapp_action_log` VALUES ('19', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 14:10登录了后台', '1', '1423894239');
+INSERT INTO `weiapp_action_log` VALUES ('20', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 15:19登录了后台', '1', '1423898382');
+INSERT INTO `weiapp_action_log` VALUES ('21', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 16:23登录了后台', '1', '1423902232');
+INSERT INTO `weiapp_action_log` VALUES ('22', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 16:25登录了后台', '1', '1423902355');
+INSERT INTO `weiapp_action_log` VALUES ('23', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 16:27登录了后台', '1', '1423902431');
+INSERT INTO `weiapp_action_log` VALUES ('24', '9', '1', '2130706433', 'channel', '2', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423903108');
+INSERT INTO `weiapp_action_log` VALUES ('25', '9', '1', '2130706433', 'channel', '7', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423903120');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -559,17 +570,18 @@ CREATE TABLE `weiapp_channel` (
   `target` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '新窗口打开',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_channel
 -- ----------------------------
 INSERT INTO `weiapp_channel` VALUES ('1', '0', '首页', 'Index/index', '1', '1379475111', '1379923177', '0', '0');
-INSERT INTO `weiapp_channel` VALUES ('2', '0', '功能介绍', 'Article/index?category=blog', '2', '1379475131', '1423792409', '1', '0');
+INSERT INTO `weiapp_channel` VALUES ('2', '0', '博客', 'Article/index?category=blog', '2', '1379475131', '1423903108', '0', '0');
 INSERT INTO `weiapp_channel` VALUES ('3', '0', '使用帮助', 'Help/index', '5', '1379475154', '1423799016', '1', '0');
 INSERT INTO `weiapp_channel` VALUES ('4', '0', '联系我们', 'Contact/index', '6', '1423796784', '1423799007', '1', '0');
 INSERT INTO `weiapp_channel` VALUES ('5', '0', '案例展示', 'Example/index', '3', '1423796905', '1423796905', '1', '0');
 INSERT INTO `weiapp_channel` VALUES ('6', '0', '我要试用', 'Try/index', '4', '1423798986', '1423799028', '1', '0');
+INSERT INTO `weiapp_channel` VALUES ('7', '0', '功能介绍', 'Introduce/index', '2', '1423903097', '1423903120', '1', '0');
 
 -- ----------------------------
 -- Table structure for `weiapp_config`
@@ -661,7 +673,7 @@ CREATE TABLE `weiapp_document` (
 -- ----------------------------
 -- Records of weiapp_document
 -- ----------------------------
-INSERT INTO `weiapp_document` VALUES ('1', '1', '', 'OneThink1.0正式版发布', '2', '大家期待的OneThink正式版发布', '0', '0', '2', '2', '0', '0', '0', '1', '0', '0', '18', '0', '0', '0', '1387260660', '1387263112', '1');
+INSERT INTO `weiapp_document` VALUES ('1', '1', '', 'OneThink1.0正式版发布', '2', '大家期待的OneThink正式版发布', '0', '0', '2', '2', '0', '0', '0', '1', '0', '0', '25', '0', '0', '0', '1387260660', '1387263112', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_document_article`
@@ -778,7 +790,7 @@ CREATE TABLE `weiapp_member` (
 -- ----------------------------
 -- Records of weiapp_member
 -- ----------------------------
-INSERT INTO `weiapp_member` VALUES ('1', 'admin', '0', '0000-00-00', '', '20', '7', '0', '1423289473', '2130706433', '1423814901', '1');
+INSERT INTO `weiapp_member` VALUES ('1', 'admin', '0', '0000-00-00', '', '20', '16', '0', '1423289473', '2130706433', '1423902431', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_menu`
@@ -1030,7 +1042,7 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- ----------------------------
 -- Records of weiapp_ucenter_member
 -- ----------------------------
-INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1423814901', '2130706433', '1423289473', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1423902431', '2130706433', '1423289473', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`
