@@ -6,16 +6,19 @@
 
 /* Account for fixed navbar */
 body {
-  padding-top: 70px;
-  padding-bottom: 30px;
+  padding-top: 55px;
+  padding-bottom: 0px;
   font-family: "Microsoft YaHei",'微软雅黑';
-  color:#222;
+  color:#333;
 }
 
 body,
 .navbar-fixed-top,
 .navbar-fixed-bottom {
   min-width: 970px;
+  background-color: #fff;
+  border-top: 4px solid #44b549;
+  border-bottom: 1px solid #d9dadc;
 }
 
 /* Don't let the lead text change font-size. */
@@ -124,9 +127,19 @@ body,
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 }
+
+.navbar-default .navbar-nav>li>a {
+  color: #333;
+}
+
+.navbar-default .navbar-brand {
+  color: #333;
+}
+
 .navbar-default .navbar-nav .open .dropdown-menu > li > a {
   color: #333;
 }
+
 .navbar .navbar-nav .open .dropdown-menu > li > a:hover,
 .navbar .navbar-nav .open .dropdown-menu > li > a:focus,
 .navbar .navbar-nav .open .dropdown-menu > .active > a,
@@ -213,4 +226,39 @@ body,
 
 .navbar-form .has-feedback .form-control-feedback {
   top: 0;
+}
+
+a{
+    color:#333;
+}
+
+a:hover{
+    color:#12b7f5;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #333;
+    text-decoration: none;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: #12b7f5;
+}
+
+
+.footer{
+    text-align: center;
+    padding: 24px 0; 
+    color: #fff;
+    background-color: #b8b9b9;
+}
+
+.footer a{
+    color:#fff;
+}
+
+.footer a:hover{
+    color:#12b7f5;
+    text-decoration: none;
 }
