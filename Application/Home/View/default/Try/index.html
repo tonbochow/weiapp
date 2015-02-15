@@ -3,37 +3,75 @@
 <block name="header">
     <header class="jumbotron subhead" id="overview">
         <div class="container">
-            <h2>源自相同起点，演绎不同精彩！</h2>
-            <p class="lead"></p>
+            <button type="button" class="btn btn-warning btn-small" data-toggle="modal" data-target="#myModal">
+                <span class="glyphicon glyphicon-question-sign"></span> 点此查看试用说明
+            </button>
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-question-sign"></span> 试用说明</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p><span class="badge">1</span>.请如实填写(不对外公开),方便您快速审核通过</p>
+                            <p><span class="badge">2</span>.请简单描述您要应用场景及简单介绍</p>
+                            <p><span class="badge">3</span>.提交申请后请稍等待,审核结果会以邮件形式通知</p>
+                            <p><span class="badge">4</span>.审核通过=》登录系统=》导航菜单=》功能面板</p>
+                            <p><B><a href="/Home/Contact/index" class="tooltip-test" title="" data-original-title="Tooltip">如有疑问请点此联系我们</a></B></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 </block>
 
 <block name="body">
-    <div class="span9">
-        <!-- Contents
-        ================================================== -->
-        <section id="contents">
-            <article:list name="list" category="$category['id']" child="true">
-                <div class="">
-                    <h3><a href="{:U('Article/detail?id='.$list['id'])}">{$list.title}</a></h3>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-success">
+                <div class="panel-heading"><h4><span class="glyphicon glyphicon-user"></span> 填写信息</h4></div>
+                <div class="panel-body" ng-controller="memberInfo">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-8">
+                        <form class="form-horizontal" name="TryForm" ng-controller="TryController" ng-submit="submitForm()">
+                            <div class="form-group" ng-class="{'has-error' : TryForm.real_name.$invalid && !TryForm.real_name.$pristine}">
+                                <label for="real_name" class="col-xs-2 control-label">真实姓名</label>
+                                <div class="col-xs-10">
+                                    <input name="real_name" type="text" ng-model="try.title" ng-minlength="1" ng-maxlength="10" required class="form-control" class="form-control" id="real_name" placeholder="真实姓名">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mobile" class="col-xs-2 control-label">手机</label>
+                                <div class="col-xs-10">
+                                    <input name="mobile" type="text" class="form-control" id="mobile" placeholder="手机">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="introduce" class="col-xs-2 control-label">申请简介</label>
+                                <div class="col-xs-10">
+                                    <input name="introduce" type="text" class="form-control" id="introduce" placeholder="申请简介">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-success">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xs-2"></div>
                 </div>
-                <div>
-                    <p class="lead">{$list.description}</p>
-                </div>
-                <div>
-                    <span><a href="{:U('Article/detail?id='.$list['id'])}">查看全文</a></span>
-                    <span class="pull-right">
-                        <span class="author">{$list.uid|get_username}</span>
-                        <span>于 {$list.create_time|date='Y-m-d H:i',###}</span> 发表在 <span>
-                        <a href="{:U('Article/lists?category='.get_category_name($list['category_id']))}">{$list.category_id|get_category_title}</a></span> 
-                        <span>阅读( {$list.view} )</span>&nbsp;&nbsp;
-                    </span>
-                </div>
-                <hr/>
-            </article:list>
-
-        </section>
-    </div>
+            </div>
         </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__JS__/{$Think.CONTROLLER_NAME}/{$Think.CONTROLLER_NAME}_{$Think.ACTION_NAME}.js"></script>
 </block>
