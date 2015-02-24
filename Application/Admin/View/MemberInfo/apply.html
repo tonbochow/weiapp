@@ -1,0 +1,121 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>申请试用列表</h2>
+    </div>
+
+    <div class="cf">
+        <button class="btn ajax-post" url="{:U('MemberInfo/allow')}" target-form="ids">通 过</button>
+        <button class="btn ajax-post" url="{:U('MemberInfo/deny')}" target-form="ids">禁 用</button>
+        <!--<button class="btn list_sort" url="{:U('sort?group='.I('group'),'','')}">删 除</button>-->
+
+        <!-- 高级搜索 -->
+        <div class="search-form fr cf">
+            <div class="sleft">
+                <input type="text" name="real_name" class="search-input" value="{:I('real_name')}" placeholder="请输入申请人">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('MemberInfo/apply')}"><i class="btn-search"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-table table-striped">
+        <table>
+            <thead>
+                <tr>
+                    <th class="row-selected">
+                        <input class="checkbox check-all" type="checkbox">
+                    </th>
+                    <!--<th>ID</th>-->
+                    <th>用户ID</th>
+                    <th>联系人</th>
+                    <th>手机号码</th>
+                    <th>微应用类型</th>
+                    <th>申请类型</th>
+                    <th>简介</th>
+                    <th>状态</th>
+                    <th>开始时间</th>
+                    <th>截至时间</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="member_info">
+                    <tr>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$member_info.id}"></td>
+                        <td>{$member_info.member_id}</td>
+                        <td>{$member_info.real_name}</td>
+                        <td>{$member_info.mobile}</td>
+                        <td><?php echo \Home\Model\MemberInfoModel::getAppType($member_info['app_type']);?></td>
+                        <td><?php echo \Home\Model\MemberInfoModel::getMemberInfoType($member_info['type']);?></td>
+                        <td>{$member_info.introduce|substr=0,6}...</td>
+                        <td><?php echo \Home\Model\MemberInfoModel::getMemberInfoStatus($member_info['status']);?></td>
+                    <if condition="$member_info.start_time neq 0">
+                        <td>{$member_info.start_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$member_info.start_time}</td>
+                    </if>
+                    <if condition="$member_info.end_time neq 0">
+                        <td>{$member_info.end_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$member_info.end_time}</td>
+                    </if>
+                    <if condition="$member_info.create_time neq 0">
+                        <td>{$member_info.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$member_info.create_time}</td>
+                    </if>
+                    <if condition="$member_info.update_time neq 0">
+                        <td>{$member_info.update_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$member_info.update_time}</td>
+                    </if>
+                        <td>
+                            <a title="编辑" href="{:U('edit?id='.$config['id'])}">编辑</a>
+                            <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$config['id'])}">删除</a>
+                        </td>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="12" class="text-center">暂时还没有申请! </td>
+            </notempty>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            //搜索功能
+            $("#search").click(function() {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+</block>

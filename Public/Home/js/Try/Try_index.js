@@ -1,46 +1,31 @@
-var AlbumModule = angular.module("baby", []);
-AlbumModule.controller("AlbumAddController", function ($scope, $http) {
-    $(function () {
-        $('#file_upload').uploadify({
-            'formData': {
-                'timestamp': '<?php echo $timestamp;?>',
-                'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
-            },
-            'buttonText': '选择相册封面图片',
-            'swf': '__COMMON__/uploadify/uploadify.swf',
-            'onUploadSuccess': function (file, data, response) {
-                var obj = eval('(' + data + ')');
-                if (obj.status) {
-                    $scope.album.thumb_url = obj.thumb_url;
-                    $('#previmg').attr('src', obj.thumb_url);
-                } else {
-                    alert(obj.info);
-                }
-
-            },
-            'uploader': '/Admin/Album/upload'
-        });
-    });
-    $scope.statusModel = [{
-            id: 1,
-            statusName: '公开'
-        }, {
-            id: 0,
-            statusName: '不公开'
-        }];
-    $scope.submitForm = function () {
+var TryModule = angular.module("weiapp_try", []);
+TryModule.controller("TryController", function($scope, $http) {
+    $scope.submitForm = function() {
+        $('.submit').attr('disabled', 'true');
         $http({
             method: "POST",
-            url: "/Admin/Album/add",
-            data: $.param($scope.album),
+            url: "/Home/Try/index",
+            data: $.param($scope.try_data),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).success(function (data) {
+        }).success(function(data) {
             if (data.status) {
-                $scope.success = data.success;
-                window.location.href = '/Admin/Album/index';
+                $('#dialog_content').text(data.info);
+                $("#dialog").dialog({modal: true});
+                setTimeout("result(" + data.status + ")", 1000);
             } else {
-                $scope.message = data.message;
+                $('#dialog_content').text(data.info);
+                $("#dialog").dialog({modal: true});
+                setTimeout("result(" + data.status + ")", 1000);
             }
         });
     };
 });
+
+function result(status) {
+    $("#dialog").dialog("close");
+    if (status) {
+        window.location.href = '/Home/Index/index';
+    } else {
+        window.location.reload();
+    }
+}

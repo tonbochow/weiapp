@@ -1,7 +1,7 @@
 <extend name="Base/common"/>
 
 <block name="header">
-    <header class="jumbotron subhead" id="overview">
+    <header class="jumbotron subhead" id="overview" style="padding:10px 0;">
         <div class="container">
             <button type="button" class="btn btn-warning btn-small" data-toggle="modal" data-target="#myModal">
                 <span class="glyphicon glyphicon-question-sign"></span> 点此查看试用说明
@@ -17,12 +17,13 @@
                         <div class="modal-body">
                             <p><span class="badge">1</span>.请如实填写(不对外公开),方便您快速审核通过</p>
                             <p><span class="badge">2</span>.请简单描述您要应用场景及简单介绍</p>
-                            <p><span class="badge">3</span>.提交申请后请稍等待,审核结果会以邮件形式通知</p>
-                            <p><span class="badge">4</span>.审核通过=》登录系统=》导航菜单=》功能面板</p>
+                            <p><span class="badge">3</span>.简介如:应用类型 所在城市 规模 其他软件使用情况</p>
+                            <p><span class="badge">4</span>.提交申请后请稍等待,审核结果会以邮件形式通知</p>
+                            <p><span class="badge">5</span>.审核通过=》登录系统=》导航菜单=》功能面板</p>
                             <p><B><a href="/Home/Contact/index" class="tooltip-test" title="" data-original-title="Tooltip">如有疑问请点此联系我们</a></B></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                         </div>
                     </div>
                 </div>
@@ -32,42 +33,53 @@
 </block>
 
 <block name="body">
-    <div class="row">
+    <div class="row" class="ng-app:weiapp_try" ng-app="weiapp_try" id="ng-app">
         <div class="col-xs-12">
-            <div class="panel panel-success">
-                <div class="panel-heading"><h4><span class="glyphicon glyphicon-user"></span> 填写信息</h4></div>
-                <div class="panel-body" ng-controller="memberInfo">
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-8">
-                        <form class="form-horizontal" name="TryForm" ng-controller="TryController" ng-submit="submitForm()">
-                            <div class="form-group" ng-class="{'has-error' : TryForm.real_name.$invalid && !TryForm.real_name.$pristine}">
-                                <label for="real_name" class="col-xs-2 control-label">真实姓名</label>
-                                <div class="col-xs-10">
-                                    <input name="real_name" type="text" ng-model="try.title" ng-minlength="1" ng-maxlength="10" required class="form-control" class="form-control" id="real_name" placeholder="真实姓名">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="mobile" class="col-xs-2 control-label">手机</label>
-                                <div class="col-xs-10">
-                                    <input name="mobile" type="text" class="form-control" id="mobile" placeholder="手机">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="introduce" class="col-xs-2 control-label">申请简介</label>
-                                <div class="col-xs-10">
-                                    <input name="introduce" type="text" class="form-control" id="introduce" placeholder="申请简介">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-success">提交</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-xs-2"></div>
-                </div>
+            <div id="dialog" title="试用申请" style="display:none;">
+                <p id="dialog_content"></p>
             </div>
+
+            <notempty name="member_info_id">
+                <div class="alert alert-danger" role="alert">您已申请过!</div>
+            <else />
+                <div class="panel panel-success">
+                    <div class="panel-heading"><h4><span class="glyphicon glyphicon-user"></span> 填写信息</h4></div>
+                    <div class="panel-body">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8">
+                            <form class="form-horizontal"  novalidate name="TryForm" ng-controller="TryController" ng-submit="submitForm()">
+                                <div class="form-group" ng-class="{'has-error' : TryForm.real_name.$invalid && !TryForm.real_name.$pristine}">
+                                    <label for="real_name" class="col-xs-2 control-label">真实姓名</label>
+                                    <div class="col-xs-10">
+                                        <input name="real_name" type="text" ng-model="try_data.real_name" ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required class="form-control" id="real_name" placeholder="真实姓名">
+                                        <p ng-show="TryForm.real_name.$invalid && !TryForm.real_name.$pristine" class="help-block">真实姓名不符要求(长度1-10)</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error' : TryForm.mobile.$invalid && !TryForm.mobile.$pristine}">
+                                    <label for="mobile" class="col-xs-2 control-label">手机</label>
+                                    <div class="col-xs-10">
+                                        <input name="mobile" type="text" ng-model="try_data.mobile" ng-pattern="/^1\d{10}$/" ng-trim="true" ng-minlength="11" ng-maxlength="11" required class="form-control" id="mobile" placeholder="手机">
+                                        <p ng-show="TryForm.mobile.$invalid && !TryForm.mobile.$pristine" class="help-block">手机号格式不正确(长度11)</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error' : TryForm.introduce.$invalid && !TryForm.introduce.$pristine}">
+                                    <label for="introduce" class="col-xs-2 control-label">申请简介</label>
+                                    <div class="col-xs-10">
+                                        <input name="introduce" type="text" ng-model="try_data.introduce" ng-trim="true" ng-minlength="3" ng-maxlength="256" required class="form-control" id="introduce" placeholder="申请简介">
+                                        <p ng-show="TryForm.introduce.$invalid && !TryForm.introduce.$pristine" class="help-block">请输入申请简介(长度3-256)</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-success submit" ng-disabled="TryForm.$invalid">提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                </div>
+            </notempty>
         </div>
     </div>
 </block>

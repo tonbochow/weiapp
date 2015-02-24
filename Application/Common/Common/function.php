@@ -950,3 +950,112 @@ function get_stemma($pids,Model &$model, $field='id'){
     }
     return $collection;
 }
+
+
+/**
+ * 订单号生成
+ * @author tonbochow  <tonbochow@qq.com>
+ */
+function genOrderNo() {
+    $orderno = date('Ymd') . substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+    return $orderno;
+}
+
+/**
+ * 生成32位唯一字符串
+ * @author tonbochow  <tonbochow@qq.com>
+ */
+function gen_uuid() {
+    if (function_exists('com_create_guid')) {
+        $guid = com_create_guid();
+        $guid = substr($guid, 1, strlen($guid) - 2);
+        $guid = preg_replace('/-/i', '', $guid);
+        return $guid;
+    } else {
+        mt_srand((double) microtime() * 10000); //optional for php 4.2.0 and up.
+        $charid = strtoupper(md5(uniqid(rand(), true)));
+        $uuid = substr($charid, 0, 8)
+                . substr($charid, 8, 4)
+                . substr($charid, 12, 4)
+                . substr($charid, 16, 4)
+                . substr($charid, 20, 12);
+        return $uuid;
+    }
+}
+
+/**
+ * 获取当前页面完整URL地址
+ * @author tonbochow  <tonbochow@qq.com>
+ */
+function get_current_url() {
+    $sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
+    $php_self = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
+    $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+    $relate_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $php_self . (isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : $path_info);
+    return $sys_protocal . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . $relate_url;
+}
+
+/**
+ * 判断是否微信内置浏览器打开
+ * @author tonbochow  <tonbochow@qq.com>
+ */
+
+function is_weixin_browser() {
+    if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * 发送邮件
+ * $data 要发送的邮件内容
+ * $subject 发送邮件的主题
+ * $mailto 接收邮件的邮箱格式： xxxx@qq.com 或 array('xxx@qq.com','xxxx@163.com')
+ * @author tonbochow  <tonbochow@qq.com>
+ */
+function mailer($subject, $data, $mailto) {
+    import('Common.Extends.Mail.Phpmailer');
+    import('Common.Extends.Mail.Smtp');
+    $mail_config = C('mail_config');
+    $mail = new \PHPMailer(); //实例化PHPMailer类,true表示出现错误时抛出异常
+    $mail->IsSMTP(); // 使用SMTP
+    try {
+        $mail->CharSet = $mail_config['mail_charset']; //设定邮件编码
+        $mail->SMTPAuth = true;   // 启用 SMTP 验证功能
+        $mail->Host = $mail_config['mail_host']; // SMTP server
+        $mail->Port = $mail_config['mail_port']; //默认端口   
+        $mail->Username = $mail_config['mail_username']; //SMTP服务器的用户帐号
+        $mail->Password = $mail_config['mail_password']; //SMTP服务器的用户密码
+        $mail->AddReplyTo($mail_config['mail_username'], '回复到发件人'); //收件人回复时回复到此邮箱
+        if (is_array($mailto)) {
+            foreach ($mailto as $user_email) {
+                $mail->AddAddress($user_email, '微应用');
+            }
+        } else {
+            $mail->AddAddress($mailto, '微应用');
+        }
+//        $mail->AddAddress(I('post.email'), '微应用'); //收件人如果多人发送循环执行AddAddress()方法即可 还有一个方法时清除收件人邮箱ClearAddresses()
+        $mail->SetFrom($mail_config['mail_username'], '发件人'); //发件人的邮箱
+        $mail->Subject = $subject;
+        $mail->Body = $data;
+        $mail->IsHTML(true);
+        $mail_res = $mail->Send();
+        if (!$mail_res) {
+            $res['status'] = false;
+            $res['info'] = $mail->ErrorInfo;
+            return $res;
+        }
+        $res['status'] = true;
+        $res['info'] = '发送成功';
+        return $res;
+    } catch (phpmailerException $e) {
+        $res['status'] = false;
+        $res['info'] = $e->errorMessage();
+        return $res;
+    } catch (Exception $e) {
+        $res['status'] = false;
+        $res['info'] = $e->getMessage();
+        return $res;
+    }
+}
