@@ -45,7 +45,7 @@
             <notempty name="list">
                 <volist name="list" id="member_info">
                     <tr>
-                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$member_info.id}"></td>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$member_info.member_id}"></td>
                         <td>{$member_info.member_id}</td>
                         <td>{$member_info.real_name}</td>
                         <td>{$member_info.mobile}</td>
@@ -74,8 +74,8 @@
                         <td>{$member_info.update_time}</td>
                     </if>
                         <td>
-                            <a title="编辑" href="{:U('edit?id='.$config['id'])}">编辑</a>
-                            <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$config['id'])}">删除</a>
+                            <a title="编辑" href="{:U('edit?id='.$member_info['id'])}">编辑</a>
+                            <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$member_info['id'])}">删除</a>
                         </td>
                     </tr>
                 </volist>

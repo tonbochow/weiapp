@@ -41,11 +41,13 @@ class MemberInfoModel extends Model {
     );
 
     //获取用户申请状态
-    public static function getMemberInfoStatus($status = null) {
-        $status_arr = array('' => '请选择');
-        $status_arr[self::$STATUS_DENY] = '通过';
+    public static function getMemberInfoStatus($status = null, $has_choice = true) {
+        if ($has_choice) {
+            $status_arr = array('' => '请选择');
+        }
+        $status_arr[self::$STATUS_DENY] = '未通过';
         $status_arr[self::$STATUS_UNCHECK] = '待审核';
-        $status_arr[self::$STATUS_ALLOW] = '未通过';
+        $status_arr[self::$STATUS_ALLOW] = '通过';
         if ($status !== null) {
             return $status_arr[$status];
         }
@@ -53,8 +55,10 @@ class MemberInfoModel extends Model {
     }
 
     //获取申请类型
-    public static function getMemberInfoType($type = null) {
-        $type_arr = array('' => '请选择');
+    public static function getMemberInfoType($type = null, $has_choice = true) {
+        if ($has_choice) {
+            $type_arr = array('' => '请选择');
+        }
         $type_arr[self::$TYPE_TRY] = '试用';
         $type_arr[self::$TYPE_OFFICIAL] = '正式';
         if ($type !== null) {
@@ -64,8 +68,10 @@ class MemberInfoModel extends Model {
     }
 
     //获取微应用类型
-    public static function getAppType($appType = null) {
-        $app_type_arr = array('' => '请选择');
+    public static function getAppType($appType = null, $has_choice = true) {
+        if ($has_choice) {
+            $app_type_arr = array('' => '请选择');
+        }
         $app_type_arr[self::$APP_TYPE_FOOD] = '餐饮';
         $app_type_arr[self::$APP_TYPE_PHOTO] = '摄影';
         if ($appType !== null) {
