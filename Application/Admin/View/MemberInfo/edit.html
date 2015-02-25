@@ -41,57 +41,61 @@
             </div>
         </div>
 
-        <div class="form-item">
+        <div class="form-item" ng-class="{'has-error' : MemberInfoForm.app_type.$invalid && !MemberInfoForm.app_type.$pristine}">
             <label class="item-label">应用类型<span class="check-tips">（如:餐饮 摄影 商城）</span></label>
             <div class="controls">
                 <select class="form-control" name="app_type" required ng-model="member_info.app_type" ng-options="m.id as m.app_type for m in member_info.app_type_arr">
                     <option value="">请选择</option>
                 </select>
+                <p ng-show="MemberInfoForm.app_type.$invalid && !MemberInfoForm.app_type.$pristine" class="help-block">请选择应用类型</p>
             </div>
         </div>
-        <div class="form-item">
+        <div class="form-item" ng-class="{'has-error' : MemberInfoForm.type.$invalid && !MemberInfoForm.type.$pristine}">
             <label class="item-label">平台类型<span class="check-tips">（如:试用 正式）</span></label>
             <div class="controls">
                 <select class="form-control" name="type" required ng-model="member_info.type" ng-options="m.id as m.type for m in member_info.type_arr">
                     <option value="">请选择</option>
                 </select>
+                <p ng-show="MemberInfoForm.type.$invalid && !MemberInfoForm.type.$pristine" class="help-block">请选择平台类型</p>
             </div>
         </div>
-        <div class="form-item">
+        <div class="form-item" ng-class="{'has-error' : MemberInfoForm.status.$invalid && !MemberInfoForm.status.$pristine}">
             <label class="item-label">状态</label>
             <div class="controls">
                <select class="form-control" name="status" required ng-model="member_info.status" ng-options="m.id as m.status for m in member_info.status_arr">
                     <option value="">请选择</option>
                 </select>
+                <p ng-show="MemberInfoForm.status.$invalid && !MemberInfoForm.status.$pristine" class="help-block">请选择状态</p>
             </div>
         </div>
         
         <div class="form-item">
-            <label class="item-label">配置项<span class="check-tips">（如果是枚举型 需要配置该项）</span></label>
+            <label class="item-label">微应用开始时间</label>
             <div class="controls">
-                <label class="textarea input-large">
-                    <textarea name="extra">{$info.extra|default=''}</textarea>
-                </label>
+                <input type="text" name="start_time" ng-model="member_info.start_time"  class="form-control text input-large time" id="start_time"  value="{$member_info.start_time|date='y-m-d',###}" placeholder="请选择开始时间" />
             </div>
         </div>
+        
         <div class="form-item">
-            <label class="item-label">说明<span class="check-tips">（配置详细说明）</span></label>
+            <label class="item-label">微应用截至时间</label>
             <div class="controls">
-                <label class="textarea input-large">
-                    <textarea name="remark">{$info.remark|default=''}</textarea>
-                </label>
+               <input type="text" name="end_time" ng-model="member_info.end_time"   class="form-control text input-large time" id="end_time"  value="{$member_info.end_time|date='y-m-d',###}" placeholder="请选择开始时间" />
             </div>
         </div>
         <div class="form-item">
             <input type="hidden" name="id" value="{$info.id|default=''}">
             <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
-            <button class="btn btn-return" onclick="javascript:history.back(-1);
-                            return false;">返 回</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
         </div>
     </form>
 </block>
 
 <block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
@@ -99,9 +103,17 @@
     <script type="text/javascript" src="__STATIC__/bootstrap-3.3.2/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
     <script type="text/javascript" src="__STATIC__/json2.js"></script>
-    <script type="text/javascript" src="__STATIC__/angularjs/angular.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
     <script type="text/javascript" src="__JS__/{$Think.CONTROLLER_NAME|strtolower}/{$Think.CONTROLLER_NAME|strtolower}_{$Think.ACTION_NAME|strtolower}.js"></script>
     <script type="text/javascript">
+                $(function(){
+                    $('.time').datetimepicker({
+                        format: 'yyyy-mm-dd hh:ii',
+                        language:"zh-CN",
+                        minView:2,
+                        autoclose:true
+                    });
+                });
                 var MemberInfoModule = angular.module("weiapp_memberinfo", []);
                 MemberInfoModule.controller("MemberInfoController", function ($scope, $http) {
                     $scope.member_info = {$member_info};

@@ -59,7 +59,6 @@ class MemberInfoController extends AdminController {
         $this->assign('type_arr',  json_encode($type_arr));
         $this->assign('selected_type',$member_info['type']);
         $this->assign('member_info',  json_encode($member_info));
-        dump(json_encode($member_info));
         $this->meta_title = '编辑用户微应用申请';
         $this->display('edit');
     }

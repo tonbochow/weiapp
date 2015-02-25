@@ -5,3 +5,6 @@ CREATE TABLE `weiapp_auth_group_access` (
   KEY `uid` (`uid`),
   KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `weiapp_auth_group_access`
+ENGINE=InnoDB;
