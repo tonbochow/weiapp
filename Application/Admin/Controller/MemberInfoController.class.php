@@ -22,7 +22,7 @@ class MemberInfoController extends AdminController {
         if (isset($get_real_name)) {
             $map['real_name'] = array('like', '%' . (string) I('real_name') . '%');
         }
-        $list = $this->lists('MemberInfo', $map, 'status,id',array('status'=>array('egt',-1)));
+        $list = $this->lists('MemberInfo', $map, 'status,id', array('status' => array('egt', -1)));
 //        // 记录当前列表页的cookie
 //        Cookie('__forward__',$_SERVER['REQUEST_URI']);
 
@@ -35,39 +35,116 @@ class MemberInfoController extends AdminController {
      * 编辑用户申请(后台)
      */
     public function edit() {
-        $id = I('get.id','','trim');
-        if(empty($id)){
+        if (IS_POST) {
+            $member_info_data = I('post.');
+            if (empty($member_info_data)) {
+                $this->error('提交保存的数据为空');
+            }
+            $member_info_data['start_time'] = strtotime($member_info_data['start_time']);
+            $member_info_data['end_time'] = strtotime($member_info_data['end_time']);
+            $member_info_data['update_time'] = time();
+            unset($member_info_data['app_type_arr']);
+            unset($member_info_data['type_arr']);
+            unset($member_info_data['status_arr']);
+            $memberInfoModel = D('MemberInfo');
+            $memberInfoModel->startTrans();
+            //1更新用户使用申请
+            if ($memberInfoModel->create($member_info_data)) {
+                $member_info_save = $memberInfoModel->save($member_info_data);
+                if ($member_info_save == false) {
+                    $memberInfoModel->rollback();
+                    $this->error('更新用户使用申请失败!', '', true);
+                }
+            } else {
+                $memberInfoModel->rollback();
+                $this->error('更新用户使用申请失败!', '', true);
+            }
+            //2判断是否需要将用户移入或移除权限组
+            $authGroupAccessModel = M('AuthGroupAccess');
+            $group_access = $authGroupAccessModel->where(array('uid' => $member_info_data['member_id']))->find();
+            $access_data['uid'] = $member_info_data['member_id'];
+            $access_data['group_id'] = 3; //暂时写死
+            if ($member_info_data['status'] == \Home\Model\MemberInfoModel::$STATUS_ALLOW) {
+                if ($group_access == false) {
+                    $group_access_add = $authGroupAccessModel->add($access_data);
+                    if ($group_access_add == false) {
+                        $memberInfoModel->rollback();
+                        $this->error('添加用户到应用权限组失败!', '', true);
+                    }
+                    $memberInfoModel->commit();
+                    $this->success('保存用户使用申请成功!', '', true);
+                }
+            } else {
+                if ($group_access != false) {
+                    $group_access_del = $authGroupAccessModel->where($access_data)->delete();
+                    if ($group_access_del == false) {
+                        $memberInfoModel->rollback();
+                        $this->error('移除用户出应用权限组失败!', '', true);
+                    }
+                    $memberInfoModel->commit();
+                    $this->success('保存用户使用申请成功!', '', true);
+                }
+            }
+            $memberInfoModel->commit();
+            $this->success('保存用户使用申请成功!', '', true);
+        }
+        $id = I('get.id', '', 'trim');
+        if (empty($id)) {
             $this->error('参数不能为空!');
         }
-        $member_info = M('MemberInfo')->where(array('id'=>$id))->find();
-        $app_type = \Home\Model\MemberInfoModel::getAppType(null,false);
-        foreach($app_type as $id=>$val){
-            $app_type_arr[]=array('id'=>$id,'app_type'=>$val);
+        $member_info = M('MemberInfo')->where(array('id' => $id))->find();
+        $app_type = \Home\Model\MemberInfoModel::getAppType(null, false);
+        foreach ($app_type as $id => $val) {
+            $app_type_arr[] = array('id' => $id, 'app_type' => $val);
         }
         $status = \Home\Model\MemberInfoModel::getMemberInfoStatus(null, false);
-        foreach($status as $id=>$val){
-            $status_arr[]=array('id'=>$id,'status'=>$val);
+        foreach ($status as $id => $val) {
+            $status_arr[] = array('id' => $id, 'status' => $val);
         }
-        $type= \Home\Model\MemberInfoModel::getMemberInfoType(null,false);
-        foreach($type as $id=>$val){
-            $type_arr[$id]=array('id'=>$id,'type'=>$val);
+        $type = \Home\Model\MemberInfoModel::getMemberInfoType(null, false);
+        foreach ($type as $id => $val) {
+            $type_arr[$id] = array('id' => $id, 'type' => $val);
         }
-        $this->assign('app_type_arr',  json_encode($app_type_arr));
-        $this->assign('selected_app_type',$member_info['app_type']);
-        $this->assign('status_arr',  json_encode($status_arr));
-        $this->assign('selected_status',$member_info['status']);
-        $this->assign('type_arr',  json_encode($type_arr));
-        $this->assign('selected_type',$member_info['type']);
-        $this->assign('member_info',  json_encode($member_info));
+        $this->assign('app_type_arr', json_encode($app_type_arr));
+        $this->assign('selected_app_type', $member_info['app_type']);
+        $this->assign('status_arr', json_encode($status_arr));
+        $this->assign('selected_status', $member_info['status']);
+        $this->assign('type_arr', json_encode($type_arr));
+        $this->assign('selected_type', $member_info['type']);
+        $member_info['start_time'] = date('Y-m-d H:i:s', $member_info['start_time']);
+        $member_info['end_time'] = date('Y-m-d H:i:s', $member_info['end_time']);
+        $this->assign('member_info', json_encode($member_info));
         $this->meta_title = '编辑用户微应用申请';
         $this->display('edit');
     }
 
     /**
-     * 删除用户申请(后台)
+     * 删除用户申请(后台)|禁用用户并从权限组移除
      */
     public function delete() {
-        
+        $member_id = intval(I('get.member_id', '', trim));
+        $memberInfoModel = M('MemberInfo');
+        $memberInfoModel->startTrans();
+        //1禁用用户
+        $member_info_data['status'] = \Home\Model\MemberInfoModel::$STATUS_DENY;
+        $member_info_data['update_time'] = time();
+        $member_info_save = $memberInfoModel->where(array('member_id' => $member_id))->save($member_info_data);
+        if ($member_info_save == false) {
+            $memberInfoModel->rollback();
+            $this->error('删除用户(禁用)失败!');
+        }
+        //2去除用户权限
+        $authGroupAccessModel = M('AuthGroupAccess');
+        $group_access = $authGroupAccessModel->where(array('uid' => $member_id))->find();
+        if($group_access != false) {
+            $access_del = $authGroupAccessModel->where(array('uid' => $member_id))->delete();
+            if ($access_del == false) {
+                $memberInfoModel->rollback();
+                $this->error('移除用户权限失败!');
+            }
+        }
+        $memberInfoModel->commit();
+        $this->success('删除成功!');
     }
 
     /**
@@ -132,36 +209,15 @@ class MemberInfoController extends AdminController {
         }
         //2从微应用权限组移除用户
         $authGroupAccessModel = M('AuthGroupAccess');
-        $access_map['uid'] = array('in',$member_ids_str);
-        $access_map['group_id'] = 3;//暂时写死
+        $access_map['uid'] = array('in', $member_ids_str);
+        $access_map['group_id'] = 3; //暂时写死
         $access_del = $authGroupAccessModel->where($access_map)->delete();
-        if($access_del == false){
+        if ($access_del == false) {
             $memberInfoModel->rollback();
             $this->error('微应用权限组移除用户失败');
         }
         $memberInfoModel->commit();
         $this->success('审核用户未通过成功');
     }
-
-    /**
-     * 微餐饮公众平台(用户)
-     */
-    public function view() {
-        
-    }
-
-    /**
-     * 添加微餐饮公众平台(用户)
-     */
-    public function add() {
-        
-    }
-
-    /**
-     * 编辑微餐饮公众平台(用户)
-     */
-    public function modify() {
-        
-    }
-
+    
 }

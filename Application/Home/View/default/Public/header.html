@@ -18,14 +18,18 @@
                     </li>
                     </eq>
                 </think:nav>
-                <if condition="is_login()">
-                    <li>
-                        <a href="/Home/Help/index" target="_self" style="color:red;"><span class="glyphicon glyphicon-question-sign"></span> 使用帮助</a>
-                    </li>
-                    <li>
-                        <a href="/Admin/CanYin/index" target="_blank" style="color:red;"><span class="glyphicon glyphicon-th-list"></span> 功能面板</a>
-                    </li>
-                </if>
+                <?php
+                if(is_login() && WEIAPP_AUTHORIZE){
+                ?>
+                <li>
+                    <a href="/Home/Help/index" target="_self" style="color:red;"><span class="glyphicon glyphicon-question-sign"></span> 使用帮助</a>
+                </li>
+                <li>
+                    <a href="/Admin/CanYin/index" target="_blank" style="color:red;"><span class="glyphicon glyphicon-th-list"></span> 功能面板</a>
+                </li>
+                <?php
+                }
+                ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <if condition="is_login()">

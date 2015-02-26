@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | OneThink [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
@@ -8,6 +9,7 @@
 // +----------------------------------------------------------------------
 
 namespace Home\Controller;
+
 use Think\Controller;
 
 /**
@@ -15,27 +17,44 @@ use Think\Controller;
  * 为防止多分组Controller名称冲突，公共Controller名称统一使用分组名称
  */
 class HomeController extends Controller {
+    /* 空操作，用于输出404页面 */
 
-	/* 空操作，用于输出404页面 */
-	public function _empty(){
-		$this->redirect('Index/index');
-	}
+    public function _empty() {
+        $this->redirect('Index/index');
+    }
 
-
-    protected function _initialize(){
+    protected function _initialize() {
         /* 读取站点配置 */
         $config = api('Config/lists');
         C($config); //添加配置
 
-        if(!C('WEB_SITE_CLOSE')){
+        if (!C('WEB_SITE_CLOSE')) {
             $this->error('站点已经关闭，请稍后访问~');
+        }
+        //检测用户权限
+        if (is_login()) {
+            if (is_administrator()) {
+                define("WEIAPP_AUTHORIZE", true);
+            } else {
+                $authGroupAccessModel = M('AuthGroupAccess');
+                $access_data['uid'] = session('user_auth.uid');
+                $group_access = $authGroupAccessModel->where($access_data)->find();
+                if ($group_access != false) {
+                    define("WEIAPP_AUTHORIZE", true);
+                } else {
+                    define("WEIAPP_AUTHORIZE", false);
+                }
+            }
+        } else {
+            define("WEIAPP_AUTHORIZE", false);
         }
     }
 
-	/* 用户登录检测 */
-	protected function login(){
-		/* 用户登录检测 */
-		is_login() || $this->error('您还没有登录，请先登录！', U('User/login'));
-	}
+    /* 用户登录检测 */
+
+    protected function login() {
+        /* 用户登录检测 */
+        is_login() || $this->error('您还没有登录，请先登录！', U('User/login'));
+    }
 
 }
