@@ -246,6 +246,7 @@ class MemberInfoController extends AdminController {
         $token = gen_uuid();
         $platform_data['mp_url'] = $_SERVER['HTTP_HOST'].'/Mobile/Base/weixin/token/'.$token;
         $platform_data['mp_token'] = $token;//token
+        $platform_data['create_time'] = time();
         $micro_platform_add = $microPlatformModel->add($platform_data);
         if($micro_platform_add == false){
             $memberInfoModel->rollback();
