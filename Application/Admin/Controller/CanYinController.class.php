@@ -15,7 +15,7 @@ class CanYinController extends AdminController {
      * 餐饮管理
      */
     public function index(){
-        redirect('index.php?s=/Admin/MicroPlatform/view.html');
+        redirect('index.php?s=/Admin/MicroPlatform/food');
         $this->meta_title = '配置管理';
         $this->display();
     }

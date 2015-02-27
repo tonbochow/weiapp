@@ -22,47 +22,44 @@ class MicroPlatformModel extends Model {
     public static $MP_TYPE_SUBSCRIBE = 2; //微信工作平台类型：订阅号
     public static $MP_TYPE_COMPANY = 3; //微信工作平台类型：企业号
     public static $APP_TYPE_FOOD = 1; //微应用类型1餐饮
+    public static $APP_NAME_FOOD = 'food'; //餐饮
+    public static $APP_NAME_PHOTO = 'photo';//摄影
     public static $APP_TYPE_PHOTO = 2; //微应用类型2摄影
+    public static $APP_TYPE_KTV = 3;//微应用ktv
+    public static $APP_NAME_KTV = 'ktv';//KTV
     public static $WX_PAY_ENABLE = 1; //支持微信支付
     public static $WX_PAY_DISABLE = 0; //不支持微信支付
     public static $IS_CHAIN = 1; //连锁
     public static $NOT_CHAIN = 0; //非连锁
+    public static $NOT_BIND = 0;//未绑定微信公众平台
+    public static $IS_BIND = 1;//已绑定微信公众平台
 
     /* 自动验证规则 */
     protected $_validate = array(
-        array('name', '/^[a-zA-Z]\w{0,39}$/', '文档标识不合法', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('name', 'checkName', '标识已经存在', self::VALUE_VALIDATE, 'callback', self::MODEL_BOTH),
-        array('title', 'require', '标题不能为空', self::MUST_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('title', '1,80', '标题长度不能超过80个字符', self::MUST_VALIDATE, 'length', self::MODEL_BOTH),
-        array('level', '/^[\d]+$/', '优先级只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        //TODO: 外链编辑验证
-        //array('link_id', 'url', '外链格式不正确', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('description', '1,140', '简介长度不能超过140个字符', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
-        array('category_id', 'require', '分类不能为空', self::MUST_VALIDATE, 'regex', self::MODEL_INSERT),
-        array('category_id', 'require', '分类不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_UPDATE),
-        array('category_id', 'checkCategory', '该分类不允许发布内容', self::EXISTS_VALIDATE, 'callback', self::MODEL_UPDATE),
-        array('model_id,category_id', 'checkModel', '该分类没有绑定当前模型', self::MUST_VALIDATE, 'callback', self::MODEL_INSERT),
-        array('deadline', '/^\d{4,4}-\d{1,2}-\d{1,2}(\s\d{1,2}:\d{1,2}(:\d{1,2})?)?$/', '日期格式不合法,请使用"年-月-日 时:分"格式,全部为数字', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('create_time', '/^\d{4,4}-\d{1,2}-\d{1,2}(\s\d{1,2}:\d{1,2}(:\d{1,2})?)?$/', '日期格式不合法,请使用"年-月-日 时:分"格式,全部为数字', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('member_id', 'require', '用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+//        array('name', '/^[a-zA-Z]\w{0,39}$/', '文档标识不合法', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
+//        array('name', 'checkName', '标识已经存在', self::VALUE_VALIDATE, 'callback', self::MODEL_BOTH),
+//        array('title', 'require', '标题不能为空', self::MUST_VALIDATE, 'regex', self::MODEL_BOTH),
+//        array('title', '1,80', '标题长度不能超过80个字符', self::MUST_VALIDATE, 'length', self::MODEL_BOTH),
+//        array('level', '/^[\d]+$/', '优先级只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
+//        //TODO: 外链编辑验证
+//        //array('link_id', 'url', '外链格式不正确', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
+//        array('description', '1,140', '简介长度不能超过140个字符', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
+//        array('category_id', 'require', '分类不能为空', self::MUST_VALIDATE, 'regex', self::MODEL_INSERT),
+//        array('category_id', 'require', '分类不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_UPDATE),
+//        array('category_id', 'checkCategory', '该分类不允许发布内容', self::EXISTS_VALIDATE, 'callback', self::MODEL_UPDATE),
+//        array('model_id,category_id', 'checkModel', '该分类没有绑定当前模型', self::MUST_VALIDATE, 'callback', self::MODEL_INSERT),
+        array('start_time', '/^\d{4,4}-\d{1,2}-\d{1,2}(\s\d{1,2}:\d{1,2}(:\d{1,2})?)?$/', '日期格式不合法,请使用"年-月-日 时:分"格式,全部为数字', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('end_time', '/^\d{4,4}-\d{1,2}-\d{1,2}(\s\d{1,2}:\d{1,2}(:\d{1,2})?)?$/', '日期格式不合法,请使用"年-月-日 时:分"格式,全部为数字', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
     protected $_auto = array(
-        array('uid', 'is_login', self::MODEL_INSERT, 'function'),
-        array('title', 'htmlspecialchars', self::MODEL_BOTH, 'function'),
-        array('description', 'htmlspecialchars', self::MODEL_BOTH, 'function'),
-        array('root', 'getRoot', self::MODEL_BOTH, 'callback'),
-        array('link_id', 'getLink', self::MODEL_BOTH, 'callback'),
-        array('attach', 0, self::MODEL_INSERT),
-        array('view', 0, self::MODEL_INSERT),
-        array('comment', 0, self::MODEL_INSERT),
-        array('extend', 0, self::MODEL_INSERT),
-        array('create_time', 'getCreateTime', self::MODEL_BOTH, 'callback'),
-        array('reply_time', 'getCreateTime', self::MODEL_INSERT, 'callback'),
+        array('member_id', 'is_login', self::MODEL_INSERT, 'function'),
+        array('mp_name', 'htmlspecialchars', self::MODEL_BOTH, 'function'),
+        array('status', 1, self::MODEL_INSERT),
+        array('create_time', NOW_TIME, self::MODEL_BOTH),
         array('update_time', NOW_TIME, self::MODEL_BOTH),
-        array('status', 'getStatus', self::MODEL_BOTH, 'callback'),
-        array('position', 'getPosition', self::MODEL_BOTH, 'callback'),
-        array('deadline', 'strtotime', self::MODEL_BOTH, 'function'),
     );
 
     //获取微信公众平台状态
@@ -104,5 +101,51 @@ class MicroPlatformModel extends Model {
         }
         return $app_type_arr;
     }
+    
+    //获取微信公众平台是否支持微信支付
+    public static function getMpWxPay($pay = null, $has_choice = true) {
+        if ($has_choice) {
+            $wx_pay_arr = array('' => '请选择');
+        }
+        $wx_pay_arr[self::$WX_PAY_DISABLE] = '不支持';
+        $wx_pay_arr[self::$WX_PAY_ENABLE] = '支持';
+        if ($pay !== null) {
+            return $wx_pay_arr[$pay];
+        }
+        return $wx_pay_arr;
+    }
 
+    //获取微信公众平台是否连锁
+    public static function getMpChain($chain = null, $has_choice = true) {
+        if ($has_choice) {
+            $chain_arr = array('' => '请选择');
+        }
+        $chain_arr[self::$IS_CHAIN] = '连锁';
+        $chain_arr[self::$NOT_CHAIN] = '非连锁';
+        if ($chain !== null) {
+            return $chain_arr[$chain];
+        }
+        return $chain_arr;
+    }
+    
+    //获取微信公众平台是否绑定
+    public static function getMpBind($bind = null, $has_choice = true) {
+        if ($has_choice) {
+            $bind_arr = array('' => '请选择');
+        }
+        $bind_arr[self::$IS_BIND] = '已绑定';
+        $bind_arr[self::$NOT_BIND] = '未绑定';
+        if ($bind !== null) {
+            return $bind_arr[$bind];
+        }
+        return $bind_arr;
+    }
+    
+    //获取微信公众平台应用名称
+    public static function getMpAppName($app_type) {
+        $name_arr[self::$APP_TYPE_FOOD] = self::$APP_NAME_FOOD;
+        $name_arr[self::$APP_TYPE_PHOTO] = self::$APP_NAME_PHOTO;
+        $name_arr[self::$APP_TYPE_KTV] = self::$APP_NAME_KTV;
+        return $name_arr[$app_type];
+    }
 }

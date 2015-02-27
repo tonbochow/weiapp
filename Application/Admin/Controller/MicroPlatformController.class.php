@@ -9,7 +9,7 @@ namespace Admin\Controller;
 /**
  * 微餐饮公众平台控制器
  */
-class MicroPlatformController extends AdminController {
+class MicroPlatformController extends FoodBaseController {
 
     /**
      * 餐饮管理(后台)
@@ -25,9 +25,8 @@ class MicroPlatformController extends AdminController {
     }
 
     //微餐饮公众平台(前台)
-    public function view(){
-        
+    public function food(){
         $this->meta_title = '微餐饮公众平台';
-        $this->display('view');
+        $this->display('food');
     }
 }

@@ -20,6 +20,8 @@ class MemberInfoModel extends Model {
     public static $TYPE_OFFICIAL = 1; //用户详细信息类型1正式
     public static $APP_TYPE_FOOD = 1; //微应用类型1餐饮
     public static $APP_TYPE_PHOTO = 2; //微应用类型2摄影
+    public static $TOKEN_CREATED = 1;//Token已创建
+    public static $TOKEN_UNCREATED = 0;//Token未创建
 
     /* 自动验证规则 */
     protected $_validate = array(

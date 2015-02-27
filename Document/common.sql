@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `weiapp_member_info` (
   UNIQUE KEY `mobile` (`mobile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户详细信息';
 
-CREATE TABLE IF NOT EXISTS `weiapp_micro_platform` (
+CREATE TABLE IF NOT EXISTS  `weiapp_micro_platform` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `appid` varchar(256) NOT NULL DEFAULT '' COMMENT '微信公众平台appid',
   `appsecret` varchar(256) NOT NULL DEFAULT '' COMMENT '微信公众平台appsecret',
@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `weiapp_micro_platform` (
   `jsapi_expires` int(11) NOT NULL DEFAULT '0' COMMENT '微信jsapi_tiket 失效时间',
   `is_tryed` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否试用过1试用过0未试用过',
   `is_chain` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否连锁(多个餐厅)0否1是',
+  `is_bind` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否绑定了微信公众平台',
   `chain_num` smallint(6) NOT NULL DEFAULT '0' COMMENT '连锁餐厅个数',
   `app_type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '平台类型1餐饮2商城',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '微信公众平台状态1开启0禁用',
@@ -50,6 +51,8 @@ CREATE TABLE IF NOT EXISTS `weiapp_micro_platform` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `mp_token` (`mp_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信公众平台';
+
+
 
 
 

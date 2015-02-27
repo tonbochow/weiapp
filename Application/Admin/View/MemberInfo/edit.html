@@ -1,14 +1,15 @@
 <extend name="Public/base"/>
 <block name="style">
-    <link href="__STATIC__/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+    <!--<link href="__STATIC__/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <style type="text/css">
         h2,h3{
             margin:0px;
             padding:0px;
             font: 14px/1.5 "microsoft yahei", Helvetica, Tahoma, Arial, sans-serif;
             font-weight:bold;
         }
-    </style>
+    </style>-->
 </block>
 
 <block name="body">
@@ -39,7 +40,7 @@
             <label class="item-label">申请试用|使用简介<span class="check-tips">（用户申请|使用简介）</span></label>
             <div class="controls">
                 <!--                <input type="text" class="text input-small" name="sort" value="{$info.sort|default=0}">-->
-                <input name="introduce" type="text" value="{$member_info.introduce}" ng-model="member_info.introduce" ng-trim="true" ng-minlength="3" ng-maxlength="256" required class="form-control" id="introduce" placeholder="申请简介">
+                <input name="introduce" type="text" value="{$member_info.introduce}" ng-model="member_info.introduce" ng-trim="true" ng-minlength="3" ng-maxlength="256" required class="form-control text input-large" id="introduce" placeholder="申请简介">
                 <p ng-show="MemberInfoForm.introduce.$invalid && !MemberInfoForm.introduce.$pristine" class="help-block">请输入申请简介(长度3-256)</p>
             </div>
         </div>
@@ -108,7 +109,7 @@
     <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="__STATIC__/bootstrap-3.3.2/js/bootstrap.min.js"></script>
+    <!--<script type="text/javascript" src="__STATIC__/bootstrap-3.3.2/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
     <script type="text/javascript" src="__STATIC__/json2.js"></script>
     <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>

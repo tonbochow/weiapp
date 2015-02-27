@@ -8,3 +8,7 @@ CREATE TABLE `weiapp_auth_group_access` (
 
 ALTER TABLE `weiapp_auth_group_access`
 ENGINE=InnoDB;
+
+ALTER TABLE `weiapp_member_info`
+ADD COLUMN `token_created`  tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否已创建token(预先生成平台token等)0否1是' AFTER `introduce`;
+

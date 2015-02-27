@@ -1,0 +1,193 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>微餐饮公众平台信息</h2>
+    </div>
+    <div id="dialog" title="编辑使用申请" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_mp" ng-app="weiapp_mp" id="ng-app" name="MpForm" ng-controller="MpController" ng-submit="submitForm()">
+        <div class="form-item" ng-class="{'has-error' : MpForm.mp_name.$invalid && !MpForm.mp_name.$pristine}">
+            <label class="item-label">微信公众平台名称<span class="check-tips">（登录微信公众平台查看）</span></label>
+            <div class="controls">
+                <input name="mp_name" type="text" value="{$micro_platform.mp_name}" ng-model="platform.mp_name"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="60" required class="form-control text input-large" id="mp_name" placeholder="微信公众平台名称">
+                <p ng-show="MpForm.real_name.$invalid && !MpForm.real_name.$pristine" class="help-block">微信公众平台名称(长度1-60)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.mp_original_id.$invalid && !MpForm.mp_original_id.$pristine}">
+            <label class="item-label">微信公众平台原始ID<span class="check-tips">（登录微信公众平台查看）</span></label>
+            <div class="controls">
+                <input name="mp_original_id" type="text" value="{$micro_platform.mp_original_id}" ng-model="platform.mp_original_id"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="mp_original_id" placeholder="微信公众平台原始ID">
+                <p ng-show="MpForm.mp_original_id.$invalid && !MpForm.mp_original_id.$pristine" class="help-block">微信公众平台原始ID(长度1-256)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.mp_wxcode.$invalid && !MpForm.mp_wxcode.$pristine}">
+            <label class="item-label">微信公众平台微信号<span class="check-tips">（登录微信公众平台查看）</span></label>
+            <div class="controls">
+                <input name="mp_wxcode" type="text" value="{$micro_platform.mp_wxcode}" ng-model="platform.mp_wxcode"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="128" required class="form-control text input-large" id="mp_wxcode" placeholder="微信公众平台微信号">
+                <p ng-show="MpForm.mp_wxcode.$invalid && !MpForm.mp_wxcode.$pristine" class="help-block">微信公众平台微信号(长度1-128)</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : MpForm.appid.$invalid && !MpForm.appid.$pristine}">
+            <label class="item-label">微信公众平台appid<span class="check-tips">（登录微信公众平台查看）</span></label>
+            <div class="controls">
+                <input name="appid" type="text" value="{$micro_platform.appid}" ng-model="platform.appid"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="appid" placeholder="微信公众平台appid">
+                <p ng-show="MpForm.appid.$invalid && !MpForm.appid.$pristine" class="help-block">微信公众平台appid(长度1-256)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.appsecret.$invalid && !MpForm.appsecret.$pristine}">
+            <label class="item-label">微信公众平台appsecret<span class="check-tips">（登录微信公众平台查看）</span></label>
+            <div class="controls">
+                <input name="appsecret" type="text" value="{$micro_platform.appsecret}" ng-model="platform.appsecret"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="appsecret" placeholder="微信公众平台appsecret">
+                <p ng-show="MpForm.appsecret.$invalid && !MpForm.appsecret.$pristine" class="help-block">appsecret(长度1-256)</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : MpForm.partnerid.$invalid && !MpForm.partnerid.$pristine}">
+            <label class="item-label">微信公众平台partnerid<span class="check-tips">（微信支付参数|非必填项）</span></label>
+            <div class="controls">
+                <input name="partnerid" type="text" value="{$micro_platform.partnerid}" ng-model="platform.partnerid"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="partnerid" placeholder="微信支付partnerid">
+                <p ng-show="MpForm.partnerid.$invalid && !MpForm.partnerid.$pristine" class="help-block">partnerid(长度1-256)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.partnerkey.$invalid && !MpForm.partnerkey.$pristine}">
+            <label class="item-label">微信公众平台partnerkey<span class="check-tips">（微信支付参数|非必填项）</span></label>
+            <div class="controls">
+                <input name="partnerkey" type="text" value="{$micro_platform.partnerkey}" ng-model="platform.partnerkey"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="partnerkey" placeholder="微信支付partnerkey">
+                <p ng-show="MpForm.partnerkey.$invalid && !MpForm.partnerkey.$pristine" class="help-block">partnerkey(长度1-256)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.paysignkey.$invalid && !MpForm.paysignkey.$pristine}">
+            <label class="item-label">微信公众平台paysignkey<span class="check-tips">（微信支付参数|非必填项）</span></label>
+            <div class="controls">
+                <input name="paysignkey" type="text" value="{$micro_platform.paysignkey}" ng-model="platform.paysignkey"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="paysignkey" placeholder="微信支付paysignkey">
+                <p ng-show="MpForm.paysignkey.$invalid && !MpForm.paysignkey.$pristine" class="help-block">paysignkey(长度1-256)</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : MpForm.support_wxpay.$invalid && !MpForm.support_wxpay.$pristine}">
+            <label class="item-label">微信支付<span class="check-tips">（是否支持）</span></label>
+            <div class="controls">
+                <select class="form-control" name="support_wxpay" required ng-model="platform.support_wxpay" ng-options="m.id as m.app_type for m in member_info.app_type_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="MpForm.support_wxpay.$invalid && !MpForm.support_wxpay.$pristine" class="help-block">请选择是否支持微信支付</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.is_chain.$invalid && !MpForm.is_chain.$pristine}">
+            <label class="item-label">连锁餐厅<span class="check-tips">（是否连锁）</span></label>
+            <div class="controls">
+                <select class="form-control" name="is_chain" required ng-model="platform.is_chain" ng-options="m.id as m.app_type for m in member_info.app_type_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="MpForm.is_chain.$invalid && !MpForm.is_chain.$pristine" class="help-block">请选择是否连锁餐厅</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.chain_num.$invalid && !MpForm.chain_num.$pristine}">
+            <label class="item-label">连锁餐厅个数<span class="check-tips">（非连锁餐厅不用填写|非必填项）</span></label>
+            <div class="controls">
+                <input name="chain_num" type="text" value="{$micro_platform.chain_num}" ng-model="platform.chain_num"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="chain_num" placeholder="连锁餐厅个数">
+                <p ng-show="MpForm.chain_num.$invalid && !MpForm.chain_num.$pristine" class="help-block">连锁餐厅个数为正整数</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.mp_qrcode.$invalid && !MpForm.mp_qrcode.$pristine}">
+            <label class="item-label">微信公众平台二维码<span class="check-tips"></span></label>
+            <div class="controls">
+                <input name="mp_qrcode" type="text" value="{$micro_platform.mp_qrcode}" ng-model="platform.mp_qrcode"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="mp_qrcode" placeholder="微信公众平台二维码">
+                <p ng-show="MpForm.mp_qrcode.$invalid && !MpForm.mp_qrcode.$pristine" class="help-block">微信公众平台二维码</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.mp_img.$invalid && !MpForm.mp_img.$pristine}">
+            <label class="item-label">微信公众平台图标<span class="check-tips"></span></label>
+            <div class="controls">
+                <input name="mp_img" type="text" value="{$micro_platform.mp_img}" ng-model="platform.mp_img"  ng-pattern="/^[\u0391-\uFFE5]{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="mp_img" placeholder="微信公众平台图标">
+                <p ng-show="MpForm.mp_img.$invalid && !MpForm.mp_img.$pristine" class="help-block">微信公众平台图标</p>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台接入URL:<span class="check-tips">(登录微信工作平台填写)</span></label>
+            <div class="controls">
+                {$micro_platform.mp_url}
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台接入token:<span class="check-tips">(登录微信工作平台填写)</span></label>
+            <div class="controls">
+                {$micro_platform.mp_token}
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <!--<button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>-->
+            <button type="submit" class="btn btn-success submit" ng-disabled="MpForm.$invalid">保 存</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript">
+                var MpModule = angular.module("weiapp_mp", []);
+                MpModule.controller("MpController", function ($scope, $http) {
+//                    $scope.member_info = {$member_info};
+//                    $scope.member_info.app_type_arr = {$app_type_arr};
+//                    $scope.member_info.app_type = {$selected_app_type};
+//                    $scope.member_info.status_arr = {$status_arr};
+//                    $scope.member_info.status = {$selected_status};
+//                    $scope.member_info.type_arr = {$type_arr};
+//                    $scope.member_info.type = {$selected_type};
+//                    $scope.submitForm = function () {
+//                        $('.submit').attr('disabled', 'true');
+//                        $http({
+//                            method: "POST",
+//                            url: "/Admin/MemberInfo/edit",
+//                            data: $.param($scope.member_info),
+//                            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+//                        }).success(function (data) {
+//                            if (data.status) {
+//                                $('#dialog_content').text(data.info);
+//                                $("#dialog").dialog({modal: true});
+//                                setTimeout("result(" + data.status + ")", 1000);
+//                            } else {
+//                                $('#dialog_content').text(data.info);
+//                                $("#dialog").dialog({modal: true});
+//                                setTimeout("result(" + data.status + ")", 1000);
+//                            }
+//                        });
+//                    };
+                });
+
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    if (status) {
+                        history.back(-1);
+                        return false;
+                    } else {
+                        window.location.reload();
+                    }
+                }
+    </script>
+</block>
