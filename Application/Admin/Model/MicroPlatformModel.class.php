@@ -23,26 +23,33 @@ class MicroPlatformModel extends Model {
     public static $MP_TYPE_COMPANY = 3; //微信工作平台类型：企业号
     public static $APP_TYPE_FOOD = 1; //微应用类型1餐饮
     public static $APP_NAME_FOOD = 'food'; //餐饮
-    public static $APP_NAME_PHOTO = 'photo';//摄影
+    public static $APP_NAME_PHOTO = 'photo'; //摄影
     public static $APP_TYPE_PHOTO = 2; //微应用类型2摄影
-    public static $APP_TYPE_KTV = 3;//微应用ktv
-    public static $APP_NAME_KTV = 'ktv';//KTV
+    public static $APP_TYPE_KTV = 3; //微应用ktv
+    public static $APP_NAME_KTV = 'ktv'; //KTV
     public static $WX_PAY_ENABLE = 1; //支持微信支付
     public static $WX_PAY_DISABLE = 0; //不支持微信支付
     public static $IS_CHAIN = 1; //连锁
     public static $NOT_CHAIN = 0; //非连锁
-    public static $NOT_BIND = 0;//未绑定微信公众平台
-    public static $IS_BIND = 1;//已绑定微信公众平台
+    public static $NOT_BIND = 0; //未绑定微信公众平台
+    public static $IS_BIND = 1; //已绑定微信公众平台
 
     /* 自动验证规则 */
     protected $_validate = array(
         array('member_id', 'require', '用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-//        array('name', '/^[a-zA-Z]\w{0,39}$/', '文档标识不合法', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-//        array('name', 'checkName', '标识已经存在', self::VALUE_VALIDATE, 'callback', self::MODEL_BOTH),
-//        array('title', 'require', '标题不能为空', self::MUST_VALIDATE, 'regex', self::MODEL_BOTH),
-//        array('title', '1,80', '标题长度不能超过80个字符', self::MUST_VALIDATE, 'length', self::MODEL_BOTH),
-//        array('level', '/^[\d]+$/', '优先级只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-//        //TODO: 外链编辑验证
+        array('mp_name', 'require', '微信公众平台名称不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('mp_original_id', 'require', '微信公众平台原始ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('mp_original_id', '/^[a-zA-Z_]\w{1,256}$/', '微信公众平台原始ID以字母或下划线开头', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('mp_wxcode', 'require', '微信公众平台微信号不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('mp_wxcode', '/^[a-zA-Z_]\w{1,128}$/', '微信号以字母或下划线开头', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('appid', 'require', '微信公众平台appid不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('appid', '/^\w{1,256}$/', 'appid以字母数字或下划线开头最大长度256', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('appsecret', 'require', '微信公众平台appsecret不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('appsecret', '/^\w{1,256}$/', 'appsecret以字母数字或下划线开头最大长度256', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('partnerid', '/^\w{1,256}$/', 'partnerid以字母数字或下划线开头最大长度256', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('partnerkey', '/^\w{1,256}$/', 'partnerkey以字母数字或下划线开头最大长度256', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('paysignkey', '/^\w{1,256}$/', 'paysignkey以字母数字或下划线开头最大长度256', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('chain_num', '/^[\d]+$/', '连锁餐厅数量只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        //array('link_id', 'url', '外链格式不正确', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('description', '1,140', '简介长度不能超过140个字符', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
 //        array('category_id', 'require', '分类不能为空', self::MUST_VALIDATE, 'regex', self::MODEL_INSERT),
@@ -101,7 +108,7 @@ class MicroPlatformModel extends Model {
         }
         return $app_type_arr;
     }
-    
+
     //获取微信公众平台是否支持微信支付
     public static function getMpWxPay($pay = null, $has_choice = true) {
         if ($has_choice) {
@@ -127,7 +134,7 @@ class MicroPlatformModel extends Model {
         }
         return $chain_arr;
     }
-    
+
     //获取微信公众平台是否绑定
     public static function getMpBind($bind = null, $has_choice = true) {
         if ($has_choice) {
@@ -140,7 +147,7 @@ class MicroPlatformModel extends Model {
         }
         return $bind_arr;
     }
-    
+
     //获取微信公众平台应用名称
     public static function getMpAppName($app_type) {
         $name_arr[self::$APP_TYPE_FOOD] = self::$APP_NAME_FOOD;
@@ -148,4 +155,5 @@ class MicroPlatformModel extends Model {
         $name_arr[self::$APP_TYPE_KTV] = self::$APP_NAME_KTV;
         return $name_arr[$app_type];
     }
+
 }

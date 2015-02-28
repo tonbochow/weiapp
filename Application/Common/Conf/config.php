@@ -50,4 +50,7 @@ return array(
 
     /* 文档模型配置 (文档模型核心配置，请勿更改) */
     'DOCUMENT_MODEL_TYPE' => array(2 => '主题', 1 => '目录', 3 => '段落'),
+    /** 2015-02-28添加 **/
+    'WEBSITE_URL' => $_SERVER['DOCUMENT_ROOT'],
+    'LOAD_EXT_CONFIG' => 'config.upload',//加载其他配置文件
 );
