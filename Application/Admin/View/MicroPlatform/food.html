@@ -107,7 +107,7 @@
         <div class="form-item" ng-class="{'has-error' : MpForm.mp_qrcode.$invalid && !MpForm.mp_qrcode.$pristine}">
             <label class="item-label">微信公众平台二维码<span class="check-tips"></span></label>
             <div class="controls">
-                <img src="" id="pic_mp_qrcode"><br>
+                <img src="" id="pic_mp_qrcode" style="max-width: 300px;"><br>
                 <input type="file" title="选择二维码图片"   multiple="true" class="btn btn-success"  name="file_mp_qrcode"  id="file_mp_qrcode">
                 <input type="hidden" id="mp_qrcode" name="mp_qrcode" value="" ng-model="platform.mp_qrcode">
                 <p ng-show="MpForm.mp_qrcode.$invalid && !MpForm.mp_qrcode.$pristine" class="help-block">微信公众平台二维码</p>
@@ -117,7 +117,7 @@
         <div class="form-item" ng-class="{'has-error' : MpForm.mp_img.$invalid && !MpForm.mp_img.$pristine}">
             <label class="item-label">微信公众平台图标<span class="check-tips"></span></label>
             <div class="controls">
-                <img src="" id="pic_mp_img"><br>
+                <img src="" id="pic_mp_img" style="max-width: 300px;"><br>
                 <input type="file" title="选择平台头像图片"   multiple="true" class="btn btn-success"  name="file_mp_img" id="file_mp_img">
                 <input type="hidden" id="mp_img" name="mp_img" value="" ng-model="platform.mp_img">
                 <p ng-show="MpForm.mp_img.$invalid && !MpForm.mp_img.$pristine" class="help-block">微信公众平台图标</p>
@@ -163,20 +163,20 @@
                 MpModule.controller("MpController", function ($scope, $http) {
                     $(function(){
                         $('#file_mp_qrcode').localResizeIMG({
-//                            width: 100,
-                            quality: 0.3,
+//                            width: 200,
+                            quality: 0.6,
                             success: function (result) {
-                                var compress_mp_qrcode = result.base64;
+                                var compress_mp_qrcode = result.clearBase64;
                                 $('#pic_mp_qrcode').attr("src",result.base64);
                                 $('#mp_qrcode').val(compress_mp_qrcode);
                                 console.log(result);
                             }
                         });
                         $('#file_mp_img').localResizeIMG({
-//                            width: 100,
-                            quality: 0.3,
+//                            width: 200,
+                            quality: 0.6,
                             success: function (result) {
-                                var compress_mp_img = result.base64;
+                                var compress_mp_img = result.clearBase64;
                                 $('#pic_mp_img').attr("src",result.base64);
                                 $('#mp_img').val(compress_mp_img);
                                 console.log(result);
