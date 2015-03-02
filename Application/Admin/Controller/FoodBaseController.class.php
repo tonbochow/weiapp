@@ -59,7 +59,7 @@ class FoodBaseController extends AdminController {
                 $this->error('请先创建微信公众平台！','/Admin/MicroPlatform/food');
             }
             if ($micro_platform['status'] == \Admin\Model\MicroPlatformModel::$STATUS_DENY) {
-                $this->error('您的微信公众平台禁止使用请联系管理员！','/Admin/MicroPlatform/food');
+                $this->error('您的微信公众平台禁止使用(可能未绑定微信公众平台)！','/Admin/MicroPlatform/food');
             }
             if ($micro_platform['start_time'] > time()) {
                 $this->error('您的微信公众平台开始使用时间未到！','/Admin/MicroPlatform/food');

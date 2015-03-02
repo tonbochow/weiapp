@@ -12,3 +12,11 @@ ENGINE=InnoDB;
 ALTER TABLE `weiapp_member_info`
 ADD COLUMN `token_created`  tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否已创建token(预先生成平台token等)0否1是' AFTER `introduce`;
 
+
+ALTER TABLE `weiapp_weixin_menu`
+ADD COLUMN `member_id`  int(11) NOT NULL DEFAULT 0 COMMENT '关联用户表member的主键id' AFTER `mp_id`;
+
+ALTER TABLE `weiapp_weixin_menu`
+ADD COLUMN `menu_content`  varchar(256) NOT NULL DEFAULT '' COMMENT 'click类型菜单自定义的回复内容' AFTER `menu_url`;
+
+
