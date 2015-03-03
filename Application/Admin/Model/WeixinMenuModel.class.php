@@ -20,26 +20,19 @@ class WeixinMenuModel extends Model {
     public static $STATUS_ENABLE = 1; //菜单状态 可用
     public static $MENU_TYPE_CLICK = 1; //微信菜单类型:click
     public static $MENU_NAME_CLICK = 'click'; //点击推事件菜单
-    
     public static $MENU_TYPE_VIEW = 2; //微信菜单类型:view
     public static $MENU_NAME_VIEW = 'view'; //跳转url
-    
     public static $MENU_TYPE_SCANCODE_PUSH = 3; //微信菜单类型:scancode_push 扫码推事件 微信版本5.4以上
     public static $MENU_NAME_SCANCODE_PUSH = 'scancode_push'; //扫码推事件 微信版本5.4以上
-    
     public static $MENU_TYPE_SCANCODE_WAITMSG = 4; //微信菜单类型:scancode_waitmsg 扫码推事件且弹出“消息接收中”提示框  微信版本5.4以上
     public static $MENU_NAME_SCANCODE_WAITMSG = 'scancode_waitmsg'; //扫码推事件且弹出“消息接收中”提示框 微信版本5.4以上
-    
     public static $MENU_TYPE_PIC_SYSPHOTO = 5; //微信菜单类型:pic_sysphoto 弹出系统拍照发图  微信版本5.4以上
     public static $MENU_NAME_PIC_SYSPHOTO = 'pic_sysphoto'; //弹出系统拍照发图 微信版本5.4以上
-    
-    public static $MENU_TYPE_PIC_PHOTO_OR_ALBUM= 6; //微信菜单类型:pic_photo_or_album 弹出拍照或者相册发图  微信版本5.4以上
+    public static $MENU_TYPE_PIC_PHOTO_OR_ALBUM = 6; //微信菜单类型:pic_photo_or_album 弹出拍照或者相册发图  微信版本5.4以上
     public static $MENU_NAME_PIC_PHOTO_OR_ALBUM = 'pic_photo_or_album'; //弹出拍照或者相册发图 微信版本5.4以上
-
-    public static $MENU_TYPE_PIC_WEIXIN= 7; //微信菜单类型:pic_weixin 弹出微信相册发图器  微信版本5.4以上
+    public static $MENU_TYPE_PIC_WEIXIN = 7; //微信菜单类型:pic_weixin 弹出微信相册发图器  微信版本5.4以上
     public static $MENU_NAME_PIC_WEIXIN = 'pic_weixin'; //弹出微信相册发图器  微信版本5.4以上
-    
-    public static $MENU_TYPE_LOCATION_SELECT= 8; //微信菜单类型:location_select 弹出地理位置选择器  微信版本5.4以上
+    public static $MENU_TYPE_LOCATION_SELECT = 8; //微信菜单类型:location_select 弹出地理位置选择器  微信版本5.4以上
     public static $MENU_NAME_LOCATION_SELECT = 'location_select'; //弹出地理位置选择器  微信版本5.4以上
 
     /* 自动验证规则 */
@@ -47,7 +40,7 @@ class WeixinMenuModel extends Model {
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('member_id', 'require', '用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('menu_name', 'require', '微信菜单名称不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('menu_name', array(1,7), '菜单名称长度1-7', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
+        array('menu_name', array(1, 7), '菜单名称长度1-7', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
         array('menu_type', 'require', '微信菜单类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('mp_original_id', 'require', '微信公众平台原始ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('mp_original_id', '/^[a-zA-Z_]\w{1,256}$/', '微信公众平台原始ID以字母或下划线开头', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
@@ -61,8 +54,8 @@ class WeixinMenuModel extends Model {
 //        array('partnerkey', '/^\w{1,256}$/', 'partnerkey以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('paysignkey', '/^\w{1,256}$/', 'paysignkey以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
         array('pid', '/^[\d]+$/', '父菜单ID只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('order', array(1,2,3,4,5), '菜单顺序只能填1-5正整数', self::VALUE_VALIDATE, 'between', self::MODEL_BOTH),
-        array('p_order', array(1,2,3), '菜单顺序只能填1-3正整数', self::VALUE_VALIDATE, 'between', self::MODEL_BOTH),
+        array('order', array(1, 2, 3, 4, 5), '菜单顺序只能填1-5正整数', self::VALUE_VALIDATE, 'between', self::MODEL_BOTH),
+        array('p_order', array(1, 2, 3), '菜单顺序只能填1-3正整数', self::VALUE_VALIDATE, 'between', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
@@ -89,37 +82,41 @@ class WeixinMenuModel extends Model {
     }
 
     //获取微信公众平台菜单类型(中文)
-    public static function getWxCaMenuType($type = null, $has_choice = true) {
+    public static function getWxCaMenuType($type = null, $has_choice = true, $base = true) {
         if ($has_choice) {
             $type_arr = array('' => '请选择');
         }
         $type_arr[self::$MENU_NAME_CLICK] = '点击推事件';
         $type_arr[self::$MENU_NAME_VIEW] = '跳转URL';
-        $type_arr[self::$MENU_NAME_SCANCODE_PUSH] = '扫码推事件';
-        $type_arr[self::$MENU_NAME_SCANCODE_WAITMSG] = '扫码推事件且弹出“消息接收中”提示框';
-        $type_arr[self::$MENU_NAME_PIC_SYSPHOTO] = '弹出系统拍照发图';
-        $type_arr[self::$MENU_NAME_PIC_PHOTO_OR_ALBUM] = '弹出拍照或者相册发图';
-        $type_arr[self::$MENU_NAME_PIC_WEIXIN] = '弹出微信相册发图器';
-        $type_arr[self::$MENU_NAME_LOCATION_SELECT] = '弹出地理位置选择器';
+        if (!$base) {
+            $type_arr[self::$MENU_NAME_SCANCODE_PUSH] = '扫码推事件';
+            $type_arr[self::$MENU_NAME_SCANCODE_WAITMSG] = '扫码推事件且弹出“消息接收中”提示框';
+            $type_arr[self::$MENU_NAME_PIC_SYSPHOTO] = '弹出系统拍照发图';
+            $type_arr[self::$MENU_NAME_PIC_PHOTO_OR_ALBUM] = '弹出拍照或者相册发图';
+            $type_arr[self::$MENU_NAME_PIC_WEIXIN] = '弹出微信相册发图器';
+            $type_arr[self::$MENU_NAME_LOCATION_SELECT] = '弹出地理位置选择器';
+        }
         if ($type !== null) {
             return $type_arr[$type];
         }
         return $type_arr;
     }
-    
+
     //获取微信公众平台菜单类型(英文)
-    public static function getWxEnMenuType($type = null, $has_choice = true) {
+    public static function getWxEnMenuType($type = null, $has_choice = true, $base = true) {
         if ($has_choice) {
             $type_arr = array('' => '请选择');
         }
         $type_arr[self::$MENU_TYPE_CLICK] = self::$MENU_NAME_CLICK;
         $type_arr[self::$MENU_TYPE_CLICK] = self::$MENU_NAME_VIEW;
-        $type_arr[self::$MENU_TYPE_SCANCODE_PUSH] = self::$MENU_NAME_SCANCODE_PUSH;
-        $type_arr[self::$MENU_TYPE_SCANCODE_WAITMSG] = self::$MENU_NAME_SCANCODE_WAITMSG;
-        $type_arr[self::$MENU_TYPE_PIC_SYSPHOTO] = self::$MENU_NAME_PIC_SYSPHOTO;
-        $type_arr[self::$MENU_TYPE_PIC_PHOTO_OR_ALBUM] = self::$MENU_NAME_PIC_PHOTO_OR_ALBUM;
-        $type_arr[self::$MENU_TYPE_PIC_WEIXIN] = self::$MENU_NAME_PIC_WEIXIN;
-        $type_arr[self::$MENU_TYPE_LOCATION_SELECT] = self::$MENU_NAME_LOCATION_SELECT;
+        if (!$base) {
+            $type_arr[self::$MENU_TYPE_SCANCODE_PUSH] = self::$MENU_NAME_SCANCODE_PUSH;
+            $type_arr[self::$MENU_TYPE_SCANCODE_WAITMSG] = self::$MENU_NAME_SCANCODE_WAITMSG;
+            $type_arr[self::$MENU_TYPE_PIC_SYSPHOTO] = self::$MENU_NAME_PIC_SYSPHOTO;
+            $type_arr[self::$MENU_TYPE_PIC_PHOTO_OR_ALBUM] = self::$MENU_NAME_PIC_PHOTO_OR_ALBUM;
+            $type_arr[self::$MENU_TYPE_PIC_WEIXIN] = self::$MENU_NAME_PIC_WEIXIN;
+            $type_arr[self::$MENU_TYPE_LOCATION_SELECT] = self::$MENU_NAME_LOCATION_SELECT;
+        }
         if ($type !== null) {
             return $type_arr[$type];
         }

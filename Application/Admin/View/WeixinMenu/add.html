@@ -1,0 +1,177 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>创建一级菜单(最多3个,若一级菜单无子菜单则只需设置一级菜单名称即可)</h2>
+    </div>
+    <div class="main-title">
+        <div id="accordion">
+            <h3 style="color:#eb8f00;">详细说明</h3>
+            <div>
+                <p>
+                    1.菜单类型为click推荐key值:<br>
+                       &nbsp;&nbsp;food  返回结果：图文模式10条菜品<br>
+                       &nbsp;&nbsp;cheap 返回结果：图文模式10条促销菜品<br>
+                       &nbsp;&nbsp;hot   返回结果：图文模式10条热销菜品<br>
+                       &nbsp;&nbsp;dining   返回结果：图文模式餐厅介绍<br>
+                       &nbsp;&nbsp;contact   返回结果：图文模式餐厅联系方式<br>
+                    2.菜单类型为view推荐url值:<br>
+                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/food/list 跳转到餐厅菜品列表主页<br>
+                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/User/panel 跳转到用户个人中心<br>
+                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/FoodCar/index 跳转到用户购餐车页面<br>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" title="创建公众平台一级菜单结果" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_wxmenu" ng-app="weiapp_wxmenu" id="ng-app"  name="WxmenuForm" ng-controller="WxmenuController" ng-submit="submitForm()">
+        <div class="form-item" ng-class="{'has-error' : WxmenuForm.menu_name.$invalid && !WxmenuForm.menu_name.$pristine}">
+            <label class="item-label">微信公众平台菜单名称<span class="check-tips">（*必填:最多7个汉字或英文字母数字）</span></label>
+            <div class="controls">
+                <input name="menu_name" type="text" value="" ng-model="wxmenu.menu_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,7}$/" ng-trim="true" ng-minlength="1" ng-maxlength="7" required class="form-control text input-large" id="menu_name" placeholder="微信公众平台菜单名称">
+                <p ng-show="WxmenuForm.menu_name.$invalid && !WxmenuForm.menu_name.$pristine" class="help-block">微信公众平台菜单名称(长度1-7)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : WxmenuForm.menu_type.$invalid && !WxmenuForm.menu_type.$pristine}">
+            <label class="item-label">菜单类型<span class="check-tips">（*必选）</span></label>
+            <div class="controls">
+                <select class="form-control" ng-change="select_type(wxmenu.menu_type)" name="menu_type" required ng-model="wxmenu.menu_type" ng-options="m.id as m.menu_type for m in wxmenu.menu_type_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="WxmenuForm.menu_type.$invalid && !WxmenuForm.menu_type.$pristine" class="help-block">请选择菜单类型</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-show="click_flag" ng-class="{'has-error' : WxmenuForm.menu_key.$invalid && !WxmenuForm.menu_key.$pristine}">
+            <label class="item-label">click菜单类型对应的key值<span class="check-tips">（例如food 点击回复10个图文模式菜品）</span></label>
+            <div class="controls" ng-if="click_flag">
+                <input name="menu_key" type="text" value="" ng-model="wxmenu.menu_key" required  ng-pattern="/^[a-z]{1,32}$/" ng-trim="true" ng-minlength="1" ng-maxlength="32"  class="form-control text input-large" id="menu_key" placeholder="click菜单类型对应的key值">
+                <p ng-show="WxmenuForm.menu_key.$invalid && !WxmenuForm.menu_key.$pristine" class="help-block">click菜单类型对应的key值(长度1-32)</p>
+            </div>
+            <div class="controls" ng-if="!click_flag">
+                <input name="menu_key" type="text" value="" ng-model="wxmenu.menu_key"   ng-pattern="/^[a-z]{1,32}$/" ng-trim="true" ng-minlength="1" ng-maxlength="32"  class="form-control text input-large" id="menu_key" placeholder="click菜单类型对应的key值">
+                <p ng-show="WxmenuForm.menu_key.$invalid && !WxmenuForm.menu_key.$pristine" class="help-block">click菜单类型对应的key值(长度1-32)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-show="click_flag" ng-class="{'has-error' : WxmenuForm.menu_content.$invalid && !WxmenuForm.menu_content.$pristine}">
+            <label class="item-label">click类型菜单自定义的回复内容<span class="check-tips">（文字描述1-256长度）</span></label>
+            <div class="controls">
+                <input name="menu_content" type="text" value="" ng-model="wxmenu.menu_content"   ng-trim="true" ng-minlength="1" ng-maxlength="256"  class="form-control text input-large" id="menu_content" placeholder="click类型菜单自定义的回复内容">
+                <p ng-show="WxmenuForm.menu_content.$invalid && !WxmenuForm.menu_content.$pristine" class="help-block">click类型菜单自定义的回复内容(长度1-256)</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-show="view_flag" ng-class="{'has-error' : WxmenuForm.menu_url.$invalid && !WxmenuForm.menu_url.$pristine}">
+            <label class="item-label">view类型菜单跳转连接<span class="check-tips">（例如:/Mobile/Food/list）</span></label>
+            <div class="controls" ng-if="view_flag">
+                <input name="menu_url" type="text" value="{$micro_platform.menu_url}" ng-model="wxmenu.menu_url" required="view_flag" ng-pattern="/^(([a-zA-Z]+)(:\/\/))?([a-zA-Z]+)\.(\w+)\.([\w.]+)(\/([\w]+)\/?)*(\/[a-zA-Z0-9]+\.(\w+))*(\/([\w]+)\/?)*(\?(\w+=?[\w]*))*((&?\w+=?[\w]*))*$/" ng-trim="true"  ng-minlength="1" ng-maxlength="256" class="form-control text input-large" id="menu_url" placeholder="view类型菜单跳转连接">
+                <p ng-show="WxmenuForm.menu_url.$invalid && !WxmenuForm.menu_url.$pristine" class="help-block">view类型菜单跳转连接(长度1-256)</p>
+            </div>
+            <div class="controls" ng-if="!view_flag">
+                <input name="menu_url" type="text" value="{$micro_platform.menu_url}" ng-model="wxmenu.menu_url"  ng-pattern="/^(([a-zA-Z]+)(:\/\/))?([a-zA-Z]+)\.(\w+)\.([\w.]+)(\/([\w]+)\/?)*(\/[a-zA-Z0-9]+\.(\w+))*(\/([\w]+)\/?)*(\?(\w+=?[\w]*))*((&?\w+=?[\w]*))*$/" ng-trim="true"  ng-minlength="1" ng-maxlength="256" class="form-control text input-large" id="menu_url" placeholder="view类型菜单跳转连接">
+                <p ng-show="WxmenuForm.menu_url.$invalid && !WxmenuForm.menu_url.$pristine" class="help-block">view类型菜单跳转连接(长度1-256)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : WxmenuForm.p_order.$invalid && !WxmenuForm.p_order.$pristine}">
+            <label class="item-label">一级菜单显示顺序<span class="check-tips">（*必填:填写1或2或3最小排在最前面,相同排序则按创建时间）</span></label>
+            <div class="controls">
+                <input name="p_order" type="text" value="" ng-model="wxmenu.p_order"  ng-pattern="/^[1|2|3]$/" ng-trim="true" ng-minlength="1" ng-maxlength="1" required class="form-control text input-large" id="p_order" placeholder="一级菜单显示顺序">
+                <p ng-show="WxmenuForm.p_order.$invalid && !WxmenuForm.p_order.$pristine" class="help-block">一级菜单显示顺序(填写1或2或3,相同排序则按创建时间)</p>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <button type="submit" class="btn btn-success submit" ng-disabled="WxmenuForm.$invalid">保 存</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $( "#accordion" ).accordion({
+                collapsible: true,
+                active: 2
+            });
+            var icons = {
+                header: "ui-icon-circle-arrow-e",
+                activeHeader: "ui-icon-circle-arrow-s"
+            };
+            $( "#accordion" ).accordion({
+                icons: icons
+            });
+            $( "#toggle" ).button().click(function() {
+                if ( $( "#accordion" ).accordion( "option", "icons" ) ) {
+                   $( "#accordion" ).accordion( "option", "icons", null );
+                } else {
+                   $( "#accordion" ).accordion( "option", "icons", icons );
+                }
+            });
+        });
+        var WxmenuModule = angular.module("weiapp_wxmenu", []);
+        WxmenuModule.controller("WxmenuController", function ($scope, $http) {
+            $scope.wxmenu = {};
+            $scope.click_flag = false;
+            $scope.view_flag = false;
+            $scope.wxmenu.menu_type_arr = {$menu_type_arr};
+            $scope.submitForm = function () {
+                $('.submit').attr('disabled', 'true');
+                $http({
+                    method: "POST",
+                    url: "/Admin/WeixinMenu/add",
+                    data: $.param($scope.wxmenu),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                }).success(function (data) {
+                    if (data.status) {
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                    } else {
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                    }
+                });
+            };
+            $scope.select_type = function(menu_type){
+                if(menu_type == 'click'){
+                    $scope.click_flag = true;
+                    $scope.view_flag = false;
+                }else if(menu_type == 'view'){
+                    $scope.view_flag = true;
+                    $scope.click_flag = false;
+                }else{
+                    $scope.view_flag = false;
+                    $scope.click_flag = false;
+                }
+            }
+        });
+
+        function result(status) {
+            $("#dialog").dialog("close");
+            if (status) {
+                window.locatin.href = '/Admin/WeixinMenu/food';
+            } else {
+                ('.submit').removeAttr("disabled");
+            }
+        }
+    </script>
+</block>
