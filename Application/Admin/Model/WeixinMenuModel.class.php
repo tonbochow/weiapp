@@ -40,8 +40,9 @@ class WeixinMenuModel extends Model {
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('member_id', 'require', '用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('menu_name', 'require', '微信菜单名称不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('menu_name', array(1, 7), '菜单名称长度1-7', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
+//        array('menu_name', '/^([\u0391-\uFFE5]|\w){1,7}$/', '菜单名称长度1-7', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
         array('menu_type', 'require', '微信菜单类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('menu_url', '/^(([a-zA-Z]+)(:\/\/))?([a-zA-Z]+)\.(\w+)\.([\w.]+)(\/([\w]+)\/?)*(\/[a-zA-Z0-9]+\.(\w+))*(\/([\w]+)\/?)*(\?(\w+=?[\w]*))*((&?\w+=?[\w]*))*$/', '菜单view类型URL不正确', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('mp_original_id', 'require', '微信公众平台原始ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('mp_original_id', '/^[a-zA-Z_]\w{1,256}$/', '微信公众平台原始ID以字母或下划线开头', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('mp_wxcode', 'require', '微信公众平台微信号不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
@@ -54,15 +55,14 @@ class WeixinMenuModel extends Model {
 //        array('partnerkey', '/^\w{1,256}$/', 'partnerkey以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('paysignkey', '/^\w{1,256}$/', 'paysignkey以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
         array('pid', '/^[\d]+$/', '父菜单ID只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('order', array(1, 2, 3, 4, 5), '菜单顺序只能填1-5正整数', self::VALUE_VALIDATE, 'between', self::MODEL_BOTH),
-        array('p_order', array(1, 2, 3), '菜单顺序只能填1-3正整数', self::VALUE_VALIDATE, 'between', self::MODEL_BOTH),
+        array('order', '/^[1|2|3|4|5]$/', '菜单顺序只能填1-5正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('p_order', '/^[1|2|3]$/', '菜单顺序只能填1-3正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
     protected $_auto = array(
         array('member_id', 'is_login', self::MODEL_INSERT, 'function'),
         array('menu_name', 'htmlspecialchars', self::MODEL_BOTH, 'function'),
-        array('menu_content', 'htmlspecialchars', self::MODEL_BOTH, 'function'),
         array('status', 1, self::MODEL_INSERT),
         array('create_time', NOW_TIME, self::MODEL_BOTH),
         array('update_time', NOW_TIME, self::MODEL_BOTH),
@@ -123,4 +123,31 @@ class WeixinMenuModel extends Model {
         return $type_arr;
     }
 
+    /*
+     * $id 菜单id
+     * 通过id获取菜单名称
+     */
+    public static function getWxMenuName($id){
+        $weixin_menu = M('WeixinMenu')->where(array('id'=>$id))->find();
+        return $weixin_menu['menu_name'];
+    }
+    
+    /**
+     * 获取微信公众平台一级菜单个数
+     */
+    public static  function getTopMenuNum(){
+        $top_menu_num = M('WeixinMenu')->where(array('member_id'=>UID,'mp_id'=>MP_ID,'pid'=>0))->count();
+        return $top_menu_num;
+    }
+    
+    /**
+     * 获取微信公众平台二级菜单个数
+     */
+    public static function getSubMenuNum($pid){
+        $menu_data['member_id']= UID;
+        $menu_data['mp_id'] = MP_ID;
+        $menu_data['pid'] = $pid;
+        $sub_menu_num = M('WeixinMenu')->where($menu_data)->count();
+        return $sub_menu_num;
+    }
 }

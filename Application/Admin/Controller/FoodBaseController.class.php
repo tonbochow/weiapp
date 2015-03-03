@@ -18,6 +18,12 @@ class FoodBaseController extends AdminController {
         if(strtolower(CONTROLLER_NAME)!='microplatform' && strtolower(ACTION_NAME) != 'food'){
             $this->checkMicroPlatformRequire();
         }
+        $microPlatformModel = M('MicroPlatform');
+        $platform_data['member_id'] = UID;
+        $platform_data['app_type'] = \Admin\Model\MicroPlatformModel::$APP_TYPE_FOOD;
+        $micro_platform = $microPlatformModel->where($platform_data)->find();
+        $mp_id = !empty($micro_platform)?$micro_platform['id']:'';
+        define('MP_ID',$mp_id);
     }
 
     /**

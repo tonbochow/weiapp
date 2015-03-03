@@ -45,7 +45,7 @@
             <notempty name="list">
                 <volist name="list" id="menu">
                     <tr>
-                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$menu.mp_id}"></td>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$menu.id}"></td>
                         <td>{$menu.id}</td>
                         <td>{$menu.menu_name}</td>
                         <td>{$menu.menu_type}</td>
@@ -54,7 +54,7 @@
                         <td>{$menu.order}</td>
                         <td>{$menu.pid}</td>
                         <td>{$menu.p_order}</td>
-                         <td><?php echo \Home\Model\WeixinMenuModel::getWxMenuStatus($menu['status']);?></td>
+                         <td><?php echo \Admin\Model\WeixinMenuModel::getWxMenuStatus($menu['status']);?></td>
                     <if condition="$menu.create_time neq 0">
                         <td>{$menu.create_time|date="Y-m-d H:i:s",###}</td>
                         <else />
@@ -62,9 +62,13 @@
                     </if>
                         <td>
                             <a title="编辑" href="{:U('edit?id='.$menu['id'])}">编辑</a>
-                            <if condition="$menu.pid eq 0">
-                            <a class="confirm ajax-get" title="创建二级菜单" href="{:U('addsubmenu?pid='.$menu['id'])}">创建二级菜单</a>
-                            </if>
+                                <?php 
+                                if($menu['pid'] == 0 && \Admin\Model\WeixinMenuModel::getSubMenuNum($menu['id'])<5){
+                                ?>
+                            <a title="创建二级菜单" href="{:U('addsubmenu?pid='.$menu['id'])}">创建二级菜单</a>
+                            <?php
+                            }
+                            ?>
                         </td>
                     </tr>
                 </volist>

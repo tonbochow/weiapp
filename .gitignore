@@ -49,3 +49,5 @@ Runtime/Cache/Install/*
 Runtime/Data/*
 Runtime/Logs/*
 Runtime/Temp/*
+.idea/*
+.idea/scopes/*
