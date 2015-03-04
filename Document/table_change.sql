@@ -20,3 +20,6 @@ ALTER TABLE `weiapp_weixin_menu`
 ADD COLUMN `menu_content`  varchar(256) NOT NULL DEFAULT '' COMMENT 'click类型菜单自定义的回复内容' AFTER `menu_url`;
 
 
+ALTER TABLE `weiapp_weixin_menu`
+CHANGE COLUMN `order` `c_order`  tinyint(2) NOT NULL DEFAULT 1 COMMENT '菜单顺序1-5' AFTER `pid`;
+

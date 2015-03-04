@@ -55,7 +55,7 @@ class WeixinMenuModel extends Model {
 //        array('partnerkey', '/^\w{1,256}$/', 'partnerkey以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('paysignkey', '/^\w{1,256}$/', 'paysignkey以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
         array('pid', '/^[\d]+$/', '父菜单ID只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('order', '/^[1|2|3|4|5]$/', '菜单顺序只能填1-5正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('c_order', '/^[1|2|3|4|5]$/', '菜单顺序只能填1-5正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
         array('p_order', '/^[1|2|3]$/', '菜单顺序只能填1-3正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
@@ -64,7 +64,7 @@ class WeixinMenuModel extends Model {
         array('member_id', 'is_login', self::MODEL_INSERT, 'function'),
         array('menu_name', 'htmlspecialchars', self::MODEL_BOTH, 'function'),
         array('status', 1, self::MODEL_INSERT),
-        array('create_time', NOW_TIME, self::MODEL_BOTH),
+        array('create_time', NOW_TIME, self::MODEL_INSERT),
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 

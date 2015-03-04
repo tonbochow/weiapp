@@ -6,7 +6,7 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>创建二级菜单(最多5个)</h2>
+        <h2>创建一级菜单(最多3个,若一级菜单无子菜单则只需设置一级菜单名称即可)</h2>
     </div>
     <div class="main-title">
         <div id="accordion">
@@ -27,18 +27,10 @@
             </div>
         </div>
     </div>
-    <div id="dialog" title="创建公众平台二级菜单结果" style="display:none;">
+    <div id="dialog" title="创建公众平台一级菜单结果" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_wxmenu" ng-app="weiapp_wxmenu" id="ng-app"  name="WxmenuForm" ng-controller="WxmenuController" ng-submit="submitForm()">
-        <div class="form-item" ng-class="{'has-error' : WxmenuForm.pid.$invalid && !WxmenuForm.pid.$pristine}">
-            <label class="item-label">一级菜单ID和名称:<span class="check-tips"></span></label>
-            <div class="controls">
-                {$pid} | <?php echo \Admin\Model\WeixinMenuModel::getWxMenuName($pid);?>
-                <p ng-show="WxmenuForm.pid.$invalid && !WxmenuForm.pid.$pristine" class="help-block">微信公众平台菜单名称(长度1-7)</p>
-            </div>
-        </div>
-        
         <div class="form-item" ng-class="{'has-error' : WxmenuForm.menu_name.$invalid && !WxmenuForm.menu_name.$pristine}">
             <label class="item-label">微信公众平台菜单名称<span class="check-tips">（*必填:最多7个汉字或英文字母数字）</span></label>
             <div class="controls">
@@ -89,11 +81,11 @@
             </div>
         </div>
         
-        <div class="form-item" ng-class="{'has-error' : WxmenuForm.c_order.$invalid && !WxmenuForm.c_order.$pristine}">
-            <label class="item-label">二级菜单显示顺序<span class="check-tips">（*必填:填写1或2或3或4或5最小排在最前面,相同排序则按创建时间）</span></label>
+        <div class="form-item" ng-class="{'has-error' : WxmenuForm.p_order.$invalid && !WxmenuForm.p_order.$pristine}">
+            <label class="item-label">一级菜单显示顺序<span class="check-tips">（*必填:填写1或2或3最小排在最前面,相同排序则按创建时间）</span></label>
             <div class="controls">
-                <input name="c_order" type="text" value="" ng-model="wxmenu.c_order"  ng-pattern="/^[1|2|3|4|5]$/" ng-trim="true" ng-minlength="1" ng-maxlength="1" required class="form-control text input-large" id="c_order" placeholder="二级菜单显示顺序">
-                <p ng-show="WxmenuForm.c_order.$invalid && !WxmenuForm.c_order.$pristine" class="help-block">一级菜单显示顺序(填写1或2或3或4或5,相同排序则按创建时间)</p>
+                <input name="p_order" type="text" value="" ng-model="wxmenu.p_order"  ng-pattern="/^[1|2|3]$/" ng-trim="true" ng-minlength="1" ng-maxlength="1" required class="form-control text input-large" id="p_order" placeholder="一级菜单显示顺序">
+                <p ng-show="WxmenuForm.p_order.$invalid && !WxmenuForm.p_order.$pristine" class="help-block">一级菜单显示顺序(填写1或2或3,相同排序则按创建时间)</p>
             </div>
         </div>
         
@@ -144,7 +136,7 @@
                 $('.submit').attr('disabled', 'true');
                 $http({
                     method: "POST",
-                    url: "/Admin/WeixinMenu/addsubmenu/pid/{$pid}",
+                    url: "/Admin/WeixinMenu/add",
                     data: $.param($scope.wxmenu),
                     headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                 }).success(function (data) {
