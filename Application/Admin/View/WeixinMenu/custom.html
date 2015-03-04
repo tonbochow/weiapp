@@ -6,76 +6,37 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>一键生成自定义菜单(生成效果如下所示)</h2>
+        <h2>一键生成自定义菜单(生成菜单结构如下所示)</h2>
     </div>
-<!--    <div class="main-title">
-        <div id="accordion">
-            <h3 style="color:#eb8f00;">详细说明</h3>
-            <div>
-                <p>
-                    1.菜单类型为click推荐key值:<br>
-                       &nbsp;&nbsp;food  返回结果：图文模式10条菜品<br>
-                       &nbsp;&nbsp;cheap 返回结果：图文模式10条促销菜品<br>
-                       &nbsp;&nbsp;hot   返回结果：图文模式10条热销菜品<br>
-                       &nbsp;&nbsp;dining   返回结果：图文模式餐厅介绍<br>
-                       &nbsp;&nbsp;contact   返回结果：图文模式餐厅联系方式<br>
-                    2.菜单类型为view推荐url值:<br>
-                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/food/list 跳转到餐厅菜品列表主页<br>
-                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/User/panel 跳转到用户个人中心<br>
-                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/FoodCar/index 跳转到用户购餐车页面<br>
-                </p>
-            </div>
-        </div>
-    </div>-->
     <div id="dialog" title="一键生成自定义菜单结果" style="display:none;">
         <p id="dialog_content"></p>
     </div>
 
     <div class="data-table table-striped">
-        <table style="border:1px solid;">
-            <tbody>
+        <table style='border:1px solid gray'>
                 <tr>
-<!--            <notempty name="menu_arr">
-                <volist name="menu_arr" id="menu" key="key">
-                    <notempty name="menu" id="sub_menu" key="k">
-                        <td>
-                            <table style="border:1px solid;">
-                                <tbody>
-                                <volist name="sub_menu" id="s_menu">
-                                    <tr>
-                                        <td>{$sub_menu.menu_name}</td>
-                                    </tr>
-                                </volist>
-                                </tbody>
-                            </table>
-                        </td>
-                        <else />
-                        <td>
-                            {$top_menu_arr.key.menu_name}
-                        </td>
-                    </notempty>
-                </volist>
-            </notempty>-->
             <?php
                 foreach($menu_arr as $pid=>$sub_arr){
                     if(!empty($sub_arr)){
-                    
+                       echo "<td valign='bottom' align='center'><table>";
+                       foreach($sub_arr as $sub){
+                           echo "<tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>".'<a class="btn" href="/Admin/WeixinMenu/edit/id/'.$sub['id'].'">'.$sub['menu_name']."[二级]</a></td></tr>";
+                       }
+                       echo "<tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>".'<a class="btn submit-btn" href="/Admin/WeixinMenu/edit/id/'.$sub['id'].'">'.$top_menu_arr[$pid]['menu_name']."[一级菜单]</a></td></tr>";
+                       echo "</table></td>";
                     }else{
-                       echo "<td>".$top_menu_arr[$pid]."</td>";
+                       echo "<td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>".'<a class="btn submit-btn" href="/Admin/WeixinMenu/edit/id/'.$top_menu_arr[$pid]['id'].'">'.$top_menu_arr[$pid]['menu_name']."[一级菜单]</a></td>";
                     }
                 }
             ?>
                 </tr>
-            </tbody>
         </table>
     </div>
 
 
-    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_wxmenu" ng-app="weiapp_wxmenu" id="ng-app"  name="WxmenuForm" ng-controller="WxmenuController" ng-submit="submitForm()">
-
-        
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_wxmenu" ng-app="weiapp_wxmenu" id="ng-app"  name="WxmenuForm" ng-controller="WxmenuController" ng-submit="submitForm()">  
         <div class="form-item">
-            <button type="submit" class="btn btn-success submit" ng-disabled="WxmenuForm.$invalid">保 存</button>
+            <button type="submit" class="btn btn-success submit">生成微信工作平台自定义菜单</button>
             <button class="btn btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
         </div>
     </form>
@@ -91,37 +52,14 @@
     <script type="text/javascript" src="__STATIC__/json2.js"></script>
     <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
     <script type="text/javascript">
-//        $(function() {
-//            $( "#accordion" ).accordion({
-//                collapsible: true,
-//                active: 2
-//            });
-//            var icons = {
-//                header: "ui-icon-circle-arrow-e",
-//                activeHeader: "ui-icon-circle-arrow-s"
-//            };
-//            $( "#accordion" ).accordion({
-//                icons: icons
-//            });
-//            $( "#toggle" ).button().click(function() {
-//                if ( $( "#accordion" ).accordion( "option", "icons" ) ) {
-//                   $( "#accordion" ).accordion( "option", "icons", null );
-//                } else {
-//                   $( "#accordion" ).accordion( "option", "icons", icons );
-//                }
-//            });
-//        });
         var WxmenuModule = angular.module("weiapp_wxmenu", []);
         WxmenuModule.controller("WxmenuController", function ($scope, $http) {
-            $scope.wxmenu = {};
-            $scope.click_flag = false;
-            $scope.view_flag = false;
-            $scope.wxmenu.menu_type_arr = {$menu_type_arr};
+            $scope.wxmenu = {'custom':true};
             $scope.submitForm = function () {
                 $('.submit').attr('disabled', 'true');
                 $http({
                     method: "POST",
-                    url: "/Admin/WeixinMenu/add",
+                    url: "/Admin/WeixinMenu/custom",
                     data: $.param($scope.wxmenu),
                     headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                 }).success(function (data) {
@@ -136,18 +74,6 @@
                     }
                 });
             };
-            $scope.select_type = function(menu_type){
-                if(menu_type == 'click'){
-                    $scope.click_flag = true;
-                    $scope.view_flag = false;
-                }else if(menu_type == 'view'){
-                    $scope.view_flag = true;
-                    $scope.click_flag = false;
-                }else{
-                    $scope.view_flag = false;
-                    $scope.click_flag = false;
-                }
-            }
         });
 
         function result(status) {
