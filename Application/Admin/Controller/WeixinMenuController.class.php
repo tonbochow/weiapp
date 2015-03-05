@@ -265,7 +265,7 @@ class WeixinMenuController extends FoodBaseController {
                 $menu_str = substr($wx_menu_str,0,-1);
                 $wx_menu_str = $menu_str."]}";
             }
-            if(empty(APPID) || empty(APPSERCERT)){
+            if(APPID == '' || APPSERCERT == ''){
                 $this->error('微信公众平台appid或appsercert参数为空!','',true);
             }
             $create_menu_res = \Admin\Model\MicroPlatformModel::createWeixinMenu(APPID, APPSERCERT, $wx_menu_str);

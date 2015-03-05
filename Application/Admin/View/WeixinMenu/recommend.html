@@ -6,7 +6,7 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>一键生成微信公众平台推荐菜单</h2>
+        <h2>一键生成微信公众平台推荐菜单 【所有菜单可在一键生成后进行编辑】</h2>
     </div>
     
     <div id="dialog" title="创建推荐菜单结果" style="display:none;">
@@ -56,64 +56,37 @@
             <button class="btn btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
         </div>
         
-        <div class="form-item" ng-class="{'has-error' : WxmenuForm.menu_name.$invalid && !WxmenuForm.menu_name.$pristine}">
-            <label class="item-label">微信公众平台菜单名称<span class="check-tips">（*必填:最多7个汉字或英文字母数字）</span></label>
+        <div class="form-item">
+            <label class="item-label">点菜*预定[一级菜单]<span class="check-tips">(位置:最左边)</span></label>
             <div class="controls">
-                <input name="menu_name" type="text" value="" ng-model="wxmenu.menu_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,7}$/" ng-trim="true" ng-minlength="1" ng-maxlength="7" required class="form-control text input-large" id="menu_name" placeholder="微信公众平台菜单名称">
-                <p ng-show="WxmenuForm.menu_name.$invalid && !WxmenuForm.menu_name.$pristine" class="help-block">微信公众平台菜单名称(长度1-7)</p>
+                <p>1 菜单名:全部菜品[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/food/list/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>2 菜单名:热销菜品[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/food/hot/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>3 菜单名:特色菜品[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/food/features/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>4 菜单名:优惠套餐[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/food/cheap/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>5 菜单名:我要预定[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/reserve/index/token/91692FB7569443A68D7C357488CB54C2</p>
             </div>
         </div>
         
-        <div class="form-item" ng-class="{'has-error' : WxmenuForm.menu_type.$invalid && !WxmenuForm.menu_type.$pristine}">
-            <label class="item-label">菜单类型<span class="check-tips">（*必选）</span></label>
+        <div class="form-item">
+            <label class="item-label">品牌|优惠券[一级菜单]<span class="check-tips">(位置:中间)</span></label>
             <div class="controls">
-                <select class="form-control" ng-change="select_type(wxmenu.menu_type)" name="menu_type" required ng-model="wxmenu.menu_type" ng-options="m.id as m.menu_type for m in wxmenu.menu_type_arr">
-                    <option value="">请选择</option>
-                </select>
-                <p ng-show="WxmenuForm.menu_type.$invalid && !WxmenuForm.menu_type.$pristine" class="help-block">请选择菜单类型</p>
+                <p>1 菜单名:关于我们[二级子菜单]  类型：click  KEY:(例)abouts</p>
+                <p>2 菜单名:联系我们[二级子菜单]  类型：click  KEY:(例)contact</p>
+                <p>3 菜单名:餐厅浏览[二级子菜单]  类型：click  KEY:(例)dining</p>
+                <p>4 菜单名:热门活动[二级子菜单]  类型：click  KEY:(例)active</p>
+                <p>5 菜单名:领取优惠券[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/index/token/91692FB7569443A68D7C357488CB54C2</p>
             </div>
         </div>
         
-        <div class="form-item" ng-show="click_flag" ng-class="{'has-error' : WxmenuForm.menu_key.$invalid && !WxmenuForm.menu_key.$pristine}">
-            <label class="item-label">click菜单类型对应的key值<span class="check-tips">（例如food 点击回复10个图文模式菜品）</span></label>
-            <div class="controls" ng-if="click_flag">
-                <input name="menu_key" type="text" value="" ng-model="wxmenu.menu_key" required  ng-pattern="/^[a-z]{1,32}$/" ng-trim="true" ng-minlength="1" ng-maxlength="32"  class="form-control text input-large" id="menu_key" placeholder="click菜单类型对应的key值">
-                <p ng-show="WxmenuForm.menu_key.$invalid && !WxmenuForm.menu_key.$pristine" class="help-block">click菜单类型对应的key值(长度1-32)</p>
-            </div>
-            <div class="controls" ng-if="!click_flag">
-                <input name="menu_key" type="text" value="" ng-model="wxmenu.menu_key"   ng-pattern="/^[a-z]{1,32}$/" ng-trim="true" ng-minlength="1" ng-maxlength="32"  class="form-control text input-large" id="menu_key" placeholder="click菜单类型对应的key值">
-                <p ng-show="WxmenuForm.menu_key.$invalid && !WxmenuForm.menu_key.$pristine" class="help-block">click菜单类型对应的key值(长度1-32)</p>
-            </div>
-        </div>
-        
-        <div class="form-item" ng-show="click_flag" ng-class="{'has-error' : WxmenuForm.menu_content.$invalid && !WxmenuForm.menu_content.$pristine}">
-            <label class="item-label">click类型菜单自定义的回复内容<span class="check-tips">（文字描述1-256长度）</span></label>
+        <div class="form-item">
+            <label class="item-label">个人中心[一级菜单]<span class="check-tips">(位置:最右边)</span></label>
             <div class="controls">
-                <input name="menu_content" type="text" value="" ng-model="wxmenu.menu_content"   ng-trim="true" ng-minlength="1" ng-maxlength="256"  class="form-control text input-large" id="menu_content" placeholder="click类型菜单自定义的回复内容">
-                <p ng-show="WxmenuForm.menu_content.$invalid && !WxmenuForm.menu_content.$pristine" class="help-block">click类型菜单自定义的回复内容(长度1-256)</p>
+                <p>1 菜单名:已领取的卡劵[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>2 菜单名:我的预定[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/reserve/list/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>3 菜单名:我的订单[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/order/list/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>4 菜单名:我的会员卡[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2</p>
             </div>
         </div>
-
-        <div class="form-item" ng-show="view_flag" ng-class="{'has-error' : WxmenuForm.menu_url.$invalid && !WxmenuForm.menu_url.$pristine}">
-            <label class="item-label">view类型菜单跳转连接<span class="check-tips">（例如:/Mobile/Food/list）</span></label>
-            <div class="controls" ng-if="view_flag">
-                <input name="menu_url" type="text" value="{$micro_platform.menu_url}" ng-model="wxmenu.menu_url" required="view_flag" ng-pattern="/^(([a-zA-Z]+)(:\/\/))?([a-zA-Z]+)\.(\w+)\.([\w.]+)(\/([\w]+)\/?)*(\/[a-zA-Z0-9]+\.(\w+))*(\/([\w]+)\/?)*(\?(\w+=?[\w]*))*((&?\w+=?[\w]*))*$/" ng-trim="true"  ng-minlength="1" ng-maxlength="256" class="form-control text input-large" id="menu_url" placeholder="view类型菜单跳转连接">
-                <p ng-show="WxmenuForm.menu_url.$invalid && !WxmenuForm.menu_url.$pristine" class="help-block">view类型菜单跳转连接(长度1-256)</p>
-            </div>
-            <div class="controls" ng-if="!view_flag">
-                <input name="menu_url" type="text" value="{$micro_platform.menu_url}" ng-model="wxmenu.menu_url"  ng-pattern="/^(([a-zA-Z]+)(:\/\/))?([a-zA-Z]+)\.(\w+)\.([\w.]+)(\/([\w]+)\/?)*(\/[a-zA-Z0-9]+\.(\w+))*(\/([\w]+)\/?)*(\?(\w+=?[\w]*))*((&?\w+=?[\w]*))*$/" ng-trim="true"  ng-minlength="1" ng-maxlength="256" class="form-control text input-large" id="menu_url" placeholder="view类型菜单跳转连接">
-                <p ng-show="WxmenuForm.menu_url.$invalid && !WxmenuForm.menu_url.$pristine" class="help-block">view类型菜单跳转连接(长度1-256)</p>
-            </div>
-        </div>
-        
-        <div class="form-item" ng-class="{'has-error' : WxmenuForm.p_order.$invalid && !WxmenuForm.p_order.$pristine}">
-            <label class="item-label">一级菜单显示顺序<span class="check-tips">（*必填:填写1或2或3最小排在最前面,相同排序则按创建时间）</span></label>
-            <div class="controls">
-                <input name="p_order" type="text" value="" ng-model="wxmenu.p_order"  ng-pattern="/^[1|2|3]$/" ng-trim="true" ng-minlength="1" ng-maxlength="1" required class="form-control text input-large" id="p_order" placeholder="一级菜单显示顺序">
-                <p ng-show="WxmenuForm.p_order.$invalid && !WxmenuForm.p_order.$pristine" class="help-block">一级菜单显示顺序(填写1或2或3,相同排序则按创建时间)</p>
-            </div>
-        </div>
-        
         
     </form>
 </block>
@@ -131,14 +104,11 @@
         var WxmenuModule = angular.module("weiapp_wxmenu", []);
         WxmenuModule.controller("WxmenuController", function ($scope, $http) {
             $scope.wxmenu = {};
-            $scope.click_flag = false;
-            $scope.view_flag = false;
-            $scope.wxmenu.menu_type_arr = {$menu_type_arr};
             $scope.submitForm = function () {
                 $('.submit').attr('disabled', 'true');
                 $http({
                     method: "POST",
-                    url: "/Admin/WeixinMenu/add",
+                    url: "/Admin/WeixinMenu/recommend",
                     data: $.param($scope.wxmenu),
                     headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                 }).success(function (data) {
@@ -153,18 +123,6 @@
                     }
                 });
             };
-            $scope.select_type = function(menu_type){
-                if(menu_type == 'click'){
-                    $scope.click_flag = true;
-                    $scope.view_flag = false;
-                }else if(menu_type == 'view'){
-                    $scope.view_flag = true;
-                    $scope.click_flag = false;
-                }else{
-                    $scope.view_flag = false;
-                    $scope.click_flag = false;
-                }
-            }
         });
 
         function result(status) {
