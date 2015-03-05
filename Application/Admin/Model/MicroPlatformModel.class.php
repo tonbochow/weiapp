@@ -40,21 +40,21 @@ class MicroPlatformModel extends Model {
         array('mp_name', 'require', '微信公众平台名称不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('mp_original_id', 'require', '微信公众平台原始ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('mp_original_id', '/^[a-zA-Z_]\w{1,256}$/', '微信公众平台原始ID以字母或下划线开头', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('mp_original_id','','微信公众平台原始ID已经存在！',0,'unique'),
+        array('mp_original_id', '', '微信公众平台原始ID已经存在！', 0, 'unique'),
         array('mp_wxcode', 'require', '微信公众平台微信号不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('mp_wxcode', '/^[a-zA-Z_]\w{1,128}$/', '微信号以字母或下划线开头', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('appid', 'require', '微信公众平台appid不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('appid', '/^\w{1,256}$/', 'appid以字母数字或下划线开头最大长度256', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('appid','','appid已经存在！',0,'unique'),
+        array('appid', '', 'appid已经存在！', 0, 'unique'),
         array('appsecret', 'require', '微信公众平台appsecret不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('appsecret', '/^\w{1,256}$/', 'appsecret以字母数字或下划线开头最大长度256', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('appsecret','','appsecret已经存在！',0,'unique'),
+        array('appsecret', '', 'appsecret已经存在！', 0, 'unique'),
         array('partnerid', '/^\w{1,256}$/', 'partnerid以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('partnerid','','partnerid已经存在！',0,'unique'),
+        array('partnerid', '', 'partnerid已经存在！', 0, 'unique'),
         array('partnerkey', '/^\w{1,256}$/', 'partnerkey以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('partnerkey','','partnerkey已经存在！',0,'unique'),
+        array('partnerkey', '', 'partnerkey已经存在！', 0, 'unique'),
         array('paysignkey', '/^\w{1,256}$/', 'paysignkey以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('paysignkey','','paysignkey已经存在！',0,'unique'),
+        array('paysignkey', '', 'paysignkey已经存在！', 0, 'unique'),
         array('chain_num', '/^[\d]+$/', '连锁餐厅数量只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        //array('link_id', 'url', '外链格式不正确', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('description', '1,140', '简介长度不能超过140个字符', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
@@ -162,6 +162,94 @@ class MicroPlatformModel extends Model {
         $name_arr[self::$APP_TYPE_PHOTO] = self::$APP_NAME_PHOTO;
         $name_arr[self::$APP_TYPE_KTV] = self::$APP_NAME_KTV;
         return $name_arr[$app_type];
+    }
+
+    /*     * ***************************************************************************************
+     * 以下为与微信公众平台有关方法 
+     * ********************************************************************************************
+     */
+
+    /**
+     * crul http请求方式获取数据
+     * @param type $url
+     * @param type $post_data
+     * @return type
+     */
+    public static function curl($url, $post_data = null) {
+        $ch = curl_init();
+        $timeout = 30;
+        curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+        curl_setopt($ch, CURLOPT_URL, $url); //设置链接
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //设置是否返回信息
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)');
+        if ($post_data) {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            if (is_array($post_data)) {
+                $post_data = json_encode($post_data, JSON_UNESCAPED_UNICODE);
+            }
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        }
+        $contents = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($contents, true);
+    }
+
+    /**
+     * 获取微信公众平台access_token 公众号的全局唯一票据
+     * $appid 微信公众平台appid weiapp_micro_platform中唯一
+     * $appsecret 微信公众平台appsecret weiapp_micro_platform中唯一
+     */
+    public static function getAccessToken($appid, $appsecret) {
+        $access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$appsecret";
+        //先从weiapp_micro_platform检索access_token 或 过期再从微信服务器获取access_token
+        $wxPlatform = M(MicroPlatform);
+        $platform_data['appid'] = $appid;
+        $platform_data['appsecret'] = $appsecret;
+        $wx_platform = $wxPlatform->where($platform_data)->find();
+        if ($wx_platform['token_expire'] < time()) {//已过期重新获取
+            $access_token_arr = self::curl($access_token_url);
+            $access_token = $access_token_arr['access_token'];
+            //更新weiapp_micro_platform表的access_token和token_expire
+            $platform['access_token'] = $access_token;
+            $platform['token_expire'] = time() + $access_token_arr['expires_in'];
+            $platform['update_time'] = time();
+            $wxPlatform->where($platform_data)->save($platform);
+        } else {
+            $access_token = $wx_platform['access_token'];
+        }
+        return $access_token;
+    }
+
+    /**
+     * 获取微信服务器ip地址列表
+     * $appid 微信公众平台appid 
+     * $appsecret 微信公众平台appsecret
+     */
+    public static function getWeixinSeverIp($appid, $appsecret) {
+        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" . $appid . "&secret=" . $appsecret;
+        $access_token = self::wxAccessToken($url);
+        $url = "https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=$access_token";
+        $wx_ips = self::curl($url);
+        return $wx_ips['ip_list'];
+    }
+
+    /**
+     * 生成微信公众平台菜单
+     * $appid 微信公众平台appid
+     * $appsecret 微信公众平台appsecret
+     */
+    public static function createWeixinMenu($appid, $appsecret, $menu) {
+        $access_token = self::getAccessToken($appid, $appsecret);
+        $menu_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=$access_token";
+        $create_menu_res = self::curl($menu_url, $menu);
+        if($create_menu_res['errcode'] == 0 && $create_menu_res['errmsg'] == 'ok'){
+            return true;   
+        }
+        return false;
     }
 
 }

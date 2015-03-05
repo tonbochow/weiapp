@@ -213,7 +213,7 @@ class WeixinMenuController extends FoodBaseController {
             if ($menu['pid'] == 0) {
                 $top_menu_arr[$menu['id']] = $menu;
             } else {
-                $sub_menu_arr[] = $menu;
+                $sub_menu_arr[$menu['id']] = $menu;
             }
         }
 
@@ -223,7 +223,7 @@ class WeixinMenuController extends FoodBaseController {
             if (!empty($sub_menu_arr)) {
                 foreach ($sub_menu_arr as $sub_menu) {
                     if ($sub_menu['pid'] == $top_menu['id']) {
-                        $top_arr[] = $sub_menu;
+                        $top_arr[$sub_menu['id']] = $sub_menu;
                     }
                 }
                 if (empty($top_arr)) {
@@ -235,25 +235,46 @@ class WeixinMenuController extends FoodBaseController {
                 $menu_arr[$top_menu['id']][] = $top_menu;
             }
         }
+
         if (IS_POST) {//生成微信公众平台菜单
             $custom = I('post.custom');
             if ($custom) {
                 $wx_menu_str = '{"button":[';
                 foreach ($menu_arr as $pid => $sub_arr) {
                     if (!empty($sub_arr)) {
-                        echo "<td valign='bottom' align='center'><table>";
+                        $wx_menu_str .= '{"name":"' . $top_menu_arr[$pid]['menu_name'] . '","sub_button":[';
                         foreach ($sub_arr as $sub) {
-                            echo "<tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>" . '<a class="btn" href="/Admin/WeixinMenu/edit/id/' . $sub['id'] . '">' . $sub['menu_name'] . "[二级]</a></td></tr>";
+                            if ($sub['menu_type'] == 'click') {
+                                $wx_menu_str .= '{"type":"' . $sub['menu_type'] . '","name":' . $sub['menu_name'] . '","key":' . $sub['menu_key'] . '"}';
+                            } else if ($sub['menu_type'] == 'view') {
+                                $wx_menu_str .= '{"type":"' . $sub['menu_type'] . '","name":' . $sub['menu_name'] . '","url":' . $sub['menu_url'] . '"}';
+                            }
+                            $wx_menu_str .= ',';
                         }
-                        echo "<tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>" . '<a class="btn submit-btn" href="/Admin/WeixinMenu/edit/id/' . $sub['id'] . '">' . $top_menu_arr[$pid]['menu_name'] . "[一级菜单]</a></td></tr>";
-                        echo "</table></td>";
+                        $sub_str = substr($wx_menu_str,0,-1);
+                        $wx_menu_str = $sub_str.']}';
                     } else {
-                        echo "<td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>" . '<a class="btn submit-btn" href="/Admin/WeixinMenu/edit/id/' . $top_menu_arr[$pid]['id'] . '">' . $top_menu_arr[$pid]['menu_name'] . "[一级菜单]</a></td>";
+                        if ($top_menu_arr[$pid]['menu_type'] == 'click') {
+                            $wx_menu_str .= '{"type":"' . $top_menu_arr[$pid]['menu_type'] . '","name":"' . $top_menu_arr[$pid]['menu_name'] . '","key":"' . $top_menu_arr[$pid]['menu_key'] . '"}';
+                        } else if ($top_menu_arr[$pid]['menu_type'] == 'view') {
+                            $wx_menu_str .= '{"type":"' . $top_menu_arr[$pid]['menu_type'] . '","name":"' . $top_menu_arr[$pid]['menu_name'] . '","url":"' . $top_menu_arr[$pid]['menu_url'] . '"}';
+                        }
                     }
+                    $wx_menu_str .= ',';
                 }
-                $wx_menu_str .= "]}";
+                $menu_str = substr($wx_menu_str,0,-1);
+                $wx_menu_str = $menu_str."]}";
             }
+            if(empty(APPID) || empty(APPSERCERT)){
+                $this->error('微信公众平台appid或appsercert参数为空!','',true);
+            }
+            $create_menu_res = \Admin\Model\MicroPlatformModel::createWeixinMenu(APPID, APPSERCERT, $wx_menu_str);
+            if($create_menu_res){
+                $this->success('微信公众平台菜单创建成功!','',true);
+            }
+            $this->error('微信公众平台菜单创建失败!','',true);
         }
+        
         $this->assign('menu_arr', $menu_arr);
         $this->assign('top_menu_arr', $top_menu_arr);
         $this->meta_title = '一键生成自定义菜单';

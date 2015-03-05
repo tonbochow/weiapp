@@ -6,31 +6,56 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>创建一级菜单(最多3个,若一级菜单无子菜单则只需设置一级菜单名称即可)</h2>
+        <h2>一键生成微信公众平台推荐菜单</h2>
     </div>
-    <div class="main-title">
-        <div id="accordion">
-            <h3 style="color:#eb8f00;">详细说明</h3>
-            <div>
-                <p>
-                    1.菜单类型为click推荐key值:<br>
-                       &nbsp;&nbsp;food  返回结果：图文模式10条菜品<br>
-                       &nbsp;&nbsp;cheap 返回结果：图文模式10条促销菜品<br>
-                       &nbsp;&nbsp;hot   返回结果：图文模式10条热销菜品<br>
-                       &nbsp;&nbsp;dining   返回结果：图文模式餐厅介绍<br>
-                       &nbsp;&nbsp;contact   返回结果：图文模式餐厅联系方式<br>
-                    2.菜单类型为view推荐url值:<br>
-                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/food/list 跳转到餐厅菜品列表主页<br>
-                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/User/panel 跳转到用户个人中心<br>
-                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/FoodCar/index 跳转到用户购餐车页面<br>
-                </p>
-            </div>
-        </div>
-    </div>
-    <div id="dialog" title="创建公众平台一级菜单结果" style="display:none;">
+    
+    <div id="dialog" title="创建推荐菜单结果" style="display:none;">
         <p id="dialog_content"></p>
     </div>
+    
+    <div class="data-table table-striped">
+        <table style='border:1px solid gray'>
+                <tr>
+                    <td valign='bottom' align='center'>
+                        <table>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">全部菜品</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">热销菜品</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">特色菜品</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">优惠套餐</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我要预定</a></td></tr>               
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn submit-btn" href="#">点菜*预定</a></td></tr>
+                        </table>
+                    </td>
+                    <td valign='bottom' align='center'>
+                        <table>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">关于我们</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">联系我们</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">餐厅浏览</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">热门活动</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">领取优惠券</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn submit-btn" href="#">品牌|优惠券</a></td></tr>
+                        </table>
+                    </td>
+                    <td valign='bottom' align='center'>
+                        <table>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">已领取的卡券</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的预定</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的订单</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的会员卡</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn submit-btn" href="#">个人中心</a></td><tr>
+                        </table>
+                    </td>
+                </tr>
+        </table>
+    </div>
+    
+    
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_wxmenu" ng-app="weiapp_wxmenu" id="ng-app"  name="WxmenuForm" ng-controller="WxmenuController" ng-submit="submitForm()">
+        <div class="form-item">
+            <button type="submit" class="btn btn-success submit" ng-disabled="WxmenuForm.$invalid">一键生成微信公众平台推荐菜单</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+        
         <div class="form-item" ng-class="{'has-error' : WxmenuForm.menu_name.$invalid && !WxmenuForm.menu_name.$pristine}">
             <label class="item-label">微信公众平台菜单名称<span class="check-tips">（*必填:最多7个汉字或英文字母数字）</span></label>
             <div class="controls">
@@ -89,10 +114,7 @@
             </div>
         </div>
         
-        <div class="form-item">
-            <button type="submit" class="btn btn-success submit" ng-disabled="WxmenuForm.$invalid">保 存</button>
-            <button class="btn btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
-        </div>
+        
     </form>
 </block>
 
@@ -106,26 +128,6 @@
     <script type="text/javascript" src="__STATIC__/json2.js"></script>
     <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
     <script type="text/javascript">
-        $(function() {
-            $( "#accordion" ).accordion({
-                collapsible: true,
-                active: 2
-            });
-            var icons = {
-                header: "ui-icon-circle-arrow-e",
-                activeHeader: "ui-icon-circle-arrow-s"
-            };
-            $( "#accordion" ).accordion({
-                icons: icons
-            });
-            $( "#toggle" ).button().click(function() {
-                if ( $( "#accordion" ).accordion( "option", "icons" ) ) {
-                   $( "#accordion" ).accordion( "option", "icons", null );
-                } else {
-                   $( "#accordion" ).accordion( "option", "icons", icons );
-                }
-            });
-        });
         var WxmenuModule = angular.module("weiapp_wxmenu", []);
         WxmenuModule.controller("WxmenuController", function ($scope, $http) {
             $scope.wxmenu = {};
