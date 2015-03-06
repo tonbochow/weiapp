@@ -191,6 +191,382 @@ class WeixinMenuController extends FoodBaseController {
 
     //一键生成推荐菜单(前台)
     public function recommend() {
+        $weixinMenuModel = M('WeixinMenu');
+        $map['member_id'] = UID;
+        $map['mp_id'] = MP_ID;
+        $weixin_menu = $weixinMenuModel->where($map)->select();
+        if (IS_POST) {
+            $check = I('post.check');
+            if ($check) {
+                if ($weixin_menu == false) {
+                    $this->error('未创建自定义菜单!', '', true);
+                }
+                $this->success('创建了自定义菜单!', '', true);
+            }
+            $weixinMenuModel->startTrans();
+            $recommend = I('post.recommend');
+            if ($recommend) {
+                if ($weixin_menu) {//删除自定义菜单
+                    $weixin_menu_del = $weixinMenuModel->where($map)->delete();
+                    if ($weixin_menu_del == false) {
+                        $weixinMenuModel->rollback();
+                        $this->error('删除自定义菜单失败!', '', true);
+                    }
+                }
+                //1 创建一键推荐菜单
+                //a 创建左边菜单
+                $left_topmenu = array(
+                    'mp_id' => MP_ID,
+                    'member_id' => UID,
+                    'menu_name' => '点菜*预定',
+                    'menu_type' => 'click',
+                    'p_order' => 1,
+                    'create_time' => time(),
+                    'update_time' => time(),
+                );
+                $left_topmenu_id = $weixinMenuModel->add($left_topmenu);
+                if ($left_topmenu_id == false) {
+                    $weixinMenuModel->rollback();
+                    $this->error('创建左边一级菜单失败!', '', true);
+                }
+                $left_submenu = array(
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '全部菜品',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/food/list/token/" . MP_TOKEN,
+                        'pid' => $left_topmenu_id,
+                        'c_order' => 1,
+                        'p_order' => 1,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '热销菜品',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/food/hot/token/" . MP_TOKEN,
+                        'pid' => $left_topmenu_id,
+                        'c_order' => 2,
+                        'p_order' => 1,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '特色菜品',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/food/features/token/" . MP_TOKEN,
+                        'pid' => $left_topmenu_id,
+                        'c_order' => 3,
+                        'p_order' => 1,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '优惠套餐',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/food/cheap/token/" . MP_TOKEN,
+                        'pid' => $left_topmenu_id,
+                        'c_order' => 4,
+                        'p_order' => 1,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '我要预定',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/reserve/index/token/" . MP_TOKEN,
+                        'pid' => $left_topmenu_id,
+                        'c_order' => 5,
+                        'p_order' => 1,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                );
+                $left_submenu_create = $weixinMenuModel->addAll($left_submenu);
+                if ($left_submenu_create == false) {
+                    $weixinMenuModel->rollback();
+                    $this->error('创建左边一级菜单的子菜单失败!', '', true);
+                }
+                //b创建中间菜单
+                $mid_topmenu = array(
+                    'mp_id' => MP_ID,
+                    'member_id' => UID,
+                    'menu_name' => '品牌|优惠券',
+                    'menu_type' => 'click',
+                    'p_order' => 2,
+                    'create_time' => time(),
+                    'update_time' => time(),
+                );
+                $mid_topmenu_id = $weixinMenuModel->add($mid_topmenu);
+                if ($mid_topmenu_id == false) {
+                    $weixinMenuModel->rollback();
+                    $this->error('创建中间一级菜单失败!', '', true);
+                }
+                $mid_submenu = array(
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '关于我们',
+                        'menu_type' => 'click',
+                        'menu_url' => "abouts",
+                        'pid' => $mid_topmenu_id,
+                        'c_order' => 1,
+                        'p_order' => 2,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '联系我们',
+                        'menu_type' => 'click',
+                        'menu_url' => "contact",
+                        'pid' => $mid_topmenu_id,
+                        'c_order' => 2,
+                        'p_order' => 2,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '餐厅浏览',
+                        'menu_type' => 'click',
+                        'menu_url' => "dining",
+                        'pid' => $mid_topmenu_id,
+                        'c_order' => 3,
+                        'p_order' => 2,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '热门活动',
+                        'menu_type' => 'click',
+                        'menu_url' => "active",
+                        'pid' => $mid_topmenu_id,
+                        'c_order' => 4,
+                        'p_order' => 2,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '领取优惠券',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/card/index/token/" . MP_TOKEN,
+                        'pid' => $mid_topmenu_id,
+                        'c_order' => 5,
+                        'p_order' => 2,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                );
+                $mid_submenu_create = $weixinMenuModel->addAll($mid_submenu);
+                if ($mid_submenu_create == false) {
+                    $weixinMenuModel->rollback();
+                    $this->error('创建中间一级菜单的子菜单失败!', '', true);
+                }
+                //c 创建右边菜单
+                $right_topmenu = array(
+                    'mp_id' => MP_ID,
+                    'member_id' => UID,
+                    'menu_name' => '个人中心',
+                    'menu_type' => 'click',
+                    'p_order' => 3,
+                    'create_time' => time(),
+                    'update_time' => time(),
+                );
+                $right_topmenu_id = $weixinMenuModel->add($right_topmenu);
+                if ($right_topmenu_id == false) {
+                    $weixinMenuModel->rollback();
+                    $this->error('创建右边一级菜单失败!', '', true);
+                }
+                $right_submenu = array(
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '已领取的卡劵',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/card/list/token/" . MP_TOKEN,
+                        'pid' => $right_topmenu_id,
+                        'c_order' => 1,
+                        'p_order' => 3,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '我的预定',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/reserve/list/token/" . MP_TOKEN,
+                        'pid' => $right_topmenu_id,
+                        'c_order' => 2,
+                        'p_order' => 3,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '我的订单',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/order/list/token/" . MP_TOKEN,
+                        'pid' => $right_topmenu_id,
+                        'c_order' => 3,
+                        'p_order' => 3,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '我的会员卡',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/card/list/token/" . MP_TOKEN,
+                        'pid' => $right_topmenu_id,
+                        'c_order' => 4,
+                        'p_order' => 3,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '我要说说',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Mobile/comment/index/token/" . MP_TOKEN,
+                        'pid' => $right_topmenu_id,
+                        'c_order' => 5,
+                        'p_order' => 3,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
+                );
+                $right_submenu_create = $weixinMenuModel->addAll($right_submenu);
+                if ($right_submenu_create == false) {
+                    $weixinMenuModel->rollback();
+                    $this->error('创建右边一级菜单的子菜单失败!', '', true);
+                }
+
+                $menu = '{
+                    "button":[
+                        {
+                            "name":"点菜*预定",
+                            "sub_button":[
+                                {	
+                                    "type":"view",
+                                    "name":"全部菜品",
+                                    "url":"' . $left_submenu[0]['menu_url'] . '"
+                                 },
+                                 {	
+                                    "type":"view",
+                                    "name":"热销菜品",
+                                    "url":"' . $left_submenu[1]['menu_url'] . '"
+                                 },
+                                 {	
+                                    "type":"view",
+                                    "name":"特色菜品",
+                                    "url":"' . $left_submenu[2]['menu_url'] . '"
+                                 },
+                                 {
+                                    "type":"view",
+                                    "name":"优惠套餐",
+                                    "url":"' . $left_submenu[3]['menu_url'] . '"
+                                 },
+                                 {
+                                    "type":"view",
+                                    "name":"我要预定",
+                                    "url":"' . $left_submenu[4]['menu_url'] . '"
+                                 }
+                            ]
+                        },
+                        {
+                            "name":"品牌|优惠券",
+                            "sub_button":[
+                                {	
+                                    "type":"click",
+                                    "name":"关于我们",
+                                    "key":"abouts"
+                                 },
+                                 {	
+                                    "type":"click",
+                                    "name":"联系我们",
+                                    "key":"contact"
+                                 },
+                                 {	
+                                    "type":"click",
+                                    "name":"餐厅浏览",
+                                    "key":"dining"
+                                 },
+                                 {
+                                    "type":"click",
+                                    "name":"热门活动",
+                                    "key":"active"
+                                 },
+                                 {
+                                    "type":"view",
+                                    "name":"领取优惠券",
+                                    "url":"' . $mid_submenu[4]['menu_url'] . '"
+                                 }
+                            ]
+                        },
+                        {
+                            "name":"个人中心",
+                            "sub_button":[
+                                {	
+                                    "type":"view",
+                                    "name":"已领取的卡劵",
+                                    "url":"' . $right_submenu[0]['menu_url'] . '"
+                                 },
+                                 {	
+                                    "type":"view",
+                                    "name":"我的预定",
+                                    "url":"' . $right_submenu[1]['menu_url'] . '"
+                                 },
+                                 {	
+                                    "type":"view",
+                                    "name":"我的订单",
+                                    "url":"' . $right_submenu[2]['menu_url'] . '"
+                                 },
+                                 {
+                                    "type":"view",
+                                    "name":"我的会员卡",
+                                    "url":"' . $right_submenu[3]['menu_url'] . '"
+                                 },
+                                 {
+                                    "type":"view",
+                                    "name":"我要说说[",
+                                    "url":"' . $right_submenu[4]['menu_url'] . '"
+                                 }
+                            ]
+                        }
+                    ]
+                }';
+                if (APPID == '' || APPSERCERT == '') {
+                    $this->error('微信公众平台appid或appsercert参数为空!', '', true);
+                }
+                $create_menu_res = \Admin\Model\MicroPlatformModel::createWeixinMenu(APPID, APPSERCERT, $menu);
+                if ($create_menu_res) {
+                    $weixinMenuModel->commit();
+                    $this->success('微信公众平台菜单创建成功!', '', true);
+                }
+                $weixinMenuModel->rollback();
+                $this->error('微信公众平台菜单创建失败!', '', true);
+            }
+        }
         $this->meta_title = '一键生成推荐菜单';
         $this->display('recommend');
     }
@@ -251,8 +627,8 @@ class WeixinMenuController extends FoodBaseController {
                             }
                             $wx_menu_str .= ',';
                         }
-                        $sub_str = substr($wx_menu_str,0,-1);
-                        $wx_menu_str = $sub_str.']}';
+                        $sub_str = substr($wx_menu_str, 0, -1);
+                        $wx_menu_str = $sub_str . ']}';
                     } else {
                         if ($top_menu_arr[$pid]['menu_type'] == 'click') {
                             $wx_menu_str .= '{"type":"' . $top_menu_arr[$pid]['menu_type'] . '","name":"' . $top_menu_arr[$pid]['menu_name'] . '","key":"' . $top_menu_arr[$pid]['menu_key'] . '"}';
@@ -262,19 +638,19 @@ class WeixinMenuController extends FoodBaseController {
                     }
                     $wx_menu_str .= ',';
                 }
-                $menu_str = substr($wx_menu_str,0,-1);
-                $wx_menu_str = $menu_str."]}";
+                $menu_str = substr($wx_menu_str, 0, -1);
+                $wx_menu_str = $menu_str . "]}";
             }
-            if(APPID == '' || APPSERCERT == ''){
-                $this->error('微信公众平台appid或appsercert参数为空!','',true);
+            if (APPID == '' || APPSERCERT == '') {
+                $this->error('微信公众平台appid或appsercert参数为空!', '', true);
             }
             $create_menu_res = \Admin\Model\MicroPlatformModel::createWeixinMenu(APPID, APPSERCERT, $wx_menu_str);
-            if($create_menu_res){
-                $this->success('微信公众平台菜单创建成功!','',true);
+            if ($create_menu_res) {
+                $this->success('微信公众平台菜单创建成功!', '', true);
             }
-            $this->error('微信公众平台菜单创建失败!','',true);
+            $this->error('微信公众平台菜单创建失败!', '', true);
         }
-        
+
         $this->assign('menu_arr', $menu_arr);
         $this->assign('top_menu_arr', $top_menu_arr);
         $this->meta_title = '一键生成自定义菜单';

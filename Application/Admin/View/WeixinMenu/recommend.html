@@ -13,6 +13,10 @@
         <p id="dialog_content"></p>
     </div>
     
+    <div id="dialog-confirm" title="创建推荐菜单!" style="display:none;">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>会删除自定义菜单是否继续?</p>
+   </div>
+    
     <div class="data-table table-striped">
         <table style='border:1px solid gray'>
                 <tr>
@@ -42,6 +46,7 @@
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的预定</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的订单</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的会员卡</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我要说说</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn submit-btn" href="#">个人中心</a></td><tr>
                         </table>
                     </td>
@@ -85,6 +90,7 @@
                 <p>2 菜单名:我的预定[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/reserve/list/token/91692FB7569443A68D7C357488CB54C2</p>
                 <p>3 菜单名:我的订单[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/order/list/token/91692FB7569443A68D7C357488CB54C2</p>
                 <p>4 菜单名:我的会员卡[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>4 菜单名:我要说说[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/comment/list/token/91692FB7569443A68D7C357488CB54C2</p>
             </div>
         </div>
         
@@ -103,23 +109,46 @@
     <script type="text/javascript">
         var WxmenuModule = angular.module("weiapp_wxmenu", []);
         WxmenuModule.controller("WxmenuController", function ($scope, $http) {
-            $scope.wxmenu = {};
+            $scope.wxmenu = {'recommend':true};
+            $scope.checkmenu = {'check':true};
             $scope.submitForm = function () {
-                $('.submit').attr('disabled', 'true');
                 $http({
                     method: "POST",
                     url: "/Admin/WeixinMenu/recommend",
-                    data: $.param($scope.wxmenu),
+                    data: $.param($scope.checkmenu),
                     headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                 }).success(function (data) {
                     if (data.status) {
-                        $('#dialog_content').text(data.info);
-                        $("#dialog").dialog({modal: true});
-                        setTimeout("result(" + data.status + ")", 1000);
-                    } else {
-                        $('#dialog_content').text(data.info);
-                        $("#dialog").dialog({modal: true});
-                        setTimeout("result(" + data.status + ")", 1000);
+                        $( "#dialog-confirm" ).dialog({
+                                resizable: false,
+                                height:150,
+                                modal: true,
+                                buttons: {
+                                    "确认删除自定义菜单": function() {
+                                       $( this ).dialog( "close" );
+                                       $('.submit').attr('disabled', 'true');
+                                        $http({
+                                            method: "POST",
+                                            url: "/Admin/WeixinMenu/recommend",
+                                            data: $.param($scope.wxmenu),
+                                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                                        }).success(function (data) {
+                                            if (data.status) {
+                                                $('#dialog_content').text(data.info);
+                                                $("#dialog").dialog({modal: true});
+                                                setTimeout("result(" + data.status + ")", 1000);
+                                            } else {
+                                                $('#dialog_content').text(data.info);
+                                                $("#dialog").dialog({modal: true});
+                                                setTimeout("result(" + data.status + ")", 1000);
+                                            }
+                                        });
+                                    },
+                                    "取消": function() {
+                                        $( this ).dialog( "close" );
+                                    }
+                                }
+                            });
                     }
                 });
             };

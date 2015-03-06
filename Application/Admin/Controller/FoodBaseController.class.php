@@ -28,12 +28,14 @@ class FoodBaseController extends AdminController {
         $partnerid = !empty($micro_platform['partnerid']) ? trim($micro_platform['partnerid']) : '';
         $partnerkey = !empty($micro_platform['partnerkey']) ? trim($micro_platform['partnerkey']) : '';
         $paysignkey = !empty($micro_platform['paysignkey']) ? trim($micro_platform['paysignkey']) : '';
+        $mp_token = !empty($micro_platform['mp_token']) ? trim($micro_platform['mp_token']) : '';
         define('MP_ID', $mp_id); //微信公众平台ID
         define('APPID', $appid); //微信公众平台APPID  基本参数
         define('APPSERCERT', $appsecret); //微信公众平台APPSERCERT 基本参数
         define("PARTNERID", $partnerid); //微信公众平台PARTNERID  微信支付必需参数
-        define("PARTNERKEY", $partnerkey);//微信公众平台PARTNERKEY  微信支付必需参数
-        define("APPKEY", $paysignkey);//微信公众平台APPKEY 微信支付必需参数
+        define("PARTNERKEY", $partnerkey); //微信公众平台PARTNERKEY  微信支付必需参数
+        define("APPKEY", $paysignkey); //微信公众平台APPKEY 微信支付必需参数
+        define("MP_TOKEN",$mp_token);//微信公众平台接入token  唯一  非常重要参数
     }
 
     /**

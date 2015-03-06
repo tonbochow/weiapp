@@ -22,7 +22,7 @@
                        foreach($sub_arr as $sub){
                            echo "<tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>".'<a class="btn" href="/Admin/WeixinMenu/edit/id/'.$sub['id'].'">'.$sub['menu_name']."[二级]</a></td></tr>";
                        }
-                       echo "<tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>".'<a class="btn submit-btn" href="/Admin/WeixinMenu/edit/id/'.$sub['id'].'">'.$top_menu_arr[$pid]['menu_name']."[一级菜单]</a></td></tr>";
+                       echo "<tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>".'<a class="btn submit-btn" href="/Admin/WeixinMenu/edit/id/'.$top_menu_arr[$pid]['id'].'">'.$top_menu_arr[$pid]['menu_name']."[一级菜单]</a></td></tr>";
                        echo "</table></td>";
                     }else{
                        echo "<td valign='bottom' align='center' style='background-color:#fff;padding:1px;'>".'<a class="btn submit-btn" href="/Admin/WeixinMenu/edit/id/'.$top_menu_arr[$pid]['id'].'">'.$top_menu_arr[$pid]['menu_name']."[一级菜单]</a></td>";
