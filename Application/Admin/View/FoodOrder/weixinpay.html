@@ -1,0 +1,128 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>微信支付订单列表 {$dining_room_name}</h2>
+    </div>
+
+    <div class="cf">
+<!--        <button class="btn ajax-post" url="{:U('WeixinMenu/enable')}" target-form="ids">启 用</button>
+        <button class="btn ajax-post" url="{:U('WeixinMenu/disable')}" target-form="ids">禁 用</button>-->
+
+        <!-- 高级搜索 -->
+        <div class="search-form fr cf">
+            <div class="sleft">
+                <input type="text" name="order_no" class="search-input" value="{:I('order_no')}" placeholder="请输入订单号">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodOrder/weixinpay')}"><i class="btn-search"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-table table-striped">
+        <table>
+            <thead>
+                <tr>
+                    <th class="row-selected">
+                        <input class="checkbox check-all" type="checkbox">
+                    </th>
+                    <th>订单号</th>
+                    <th>购餐用户</th>
+                    <th>餐厅</th>
+                    <th>订单类型</th>
+                    <th>数量</th>
+                    <th>总金额</th>
+                    <th>实际支付</th>
+                    <th>订单状态</th>
+                    <th>支付时间</th>
+                    <th>送餐时间</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="food_order">
+                    <tr>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$food_order.order_no}"></td>
+                        <td>{$food_order.order_no}</td>
+                        <td><?php echo \Admin\Model\MemberModel::getMemberNickName($food_order['member_id']);?></td>
+                        <td><?php echo \Admin\Model\DiningRoomModel::getDiningRoomName($food_order['dining_room_id']);?></td>
+                        <td><?php echo \Admin\Model\FoodOrderModel::getFoodOrderType($food_order['type']);?></td>
+                        <td>{$food_order.count}</td>
+                        <td>{$food_order.amount}</td>
+                        <td>{$food_order.real_pay_amount}</td>
+                        <td><?php echo \Admin\Model\FoodOrderModel::getFoodOrderStatus($food_order['status']);?></td>
+                    <if condition="$food_order.pay_time neq 0">
+                        <td>{$food_order.pay_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$food_order.pay_time}</td>
+                    </if>
+                    <if condition="$food_order.delivery_time neq 0">
+                        <td>{$food_order.delivery_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$food_order.delivery_time}</td>
+                    </if>
+                    <if condition="$food_order.create_time neq 0">
+                        <td>{$food_order.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$food_order.create_time}</td>
+                    </if>
+                        <td>
+                             <a title="查看明细" href="{:U('wxpayview?id='.$food_order['id'])}">查看明细</a>
+                            <?php
+                               if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED) || ($food_order['status']==\Admin\Model\FoodOrderModel::$STATUS_COMMITED && $food_order['pay_type'] == Admin\Model\FoodOrderModel::$PAY_TYPE_OFFLINE)){
+                            ?>
+                            <a title="确认送餐" href="{:U('confirm?id='.$food_order['id'])}">确认送餐</a>
+                            <?php
+                            }
+                            ?>
+                            <?php
+                               if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_DELIVERY){
+                            ?>
+                            <a title="订单完成" href="{:U('finish?id='.$food_order['id'])}">订单完成</a>
+                            <?php
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="13" class="text-center">还没有微信支付订单!</td>
+            </notempty>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            //搜索功能
+            $("#search").click(function() {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+</block>

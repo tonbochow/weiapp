@@ -76,6 +76,12 @@ class MicroPlatformModel extends Model {
         array('create_time', NOW_TIME, self::MODEL_BOTH),
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
+    
+    //获取微信公众平台名称
+    public static function getMpName($mp_id){
+        $micro_platform = M('MicroPlatform')->where(array('id'=>$mp_id))->find();
+        return $micro_platform['mp_name'];
+    }
 
     //获取微信公众平台状态
     public static function getMpStatus($status = null, $has_choice = true) {

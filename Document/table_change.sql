@@ -23,3 +23,6 @@ ADD COLUMN `menu_content`  varchar(256) NOT NULL DEFAULT '' COMMENT 'click类型
 ALTER TABLE `weiapp_weixin_menu`
 CHANGE COLUMN `order` `c_order`  tinyint(2) NOT NULL DEFAULT 1 COMMENT '菜单顺序1-5' AFTER `pid`;
 
+ALTER TABLE `weiapp_food_order`
+MODIFY COLUMN `type`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '订单类型:1在餐厅下单用餐2线上订餐配送到家' AFTER `order_no`;
+

@@ -1,0 +1,99 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>微信公众平台维权列表</h2>
+    </div>
+
+    <div class="cf">
+<!--        <button class="btn ajax-post" url="{:U('WeixinMenu/enable')}" target-form="ids">启 用</button>
+        <button class="btn ajax-post" url="{:U('WeixinMenu/disable')}" target-form="ids">禁 用</button>-->
+
+        <!-- 高级搜索 -->
+        <div class="search-form fr cf">
+            <div class="sleft">
+                <input type="text" name="description" class="search-input" value="{:I('description')}" placeholder="请输入告警描述">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodWxWarn/lists')}"><i class="btn-search"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-table table-striped">
+        <table>
+            <thead>
+                <tr>
+                    <th class="row-selected">
+                        <input class="checkbox check-all" type="checkbox">
+                    </th>
+                    <th>公众平台名</th>
+                    <th>告警描述</th>
+                    <th>告警详细</th>
+                    <th>告警状态</th>
+                    <th>告警时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="warn">
+                    <tr>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$warn.id}"></td>
+                        <td><?php echo \Admin\Model\MicroPlatformModel::getMpName($warn['mp_id']); ?></td>
+                        <td>{$warn.description}</td>
+                        <td>{$warn.alarm_content}</td>
+                        <td><?php echo \Admin\Model\FoodWxWarnModel::getFoodWxWarnStatus($warn['status']);?></td>
+                    <if condition="$warn.create_time neq 0">
+                        <td>{$warn.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$warn.create_time}</td>
+                    </if>
+<!--                        <td>
+                            <?php
+                               if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED) || ($food_order['status']==\Admin\Model\FoodOrderModel::$STATUS_COMMITED && $food_order['pay_type'] == Admin\Model\FoodOrderModel::$PAY_TYPE_OFFLINE)){
+                            ?>
+                            <a title="确认送餐" href="{:U('confirm?id='.$food_order['id'])}">确认送餐</a>
+                            <?php
+                            }
+                            ?>
+                        </td>-->
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="6" class="text-center">还没有微信告警!</td>
+            </notempty>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            //搜索功能
+            $("#search").click(function() {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+</block>

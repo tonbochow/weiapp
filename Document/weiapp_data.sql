@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-03-04 17:35:26
+Date: 2015-03-07 17:28:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,238 +65,11 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=228 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
 -- ----------------------------
-INSERT INTO `weiapp_action_log` VALUES ('1', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-07 15:09登录了后台', '1', '1423292959');
-INSERT INTO `weiapp_action_log` VALUES ('2', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-13 09:46登录了后台', '1', '1423791987');
-INSERT INTO `weiapp_action_log` VALUES ('3', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-13 09:48登录了后台', '1', '1423792107');
-INSERT INTO `weiapp_action_log` VALUES ('4', '9', '1', '2130706433', 'channel', '2', '操作url：/index.php?s=/admin/channel/edit.html', '1', '1423792409');
-INSERT INTO `weiapp_action_log` VALUES ('5', '9', '1', '2130706433', 'channel', '3', '操作url：/index.php?s=/admin/channel/edit.html', '1', '1423792433');
-INSERT INTO `weiapp_action_log` VALUES ('6', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-13 10:31登录了后台', '1', '1423794707');
-INSERT INTO `weiapp_action_log` VALUES ('7', '9', '1', '2130706433', 'channel', '3', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423796755');
-INSERT INTO `weiapp_action_log` VALUES ('8', '9', '1', '2130706433', 'channel', '4', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423796797');
-INSERT INTO `weiapp_action_log` VALUES ('9', '9', '1', '2130706433', 'channel', '3', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423796920');
-INSERT INTO `weiapp_action_log` VALUES ('10', '9', '1', '2130706433', 'channel', '4', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423799007');
-INSERT INTO `weiapp_action_log` VALUES ('11', '9', '1', '2130706433', 'channel', '3', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423799016');
-INSERT INTO `weiapp_action_log` VALUES ('12', '9', '1', '2130706433', 'channel', '6', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423799028');
-INSERT INTO `weiapp_action_log` VALUES ('13', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-13 16:06登录了后台', '1', '1423814812');
-INSERT INTO `weiapp_action_log` VALUES ('14', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-13 16:08登录了后台', '1', '1423814901');
-INSERT INTO `weiapp_action_log` VALUES ('15', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 10:32登录了后台', '1', '1423881175');
-INSERT INTO `weiapp_action_log` VALUES ('16', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 10:33登录了后台', '1', '1423881189');
-INSERT INTO `weiapp_action_log` VALUES ('17', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 10:33登录了后台', '1', '1423881200');
-INSERT INTO `weiapp_action_log` VALUES ('18', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 10:34登录了后台', '1', '1423881246');
-INSERT INTO `weiapp_action_log` VALUES ('19', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 14:10登录了后台', '1', '1423894239');
-INSERT INTO `weiapp_action_log` VALUES ('20', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 15:19登录了后台', '1', '1423898382');
-INSERT INTO `weiapp_action_log` VALUES ('21', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 16:23登录了后台', '1', '1423902232');
-INSERT INTO `weiapp_action_log` VALUES ('22', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 16:25登录了后台', '1', '1423902355');
-INSERT INTO `weiapp_action_log` VALUES ('23', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-14 16:27登录了后台', '1', '1423902431');
-INSERT INTO `weiapp_action_log` VALUES ('24', '9', '1', '2130706433', 'channel', '2', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423903108');
-INSERT INTO `weiapp_action_log` VALUES ('25', '9', '1', '2130706433', 'channel', '7', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1423903120');
-INSERT INTO `weiapp_action_log` VALUES ('26', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-15 21:14登录了后台', '1', '1424006062');
-INSERT INTO `weiapp_action_log` VALUES ('27', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-15 21:37登录了后台', '1', '1424007464');
-INSERT INTO `weiapp_action_log` VALUES ('28', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-16 00:50登录了后台', '1', '1424019046');
-INSERT INTO `weiapp_action_log` VALUES ('29', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 11:47登录了后台', '1', '1424144868');
-INSERT INTO `weiapp_action_log` VALUES ('30', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 11:49登录了后台', '1', '1424144970');
-INSERT INTO `weiapp_action_log` VALUES ('31', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 11:56登录了后台', '1', '1424145393');
-INSERT INTO `weiapp_action_log` VALUES ('32', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 12:02登录了后台', '1', '1424145752');
-INSERT INTO `weiapp_action_log` VALUES ('33', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 12:10登录了后台', '1', '1424146240');
-INSERT INTO `weiapp_action_log` VALUES ('34', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 12:14登录了后台', '1', '1424146472');
-INSERT INTO `weiapp_action_log` VALUES ('35', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 13:46登录了后台', '1', '1424151996');
-INSERT INTO `weiapp_action_log` VALUES ('36', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 14:39登录了后台', '1', '1424155140');
-INSERT INTO `weiapp_action_log` VALUES ('37', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 14:40登录了后台', '1', '1424155222');
-INSERT INTO `weiapp_action_log` VALUES ('38', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 15:13登录了后台', '1', '1424157195');
-INSERT INTO `weiapp_action_log` VALUES ('39', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 16:09登录了后台', '1', '1424160568');
-INSERT INTO `weiapp_action_log` VALUES ('40', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 16:49登录了后台', '1', '1424162986');
-INSERT INTO `weiapp_action_log` VALUES ('41', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 16:50登录了后台', '1', '1424163038');
-INSERT INTO `weiapp_action_log` VALUES ('42', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 20:42登录了后台', '1', '1424176945');
-INSERT INTO `weiapp_action_log` VALUES ('43', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 21:03登录了后台', '1', '1424178202');
-INSERT INTO `weiapp_action_log` VALUES ('44', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 21:06登录了后台', '1', '1424178398');
-INSERT INTO `weiapp_action_log` VALUES ('45', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 23:18登录了后台', '1', '1424186296');
-INSERT INTO `weiapp_action_log` VALUES ('46', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-17 23:50登录了后台', '1', '1424188229');
-INSERT INTO `weiapp_action_log` VALUES ('47', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-18 04:38登录了后台', '1', '1424205499');
-INSERT INTO `weiapp_action_log` VALUES ('48', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-18 17:17登录了后台', '1', '1424251073');
-INSERT INTO `weiapp_action_log` VALUES ('49', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-18 17:18登录了后台', '1', '1424251113');
-INSERT INTO `weiapp_action_log` VALUES ('50', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-18 17:35登录了后台', '1', '1424252150');
-INSERT INTO `weiapp_action_log` VALUES ('51', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-18 18:05登录了后台', '1', '1424253901');
-INSERT INTO `weiapp_action_log` VALUES ('52', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-18 18:16登录了后台', '1', '1424254578');
-INSERT INTO `weiapp_action_log` VALUES ('53', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-19 09:10登录了后台', '1', '1424308239');
-INSERT INTO `weiapp_action_log` VALUES ('54', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-19 09:37登录了后台', '1', '1424309862');
-INSERT INTO `weiapp_action_log` VALUES ('55', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-19 09:42登录了后台', '1', '1424310166');
-INSERT INTO `weiapp_action_log` VALUES ('56', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-19 10:01登录了后台', '1', '1424311291');
-INSERT INTO `weiapp_action_log` VALUES ('57', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-19 11:38登录了后台', '1', '1424317116');
-INSERT INTO `weiapp_action_log` VALUES ('58', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-19 13:21登录了后台', '1', '1424323307');
-INSERT INTO `weiapp_action_log` VALUES ('59', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-19 17:31登录了后台', '1', '1424338262');
-INSERT INTO `weiapp_action_log` VALUES ('60', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-19 17:34登录了后台', '1', '1424338466');
-INSERT INTO `weiapp_action_log` VALUES ('61', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 10:20登录了后台', '1', '1424398822');
-INSERT INTO `weiapp_action_log` VALUES ('62', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 10:24登录了后台', '1', '1424399066');
-INSERT INTO `weiapp_action_log` VALUES ('63', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 10:32登录了后台', '1', '1424399533');
-INSERT INTO `weiapp_action_log` VALUES ('64', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 10:43登录了后台', '1', '1424400222');
-INSERT INTO `weiapp_action_log` VALUES ('65', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 11:00登录了后台', '1', '1424401226');
-INSERT INTO `weiapp_action_log` VALUES ('66', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 14:31登录了后台', '1', '1424413861');
-INSERT INTO `weiapp_action_log` VALUES ('67', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 16:34登录了后台', '1', '1424421271');
-INSERT INTO `weiapp_action_log` VALUES ('68', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 16:35登录了后台', '1', '1424421330');
-INSERT INTO `weiapp_action_log` VALUES ('69', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 16:56登录了后台', '1', '1424422598');
-INSERT INTO `weiapp_action_log` VALUES ('70', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 16:59登录了后台', '1', '1424422796');
-INSERT INTO `weiapp_action_log` VALUES ('71', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 18:13登录了后台', '1', '1424427236');
-INSERT INTO `weiapp_action_log` VALUES ('72', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-20 19:50登录了后台', '1', '1424433024');
-INSERT INTO `weiapp_action_log` VALUES ('73', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-21 11:41登录了后台', '1', '1424490102');
-INSERT INTO `weiapp_action_log` VALUES ('74', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-21 11:41登录了后台', '1', '1424490117');
-INSERT INTO `weiapp_action_log` VALUES ('75', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-21 11:43登录了后台', '1', '1424490218');
-INSERT INTO `weiapp_action_log` VALUES ('76', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-23 09:44登录了后台', '1', '1424655898');
-INSERT INTO `weiapp_action_log` VALUES ('77', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-23 09:45登录了后台', '1', '1424655912');
-INSERT INTO `weiapp_action_log` VALUES ('78', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-23 09:45登录了后台', '1', '1424655940');
-INSERT INTO `weiapp_action_log` VALUES ('79', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-23 10:12登录了后台', '1', '1424657551');
-INSERT INTO `weiapp_action_log` VALUES ('80', '9', '1', '2130706433', 'channel', '3', '操作url：/index.php?s=/Admin/Channel/edit.html', '1', '1424658073');
-INSERT INTO `weiapp_action_log` VALUES ('81', '10', '1', '2130706433', 'Menu', '122', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424676776');
-INSERT INTO `weiapp_action_log` VALUES ('82', '10', '1', '2130706433', 'Menu', '123', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424678754');
-INSERT INTO `weiapp_action_log` VALUES ('83', '10', '1', '2130706433', 'Menu', '124', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424679255');
-INSERT INTO `weiapp_action_log` VALUES ('84', '10', '1', '2130706433', 'Menu', '122', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424679334');
-INSERT INTO `weiapp_action_log` VALUES ('85', '10', '1', '2130706433', 'Menu', '125', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424679416');
-INSERT INTO `weiapp_action_log` VALUES ('86', '10', '1', '2130706433', 'Menu', '126', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424679446');
-INSERT INTO `weiapp_action_log` VALUES ('87', '10', '1', '2130706433', 'Menu', '127', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424679480');
-INSERT INTO `weiapp_action_log` VALUES ('88', '10', '1', '2130706433', 'Menu', '128', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424679633');
-INSERT INTO `weiapp_action_log` VALUES ('89', '10', '1', '2130706433', 'Menu', '129', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424679657');
-INSERT INTO `weiapp_action_log` VALUES ('90', '10', '1', '2130706433', 'Menu', '129', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424681545');
-INSERT INTO `weiapp_action_log` VALUES ('91', '10', '1', '2130706433', 'Menu', '128', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424683533');
-INSERT INTO `weiapp_action_log` VALUES ('92', '10', '1', '2130706433', 'Menu', '129', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424683573');
-INSERT INTO `weiapp_action_log` VALUES ('93', '10', '1', '2130706433', 'Menu', '123', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424683789');
-INSERT INTO `weiapp_action_log` VALUES ('94', '10', '1', '2130706433', 'Menu', '129', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424683867');
-INSERT INTO `weiapp_action_log` VALUES ('95', '10', '1', '2130706433', 'Menu', '125', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424683924');
-INSERT INTO `weiapp_action_log` VALUES ('96', '10', '1', '2130706433', 'Menu', '126', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424683971');
-INSERT INTO `weiapp_action_log` VALUES ('97', '10', '1', '2130706433', 'Menu', '127', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684008');
-INSERT INTO `weiapp_action_log` VALUES ('98', '10', '1', '2130706433', 'Menu', '124', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684076');
-INSERT INTO `weiapp_action_log` VALUES ('99', '10', '1', '2130706433', 'Menu', '129', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684106');
-INSERT INTO `weiapp_action_log` VALUES ('100', '10', '1', '2130706433', 'Menu', '123', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684132');
-INSERT INTO `weiapp_action_log` VALUES ('101', '10', '1', '2130706433', 'Menu', '123', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684577');
-INSERT INTO `weiapp_action_log` VALUES ('102', '10', '1', '2130706433', 'Menu', '124', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684619');
-INSERT INTO `weiapp_action_log` VALUES ('103', '10', '1', '2130706433', 'Menu', '125', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684671');
-INSERT INTO `weiapp_action_log` VALUES ('104', '10', '1', '2130706433', 'Menu', '125', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684697');
-INSERT INTO `weiapp_action_log` VALUES ('105', '10', '1', '2130706433', 'Menu', '126', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684737');
-INSERT INTO `weiapp_action_log` VALUES ('106', '10', '1', '2130706433', 'Menu', '127', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684780');
-INSERT INTO `weiapp_action_log` VALUES ('107', '10', '1', '2130706433', 'Menu', '128', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684821');
-INSERT INTO `weiapp_action_log` VALUES ('108', '10', '1', '2130706433', 'Menu', '129', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684857');
-INSERT INTO `weiapp_action_log` VALUES ('109', '10', '1', '2130706433', 'Menu', '123', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424684969');
-INSERT INTO `weiapp_action_log` VALUES ('110', '10', '1', '2130706433', 'Menu', '130', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424685880');
-INSERT INTO `weiapp_action_log` VALUES ('111', '10', '1', '2130706433', 'Menu', '124', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424685923');
-INSERT INTO `weiapp_action_log` VALUES ('112', '10', '1', '2130706433', 'Menu', '130', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424685941');
-INSERT INTO `weiapp_action_log` VALUES ('113', '10', '1', '2130706433', 'Menu', '130', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424685955');
-INSERT INTO `weiapp_action_log` VALUES ('114', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 22:39登录了后台', '1', '1424702363');
-INSERT INTO `weiapp_action_log` VALUES ('115', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-23 22:39登录了后台', '1', '1424702374');
-INSERT INTO `weiapp_action_log` VALUES ('116', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 22:41登录了后台', '1', '1424702464');
-INSERT INTO `weiapp_action_log` VALUES ('117', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 22:42登录了后台', '1', '1424702571');
-INSERT INTO `weiapp_action_log` VALUES ('118', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 22:48登录了后台', '1', '1424702913');
-INSERT INTO `weiapp_action_log` VALUES ('119', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 22:48登录了后台', '1', '1424702935');
-INSERT INTO `weiapp_action_log` VALUES ('120', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 23:06登录了后台', '1', '1424703970');
-INSERT INTO `weiapp_action_log` VALUES ('121', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 23:11登录了后台', '1', '1424704293');
-INSERT INTO `weiapp_action_log` VALUES ('122', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 23:13登录了后台', '1', '1424704391');
-INSERT INTO `weiapp_action_log` VALUES ('123', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 23:15登录了后台', '1', '1424704512');
-INSERT INTO `weiapp_action_log` VALUES ('124', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 23:18登录了后台', '1', '1424704707');
-INSERT INTO `weiapp_action_log` VALUES ('125', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-23 23:18登录了后台', '1', '1424704736');
-INSERT INTO `weiapp_action_log` VALUES ('126', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-23 23:22登录了后台', '1', '1424704979');
-INSERT INTO `weiapp_action_log` VALUES ('127', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-24 10:23登录了后台', '1', '1424744588');
-INSERT INTO `weiapp_action_log` VALUES ('128', '10', '1', '2130706433', 'Menu', '124', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744765');
-INSERT INTO `weiapp_action_log` VALUES ('129', '10', '1', '2130706433', 'Menu', '130', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744774');
-INSERT INTO `weiapp_action_log` VALUES ('130', '10', '1', '2130706433', 'Menu', '125', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744790');
-INSERT INTO `weiapp_action_log` VALUES ('131', '10', '1', '2130706433', 'Menu', '126', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744797');
-INSERT INTO `weiapp_action_log` VALUES ('132', '10', '1', '2130706433', 'Menu', '127', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744806');
-INSERT INTO `weiapp_action_log` VALUES ('133', '10', '1', '2130706433', 'Menu', '128', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744813');
-INSERT INTO `weiapp_action_log` VALUES ('134', '10', '1', '2130706433', 'Menu', '129', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744820');
-INSERT INTO `weiapp_action_log` VALUES ('135', '10', '1', '2130706433', 'Menu', '123', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744846');
-INSERT INTO `weiapp_action_log` VALUES ('136', '10', '1', '2130706433', 'Menu', '124', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744869');
-INSERT INTO `weiapp_action_log` VALUES ('137', '10', '1', '2130706433', 'Menu', '130', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744886');
-INSERT INTO `weiapp_action_log` VALUES ('138', '10', '1', '2130706433', 'Menu', '125', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744899');
-INSERT INTO `weiapp_action_log` VALUES ('139', '10', '1', '2130706433', 'Menu', '126', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744907');
-INSERT INTO `weiapp_action_log` VALUES ('140', '10', '1', '2130706433', 'Menu', '127', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744921');
-INSERT INTO `weiapp_action_log` VALUES ('141', '10', '1', '2130706433', 'Menu', '128', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744929');
-INSERT INTO `weiapp_action_log` VALUES ('142', '10', '1', '2130706433', 'Menu', '129', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424744937');
-INSERT INTO `weiapp_action_log` VALUES ('143', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-24 10:32登录了后台', '1', '1424745171');
-INSERT INTO `weiapp_action_log` VALUES ('144', '10', '1', '2130706433', 'Menu', '131', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424747931');
-INSERT INTO `weiapp_action_log` VALUES ('145', '10', '1', '2130706433', 'Menu', '132', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424748135');
-INSERT INTO `weiapp_action_log` VALUES ('146', '10', '1', '2130706433', 'Menu', '122', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424748262');
-INSERT INTO `weiapp_action_log` VALUES ('147', '10', '1', '2130706433', 'Menu', '133', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424748602');
-INSERT INTO `weiapp_action_log` VALUES ('148', '10', '1', '2130706433', 'Menu', '134', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424748621');
-INSERT INTO `weiapp_action_log` VALUES ('149', '10', '1', '2130706433', 'Menu', '135', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424749014');
-INSERT INTO `weiapp_action_log` VALUES ('150', '10', '1', '2130706433', 'Menu', '136', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424749544');
-INSERT INTO `weiapp_action_log` VALUES ('151', '10', '1', '2130706433', 'Menu', '137', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424749717');
-INSERT INTO `weiapp_action_log` VALUES ('152', '10', '1', '2130706433', 'Menu', '138', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424749742');
-INSERT INTO `weiapp_action_log` VALUES ('153', '10', '1', '2130706433', 'Menu', '139', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424749949');
-INSERT INTO `weiapp_action_log` VALUES ('154', '10', '1', '2130706433', 'Menu', '140', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424750022');
-INSERT INTO `weiapp_action_log` VALUES ('155', '10', '1', '2130706433', 'Menu', '141', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424750084');
-INSERT INTO `weiapp_action_log` VALUES ('156', '10', '1', '2130706433', 'Menu', '142', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424750143');
-INSERT INTO `weiapp_action_log` VALUES ('157', '10', '1', '2130706433', 'Menu', '141', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424750165');
-INSERT INTO `weiapp_action_log` VALUES ('158', '10', '1', '2130706433', 'Menu', '140', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1424750429');
-INSERT INTO `weiapp_action_log` VALUES ('159', '10', '1', '2130706433', 'Menu', '143', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424750479');
-INSERT INTO `weiapp_action_log` VALUES ('160', '10', '1', '2130706433', 'Menu', '144', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1424750577');
-INSERT INTO `weiapp_action_log` VALUES ('161', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-24 12:31登录了后台', '1', '1424752280');
-INSERT INTO `weiapp_action_log` VALUES ('162', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-24 13:42登录了后台', '1', '1424756559');
-INSERT INTO `weiapp_action_log` VALUES ('163', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-24 13:44登录了后台', '1', '1424756651');
-INSERT INTO `weiapp_action_log` VALUES ('164', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-24 13:45登录了后台', '1', '1424756710');
-INSERT INTO `weiapp_action_log` VALUES ('165', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-24 13:46登录了后台', '1', '1424756765');
-INSERT INTO `weiapp_action_log` VALUES ('166', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-24 14:00登录了后台', '1', '1424757646');
-INSERT INTO `weiapp_action_log` VALUES ('167', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-24 14:01登录了后台', '1', '1424757668');
-INSERT INTO `weiapp_action_log` VALUES ('168', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-24 16:29登录了后台', '1', '1424766583');
-INSERT INTO `weiapp_action_log` VALUES ('169', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-24 16:31登录了后台', '1', '1424766677');
-INSERT INTO `weiapp_action_log` VALUES ('170', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-24 22:20登录了后台', '1', '1424787600');
-INSERT INTO `weiapp_action_log` VALUES ('171', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-25 08:52登录了后台', '1', '1424825575');
-INSERT INTO `weiapp_action_log` VALUES ('172', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-25 10:48登录了后台', '1', '1424832525');
-INSERT INTO `weiapp_action_log` VALUES ('173', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-25 11:31登录了后台', '1', '1424835062');
-INSERT INTO `weiapp_action_log` VALUES ('174', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-25 11:31登录了后台', '1', '1424835075');
-INSERT INTO `weiapp_action_log` VALUES ('175', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-25 13:54登录了后台', '1', '1424843669');
-INSERT INTO `weiapp_action_log` VALUES ('176', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-26 09:51登录了后台', '1', '1424915475');
-INSERT INTO `weiapp_action_log` VALUES ('177', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 13:51登录了后台', '1', '1424929901');
-INSERT INTO `weiapp_action_log` VALUES ('178', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 14:01登录了后台', '1', '1424930485');
-INSERT INTO `weiapp_action_log` VALUES ('179', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-26 14:30登录了后台', '1', '1424932211');
-INSERT INTO `weiapp_action_log` VALUES ('180', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 14:32登录了后台', '1', '1424932323');
-INSERT INTO `weiapp_action_log` VALUES ('181', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 14:42登录了后台', '1', '1424932940');
-INSERT INTO `weiapp_action_log` VALUES ('182', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 14:42登录了后台', '1', '1424932955');
-INSERT INTO `weiapp_action_log` VALUES ('183', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 14:46登录了后台', '1', '1424933206');
-INSERT INTO `weiapp_action_log` VALUES ('184', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 14:48登录了后台', '1', '1424933295');
-INSERT INTO `weiapp_action_log` VALUES ('185', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 14:52登录了后台', '1', '1424933546');
-INSERT INTO `weiapp_action_log` VALUES ('186', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 15:08登录了后台', '1', '1424934533');
-INSERT INTO `weiapp_action_log` VALUES ('187', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-26 15:09登录了后台', '1', '1424934548');
-INSERT INTO `weiapp_action_log` VALUES ('188', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-27 09:09登录了后台', '1', '1424999349');
-INSERT INTO `weiapp_action_log` VALUES ('189', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-27 09:09登录了后台', '1', '1424999373');
-INSERT INTO `weiapp_action_log` VALUES ('190', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-27 09:09登录了后台', '1', '1424999384');
-INSERT INTO `weiapp_action_log` VALUES ('191', '10', '1', '2130706433', 'Menu', '136', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1425007493');
-INSERT INTO `weiapp_action_log` VALUES ('192', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-27 11:30登录了后台', '1', '1425007830');
-INSERT INTO `weiapp_action_log` VALUES ('193', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-27 11:31登录了后台', '1', '1425007893');
-INSERT INTO `weiapp_action_log` VALUES ('194', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-27 11:32登录了后台', '1', '1425007939');
-INSERT INTO `weiapp_action_log` VALUES ('195', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-27 12:49登录了后台', '1', '1425012540');
-INSERT INTO `weiapp_action_log` VALUES ('196', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-27 13:43登录了后台', '1', '1425015815');
-INSERT INTO `weiapp_action_log` VALUES ('197', '10', '1', '2130706433', 'Menu', '145', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1425026633');
-INSERT INTO `weiapp_action_log` VALUES ('198', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-28 09:15登录了后台', '1', '1425086125');
-INSERT INTO `weiapp_action_log` VALUES ('199', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-28 09:18登录了后台', '1', '1425086280');
-INSERT INTO `weiapp_action_log` VALUES ('200', '1', '1', '2130706433', 'member', '1', 'admin在2015-02-28 16:27登录了后台', '1', '1425112077');
-INSERT INTO `weiapp_action_log` VALUES ('201', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-02-28 16:28登录了后台', '1', '1425112098');
-INSERT INTO `weiapp_action_log` VALUES ('202', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-02 09:44登录了后台', '1', '1425260640');
-INSERT INTO `weiapp_action_log` VALUES ('203', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-02 09:49登录了后台', '1', '1425260980');
-INSERT INTO `weiapp_action_log` VALUES ('204', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-02 13:55登录了后台', '1', '1425275742');
-INSERT INTO `weiapp_action_log` VALUES ('205', '1', '1', '2130706433', 'member', '1', 'admin在2015-03-02 14:08登录了后台', '1', '1425276526');
-INSERT INTO `weiapp_action_log` VALUES ('206', '10', '1', '2130706433', 'Menu', '146', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1425277263');
-INSERT INTO `weiapp_action_log` VALUES ('207', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-02 14:21登录了后台', '1', '1425277296');
-INSERT INTO `weiapp_action_log` VALUES ('208', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-02 16:32登录了后台', '1', '1425285153');
-INSERT INTO `weiapp_action_log` VALUES ('209', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-03 09:08登录了后台', '1', '1425344911');
-INSERT INTO `weiapp_action_log` VALUES ('210', '1', '1', '2130706433', 'member', '1', 'admin在2015-03-03 09:09登录了后台', '1', '1425344983');
-INSERT INTO `weiapp_action_log` VALUES ('211', '10', '1', '2130706433', 'Menu', '147', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1425345142');
-INSERT INTO `weiapp_action_log` VALUES ('212', '10', '1', '2130706433', 'Menu', '147', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1425345153');
-INSERT INTO `weiapp_action_log` VALUES ('213', '10', '1', '2130706433', 'Menu', '148', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1425345171');
-INSERT INTO `weiapp_action_log` VALUES ('214', '10', '1', '2130706433', 'Menu', '149', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1425345195');
-INSERT INTO `weiapp_action_log` VALUES ('215', '10', '1', '2130706433', 'Menu', '150', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1425345213');
-INSERT INTO `weiapp_action_log` VALUES ('216', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-03 09:14登录了后台', '1', '1425345252');
-INSERT INTO `weiapp_action_log` VALUES ('217', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-03 11:24登录了后台', '1', '1425353096');
-INSERT INTO `weiapp_action_log` VALUES ('218', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-03 13:35登录了后台', '1', '1425360948');
-INSERT INTO `weiapp_action_log` VALUES ('219', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-04 09:18登录了后台', '1', '1425431938');
-INSERT INTO `weiapp_action_log` VALUES ('220', '1', '1', '2130706433', 'member', '1', 'admin在2015-03-04 09:36登录了后台', '1', '1425432968');
-INSERT INTO `weiapp_action_log` VALUES ('221', '10', '1', '2130706433', 'Menu', '147', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1425432994');
-INSERT INTO `weiapp_action_log` VALUES ('222', '10', '1', '2130706433', 'Menu', '151', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1425433017');
-INSERT INTO `weiapp_action_log` VALUES ('223', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-04 09:40登录了后台', '1', '1425433225');
-INSERT INTO `weiapp_action_log` VALUES ('224', '10', '1', '2130706433', 'Menu', '152', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1425449585');
-INSERT INTO `weiapp_action_log` VALUES ('225', '10', '1', '2130706433', 'Menu', '153', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1425449611');
-INSERT INTO `weiapp_action_log` VALUES ('226', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-04 14:13登录了后台', '1', '1425449633');
-INSERT INTO `weiapp_action_log` VALUES ('227', '1', '1', '2130706433', 'member', '1', 'admin在2015-03-04 16:42登录了后台', '1', '1425458548');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -464,7 +237,7 @@ CREATE TABLE `weiapp_auth_group` (
 -- ----------------------------
 INSERT INTO `weiapp_auth_group` VALUES ('1', 'admin', '1', '默认用户组', '', '1', '1,2,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,81,82,83,84,86,87,88,89,90,91,92,93,94,95,96,97,100,102,103,105,106');
 INSERT INTO `weiapp_auth_group` VALUES ('2', 'admin', '1', '测试用户', '测试用户', '1', '1,2,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,82,83,84,88,89,90,91,92,93,96,97,100,102,103,195');
-INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,234,235,236,237,238,239,240,242,243,244,245,246,247,248,249');
+INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,234,235,236,237,238,239,240,242,243,244,245,246,247,248,249,250,251,254,255,256,259,260');
 
 -- ----------------------------
 -- Table structure for `weiapp_auth_group_access`
@@ -497,7 +270,7 @@ CREATE TABLE `weiapp_auth_rule` (
   `condition` varchar(300) NOT NULL DEFAULT '' COMMENT '规则附加条件',
   PRIMARY KEY (`id`),
   KEY `module` (`module`,`status`,`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=261 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_auth_rule
@@ -748,6 +521,17 @@ INSERT INTO `weiapp_auth_rule` VALUES ('246', 'admin', '1', 'Admin/WeixinMenu/di
 INSERT INTO `weiapp_auth_rule` VALUES ('247', 'admin', '1', 'Admin/WeixinMenu/addsubmenu', '创建二级菜单', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('248', 'admin', '1', 'Admin/WeixinMenu/recommend', '一键创建推荐菜单', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('249', 'admin', '1', 'Admin/WeixinMenu/custom', '一键创建自定义菜单', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('250', 'admin', '1', 'Admin/WeixinCard/food', '微信卡劵', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('251', 'admin', '1', 'Admin/FoodOrder/weixinpay', '微信支付订单', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('252', 'admin', '1', 'Admin/FoodWx/warn', '微信告警', '-1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('253', 'admin', '1', 'Admin/FoodWx/Feedback', '微信维权', '-1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('254', 'admin', '1', 'Admin/FoodOrder/wxpayview', '查看详细', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('255', 'admin', '1', 'Admin/FoodOrder/confirm', '确认送餐', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('256', 'admin', '1', 'Admin/FoodOrder/finish', '确认完成', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('257', 'admin', '1', 'Admin/FoodWxWarn/lists', '微信告警', '-1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('258', 'admin', '1', 'Admin/FoodWxFeedback/lists', '微信维权', '-1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('259', 'admin', '1', 'Admin/FoodWxWarn/show', '微信告警', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('260', 'admin', '1', 'Admin/FoodWxFeedback/show', '微信维权', '1', '');
 
 -- ----------------------------
 -- Table structure for `weiapp_category`
@@ -1321,7 +1105,7 @@ CREATE TABLE `weiapp_food_order` (
   `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
   `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
   `order_no` varchar(32) NOT NULL DEFAULT '' COMMENT '订单编号',
-  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '订单类型:0在餐厅下单用餐1线上订餐配送到家',
+  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订单类型:1在餐厅下单用餐2线上订餐配送到家',
   `pay_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付方式:1微信2支付宝3线下付款',
   `delivery_fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '送餐费用',
   `count` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '购餐数量',
@@ -1562,8 +1346,8 @@ CREATE TABLE `weiapp_member` (
 -- ----------------------------
 -- Records of weiapp_member
 -- ----------------------------
-INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '80', '88', '0', '1423289473', '2130706433', '1425458548', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '30', '52', '0', '0', '2130706433', '1425449633', '1');
+INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '90', '90', '0', '1423289473', '2130706433', '1425714451', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '40', '64', '0', '0', '2130706433', '1425718854', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -1688,7 +1472,7 @@ CREATE TABLE `weiapp_menu` (
   `is_dev` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否仅开发者模式可见',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=161 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_menu
@@ -1836,6 +1620,13 @@ INSERT INTO `weiapp_menu` VALUES ('150', '禁用', '146', '0', 'WeixinMenu/disab
 INSERT INTO `weiapp_menu` VALUES ('151', '创建二级菜单', '146', '0', 'WeixinMenu/addsubmenu', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('152', '一键创建推荐菜单', '146', '0', 'WeixinMenu/recommend', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('153', '一键创建自定义菜单', '146', '0', 'WeixinMenu/custom', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('154', '微信卡劵', '135', '0', 'WeixinCard/food', '0', '', '微餐饮公众平台', '0');
+INSERT INTO `weiapp_menu` VALUES ('155', '微信支付订单', '135', '0', 'FoodOrder/weixinpay', '0', '', '微餐饮公众平台', '0');
+INSERT INTO `weiapp_menu` VALUES ('156', '微信告警', '135', '0', 'FoodWxWarn/show', '0', '', '微餐饮公众平台', '0');
+INSERT INTO `weiapp_menu` VALUES ('157', '微信维权', '135', '0', 'FoodWxFeedback/show', '0', '', '微餐饮公众平台', '0');
+INSERT INTO `weiapp_menu` VALUES ('158', '查看详细', '155', '0', 'FoodOrder/wxpayview', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('159', '确认送餐', '155', '0', 'FoodOrder/confirm', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('160', '确认完成', '155', '0', 'FoodOrder/finish', '1', '', '', '0');
 
 -- ----------------------------
 -- Table structure for `weiapp_micro_platform`
@@ -1880,7 +1671,7 @@ CREATE TABLE `weiapp_micro_platform` (
 -- ----------------------------
 -- Records of weiapp_micro_platform
 -- ----------------------------
-INSERT INTO `weiapp_micro_platform` VALUES ('1', 'wx571d493fc32f0ba3', '6677a350c853729910c9481dab475570', '', '', '', 'local.weiapp.com/Mobile/Base/weixin/token/91692FB7569443A68D7C357488CB54C2', '91692FB7569443A68D7C357488CB54C2', '1', 'gh_dde71cd2712f', '邻购网', 'LINGOU5106', '/Uploads/Mp/1/info/mp_qrcode.jpg', '/Uploads/Mp/1/info/mp_img.jpg', '0', '', '0', '2', '', '0', '0', '0', '1', '0', '1', '1', '0.00', '1425285691', '1534543454', '0', '1425285691');
+INSERT INTO `weiapp_micro_platform` VALUES ('1', 'wx571d493fc32f0ba4', '6677a350c853729910c9481dab475570', '', '', '', 'local.weiapp.com/Mobile/Base/weixin/token/91692FB7569443A68D7C357488CB54C2', '91692FB7569443A68D7C357488CB54C2', '1', 'gh_dde71cd2712f', '邻购网', 'LINGOU5106', '/Uploads/Mp/1/info/mp_qrcode.jpg', '/Uploads/Mp/1/info/mp_img.jpg', '0', '', '1425610720', '2', '', '0', '0', '0', '1', '0', '1', '1', '0.00', '1425285691', '1534543454', '0', '1425610720');
 
 -- ----------------------------
 -- Table structure for `weiapp_model`
@@ -2070,8 +1861,8 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- ----------------------------
 -- Records of weiapp_ucenter_member
 -- ----------------------------
-INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1425458548', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1425449633', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1425714451', '2130706433', '1423289473', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1425718854', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`
@@ -2141,15 +1932,26 @@ CREATE TABLE `weiapp_weixin_menu` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='微信公众平台菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COMMENT='微信公众平台菜单';
 
 -- ----------------------------
 -- Records of weiapp_weixin_menu
 -- ----------------------------
-INSERT INTO `weiapp_weixin_menu` VALUES ('1', '1', '2', 'click', '北斗星', 'bdx', 'http://www.52gdp.com', '北斗星餐厅', '0', '1', '1', '1', '1425437271', '1425457957');
-INSERT INTO `weiapp_weixin_menu` VALUES ('2', '1', '2', 'click', '秀兰饭店', 'food', '', '餐饮', '0', '1', '2', '1', '1425433169', '1425457970');
-INSERT INTO `weiapp_weixin_menu` VALUES ('3', '1', '2', 'view', '星光酒店', '', 'http://www.52gdp.com/Mobile/dining/view', '', '0', '1', '3', '1', '1425433207', '1425439203');
-INSERT INTO `weiapp_weixin_menu` VALUES ('4', '1', '2', 'view', '北斗星简介', 'introduce', 'http://www.52gdp.com/Mobile/dinign/introduce', '北斗星简介成立于', '1', '1', '1', '1', '1425433258', '1425458043');
-INSERT INTO `weiapp_weixin_menu` VALUES ('5', '1', '2', 'click', '北斗星文化', 'history', '', '北斗星餐厅文化历史', '1', '2', '1', '1', '1425438884', '1425458056');
-INSERT INTO `weiapp_weixin_menu` VALUES ('6', '1', '2', 'click', '北斗星员工风采', 'member', '', '展示员工风采', '1', '3', '1', '1', '1425439085', '1425457958');
-INSERT INTO `weiapp_weixin_menu` VALUES ('7', '1', '2', 'click', '星光位置', 'location', '', '星光酒店地理位置', '3', '4', '3', '1', '1425439190', '1425439216');
+INSERT INTO `weiapp_weixin_menu` VALUES ('20', '1', '2', 'click', '点菜*预定', '', '', '', '0', '1', '1', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('21', '1', '2', 'view', '全部菜品', '', 'http://www.52gdp.com/Mobile/food/list/token/91692FB7569443A68D7C357488CB54C2', '', '20', '1', '1', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('22', '1', '2', 'view', '热销菜品', '', 'http://www.52gdp.com/Mobile/food/hot/token/91692FB7569443A68D7C357488CB54C2', '', '20', '2', '1', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('23', '1', '2', 'view', '特色菜品', '', 'http://www.52gdp.com/Mobile/food/features/token/91692FB7569443A68D7C357488CB54C2', '', '20', '3', '1', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('24', '1', '2', 'view', '优惠套餐', '', 'http://www.52gdp.com/Mobile/food/cheap/token/91692FB7569443A68D7C357488CB54C2', '', '20', '4', '1', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('25', '1', '2', 'view', '我要预定', '', 'http://www.52gdp.com/Mobile/reserve/index/token/91692FB7569443A68D7C357488CB54C2', '', '20', '5', '1', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('26', '1', '2', 'click', '品牌|优惠券', '', '', '', '0', '1', '2', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('27', '1', '2', 'click', '关于我们', '', 'abouts', '', '26', '1', '2', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('28', '1', '2', 'click', '联系我们', '', 'contact', '', '26', '2', '2', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('29', '1', '2', 'click', '餐厅浏览', '', 'dining', '', '26', '3', '2', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('30', '1', '2', 'click', '热门活动', '', 'active', '', '26', '4', '2', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('31', '1', '2', 'view', '领取优惠券', '', 'http://www.52gdp.com/Mobile/card/index/token/91692FB7569443A68D7C357488CB54C2', '', '26', '5', '2', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('32', '1', '2', 'click', '个人中心', '', '', '', '0', '1', '3', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('33', '1', '2', 'view', '已领取的卡劵', '', 'http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2', '', '32', '1', '3', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('34', '1', '2', 'view', '我的预定', '', 'http://www.52gdp.com/Mobile/reserve/list/token/91692FB7569443A68D7C357488CB54C2', '', '32', '2', '3', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('35', '1', '2', 'view', '我的订单', '', 'http://www.52gdp.com/Mobile/order/list/token/91692FB7569443A68D7C357488CB54C2', '', '32', '3', '3', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('36', '1', '2', 'view', '我的会员卡', '', 'http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2', '', '32', '4', '3', '1', '1425625669', '1425625669');
+INSERT INTO `weiapp_weixin_menu` VALUES ('37', '1', '2', 'view', '我要说说', '', 'http://www.52gdp.com/Mobile/comment/index/token/91692FB7569443A68D7C357488CB54C2', '', '32', '5', '3', '1', '1425625669', '1425625669');
