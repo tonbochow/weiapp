@@ -12,8 +12,8 @@
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
-                <input type="text" name="description" class="search-input" value="{:I('description')}" placeholder="请输入告警描述">
-                <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodWxWarn/lists')}"><i class="btn-search"></i></a>
+                <input type="text" name="reason" class="search-input" value="{:I('reason')}" placeholder="请输入维权原因">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodWxFeedback/show')}"><i class="btn-search"></i></a>
             </div>
         </div>
     </div>
@@ -26,39 +26,53 @@
                         <input class="checkbox check-all" type="checkbox">
                     </th>
                     <th>公众平台名</th>
-                    <th>告警描述</th>
-                    <th>告警详细</th>
-                    <th>告警状态</th>
-                    <th>告警时间</th>
+                    <th>餐厅名</th>
+                    <th>用户昵称</th>
+                    <th>维权类型</th>
+                    <th>维权时间</th>
+                    <th>交易单号</th>
+                    <th>投诉原因</th>
+                    <th>希望解决方案</th>
+                    <!--<th>创建时间</th>-->
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
             <notempty name="list">
-                <volist name="list" id="warn">
+                <volist name="list" id="feedback">
                     <tr>
-                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$warn.id}"></td>
-                        <td><?php echo \Admin\Model\MicroPlatformModel::getMpName($warn['mp_id']); ?></td>
-                        <td>{$warn.description}</td>
-                        <td>{$warn.alarm_content}</td>
-                        <td><?php echo \Admin\Model\FoodWxWarnModel::getFoodWxWarnStatus($warn['status']);?></td>
-                    <if condition="$warn.create_time neq 0">
-                        <td>{$warn.create_time|date="Y-m-d H:i:s",###}</td>
+                        <td><input class="ids row-selected" type="checkbox" name="feedback_id[]" value="{$feedback.id}"></td>
+                        <td><?php echo \Admin\Model\MicroPlatformModel::getMpName($feedback['mp_id']); ?></td>
+                        <td><?php echo \Admin\Model\DiningRoomModel::getDiningRoomName($feedback['dining_room_id']);?></td>
+                        <td>{$feedback.nickname}</td>
+                        <td><?php echo \Admin\Model\FoodWxFeedbackModel::getFoodWxFeedbackMsgTypes($feedback['msg_type']);?></td>
+                    <if condition="$feedback.feedback_time neq 0">
+                        <td>{$feedback.feedback_time|date="Y-m-d H:i:s",###}</td>
                         <else />
-                        <td>{$warn.create_time}</td>
+                        <td>{$feedback.feedback_time}</td>
                     </if>
-<!--                        <td>
+                        <td>{$feedback.trans_id}</td>
+                        <td>{$feedback.reason}</td>
+                        <td>{$feedback.solution}</td>
+<!--                    <if condition="$feedback.create_time neq 0">
+                        <td>{$feedback.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$feedback.create_time}</td>
+                    </if>-->
+                        <td>
                             <?php
-                               if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED) || ($food_order['status']==\Admin\Model\FoodOrderModel::$STATUS_COMMITED && $food_order['pay_type'] == Admin\Model\FoodOrderModel::$PAY_TYPE_OFFLINE)){
+                               if(($feedback['msg_type'] == \Admin\Model\FoodWxFeedbackModel::$MSG_TYPE_REQUEST) || ($feedback['msg_type']==\Admin\Model\FoodWxFeedbackModel::$MSG_TYPE_REJECT)){
                             ?>
-                            <a title="确认送餐" href="{:U('confirm?id='.$food_order['id'])}">确认送餐</a>
+                            <!--<a title="通知用户与客服沟通" href="{:U('show?feedback_id='.$feedback['feedback_id'])}">通知用户与客服沟通</a>-->
+                            <button class="btn ajax-post" url="{:U('FoodWxFeedback/show?feedback_id='.$feedback['feedback_id'])}" target-form="ids">通知用户与客服沟通</button>
                             <?php
                             }
                             ?>
-                        </td>-->
+                        </td>
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="6" class="text-center">还没有微信告警!</td>
+                <td colspan="10" class="text-center">还没有微信维权!</td>
             </notempty>
             </tbody>
         </table>

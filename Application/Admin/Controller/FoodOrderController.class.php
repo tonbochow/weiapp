@@ -22,7 +22,7 @@ class FoodOrderController extends FoodBaseController {
     //微信支付的订单(前台面向商家)
     public function weixinpay() {
         /* 查询条件初始化 */
-        if(!empty(DINING_ROOM_ID)){//连锁分店店员登录
+        if(DINING_ROOM_ID != ''){//连锁分店店员登录
             $map['dining_room_id'] = DINING_ROOM_ID;
             $map['dining_member_id'] =UID;
             $map['mp_id'] = MP_ID;

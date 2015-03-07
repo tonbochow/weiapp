@@ -16,37 +16,40 @@ use Think\Model;
  */
 class FoodWxFeedbackModel extends Model {
 
-    public static $STATUS_UNDEAL = 0; //告警状态 未处理
-    public static $STATUS_DEALED = 1; //告警状态 已处理
+    public static $MSG_TYPE_REQUEST = 'request';//用户提交投诉
+    public static $MSG_TYPE_CONFIRM = 'confirm';//户确认取消投诉
+    public static $MSG_TYPE_REJECT  = 'reject'; //用户拒绝取消投诉
 
     /* 自动验证规则 */
     protected $_validate = array(
+        array('feedback_id', 'require', '用户投诉单id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('wx_openid', 'require', '告警用户wx_openid不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('appid', 'require', '告警appid不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('error_type', 'require', '告警error_type不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('description', 'require', '告警description不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('alarm_content', 'require', '告警alarm_content不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('wx_openid', 'require', '维权用户wx_openid不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('dining_room_id', 'require', '餐厅dining_room_id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('appid', 'require', '维权appid不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('msg_type', 'require', '用户维权类型msg_type不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('trans_id', 'require', '交易单号不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('reason', 'require', '维权投诉原因不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
     protected $_auto = array(
-        array('status', 0, self::MODEL_INSERT),
         array('create_time', NOW_TIME, self::MODEL_INSERT),
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
     //获取维权状态
-    public static function getFoodWxWarnStatus($status = null, $has_choice = true) {
+    public static function getFoodWxFeedbackMsgType($msg_type = null, $has_choice = true) {
         if ($has_choice) {
-            $status_arr = array('' => '请选择');
+            $msg_type_arr = array('' => '请选择');
         }
-        $status_arr[self::$STATUS_UNDEAL] = '未处理';
-        $status_arr[self::$STATUS_DEALED] = '已处理';
-        if ($status !== null) {
-            return $status_arr[$status];
+        $msg_type_arr[self::$MSG_TYPE_REQUEST] = '用户提交投诉';
+        $msg_type_arr[self::$MSG_TYPE_CONFIRM] = '户确认取消投诉';
+        $msg_type_arr[self::$MSG_TYPE_REJECT] = '用户拒绝取消投诉';
+        if ($msg_type !== null) {
+            return $msg_type_arr[$msg_type];
         }
-        return $status_arr;
+        return $msg_type_arr;
     }
 
 
