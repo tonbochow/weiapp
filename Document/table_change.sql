@@ -26,3 +26,5 @@ CHANGE COLUMN `order` `c_order`  tinyint(2) NOT NULL DEFAULT 1 COMMENT '菜单�
 ALTER TABLE `weiapp_food_order`
 MODIFY COLUMN `type`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '订单类型:1在餐厅下单用餐2线上订餐配送到家' AFTER `order_no`;
 
+ALTER TABLE `weiapp_food_order`
+ADD COLUMN `wx_openid`  varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid' AFTER `member_id`;

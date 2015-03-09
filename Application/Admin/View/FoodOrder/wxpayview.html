@@ -1,0 +1,158 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__STATIC__/bootstrap-3.3.2/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+    <style>
+        h1,h2,h3,h4,h5,h6,h7{margin-top: 0px;margin-bottom: 0px;}
+        caption{
+            background: none repeat scroll 0 0 #5cb85c;
+            border-radius: 4px 4px 0 0;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            display: table-caption;
+            letter-spacing: 2px;
+            padding: 3px 20px 5px;
+            white-space: nowrap;
+        }
+    </style>
+</block>
+
+
+<block name="body">
+    <div class="main-title">
+        <h2><B>微信支付订单详细页面</B></h2>
+    </div>
+
+    <div class="panel panel-success">
+        <div class="panel-heading"><B>微信支付订单基本信息</B></div>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>订单号：</th>
+                    <td>{$food_order.order_no}</td>
+                    <th>订单总金额：</th>
+                    <td>￥{$food_order.amount}</td>
+                    <th>订单状态：</th>
+                    <td><?php echo \Admin\Model\FoodOrderModel::getFoodOrderStatus($food_order['status']); ?></td>
+                </tr>
+                <tr>
+                    <th>微信公众平台:</th>
+                    <td><?php echo \Admin\Model\MicroPlatformModel::getMpName($food_order['mp_id']);?></td>
+                    <th>餐厅名:</th>
+                    <td><?php echo $food_order['dining_room_id'];?></td>
+                    <th>餐厅负责人:</th>
+                    <td><?php echo $food_order['dining_member_id'];?></td>
+                </tr>
+                <tr>
+                    <th>餐费:</th>
+                    <td>￥{$food_order.food_amount}</td>
+                    <th>送餐费:</th>
+                    <td>￥{$food_order.delivery_fee}</td>
+                    <th>实际支付金额:</th>
+                    <td>￥{$food_order.real_pay_amount}</td>
+                </tr>
+                <tr>
+                    <th>用户昵称：</th>
+                    <td>
+                        <?php echo \Admin\Model\MemberModel::getMemberNickName($food_order['member_id']);?></td>
+                    </td>
+                    <th>下单时间：</th>
+                    <td>
+            <if condition="$food_order.create_time eq 0">
+                --/--
+                <else />
+                {$food_order.create_time|date='Y-m-d H:i:s',###}
+            </if>
+            </td>
+            <th>支付方式：</th>
+            <td><?php echo  \Admin\Model\FoodOrderModel::getFoodPayType($food_order['pay_type']);?></td>
+            </tr>
+            <tr>
+                <th>支付时间：</th>
+                <td>
+            <if condition="$food_order.pay_time eq 0">
+                --/--
+                <else />
+                {$food_order.pay_time|date='Y-m-d H:i:s',###}
+            </if>
+            </td>
+            <th>送餐时间:</th>
+            <td>
+            <if condition="$food_order.delivery_time eq 0">
+                --/--           
+                <else />
+                {$food_order.delivery_time|date='Y-m-d H:i:s',###}
+            </if>
+            </td>
+            <th>完成时间:</th>
+            <td>
+            <if condition="$food_order.finish_time eq 0">
+                --/--           
+                <else />
+                {$food_order.finish_time|date='Y-m-d H:i:s',###}
+            </if>
+            </td>
+            </tr>
+            <tr>
+                <th>备注:</th>
+                <td>{$food_order.remark}</td>
+                <th></th>
+                <td></td>
+                <th></th>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <table class="table table-bordered">
+        <caption>微信支付订单菜品详细页面</caption>
+        <thead>
+        <tbody>
+            <tr>
+                <th>菜品名</th>
+                <th>单位</th>
+                <th>微信价</th>
+                <th>数量</th>
+                <th>金额</th>
+                <th>实际支付</th>
+            </tr>
+        <volist name="food_order_info" id="detail">
+            <tr>
+                <td><?php echo $detail['food_id'];?></td>
+                <td>{$detail.unit}</td>
+                <td>{$detail.weixin_price}</td>
+                <td>{$detail.d_count}</td>
+                <td>{$detail.d_amount}</td>
+                <td>{$detail.d_real_pay_amount}</td>
+            </tr>
+        </volist>
+        </tbody>
+        </thead>
+    </table>
+
+
+    <form id='food_order_form' name='food_order_form' method='post' action="{:U('orderprint')}" target='_blank'>
+        <div class="form-group" style="text-align:center;">
+            <input type='hidden' name='id' value='{$food_order.id}'>
+            <button class="btn btn-success" id='print' target-form="form">打 印</button>
+            <button class="btn btn-default" onclick="javascript:history.back(-1);
+                    return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+                $('#print').click(function () {
+                    $('#food_order_form').submit();
+                });
+    </script>
+</block>

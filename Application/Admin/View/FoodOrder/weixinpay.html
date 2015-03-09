@@ -1,8 +1,16 @@
 <extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
 
 <block name="body">
     <div class="main-title">
         <h2>微信支付订单列表 {$dining_room_name}</h2>
+    </div>
+    <div id="dialog" title="微信支付订单列表" style="display:none;">
+        <p id="dialog_content"></p>
     </div>
 
     <div class="cf">
@@ -68,18 +76,21 @@
                         <td>{$food_order.create_time}</td>
                     </if>
                         <td>
-                             <a title="查看明细" href="{:U('wxpayview?id='.$food_order['id'])}">查看明细</a>
+                            <a title="查看明细" href="{:U('wxpayview?id='.$food_order['id'])}">查看明细</a>
                             <?php
-                               if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED) || ($food_order['status']==\Admin\Model\FoodOrderModel::$STATUS_COMMITED && $food_order['pay_type'] == Admin\Model\FoodOrderModel::$PAY_TYPE_OFFLINE)){
+                               //if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED) || ($food_order['status']==\Admin\Model\FoodOrderModel::$STATUS_COMMITED && $food_order['pay_type'] == Admin\Model\FoodOrderModel::$PAY_TYPE_OFFLINE)){
+                               if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED)){
                             ?>
-                            <a title="确认送餐" href="{:U('confirm?id='.$food_order['id'])}">确认送餐</a>
+                            <!--<a title="确认送餐" class="btn ajax-post" href="{:U('confirm?id='.$food_order['id'])}">确认送餐</a>-->
+                            <button class="btn" onclick="javascript:delivery_confirm({$food_order['id']})" id="confirm_{$food_order['id']}" target-form="ids">确认送餐</button>
                             <?php
                             }
                             ?>
                             <?php
                                if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_DELIVERY){
                             ?>
-                            <a title="订单完成" href="{:U('finish?id='.$food_order['id'])}">订单完成</a>
+                            <!--<a title="订单完成" href="{:U('finish?id='.$food_order['id'])}">订单完成</a>-->
+                            <button class="btn" onclick="javascript:order_finish({$food_order['id']})" id="finish_{$food_order['id']}" target-form="ids">订单完成</button>
                             <?php
                             }
                             ?>
@@ -100,8 +111,46 @@
 
 <block name="script">
     <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
-    
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript">
+        //确认送餐
+        function delivery_confirm(id){
+            $.ajax({
+                type: "POST",
+                url: "/Admin/FoodOrder/confirm",
+                data: {'id':id},
+                dataType: 'json',
+                success: function (data) {
+                    var obj = eval(data);
+                    $('#dialog_content').text(data.info);
+                    $("#dialog").dialog({modal: true});
+                    setTimeout("result(" + data.status + ","+id+",'confirm')", 1000);
+                    window.location.reload();
+                }
+            });
+        }
+        //订单完成
+        function order_finish(id){
+            $.ajax({
+                type: "POST",
+                url: "/Admin/FoodOrder/finish",
+                data: {'id':id},
+                dataType: 'json',
+                success: function (data) {
+                    var obj = eval(data);
+                    $('#dialog_content').text(data.info);
+                    $("#dialog").dialog({modal: true});
+                    setTimeout("result(" + data.status + ","+id+",'finish')", 1000);
+                    window.location.reload();
+                }
+            });
+        }
+        function result(status,id,id_cond) {
+            $("#dialog").dialog("close");
+            if (status) {
+                $('#'+id_cond+'_'+id).css('display','none');
+            }
+        }
         $(function() {
             //搜索功能
             $("#search").click(function() {
@@ -123,6 +172,7 @@
                     return false;
                 }
             });
+           
         });
     </script>
 </block>

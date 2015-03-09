@@ -26,6 +26,8 @@ class FoodOrderModel extends Model {
     public static $PAY_TYPE_WEIXIN = 1; //支付类型:微信支付
     public static $PAY_TYPE_ZHIFUBAO = 2; //支付类型:支付宝支付
     public static $PAY_TYPE_OFFLINE = 3; //支付类型:线下支付
+    public static $PRINT_STATUS_NO = 0;//打印状态:未打印
+    public static $PRINT_STATUS_YES = 1;//打印状态:已打印
 
     /* 自动验证规则 */
     protected $_validate = array(
@@ -105,6 +107,17 @@ class FoodOrderModel extends Model {
         return $type_arr;
     }
 
-
+    //获取订单打印状态
+    public static function getFoodOrderPrintStatus($print = null, $has_choice = true) {
+        if ($has_choice) {
+            $print_arr = array('' => '请选择');
+        }
+        $print_arr[self::$PRINT_STATUS_NO] = '未打印';
+        $print_arr[self::$PRINT_STATUS_YES] = '已打印';
+        if ($print !== null) {
+            return $print_arr[$print];
+        }
+        return $print_arr;
+    }
 
 }

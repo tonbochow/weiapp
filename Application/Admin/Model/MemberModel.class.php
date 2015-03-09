@@ -89,6 +89,6 @@ class MemberModel extends Model {
 
     //添加静态方法获取nickname
     public static function getMemberNickName($uid){
-        return $this->where(array('uid'=>(int)$uid))->getField('nickname');
+        return M('Member')->where(array('uid'=>(int)$uid))->getField('nickname');
     }
 }
