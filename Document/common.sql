@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `weiapp_weixin_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信公众平台菜单';
 
 
-CREATE TABLE IF NOT EXISTS `weiapp_chain_dining_info` (
+CREATE TABLE IF NOT EXISTS `weiapp_chain_dining` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
   `member_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联用户表member的主键id(创建餐厅用户)',

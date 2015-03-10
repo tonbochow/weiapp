@@ -28,3 +28,26 @@ MODIFY COLUMN `type`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '订单类型:1在�
 
 ALTER TABLE `weiapp_food_order`
 ADD COLUMN `wx_openid`  varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid' AFTER `member_id`;
+
+
+ALTER TABLE `weiapp_dining_room`
+MODIFY COLUMN `chain_dining_id`  int(11) NOT NULL DEFAULT 0 COMMENT '连锁餐厅id对应chain_dining.id' AFTER `is_chain_dining`;
+
+CREATE TABLE `weiapp_chain_dining` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
+  `member_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联用户表member的主键id(创建餐厅用户)',
+  `chain_dining_name` varchar(60) NOT NULL DEFAULT '' COMMENT '连锁餐厅名称',
+  `chain_header` varchar(20) NOT NULL DEFAULT '' COMMENT '连锁餐厅负责人',
+  `phone` varchar(15) NOT NULL DEFAULT '' COMMENT '固定电话',
+  `mobile` char(11) NOT NULL DEFAULT '' COMMENT '手机号码',
+  `description` text NOT NULL,
+  `carousel_fir` varchar(256) NOT NULL DEFAULT '' COMMENT '轮播图片url',
+  `carousel_sec` varchar(256) NOT NULL DEFAULT '' COMMENT '轮播图片url',
+  `carousel_thr` varchar(256) NOT NULL DEFAULT '' COMMENT '轮播图片url',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态1启用0禁用',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `member_id` (`member_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='连锁餐厅信息';

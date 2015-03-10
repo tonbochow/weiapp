@@ -28,7 +28,7 @@ class FoodBaseController extends AdminController {
             $map['status'] = \Admin\Model\DiningRoomModel::$STATUS_ENABLED;
             $dining_room = $diningRoomModel->where($map)->find();
             if (empty($dining_room)) {
-                $this->error('您无权登录使用平台,请联系给您开头分店帐号负责人', '/Admin/Public/logout');
+                $this->error('您无权登录使用平台,请联系联系连锁总店负责人', '/Admin/Public/logout');
             }
             $platform_map['mp_id'] = $dining_room['mp_id'];
             $micro_platform = $microPlatformModel->where($platform_map)->find();
@@ -55,6 +55,8 @@ class FoodBaseController extends AdminController {
         $partnerkey = !empty($micro_platform['partnerkey']) ? trim($micro_platform['partnerkey']) : '';
         $paysignkey = !empty($micro_platform['paysignkey']) ? trim($micro_platform['paysignkey']) : '';
         $mp_token = !empty($micro_platform['mp_token']) ? trim($micro_platform['mp_token']) : '';
+        $is_chain = !empty($micro_platform['is_chain'])?true:false;
+        define('IS_CHAIN',$is_chain);//餐厅是否连锁
         define('MP_ID', $mp_id); //微信公众平台ID
         define('APPID', $appid); //微信公众平台APPID  基本参数
         define('APPSERCERT', $appsecret); //微信公众平台APPSERCERT 基本参数

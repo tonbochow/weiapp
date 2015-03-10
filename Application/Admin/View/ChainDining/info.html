@@ -1,0 +1,179 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>连锁餐厅基本信息设置</h2>
+    </div>
+
+    <div id="dialog" title="连锁餐厅基本信息" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_chain" ng-app="weiapp_chain" id="ng-app"  name="ChainForm" ng-controller="ChainController" ng-submit="submitForm()">
+
+        <div class="form-item" ng-class="{'has-error' : ChainForm.chain_dining_name.$invalid && !ChainForm.chain_dining_name.$pristine}">
+            <label class="item-label">连锁餐厅名称<span class="check-tips">（*必填:最大长度30）</span></label>
+            <div class="controls">
+                <input name="chain_dining_name" type="text" value="" ng-model="chain.chain_dining_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="30" required class="form-control text input-large" id="chain_dining_name" placeholder="连锁餐厅名称">
+                <p ng-show="ChainForm.chain_dining_name.$invalid && !ChainForm.chain_dining_name.$pristine" class="help-block">连锁餐厅名称(长度1-30)</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : ChainForm.chain_header.$invalid && !ChainForm.chain_header.$pristine}">
+            <label class="item-label">连锁餐厅负责人<span class="check-tips"></span></label>
+            <div class="controls">
+                <input name="chain_header" type="text" value="" ng-model="chain.chain_header"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,7}$/" ng-trim="true" ng-minlength="1" ng-maxlength="7" class="form-control text input-large" id="chain_header" placeholder="连锁餐厅负责人">
+                <p ng-show="ChainForm.chain_header.$invalid && !ChainForm.chain_header.$pristine" class="help-block">连锁餐厅负责人</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : ChainForm.phone.$invalid && !ChainForm.phone.$pristine}">
+            <label class="item-label">连锁餐厅电话<span class="check-tips"></span></label>
+            <div class="controls">
+                <input name="phone" type="text" value="" ng-model="chain.phone"  ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{8}$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="phone" placeholder="连锁餐厅电话">
+                <p ng-show="ChainForm.phone.$invalid && !ChainForm.phone.$pristine" class="help-block">连锁餐厅电话</p>
+            </div>
+        </div>
+
+
+        <div class="form-item" ng-class="{'has-error' : ChainForm.mobile.$invalid && !ChainForm.mobile.$pristine}">
+            <label class="item-label">连锁餐厅手机<span class="check-tips"></span></label>
+            <div class="controls">
+                <input name="mobile" type="text" value="" ng-model="chain.mobile"  ng-pattern="/^1\d{10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="11"  class="form-control text input-large" id="mobile" placeholder="连锁餐厅手机">
+                <p ng-show="ChainForm.mobile.$invalid && !ChainForm.mobile.$pristine" class="help-block">连锁餐厅手机</p>
+            </div>
+        </div>
+
+
+        <div class="form-item"  ng-class="{'has-error' : ChainForm.description.$invalid && !ChainForm.description.$pristine}">
+            <label class="item-label">连锁餐厅描述<span class="check-tips">（*必填）</span></label>
+            <div class="controls">
+                
+                 <div class="ueditor" config="config" ng-model="chain.description" ng-minlength="1" ng-trim="true" required ></div>
+                <!--<input name="description" type="text" value="" ng-model="chain.description"   ng-trim="true" ng-minlength="1"   class="form-control text input-large" required id="description" placeholder="连锁餐厅描述">-->
+                <p ng-show="ChainForm.description.$invalid && !ChainForm.description.$pristine" class="help-block">连锁餐厅描述</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : ChainForm.carousel_fir.$invalid && !ChainForm.carousel_fir.$pristine}">
+            <label class="item-label">连锁餐厅轮播第一张图片(*必选)<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$chain_dining.carousel_fir}" id="pic_carousel_fir" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_fir" id="file_carousel_fir" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="carousel_fir" name="carousel_fir" value="{$chain_dining.carousel_fir}" ng-model="chain.carousel_fir">
+                <p ng-show="ChainForm.carousel_fir.$invalid && !ChainForm.carousel_fir.$pristine" class="help-block">连锁餐厅第一张轮播图片</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : ChainForm.carousel_sec.$invalid && !ChainForm.carousel_sec.$pristine}">
+            <label class="item-label">连锁餐厅轮播第二张图片(*必选)<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$chain_dining.carousel_sec}" id="pic_carousel_sec" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_sec" id="file_carousel_sec" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="carousel_sec" name="carousel_sec" value="{$chain_dining.carousel_sec}"  ng-model="chain.carousel_sec">
+                <p ng-show="ChainForm.carousel_sec.$invalid && !ChainForm.carousel_sec.$pristine" class="help-block">连锁餐厅第二张轮播图片</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : ChainForm.carousel_thr.$invalid && !ChainForm.carousel_thr.$pristine}">
+            <label class="item-label">连锁餐厅轮播第三张图片(*必选)<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$chain_dining.carousel_thr}" id="pic_carousel_thr" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_thr" id="file_carousel_thr" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="carousel_thr" name="carousel_thr" value="{$chain_dining.carousel_thr}"  ng-model="chain.carousel_thr">
+                <p ng-show="ChainForm.carousel_thr.$invalid && !ChainForm.carousel_thr.$pristine" class="help-block">连锁餐厅第三张轮播图片</p>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <button type="submit" class="btn btn-success submit" ng-disabled="ChainForm.$invalid">保 存</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);
+                            return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript" src="__STATIC__/LocalResizeIMG/LocalResizeIMG.js"></script>
+    <script type="text/javascript" src="__STATIC__/LocalResizeIMG/patch/mobileBUGFix.mini.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.config.food.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/angular-ueditor.js"></script>
+    <script type="text/javascript">
+                var ChainModule = angular.module("weiapp_chain", ['ng.ueditor']);
+                ChainModule.controller("ChainController", function ($scope, $http) {
+                    $(function(){
+                        $('#file_carousel_fir').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_carousel_fir = result.clearBase64;
+                                $('#pic_carousel_fir').attr("src",result.base64);
+                                $('#carousel_fir').val(compress_carousel_fir);
+                                console.log(result);
+                            }
+                        });
+                        $('#file_carousel_sec').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_carousel_sec = result.clearBase64;
+                                $('#pic_carousel_sec').attr("src",result.base64);
+                                $('#carousel_sec').val(compress_carousel_sec);
+                                console.log(result);
+                            }
+                        });
+                        $('#file_carousel_thr').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_carousel_thr = result.clearBase64;
+                                $('#pic_carousel_thr').attr("src",result.base64);
+                                $('#carousel_thr').val(compress_carousel_thr);
+                                console.log(result);
+                            }
+                        });
+                    });
+                    $scope.chain = {$json_chain_dining};
+                    $scope.submitForm = function () {
+                        $('.submit').attr('disabled', 'true');
+                        $scope.chain.carousel_fir = $('#carousel_fir').val();
+                        $scope.chain.carousel_sec = $('#carousel_sec').val();
+                        $scope.chain.carousel_thr = $('#carousel_thr').val();
+                        $http({
+                            method: "POST",
+                            url: "/Admin/ChainDining/info",
+                            data: $.param($scope.chain),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function (data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+//                    if (status) {
+//                        $('.submit').removeAttr("disabled");
+//                    } else {
+//                        $('.submit').removeAttr("disabled");
+//                    }
+                }
+    </script>
+</block>
