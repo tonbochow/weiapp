@@ -2,21 +2,25 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>微信公众平台菜单列表 (<span style="color:red">父菜单ID为0为一级菜单[最多3个]否则为二级菜单[最多5个]</span>)</h2>
+        <h2>餐厅列表</h2>
     </div>
 
     <div class="cf">
-        <a class="btn" href="{:U('WeixinMenu/recommend')}">一键生成<span style="color:red">推荐</span>微信菜单</a>
-        <a class="btn" href="{:U('WeixinMenu/custom')}">一键生成<span style="color:yellow">自定义</span>微信菜单</a>
-        <a class="btn" href="{:U('WeixinMenu/add')}">创建一级菜单</a>
-        <button class="btn ajax-post" url="{:U('WeixinMenu/enable')}" target-form="ids">启 用</button>
-        <button class="btn ajax-post" url="{:U('WeixinMenu/disable')}" target-form="ids">禁 用</button>
+        <?php
+            if(IS_CHAIN || empty($list)){
+        ?>
+        <a class="btn" href="{:U('DiningRoom/add')}">创建餐厅</a>
+        <?php
+        }
+        ?>
+        <button class="btn ajax-post" url="{:U('DiningRoom/enable')}" target-form="ids">启 用</button>
+        <button class="btn ajax-post" url="{:U('DiningRoom/disable')}" target-form="ids">禁 用</button>
 
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
-                <input type="text" name="menu_name" class="search-input" value="{:I('menu_name')}" placeholder="请输入菜单名">
-                <a class="sch-btn" href="javascript:;" id="search" url="{:U('WeixinMenu/food')}"><i class="btn-search"></i></a>
+                <input type="text" name="dining_name" class="search-input" value="{:I('dining_name')}" placeholder="请输入餐厅名">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('DiningRoom/show')}"><i class="btn-search"></i></a>
             </div>
         </div>
     </div>
@@ -29,14 +33,11 @@
                         <input class="checkbox check-all" type="checkbox">
                     </th>
                     <!--<th>ID</th>-->
-                    <th>菜单ID</th>
-                    <th>菜单名</th>
-                    <th>菜单类型</th>
-                    <th>菜单KEY</th>
-                    <th>菜单URL</th>
-                    <th>显示顺序</th>
-                    <th>父菜单ID</th>
-                    <th>父菜单顺序</th>
+                    <th>所属餐厅</th>
+                    <th>餐厅名</th>
+                    <th>餐厅负责人</th>
+                    <th>餐厅电话</th>
+                    <th>详细地址</th>
                     <th>状态</th>
                     <th>创建时间</th>
                     <th>操作</th>
@@ -44,37 +45,28 @@
             </thead>
             <tbody>
             <notempty name="list">
-                <volist name="list" id="menu">
+                <volist name="list" id="dining_room">
                     <tr>
-                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$menu.id}"></td>
-                        <td>{$menu.id}</td>
-                        <td>{$menu.menu_name}</td>
-                        <td>{$menu.menu_type}</td>
-                        <td>{$menu.menu_key}</td>
-                        <td>{$menu.menu_url|substr=0,10}...</td>
-                        <td>{$menu.c_order}</td>
-                        <td>{$menu.pid}</td>
-                        <td>{$menu.p_order}</td>
-                         <td><?php echo \Admin\Model\WeixinMenuModel::getWxMenuStatus($menu['status']);?></td>
-                    <if condition="$menu.create_time neq 0">
-                        <td>{$menu.create_time|date="Y-m-d H:i:s",###}</td>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$dining_room.id}"></td>
+                        <td>{$dining_room.id}</td>
+                        <td>{$dining_room.chain_dining_id}</td>
+                        <td>{$dining_room.dining_name}</td>
+                        <td>{$dining_room.dining_header}</td>
+                        <td>{$dining_room.phone}</td>
+                        <td>{$dining_room.address|substr=0,10}...</td>
+                         <td><?php echo \Admin\Model\DiningRoomModel::getDiningRoomStatus($dining_room['status']);?></td>
+                    <if condition="$dining_room.create_time neq 0">
+                        <td>{$dining_room.create_time|date="Y-m-d H:i:s",###}</td>
                         <else />
-                        <td>{$menu.create_time}</td>
+                        <td>{$dining_room.create_time}</td>
                     </if>
                         <td>
-                            <a title="编辑" href="{:U('edit?id='.$menu['id'])}">编辑</a>
-                                <?php 
-                                if($menu['pid'] == 0 && \Admin\Model\WeixinMenuModel::getSubMenuNum($menu['id'])<5){
-                                ?>
-                            <a title="创建二级菜单" href="{:U('addsubmenu?pid='.$menu['id'])}">创建二级菜单</a>
-                            <?php
-                            }
-                            ?>
+                            <a title="编辑" href="{:U('edit?id='.$dining_room['id'])}">编辑</a>
                         </td>
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="12" class="text-center">您未创建任何微信菜单 </td>
+                <td colspan="9" class="text-center">您未创建餐厅 </td>
             </notempty>
             </tbody>
         </table>
