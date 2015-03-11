@@ -7,6 +7,8 @@
 
 namespace Admin\Controller;
 
+use User\Api\UserApi;
+
 /**
  * 微餐饮微信公众平台 | 餐厅控制器
  */
@@ -33,14 +35,61 @@ class DiningRoomController extends FoodBaseController {
 
     //创建餐厅(前台面向商家) 非连锁只能创建一个 连锁可以创建多个
     public function add() {
-        if(IS_CHAIN){//若为连锁餐厅 检查是否已创建了连锁餐厅信息
-            $chain_dining = M('ChainDining')->where(array('mp_id'=>MP_ID))->find();
-            if($chain_dining == false){
-                $this->error('请先创建连锁餐厅信息!','/Admin/ChainDining/info');
+        if (IS_CHAIN) {//若为连锁餐厅 检查是否已创建了连锁餐厅信息
+            $chain_dining = M('ChainDining')->where(array('mp_id' => MP_ID))->find();
+            if ($chain_dining == false) {
+                if (IS_POST) {
+                    $this->error('请先创建连锁餐厅信息!', '/Admin/ChainDining/info', true);
+                }
+                $this->error('请先创建连锁餐厅信息!', '/Admin/ChainDining/info');
             }
         }
+        if (IS_POST) {
+            $dining_room_data = I('post.');
+            $diningRoomModel = D('DiningRoom');
+            $diningRoomModel->startTrans();
+            $User = new UserApi; //1创建后台登录用户 
+            $dining_uid = $User->register($dining_room_data['username'], $dining_room_data['password'], $dining_room_data['email']);
+            if ($dining_uid == false) {
+                $diningRoomModel->rollback();
+                $this->error($this->showRegError($dining_uid));
+            }
+            unset($dining_room_data['username']);
+            unset($dining_room_data['password']);
+            unset($dining_room_data['email']);
+            $dining_room_data['mp_id'] = MP_ID;
+            $dining_room_data['member_id'] = $dining_uid;
+            $dining_room_data['is_chain_dining'] = IS_CHAIN ? \Admin\Model\DiningRoomModel::$IS_CHAIN : \Admin\Model\DiningRoomModel::$NOT_CHAIN;
+            $dining_room_data['chain_dining_id'] = IS_CHAIN ? $chain_dining['id'] : '';
+            if ($diningRoomModel->create($dining_room_data)) {
+                $dining_room_res = $diningRoomModel->add();
+                if ($dining_room_res) {
+                    $diningRoomModel->commit();
+                    $this->success('保存餐厅信息成功!', '', true);
+                } else {
+                    $diningRoomModel->rollback();
+                    $this->error($diningRoomModel->getError(), '', true);
+                }
+            } else {
+                $diningRoomModel->rollback();
+                $this->error('保存餐厅信息失败!', '', true);
+            }
+        }
+        //省市县设置
+        $region_model = D('Region');
+        $province = $region_model->getRegion(86);
+        $this->assign('province', $province);
+        $this->assign('json_dining', json_encode(null));
         $this->meta_title = '创建餐厅';
         $this->display('add');
+    }
+
+    //获取市县
+    public function getRegion() {
+        $model = D('Region');
+        $parent = intval($_REQUEST['pid']);
+        $list = $model->getRegion($parent);
+        echo json_encode($list);
     }
 
     //编辑餐厅(前台面向商家)

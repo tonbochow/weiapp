@@ -18,6 +18,8 @@ class DiningRoomModel extends Model {
 
     public static $STATUS_DISABLED = -1; //状态 禁用
     public static $STATUS_ENABLED = 1; //状态 启用
+    public static $IS_CHAIN = 1; //连锁
+    public static $NOT_CHAIN = 0; //非连锁
 
     /* 自动验证规则 */
     protected $_validate = array(
@@ -28,7 +30,6 @@ class DiningRoomModel extends Model {
         array('description', 'require', '餐厅描述不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('type', 'require', '订单类型类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('pay_type', 'require', '订单支付类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-
     );
 
     /* 自动完成规则 */
@@ -52,10 +53,22 @@ class DiningRoomModel extends Model {
     }
 
     //获取餐厅名称
-    public static function getDiningRoomName($id){
-        $dining_room = M('DiningRoom')->where(array('id'=>$id))->find();
+    public static function getDiningRoomName($id) {
+        $dining_room = M('DiningRoom')->where(array('id' => $id))->find();
         return $dining_room['dining_name'];
     }
 
+    //获取餐厅是否连锁
+    public static function getDiningRoomChain($chain = null, $has_choice = true) {
+        if ($has_choice) {
+            $chain_arr = array('' => '请选择');
+        }
+        $chain_arr[self::$IS_CHAIN] = '连锁';
+        $chain_arr[self::$NOT_CHAIN] = '非连锁';
+        if ($chain !== null) {
+            return $chain_arr[$chain];
+        }
+        return $chain_arr;
+    }
 
 }
