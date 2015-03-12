@@ -48,12 +48,11 @@
                 <volist name="list" id="dining_room">
                     <tr>
                         <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$dining_room.id}"></td>
-                        <td>{$dining_room.id}</td>
-                        <td>{$dining_room.chain_dining_id}</td>
+                        <td><?php echo \Admin\Model\ChainDiningModel::getChainDiningNameById($dining_room['chain_dining_id']);?></td>
                         <td>{$dining_room.dining_name}</td>
                         <td>{$dining_room.dining_header}</td>
                         <td>{$dining_room.phone}</td>
-                        <td>{$dining_room.address|substr=0,10}...</td>
+                        <td>{$dining_room.address|mb_substr=0,9}...</td>
                          <td><?php echo \Admin\Model\DiningRoomModel::getDiningRoomStatus($dining_room['status']);?></td>
                     <if condition="$dining_room.create_time neq 0">
                         <td>{$dining_room.create_time|date="Y-m-d H:i:s",###}</td>
@@ -62,6 +61,7 @@
                     </if>
                         <td>
                             <a title="编辑" href="{:U('edit?id='.$dining_room['id'])}">编辑</a>
+                            <a title="编辑" href="{:U('detail?id='.$dining_room['id'])}">图片添加</a>
                         </td>
                     </tr>
                 </volist>

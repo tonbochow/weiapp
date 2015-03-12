@@ -156,6 +156,23 @@ CREATE TABLE IF NOT EXISTS `weiapp_chain_dining` (
   UNIQUE KEY `member_id` (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='连锁餐厅信息';
 
+
+
+CREATE TABLE IF NOT EXISTS `weiapp_dining_member` (
+  `member_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联用户表member的主键id(平台管理人员创建的用户)',
+  `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
+  `real_name` varchar(30) NOT NULL DEFAULT '' COMMENT '真实姓名',
+  `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
+  `role_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '餐厅用户角色类型1店员2经理(后续可能添加管理员添加)',
+  `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号码',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态1启用0禁用',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`member_id`),
+  UNIQUE KEY `member_id` (`member_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE IF NOT EXISTS `weiapp_dining_room` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',

@@ -13,7 +13,7 @@
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_dining" ng-app="weiapp_dining" id="ng-app"  name="DiningForm" ng-controller="DiningController" ng-submit="submitForm()">
-        <div class="form-item" ng-class="{'has-error' : DiningForm.username.$invalid && !DiningForm.username.$pristine}">
+<!--        <div class="form-item" ng-class="{'has-error' : DiningForm.username.$invalid && !DiningForm.username.$pristine}">
             <label class="item-label">连锁餐厅用户名<span class="check-tips">（*必填:最大长度16 重要登录后台连锁分店用户名）</span></label>
             <div class="controls">
                 <input name="username" type="text" value="" ng-model="dining.username"  ng-pattern="/^[a-zA-z_]+\w{1,16}$/" ng-trim="true" ng-minlength="1" ng-maxlength="16" required class="form-control text input-large" id="username" placeholder="连锁餐厅后台登录用户名">
@@ -35,7 +35,7 @@
                 <input name="email" type="text" value="" ng-model="dining.email"  ng-pattern="/^[\w\d]+[\w\d-.]*@[\w\d-.]+\.[\w\d]{2,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="32" required class="form-control text input-large" id="email" placeholder="后台登录用户邮箱">
                 <p ng-show="DiningForm.email.$invalid && !DiningForm.email.$pristine" class="help-block">后台用户邮箱</p>
             </div>
-        </div>
+        </div>-->
 
         <div class="form-item" ng-class="{'has-error' : DiningForm.dining_name.$invalid && !DiningForm.dining_name.$pristine}">
             <label class="item-label">餐厅名称<span class="check-tips">（*必填:最大长度30）</span></label>
@@ -142,35 +142,6 @@
         </div>
 
         <div style="width:603px;height:300px" id="container"></div>
-<!--        <div class="form-item" ng-class="{'has-error' : ChainForm.carousel_fir.$invalid && !ChainForm.carousel_fir.$pristine}">
-            <label class="item-label">连锁餐厅轮播第一张图片(*必选)<span class="check-tips"></span></label>
-            <div class="controls">
-                <img src="{$chain_dining.carousel_fir}" id="pic_carousel_fir" style="max-width: 300px;"><br>
-                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_fir" id="file_carousel_fir" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="carousel_fir" name="carousel_fir" value="{$chain_dining.carousel_fir}" ng-model="chain.carousel_fir">
-                <p ng-show="ChainForm.carousel_fir.$invalid && !ChainForm.carousel_fir.$pristine" class="help-block">连锁餐厅第一张轮播图片</p>
-            </div>
-        </div>
-
-        <div class="form-item" ng-class="{'has-error' : ChainForm.carousel_sec.$invalid && !ChainForm.carousel_sec.$pristine}">
-            <label class="item-label">连锁餐厅轮播第二张图片(*必选)<span class="check-tips"></span></label>
-            <div class="controls">
-                <img src="{$chain_dining.carousel_sec}" id="pic_carousel_sec" style="max-width: 300px;"><br>
-                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_sec" id="file_carousel_sec" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="carousel_sec" name="carousel_sec" value="{$chain_dining.carousel_sec}"  ng-model="chain.carousel_sec">
-                <p ng-show="ChainForm.carousel_sec.$invalid && !ChainForm.carousel_sec.$pristine" class="help-block">连锁餐厅第二张轮播图片</p>
-            </div>
-        </div>
-
-        <div class="form-item" ng-class="{'has-error' : ChainForm.carousel_thr.$invalid && !ChainForm.carousel_thr.$pristine}">
-            <label class="item-label">连锁餐厅轮播第三张图片(*必选)<span class="check-tips"></span></label>
-            <div class="controls">
-                <img src="{$chain_dining.carousel_thr}" id="pic_carousel_thr" style="max-width: 300px;"><br>
-                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_thr" id="file_carousel_thr" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="carousel_thr" name="carousel_thr" value="{$chain_dining.carousel_thr}"  ng-model="chain.carousel_thr">
-                <p ng-show="ChainForm.carousel_thr.$invalid && !ChainForm.carousel_thr.$pristine" class="help-block">连锁餐厅第三张轮播图片</p>
-            </div>
-        </div>-->
 
         <div class="form-item">
             <button type="submit" class="btn btn-success submit" ng-disabled="DiningForm.$invalid">保 存</button>

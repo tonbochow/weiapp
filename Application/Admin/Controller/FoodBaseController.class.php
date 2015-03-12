@@ -23,14 +23,11 @@ class FoodBaseController extends AdminController {
         $platform_data['app_type'] = \Admin\Model\MicroPlatformModel::$APP_TYPE_FOOD;
         $micro_platform = $microPlatformModel->where($platform_data)->find();
         if ($micro_platform == false) {//可能是连锁分店店员登录
-            $diningRoomModel = M('DiningRoom');
-            $map['member_id'] = UID;
-            $map['status'] = \Admin\Model\DiningRoomModel::$STATUS_ENABLED;
-            $dining_room = $diningRoomModel->where($map)->find();
-            if (empty($dining_room)) {
+            $dining_member = $this->CheckDiningMember();
+            if (empty($dining_member)) {
                 $this->error('您无权登录使用平台,请联系联系连锁总店负责人', '/Admin/Public/logout');
             }
-            $platform_map['mp_id'] = $dining_room['mp_id'];
+            $platform_map['mp_id'] = $dining_member['mp_id'];
             $micro_platform = $microPlatformModel->where($platform_map)->find();
             if ($micro_platform['status'] == \Admin\Model\MicroPlatformModel::$STATUS_DENY) {
                 $this->error('您的微信公众平台禁止使用(可能负责人到期未续费)！', '/Admin/Public/logout');
@@ -44,9 +41,9 @@ class FoodBaseController extends AdminController {
             if ($micro_platform['is_bind'] == \Admin\Model\MicroPlatformModel::$NOT_BIND) {
                 $this->error('请先登录微信公众平台绑定！', '/Admin/Public/logout');
             }
-            define('DINING_ROOM_ID',$dining_room['id']);//定义连锁分店id
-        }else{
-            define('DINING_ROOM_ID','');//定义连锁分店id
+            define('DINING_ROOM_ID', $dining_member['dining_room_id']); //定义连锁分店id
+        } else {
+            define('DINING_ROOM_ID', ''); //定义连锁分店id
         }
         $mp_id = !empty($micro_platform) ? $micro_platform['id'] : '';
         $appid = !empty($micro_platform['appid']) ? $micro_platform['appid'] : '';
@@ -55,8 +52,8 @@ class FoodBaseController extends AdminController {
         $partnerkey = !empty($micro_platform['partnerkey']) ? trim($micro_platform['partnerkey']) : '';
         $paysignkey = !empty($micro_platform['paysignkey']) ? trim($micro_platform['paysignkey']) : '';
         $mp_token = !empty($micro_platform['mp_token']) ? trim($micro_platform['mp_token']) : '';
-        $is_chain = !empty($micro_platform['is_chain'])?true:false;
-        define('IS_CHAIN',$is_chain);//餐厅是否连锁
+        $is_chain = !empty($micro_platform['is_chain']) ? true : false;
+        define('IS_CHAIN', $is_chain); //餐厅是否连锁
         define('MP_ID', $mp_id); //微信公众平台ID
         define('APPID', $appid); //微信公众平台APPID  基本参数
         define('APPSERCERT', $appsecret); //微信公众平台APPSERCERT 基本参数
@@ -72,11 +69,8 @@ class FoodBaseController extends AdminController {
     protected function checkUserRequire() {
         if (!is_administrator()) {
             //检测是否是连锁分店店员登录(平台可使用情况才能分配连锁店员)
-            $diningRoomModel = M('DiningRoom');
-            $map['member_id'] = UID;
-            $map['status'] = \Admin\Model\DiningRoomModel::$STATUS_ENABLED;
-            $dining_room = $diningRoomModel->where($map)->find();
-            if ($dining_room == false) {//连锁分店不存在该用户则检测该用户是否为微信平台管理者
+            $dining_member = $this->CheckDiningMember();
+            if ($dining_member == false) {//连锁分店不存在该用户则检测该用户是否为微信平台管理者
                 $memberInfoModel = M('MemberInfo');
                 $member_info = $memberInfoModel->where(array('member_id' => UID))->find();
                 if ($member_info == false) {
@@ -105,11 +99,8 @@ class FoodBaseController extends AdminController {
     protected function checkMicroPlatformRequire() {
         if (!is_administrator()) {
             //检测是否是连锁分店店员登录(平台可使用情况才能分配连锁店员)
-            $diningRoomModel = M('DiningRoom');
-            $map['member_id'] = UID;
-            $map['status'] = \Admin\Model\DiningRoomModel::$STATUS_ENABLED;
-            $dining_room = $diningRoomModel->where($map)->find();
-            if ($dining_room == false) {//连锁分店不存在该用户则检测该用户是否为微信平台管理者
+            $dining_member = $this->CheckDiningMember();
+            if ($dining_member == false) {//连锁分店不存在该用户则检测该用户是否为微信平台管理者
                 $microPlatformModel = M('MicroPlatform');
                 $mp_data['member_id'] = UID;
                 $mp_data['app_type'] = \Admin\Model\MicroPlatformModel::$APP_TYPE_FOOD;
@@ -131,6 +122,15 @@ class FoodBaseController extends AdminController {
                 }
             }
         }
+    }
+
+    //检测当前用户是否餐厅店员(dining_member表)
+    protected function CheckDiningMember() {
+        $diningMemberModel = M('DiningMember');
+        $map['member_id'] = UID; //餐饮店员
+        $map['status'] = \Admin\Model\DiningMemberModel::$STATUS_ENABLED;
+        $dining_member = $diningMemberModel->where($map)->find();
+        return $dining_member;
     }
 
 }

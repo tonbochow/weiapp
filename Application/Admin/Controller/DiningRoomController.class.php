@@ -7,7 +7,7 @@
 
 namespace Admin\Controller;
 
-use User\Api\UserApi;
+//use User\Api\UserApi;
 
 /**
  * 微餐饮微信公众平台 | 餐厅控制器
@@ -48,17 +48,31 @@ class DiningRoomController extends FoodBaseController {
             $dining_room_data = I('post.');
             $diningRoomModel = D('DiningRoom');
             $diningRoomModel->startTrans();
-            $User = new UserApi; //1创建后台登录用户 
-            $dining_uid = $User->register($dining_room_data['username'], $dining_room_data['password'], $dining_room_data['email']);
-            if ($dining_uid == false) {
-                $diningRoomModel->rollback();
-                $this->error($this->showRegError($dining_uid));
-            }
-            unset($dining_room_data['username']);
-            unset($dining_room_data['password']);
-            unset($dining_room_data['email']);
+//            //1创建后台登录用户 
+//            $User = new UserApi;
+//            $dining_uid = $User->register($dining_room_data['username'], $dining_room_data['password'], $dining_room_data['email']);
+//            if ($dining_uid <=0) {
+//                $diningRoomModel->rollback();
+//                $this->error($this->showRegError($dining_uid));
+//            }
+//            //2 将用户添加入微餐饮店员组
+//            $authGroupModel = M('AuthGroup');
+//            $group = $authGroupModel->where(array('description' => 'food_member'))->find();
+//            $access_data['uid'] = $dining_uid;
+//            $access_data['group_id'] = $group['id'];
+//            $authGroupAccessModel = M('AuthGroupAccess');
+//            $group_access_add = $authGroupAccessModel->add($access_data);
+//            if ($group_access_add == false) {
+//                $diningRoomModel->rollback();
+//                $this->error('添加用户到微餐饮店员组失败!', '', true);
+//            }
+//            //3 保存餐厅信息
+//            unset($dining_room_data['username']);
+//            unset($dining_room_data['password']);
+//            unset($dining_room_data['email']);
             $dining_room_data['mp_id'] = MP_ID;
-            $dining_room_data['member_id'] = $dining_uid;
+            $dining_room_data['member_id'] = UID;
+//            $dining_room_data['dining_staff_id'] = $dining_uid;
             $dining_room_data['is_chain_dining'] = IS_CHAIN ? \Admin\Model\DiningRoomModel::$IS_CHAIN : \Admin\Model\DiningRoomModel::$NOT_CHAIN;
             $dining_room_data['chain_dining_id'] = IS_CHAIN ? $chain_dining['id'] : '';
             if ($diningRoomModel->create($dining_room_data)) {
@@ -94,8 +108,34 @@ class DiningRoomController extends FoodBaseController {
 
     //编辑餐厅(前台面向商家)
     public function edit() {
+        $id = intval(I('get.id', '', 'trim'));
+        $diningRoomModel = M('DiningRoom');
+        $map['id'] = $id;
+        $map['member_id'] = UID;
+        $map['mp_id'] = MP_ID;
+        $dining_room = $diningRoomModel->where($map)->find();
+        if ($dining_room == false) {
+            $this->error('未检索到您要编辑的餐厅信息!');
+        }
+        $dining_room['description'] = htmlspecialchars_decode(stripslashes($dining_room['description']));
+        //省市县设置
+        $region_model = D('Region');
+        $province = $region_model->getRegion(86);
+        $this->assign('province', $province);
+        $city = $region_model->getRegion($dining_room['city']);
+        $this->assign('city', $city);
+        $town = $region_model->getRegion($dining_room['town']);
+        $this->assign('town', $town);
+
+        $this->assign('dining_room', $dining_room);
+        $this->assign('json_dining', json_encode($dining_room));
         $this->meta_title = '编辑餐厅';
         $this->display('edit');
+    }
+
+    //编辑餐厅详细(图片设置)
+    public function detail() {
+        
     }
 
     //启用餐厅(前台面向商家)

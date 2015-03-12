@@ -67,13 +67,13 @@ class ChainDiningModel extends Model {
 
     //通过mp_id获取连锁餐厅名称
     public static function getChainDiningNameByMpId($mp_id) {
-        $chain_dining = M('ChainDing')->where(array('mp_id' => $mp_id))->find();
+        $chain_dining = M('ChainDining')->where(array('mp_id' => $mp_id))->find();
         return $chain_dining['chain_dining_name'];
     }
 
     //通过id获取连锁餐厅名称
     public static function getChainDiningNameById($id) {
-        $chain_dining = M('ChainDing')->where(array('id' => $id))->find();
+        $chain_dining = M('ChainDining')->where(array('id' => $id))->find();
         return $chain_dining['chain_dining_name'];
     }
 

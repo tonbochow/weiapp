@@ -51,10 +51,12 @@ class AdminController extends Controller {
                 //检测非动态权限
                 $rule  = strtolower(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME);
                 if ( !$this->checkRule($rule,array('in','1,2')) ){
-                    $this->error('未授权访问!');
+//                    $this->error('未授权访问!');
+                    $this->error('未授权访问!','/Admin/Public/logout');
                 }
             }elseif( $dynamic === false ){
-                $this->error('未授权访问!');
+//                $this->error('未授权访问!');
+                $this->error('未授权访问!','/Admin/Public/logout');
             }
         }
         $this->assign('__MENU__', $this->getMenus());
