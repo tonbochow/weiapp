@@ -108,6 +108,20 @@ class DiningRoomController extends FoodBaseController {
 
     //编辑餐厅(前台面向商家)
     public function edit() {
+        if (IS_POST) {
+            $dining_room_data = I('post.');
+            $diningRoomModel = D('DiningRoom');
+            if ($diningRoomModel->create($dining_room_data)) {
+                $dining_room_edit = $diningRoomModel->save();
+                if ($dining_room_edit) {
+                    $this->success('保存餐厅成功', '', true);
+                } else {
+                    $this->error($diningRoomModel->getError(), '', true);
+                }
+            } else {
+                $this->error('餐厅编辑失败!', '', true);
+            }
+        }
         $id = intval(I('get.id', '', 'trim'));
         $diningRoomModel = M('DiningRoom');
         $map['id'] = $id;
@@ -122,9 +136,9 @@ class DiningRoomController extends FoodBaseController {
         $region_model = D('Region');
         $province = $region_model->getRegion(86);
         $this->assign('province', $province);
-        $city = $region_model->getRegion($dining_room['city']);
+        $city = $region_model->getRegion($dining_room['province']);
         $this->assign('city', $city);
-        $town = $region_model->getRegion($dining_room['town']);
+        $town = $region_model->getRegion($dining_room['city']);
         $this->assign('town', $town);
 
         $this->assign('dining_room', $dining_room);
@@ -135,7 +149,17 @@ class DiningRoomController extends FoodBaseController {
 
     //编辑餐厅详细(图片设置)
     public function detail() {
-        
+        $id = intval(I('get.id', '', 'trim'));
+        $map['id'] = $id;
+        $map['mp_id'] = MP_ID;
+        $map['member_id'] = UID;
+        $dining_room = M('DiningRoom')->where($map)->find();
+        if ($dining_room == false) {
+            $this->error('未检索到您要添加图片的餐厅信息!');
+        }
+
+        $this->meta_title = '餐厅图片添加(详细设置)';
+        $this->display('detail');
     }
 
     //启用餐厅(前台面向商家)

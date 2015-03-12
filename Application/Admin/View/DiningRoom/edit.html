@@ -32,7 +32,7 @@
         <div class="form-item" ng-class="{'has-error' : DiningForm.phone.$invalid && !DiningForm.phone.$pristine}">
             <label class="item-label">餐厅电话<span class="check-tips"></span></label>
             <div class="controls">
-                <input name="phone" type="text" value="" ng-model="dining.phone"  ng-pattern="/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{8}$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="phone" placeholder="餐厅电话">
+                <input name="phone" type="text" value="" ng-model="dining.phone"  ng-pattern="/^(\d{3}-|\d{4}-)?(\d{8}|\d{7})?$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="phone" placeholder="餐厅电话">
                 <p ng-show="DiningForm.phone.$invalid && !DiningForm.phone.$pristine" class="help-block">餐厅电话</p>
             </div>
         </div>
@@ -86,12 +86,7 @@
             <div class="col-sm-10">
                 <select class="form-control" id="town" ng-model="dining.town" name="town"> 
                     <option value="" selected>县</option>
-                    <volist name="town" id="vo"> 
-                        <if>
-                            <option value="{$vo.id}" >{$vo.name}</option>
-                            <else />
-                            <option value="{$vo.id}" >{$vo.name}</option>
-                        </if>
+                    <volist name="town" id="vo">
                         <option value="{$vo.id}" >{$vo.name}</option>
                     </volist>
                 </select>
@@ -187,7 +182,7 @@
                         $scope.dining.latitude = $('#latitude').val();
                         $http({
                             method: "POST",
-                            url: "/Admin/DiningRoom/add",
+                            url: "/Admin/DiningRoom/Edit",
                             data: $.param($scope.dining),
                             headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                         }).success(function (data) {

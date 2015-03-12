@@ -14,50 +14,6 @@
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_chain" ng-app="weiapp_chain" id="ng-app"  name="ChainForm" ng-controller="ChainController" ng-submit="submitForm()">
 
-        <div class="form-item" ng-class="{'has-error' : ChainForm.chain_dining_name.$invalid && !ChainForm.chain_dining_name.$pristine}">
-            <label class="item-label">连锁餐厅名称<span class="check-tips">（*必填:最大长度30）</span></label>
-            <div class="controls">
-                <input name="chain_dining_name" type="text" value="" ng-model="chain.chain_dining_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="30" required class="form-control text input-large" id="chain_dining_name" placeholder="连锁餐厅名称">
-                <p ng-show="ChainForm.chain_dining_name.$invalid && !ChainForm.chain_dining_name.$pristine" class="help-block">连锁餐厅名称(长度1-30)</p>
-            </div>
-        </div>
-
-        <div class="form-item" ng-class="{'has-error' : ChainForm.chain_header.$invalid && !ChainForm.chain_header.$pristine}">
-            <label class="item-label">连锁餐厅负责人<span class="check-tips"></span></label>
-            <div class="controls">
-                <input name="chain_header" type="text" value="" ng-model="chain.chain_header"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,7}$/" ng-trim="true" ng-minlength="1" ng-maxlength="7" class="form-control text input-large" id="chain_header" placeholder="连锁餐厅负责人">
-                <p ng-show="ChainForm.chain_header.$invalid && !ChainForm.chain_header.$pristine" class="help-block">连锁餐厅负责人</p>
-            </div>
-        </div>
-
-        <div class="form-item" ng-class="{'has-error' : ChainForm.phone.$invalid && !ChainForm.phone.$pristine}">
-            <label class="item-label">连锁餐厅电话<span class="check-tips"></span></label>
-            <div class="controls">
-                <input name="phone" type="text" value="" ng-model="chain.phone"  ng-pattern="/^(\d{3}-|\d{4}-)?(\d{8}|\d{7})$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="phone" placeholder="连锁餐厅电话">
-                <p ng-show="ChainForm.phone.$invalid && !ChainForm.phone.$pristine" class="help-block">连锁餐厅电话</p>
-            </div>
-        </div>
-
-
-        <div class="form-item" ng-class="{'has-error' : ChainForm.mobile.$invalid && !ChainForm.mobile.$pristine}">
-            <label class="item-label">连锁餐厅手机<span class="check-tips"></span></label>
-            <div class="controls">
-                <input name="mobile" type="text" value="" ng-model="chain.mobile"  ng-pattern="/^1\d{10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="11"  class="form-control text input-large" id="mobile" placeholder="连锁餐厅手机">
-                <p ng-show="ChainForm.mobile.$invalid && !ChainForm.mobile.$pristine" class="help-block">连锁餐厅手机</p>
-            </div>
-        </div>
-
-
-        <div class="form-item"  ng-class="{'has-error' : ChainForm.description.$invalid && !ChainForm.description.$pristine}">
-            <label class="item-label">连锁餐厅描述<span class="check-tips">（*必填）</span></label>
-            <div class="controls">
-                
-                 <div class="ueditor" config="config" ng-model="chain.description" ng-minlength="1" ng-trim="true" required ></div>
-                <!--<input name="description" type="text" value="" ng-model="chain.description"   ng-trim="true" ng-minlength="1"   class="form-control text input-large" required id="description" placeholder="连锁餐厅描述">-->
-                <p ng-show="ChainForm.description.$invalid && !ChainForm.description.$pristine" class="help-block">连锁餐厅描述</p>
-            </div>
-        </div>
-
         <div class="form-item" ng-class="{'has-error' : ChainForm.carousel_fir.$invalid && !ChainForm.carousel_fir.$pristine}">
             <label class="item-label">连锁餐厅轮播第一张图片(*必选)<span class="check-tips"></span></label>
             <div class="controls">
