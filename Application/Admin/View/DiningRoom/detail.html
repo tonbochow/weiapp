@@ -12,55 +12,55 @@
     <div id="dialog" title="餐厅图片添加" style="display:none;">
         <p id="dialog_content"></p>
     </div>
-    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_chain" ng-app="weiapp_dining" id="ng-app"  name="DiningForm" ng-controller="DiningController" ng-submit="submitForm()">
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_dining" ng-app="weiapp_dining" id="ng-app"  name="DiningForm" ng-controller="DiningController" ng-submit="submitForm()">
 
-        <div class="form-item" ng-class="{'has-error' : DiningForm.carousel_fir.$invalid && !DiningForm.carousel_fir.$pristine}">
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_1.$invalid && !DiningForm.input_1.$pristine}">
             <label class="item-label">第一张图片<span class="check-tips"></span></label>
             <div class="controls">
-                <img src="{$chain_dining.carousel_fir}" id="pic_carousel_fir" style="max-width: 300px;"><br>
-                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_fir" id="file_carousel_fir" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="carousel_fir" name="carousel_fir" value="{$chain_dining.carousel_fir}" ng-model="dining.carousel_fir">
-                <p ng-show="DiningForm.carousel_fir.$invalid && !DiningForm.carousel_fir.$pristine" class="help-block">第一张图片</p>
+                <img src="{$detail_info.input_1}" id="pic_input_1" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_1" id="file_input_1" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_1" name="input_1" value="{$detail_info.input_1}" ng-model="dining.input_1">
+                <p ng-show="DiningForm.input_1.$invalid && !DiningForm.input_1.$pristine" class="help-block">第一张图片</p>
             </div>
         </div>
 
-        <div class="form-item" ng-class="{'has-error' : DiningForm.carousel_sec.$invalid && !DiningForm.carousel_sec.$pristine}">
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_2.$invalid && !DiningForm.input_2.$pristine}">
             <label class="item-label">第二张图片<span class="check-tips"></span></label>
             <div class="controls">
-                <img src="{$chain_dining.carousel_sec}" id="pic_carousel_sec" style="max-width: 300px;"><br>
-                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_sec" id="file_carousel_sec" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="carousel_sec" name="carousel_sec" value="{$chain_dining.carousel_sec}"  ng-model="dining.carousel_sec">
-                <p ng-show="DiningForm.carousel_sec.$invalid && !DiningForm.carousel_sec.$pristine" class="help-block">第二张图片</p>
+                <img src="{$detail_info.input_2}" id="pic_input_2" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_2" id="file_input_2" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_2" name="input_2" value="{$detail_info.input_2}"  ng-model="dining.input_2">
+                <p ng-show="DiningForm.input_2.$invalid && !DiningForm.input_2.$pristine" class="help-block">第二张图片</p>
             </div>
         </div>
 
-        <div class="form-item" ng-class="{'has-error' : DiningForm.carousel_thr.$invalid && !DiningForm.carousel_thr.$pristine}">
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_3.$invalid && !DiningForm.input_3.$pristine}">
             <label class="item-label">第三张图片<span class="check-tips"></span></label>
             <div class="controls">
-                <img src="{$chain_dining.carousel_thr}" id="pic_carousel_thr" style="max-width: 300px;"><br>
-                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_thr" id="file_carousel_thr" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="carousel_thr" name="carousel_thr" value="{$chain_dining.carousel_thr}"  ng-model="dining.carousel_thr">
-                <p ng-show="DiningForm.carousel_thr.$invalid && !DiningForm.carousel_thr.$pristine" class="help-block">第三张图片</p>
+                <img src="{$detail_info.input_3}" id="pic_input_3" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_3" id="file_input_3" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_3" name="input_3" value="{$detail_info.input_3}"  ng-model="dining.input_3">
+                <p ng-show="DiningForm.input_3.$invalid && !DiningForm.input_3.$pristine" class="help-block">第三张图片</p>
             </div>
         </div>
         
-        <div class="form-item" ng-class="{'has-error' : DiningForm.carousel_thr.$invalid && !DiningForm.carousel_thr.$pristine}">
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_4.$invalid && !DiningForm.input_4.$pristine}">
             <label class="item-label">第四张图片<span class="check-tips"></span></label>
             <div class="controls">
-                <img src="{$chain_dining.carousel_thr}" id="pic_carousel_thr" style="max-width: 300px;"><br>
-                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_thr" id="file_carousel_thr" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="carousel_thr" name="carousel_thr" value="{$chain_dining.carousel_thr}"  ng-model="dining.carousel_thr">
-                <p ng-show="DiningForm.carousel_thr.$invalid && !DiningForm.carousel_thr.$pristine" class="help-block">第四张图片</p>
+                <img src="{$detail_info.input_4}" id="pic_input_4" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_4" id="file_input_4" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_4" name="input_4" value="{$detail_info.input_4}"  ng-model="dining.input_4">
+                <p ng-show="DiningForm.input_4.$invalid && !DiningForm.input_4.$pristine" class="help-block">第四张图片</p>
             </div>
         </div>
         
-        <div class="form-item" ng-class="{'has-error' : DiningForm.carousel_thr.$invalid && !DiningForm.carousel_thr.$pristine}">
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_5.$invalid && !DiningForm.input_5.$pristine}">
             <label class="item-label">第五张图片<span class="check-tips"></span></label>
             <div class="controls">
-                <img src="{$chain_dining.carousel_thr}" id="pic_carousel_thr" style="max-width: 300px;"><br>
-                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_carousel_thr" id="file_carousel_thr" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="carousel_thr" name="carousel_thr" value="{$chain_dining.carousel_thr}"  ng-model="dining.carousel_thr">
-                <p ng-show="DiningForm.carousel_thr.$invalid && !DiningForm.carousel_thr.$pristine" class="help-block">第五张图片</p>
+                <img src="{$detail_info.input_5}" id="pic_input_5" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_5" id="file_input_5" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_5" name="input_5" value="{$detail_info.input_5}"  ng-model="dining.input_5">
+                <p ng-show="DiningForm.input_5.$invalid && !DiningForm.input_5.$pristine" class="help-block">第五张图片</p>
             </div>
         </div>
 
@@ -87,40 +87,60 @@
                 var DiningModule = angular.module("weiapp_dining", []);
                 DiningModule.controller("DiningController", function ($scope, $http) {
                     $(function(){
-                        $('#file_carousel_fir').localResizeIMG({
+                        $('#file_input_1').localResizeIMG({
                             quality: 0.6,
                             success: function (result) {
-                                var compress_carousel_fir = result.clearBase64;
-                                $('#pic_carousel_fir').attr("src",result.base64);
-                                $('#carousel_fir').val(compress_carousel_fir);
+                                var compress_input_1 = result.clearBase64;
+                                $('#pic_input_1').attr("src",result.base64);
+                                $('#input_1').val(compress_input_1);
                                 console.log(result);
                             }
                         });
-                        $('#file_carousel_sec').localResizeIMG({
+                        $('#file_input_2').localResizeIMG({
                             quality: 0.6,
                             success: function (result) {
-                                var compress_carousel_sec = result.clearBase64;
-                                $('#pic_carousel_sec').attr("src",result.base64);
-                                $('#carousel_sec').val(compress_carousel_sec);
+                                var compress_input_2 = result.clearBase64;
+                                $('#pic_input_2').attr("src",result.base64);
+                                $('#input_2').val(compress_input_2);
                                 console.log(result);
                             }
                         });
-                        $('#file_carousel_thr').localResizeIMG({
+                        $('#file_input_3').localResizeIMG({
                             quality: 0.6,
                             success: function (result) {
-                                var compress_carousel_thr = result.clearBase64;
-                                $('#pic_carousel_thr').attr("src",result.base64);
-                                $('#carousel_thr').val(compress_carousel_thr);
+                                var compress_input_3 = result.clearBase64;
+                                $('#pic_input_3').attr("src",result.base64);
+                                $('#input_3').val(compress_input_3);
+                                console.log(result);
+                            }
+                        });
+                        $('#file_input_4').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_input_4 = result.clearBase64;
+                                $('#pic_input_4').attr("src",result.base64);
+                                $('#input_4').val(compress_input_4);
+                                console.log(result);
+                            }
+                        });
+                        $('#file_input_5').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_input_5 = result.clearBase64;
+                                $('#pic_input_5').attr("src",result.base64);
+                                $('#input_5').val(compress_input_5);
                                 console.log(result);
                             }
                         });
                     });
-                    $scope.chain = {$json_chain_dining};
+                    $scope.dining = {$json_detail};
                     $scope.submitForm = function () {
                         $('.submit').attr('disabled', 'true');
-                        $scope.chain.carousel_fir = $('#carousel_fir').val();
-                        $scope.chain.carousel_sec = $('#carousel_sec').val();
-                        $scope.chain.carousel_thr = $('#carousel_thr').val();
+                        $scope.dining.input_1 = $('#input_1').val();
+                        $scope.dining.input_2 = $('#input_2').val();
+                        $scope.dining.input_3 = $('#input_3').val();
+                        $scope.dining.input_4 = $('#input_4').val();
+                        $scope.dining.input_5 = $('#input_5').val();
                         $http({
                             method: "POST",
                             url: "/Admin/DiningRoom/detail",

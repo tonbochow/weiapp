@@ -164,6 +164,75 @@ class DiningRoomController extends FoodBaseController {
 
     //编辑餐厅详细(图片设置)
     public function detail() {
+        if (IS_POST) {
+            $detail_data = I('post.');
+            $dining_room_id = I('post.id');
+            $map['id'] = $dining_room_id;
+            $map['mp_id'] = MP_ID;
+            $map['member_id'] = UID;
+            $dining_room = M('DiningRoom')->where($map)->find();
+            if ($dining_room == false) {
+                $this->error('未检索到您要添加图片的餐厅信息!', '', true);
+            }
+            $save_path = C('WEBSITE_URL') . '/Uploads/Mp/' . MP_ID . '/dining_room/' . $dining_room_id . '/';
+            if (!file_exists($save_path)) {
+                $mkdir_res = mkdir($save_path, 0777, true);
+                if (!$mkdir_res) {
+                    $this->error('创建上传图片目录失败', '', true);
+                }
+            }
+            unset($detail_data['id']);
+            foreach ($detail_data as $input_name => $image_data) {
+                if (!empty($image_data) && !preg_match('/\/Uploads\w*/', $image_data)) {
+                    $pic_url = $save_path . "$input_name.jpg";
+                    $final_url = '/Uploads/Mp/' . MP_ID . '/dining_room/' . $dining_room_id . '/' . "$input_name.jpg";
+                    $pic_tmp = base64_decode($image_data);
+                    $create_pic = file_put_contents($pic_url, $pic_tmp);
+                    if ($create_pic == false) {
+                        $this->error('生成图片失败!', '', true);
+                    }
+                    //写入或更新餐厅明细表
+                    $detail_map['mp_id'] = MP_ID;
+                    $detail_map['member_id'] = UID;
+                    $detail_map['input_name'] = $input_name;
+                    $detail_map['dining_room_id'] = $dining_room_id;
+                    $detail_exist = M('DiningRoomDetail')->where($detail_map)->find();
+                    if ($detail_exist == false) {//写入明细表
+                        $add_data['mp_id'] = MP_ID;
+                        $add_data['member_id'] = UID;
+                        $add_data['input_name'] = $input_name;
+                        $add_data['dining_room_id'] = $dining_room_id;
+                        $add_data['url'] = $final_url;
+                        $detailModel = D('DiningRoomDetail');
+                        if ($detailModel->create($add_data)) {
+                            $add_res = $detailModel->add();
+                            if (!$add_res) {
+                                $this->error($detailModel->getError(), '', true);
+                            }
+                        } else {
+                            $this->error('保存餐厅图片失败!');
+                        }
+                    } else {//更新明细表
+                        $save_data['id'] = $detail_exist['id'];
+                        $save_data['mp_id'] = MP_ID;
+                        $save_data['member_id'] = UID;
+                        $save_data['dining_room_id'] = $dining_room_id;
+                        $save_data['input_name'] = $input_name;
+                        $save_data['url'] = $final_url;
+                        $detailModel = D('DiningRoomDetail');
+                        if ($detailModel->create($save_data)) {
+                            $save_res = $detailModel->save();
+                            if (!$save_res) {
+                                $this->error($detailModel->getError(), '', true);
+                            }
+                        } else {
+                            $this->error('更新餐厅图片失败!');
+                        }
+                    }
+                }
+            }
+            $this->success('保存餐厅图片成功!', '', true);
+        }
         $id = intval(I('get.id', '', 'trim'));
         $map['id'] = $id;
         $map['mp_id'] = MP_ID;
@@ -173,16 +242,17 @@ class DiningRoomController extends FoodBaseController {
             $this->error('未检索到您要添加图片的餐厅信息!');
         }
         //检索餐厅明细信息
-        $dining_room_details = '';
-        $dining_room_details = M('DiningRoom')->where(array('mp_id' => MP_ID, 'member_id' => UID))->select();
+        $detail_info['id'] = $id;
+        $dining_room_details = M('DiningRoomDetail')->where(array('mp_id' => MP_ID, 'member_id' => UID, 'dining_room_id' => $id))->select();
         if ($dining_room_details != false) {
-            foreach ($dining_room_details as $key => $detail) {
-                $dining_room_details[$detail['id']] = $detail;
+            foreach ($dining_room_details as $detail) {
+                $detail_info[$detail['input_name']] = $detail['url'];
             }
         }
 
-        $this->assign('dining_room_details', $dining_room_details);
-        $this->assign('json_detail', json_encode($dining_room_details));
+//        dump($detail_info);
+        $this->assign('detail_info', $detail_info);
+        $this->assign('json_detail', json_encode($detail_info));
         $this->assign('dining_room', $dining_room);
         $this->meta_title = '餐厅图片添加(详细设置)';
         $this->display('detail');
