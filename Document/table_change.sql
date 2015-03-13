@@ -51,3 +51,8 @@ CREATE TABLE `weiapp_chain_dining` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `member_id` (`member_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='连锁餐厅信息';
+
+
+ALTER TABLE `weiapp_dining_room_detail`
+CHANGE COLUMN `file_name` `url`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图片或微视url' AFTER `ext_fileid`;
+

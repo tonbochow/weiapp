@@ -30,7 +30,7 @@
         </div>
 
         <div class="form-item" ng-class="{'has-error' : DiningForm.phone.$invalid && !DiningForm.phone.$pristine}">
-            <label class="item-label">餐厅电话<span class="check-tips"></span></label>
+            <label class="item-label">餐厅电话<span class="check-tips">(例如:0312-1234567)</span></label>
             <div class="controls">
                 <input name="phone" type="text" value="" ng-model="dining.phone"  ng-pattern="/^(\d{3}-|\d{4}-)?(\d{8}|\d{7})?$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="phone" placeholder="餐厅电话">
                 <p ng-show="DiningForm.phone.$invalid && !DiningForm.phone.$pristine" class="help-block">餐厅电话</p>
@@ -169,7 +169,14 @@
                 $('#longitude').val(event.latLng.getLng());
                 $('#latitude').val(event.latLng.getLat());
             });
-        }
+            var anchor = new soso.maps.Point(6, 6),
+            size = new soso.maps.Size(24, 24),
+            icon = new soso.maps.MarkerImage('Public/img/qq_map_center.gif', size, anchor);
+            var marker = new soso.maps.Marker({
+                icon: icon,
+                map: map,
+                position:map.getCenter()});
+            }
         window.onload=init;
     </script>
     <script type="text/javascript">

@@ -7,7 +7,7 @@
 
     <div class="cf">
         <?php
-            if(IS_CHAIN || empty($list)){
+            if((IS_CHAIN && $dining_room_num <10)|| empty($list)){
         ?>
         <a class="btn" href="{:U('DiningRoom/add')}">创建餐厅</a>
         <?php

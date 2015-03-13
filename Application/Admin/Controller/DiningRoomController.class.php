@@ -27,7 +27,8 @@ class DiningRoomController extends FoodBaseController {
             $map['dining_name'] = array('like', '%' . (string) I('dining_name') . '%');
         }
         $list = $this->lists('DiningRoom', $map, 'status,id');
-
+        $dining_room_num = count($list);
+        $this->assign('dining_room_num', $dining_room_num);
         $this->assign('list', $list);
         $this->meta_title = '餐厅列表';
         $this->display('show');
@@ -35,6 +36,7 @@ class DiningRoomController extends FoodBaseController {
 
     //创建餐厅(前台面向商家) 非连锁只能创建一个 连锁可以创建多个
     public function add() {
+        $dining_room_num = M('DiningRoom')->where(array('mp_id' => MP_ID, 'member_id' => UID))->count();
         if (IS_CHAIN) {//若为连锁餐厅 检查是否已创建了连锁餐厅信息
             $chain_dining = M('ChainDining')->where(array('mp_id' => MP_ID))->find();
             if ($chain_dining == false) {
@@ -42,6 +44,19 @@ class DiningRoomController extends FoodBaseController {
                     $this->error('请先创建连锁餐厅信息!', '/Admin/ChainDining/info', true);
                 }
                 $this->error('请先创建连锁餐厅信息!', '/Admin/ChainDining/info');
+            }
+            if ($dining_room_num >= 10) {
+                if (IS_POST) {
+                    $this->error('连锁餐厅最多允许创建10个餐厅!', '/Admin/DiningRoom/show', true);
+                }
+                $this->error('连锁餐厅最多允许创建10个餐厅!', '/Admin/DiningRoom/show');
+            }
+        } else {
+            if ($dining_room_num > 1) {
+                if (IS_POST) {
+                    $this->error('非连锁餐厅最多允许创建1个餐厅!', '/Admin/DiningRoom/show', true);
+                }
+                $this->error('非连锁餐厅最多允许创建1个餐厅!', '/Admin/DiningRoom/show');
             }
         }
         if (IS_POST) {
@@ -157,7 +172,18 @@ class DiningRoomController extends FoodBaseController {
         if ($dining_room == false) {
             $this->error('未检索到您要添加图片的餐厅信息!');
         }
+        //检索餐厅明细信息
+        $dining_room_details = '';
+        $dining_room_details = M('DiningRoom')->where(array('mp_id' => MP_ID, 'member_id' => UID))->select();
+        if ($dining_room_details != false) {
+            foreach ($dining_room_details as $key => $detail) {
+                $dining_room_details[$detail['id']] = $detail;
+            }
+        }
 
+        $this->assign('dining_room_details', $dining_room_details);
+        $this->assign('json_detail', json_encode($dining_room_details));
+        $this->assign('dining_room', $dining_room);
         $this->meta_title = '餐厅图片添加(详细设置)';
         $this->display('detail');
     }

@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-item" ng-class="{'has-error' : ChainForm.phone.$invalid && !ChainForm.phone.$pristine}">
-            <label class="item-label">连锁餐厅电话<span class="check-tips"></span></label>
+            <label class="item-label">连锁餐厅电话<span class="check-tips">(例如:0312-1234567)</span></label>
             <div class="controls">
                 <input name="phone" type="text" value="" ng-model="chain.phone"  ng-pattern="/^(\d{3}-|\d{4}-)?(\d{8}|\d{7})$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="phone" placeholder="连锁餐厅电话">
                 <p ng-show="ChainForm.phone.$invalid && !ChainForm.phone.$pristine" class="help-block">连锁餐厅电话</p>
