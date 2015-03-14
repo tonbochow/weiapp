@@ -1,0 +1,218 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>编辑餐厅</h2>
+    </div>
+
+    <div id="dialog" title="编辑餐厅" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_dining" ng-app="weiapp_dining" id="ng-app"  name="DiningForm" ng-controller="DiningController" ng-submit="submitForm()">
+        <div class="form-item" ng-class="{'has-error' : DiningForm.dining_name.$invalid && !DiningForm.dining_name.$pristine}">
+            <label class="item-label">餐厅名称<span class="check-tips">（*必填:最大长度30）</span></label>
+            <div class="controls">
+                <input name="dining_name" type="text" value="" ng-model="dining.dining_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="30" required class="form-control text input-large" id="dining_name" placeholder="餐厅名称">
+                <p ng-show="DiningForm.dining_name.$invalid && !DiningForm.dining_name.$pristine" class="help-block">餐厅名称(长度1-30)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : DiningForm.dining_header.$invalid && !DiningForm.dining_header.$pristine}">
+            <label class="item-label">餐厅负责人<span class="check-tips">（*必填:最大长度20）</span></label>
+            <div class="controls">
+                <input name="dining_header" type="text" value="" ng-model="dining.dining_header"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="dining_header" placeholder="餐厅负责人">
+                <p ng-show="DiningForm.dining_header.$invalid && !DiningForm.dining_header.$pristine" class="help-block">餐厅负责人(长度1-20)</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : DiningForm.phone.$invalid && !DiningForm.phone.$pristine}">
+            <label class="item-label">餐厅电话<span class="check-tips">(例如:0312-1234567)</span></label>
+            <div class="controls">
+                <input name="phone" type="text" value="" ng-model="dining.phone"  ng-pattern="/^(\d{3}-|\d{4}-)?(\d{8}|\d{7})?$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="phone" placeholder="餐厅电话">
+                <p ng-show="DiningForm.phone.$invalid && !DiningForm.phone.$pristine" class="help-block">餐厅电话</p>
+            </div>
+        </div>
+
+
+        <div class="form-item" ng-class="{'has-error' : DiningForm.mobile.$invalid && !DiningForm.mobile.$pristine}">
+            <label class="item-label">餐厅手机<span class="check-tips"></span></label>
+            <div class="controls">
+                <input name="mobile" type="text" value="" ng-model="dining.mobile"  ng-pattern="/^1\d{10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="11"  class="form-control text input-large" id="mobile" placeholder="餐厅手机">
+                <p ng-show="DiningForm.mobile.$invalid && !DiningForm.mobile.$pristine" class="help-block">餐厅手机</p>
+            </div>
+        </div>
+
+
+        <div class="form-item"  ng-class="{'has-error' : DiningForm.description.$invalid && !DiningForm.description.$pristine}">
+            <label class="item-label">餐厅描述<span class="check-tips">（*必填）</span></label>
+            <div class="controls">
+                
+                 <div class="ueditor" config="config" ng-model="dining.description" ng-minlength="1" ng-trim="true" required ></div>
+                <!--<input name="description" type="text" value="" ng-model="chain.description"   ng-trim="true" ng-minlength="1"   class="form-control text input-large" required id="description" placeholder="连锁餐厅描述">-->
+                <p ng-show="DiningForm.description.$invalid && !DiningForm.description.$pristine" class="help-block">餐厅描述</p>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label for="province" class="col-sm-2 control-label">省份</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="province" ng-model="dining.province" name="province" onchange="loadRegion('province', 2, 'city', '/Admin/DiningRoom/getRegion');"> 
+                    <option value="" selected>省份/直辖市</option>
+                    <volist name="province" id="vo"> 
+                        <option value="{$vo.id}" >{$vo.name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label for="city" class="col-sm-2 control-label">城市</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="city" ng-model="dining.city" name="city" onchange="loadRegion('city', 3, 'town', '/Admin/DiningRoom/getRegion');"> 
+                    <option value="" selected>市</option>
+                    <volist name="city" id="vo"> 
+                        <option value="{$vo.id}" >{$vo.name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label for="town" class="col-sm-2 control-label">县</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="town" ng-model="dining.town" name="town"> 
+                    <option value="" selected>县</option>
+                    <volist name="town" id="vo">
+                        <option value="{$vo.id}" >{$vo.name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : DiningForm.address.$invalid && !DiningForm.address.$pristine}">
+            <label class="item-label">详细地址<span class="check-tips"></span></label>
+            <div class="controls">
+                <input name="address" type="text" value="" ng-model="dining.address"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256"  class="form-control text input-large" id="address" placeholder="详细地址">
+                <p ng-show="DiningForm.address.$invalid && !DiningForm.address.$pristine" class="help-block">详细地址</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : DiningForm.longitude.$invalid && !DiningForm.longitude.$pristine}">
+            <label class="item-label">经度<span class="check-tips">(点击地图选择经度)</span></label>
+            <div class="controls">
+                <input name="longitude" type="text" value="" ng-model="dining.longitude"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,20}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20"  class="form-control text input-large" id="longitude" placeholder="经度">
+                <p ng-show="DiningForm.longitude.$invalid && !DiningForm.longitude.$pristine" class="help-block">经度</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : DiningForm.latitude.$invalid && !DiningForm.latitude.$pristine}">
+            <label class="item-label">纬度<span class="check-tips">(点击地图选择纬度)</span></label>
+            <div class="controls">
+                <input name="latitude" type="text" value="" ng-model="dining.latitude"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,20}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20"  class="form-control text input-large" id="latitude" placeholder="纬度">
+                <p ng-show="DiningForm.latitude.$invalid && !DiningForm.latitude.$pristine" class="help-block">纬度</p>
+            </div>
+        </div>
+
+        <div style="width:603px;height:300px" id="container"></div>
+
+        <div class="form-item">
+            <button type="submit" class="btn btn-success submit" ng-disabled="DiningForm.$invalid">保 存</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);
+                            return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript" src="__STATIC__/LocalResizeIMG/LocalResizeIMG.js"></script>
+    <script type="text/javascript" src="__STATIC__/LocalResizeIMG/patch/mobileBUGFix.mini.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.config.food.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/angular-ueditor.js"></script>
+    <script type="text/javascript" src="__STATIC__/region.js"></script>
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+    <script>
+        function init(){
+            var center=new qq.maps.LatLng({$dining_room.latitude},{$dining_room.longitude});
+            var map=new qq.maps.Map(document.getElementById("container"),{
+                center:center,
+                zoom:16
+            });
+            //给map绑定mousemove事件
+            var label = new qq.maps.Label({
+                offset:new qq.maps.Size(15,0)
+            });
+            qq.maps.event.addListener(map,"mousemove",function(e){
+                label.setContent(e.latLng.toString());
+                label.setPosition(e.latLng);
+
+            });
+            qq.maps.event.addListener(map,"mouseover",function(e){
+                label.setMap(map);
+            });
+            qq.maps.event.addListener(map,"mouseout",function(e){
+                label.setMap(null);
+            });
+            qq.maps.event.addListener(map,"click",function(event){
+                $('#longitude').val(event.latLng.getLng());
+                $('#latitude').val(event.latLng.getLat());
+            });
+            var anchor = new soso.maps.Point(6, 6),
+            size = new soso.maps.Size(24, 24),
+            icon = new soso.maps.MarkerImage('Public/img/qq_map_center.gif', size, anchor);
+            var marker = new soso.maps.Marker({
+                icon: icon,
+                map: map,
+                position:map.getCenter()});
+            }
+        window.onload=init;
+    </script>
+    <script type="text/javascript">
+                var DiningModule = angular.module("weiapp_dining", ['ng.ueditor']);
+                DiningModule.controller("DiningController", function ($scope, $http) {
+                    $scope.dining = {$json_dining};
+                    $scope.submitForm = function () {
+                        $('.submit').attr('disabled', 'true');
+                        $scope.dining.longitude = $('#longitude').val();
+                        $scope.dining.latitude = $('#latitude').val();
+                        $http({
+                            method: "POST",
+                            url: "/Admin/DiningRoom/Edit",
+                            data: $.param($scope.dining),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function (data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+//                    if (status) {
+//                        $('.submit').removeAttr("disabled");
+//                    } else {
+//                        $('.submit').removeAttr("disabled");
+//                    }
+                }
+    </script>
+</block>
