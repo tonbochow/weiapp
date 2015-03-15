@@ -269,7 +269,7 @@ class DiningRoomController extends FoodBaseController {
         $map['id'] = array('in', $diningroom_ids_str);
         $map['mp_id'] = MP_ID;
         $DiningRoomModel = M('DiningRoom');
-        $diningroom_data['status'] = \Admin\Model\WeixinMenuModel::$STATUS_ENABLE;
+        $diningroom_data['status'] = \Admin\Model\DiningRoomModel::$STATUS_ENABLED;
         $diningroom_data['update_time'] = time();
         $diningroom_enable = $DiningRoomModel->where($map)->save($diningroom_data);
         if ($diningroom_enable) {
@@ -289,7 +289,7 @@ class DiningRoomController extends FoodBaseController {
         $map['id'] = array('in', $diningroom_ids_str);
         $map['mp_id'] = MP_ID;
         $DiningRoomModel = M('DiningRoom');
-        $diningroom_data['status'] = \Admin\Model\WeixinMenuModel::$STATUS_DISABLE;
+        $diningroom_data['status'] = \Admin\Model\DiningRoomModel::$STATUS_DISABLED;
         $diningroom_data['update_time'] = time();
         $diningroom_disable = $DiningRoomModel->where($map)->save($diningroom_data);
         if ($diningroom_disable) {

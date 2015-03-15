@@ -1,0 +1,95 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>创建餐厅菜品分类</h2>
+    </div>
+
+    <div id="dialog" title="餐厅菜品分类" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food_cate" ng-app="weiapp_food_cate" id="ng-app"  name="FoodCateForm" ng-controller="FoodCateController" ng-submit="submitForm()">
+        <div class="form-item" ng-class="{'has-error' : FoodCateForm.cate_name.$invalid && !FoodCateForm.cate_name.$pristine}">
+            <label class="item-label">菜品分类名<span class="check-tips">（*必填:最大长度20）</span></label>
+            <div class="controls">
+                <input name="菜品分类名" type="text" value="" ng-model="food_cate.cate_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,20}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="cate_name" placeholder="餐厅菜品分类名">
+                <p ng-show="FoodCateForm.cate_name.$invalid && !FoodCateForm.cate_name.$pristine" class="help-block">餐厅菜品分类名(长度1-20)</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : FoodCateForm.dining_room_id.$invalid && !FoodCateForm.dining_room_id.$pristine}">
+            <label class="item-label">所属餐厅<span class="check-tips">（*必须）</span></label>
+            <div class="controls">
+                <select class="form-control" name="dining_room_id" required ng-model="food_cate.dining_room_id" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="FoodCateForm.dining_room_id.$invalid && !FoodCateForm.dining_room_id.$pristine" class="help-block">请选择所属餐厅</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : FoodCateForm.sort.$invalid && !FoodCateForm.sort.$pristine}">
+            <label class="item-label">排序<span class="check-tips"></span></label>
+            <div class="controls">
+                <input name="sort" type="text" value="" ng-model="food_cate.sort"  ng-pattern="/^[1-9]\d*$/" ng-trim="true" ng-minlength="1" ng-maxlength="16"  class="form-control text input-large" id="sort" placeholder="分类排序">
+                <p ng-show="FoodCateForm.sort.$invalid && !FoodCateForm.sort.$pristine" class="help-block">菜品分类排序</p>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <button type="submit" class="btn btn-success submit" ng-disabled="FoodCateForm.$invalid">保 存</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);
+                        return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript">
+                var FoodCateModule = angular.module("weiapp_food_cate", []);
+                FoodCateModule.controller("FoodCateController", function($scope, $http) {
+                    $scope.food_cate = {};
+                    $scope.food_cate.dining_room_arr = {$dining_room_arr};
+                    $scope.food_cate.dining_room_id = {$selected_dining_room_id};
+                    $scope.submitForm = function() {
+                        $('.submit').attr('disabled', 'true');
+                        $http({
+                            method: "POST",
+                            url: "/Admin/FoodCategory/add",
+                            data: $.param($scope.food_cate),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function(data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+//                    if (status) {
+//                        $('.submit').removeAttr("disabled");
+//                    } else {
+//                        $('.submit').removeAttr("disabled");
+//                    }
+                }
+    </script>
+</block>

@@ -4,7 +4,7 @@
 // | Copyright (c) 2013 http://www.52gdp.com
 // +----------------------------------------------------------------------
 // | Author: tonbochow <tonbochow@qq.com>
-// | date  : 2015-03-12
+// | date  : 2015-03-15
 // +----------------------------------------------------------------------
 
 namespace Admin\Model;
@@ -12,21 +12,19 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮餐厅店员模型
+ * 餐饮餐厅菜品分类模型
  */
-class DiningMemberModel extends Model {
+class FoodCategoryModel extends Model {
 
     public static $STATUS_DISABLED = 0; //状态 禁用
     public static $STATUS_ENABLED = 1; //状态 启用
-    public static $ROLE_STAFF = 1; //员工
-    public static $ROLE_MANAGER = 0; //餐厅经理
 
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('member_id', 'require', '餐厅用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('dining_room_id', 'require', '餐厅ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('pay_type', 'require', '订单支付类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('cate_name', 'require', '菜品分类不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
@@ -36,8 +34,8 @@ class DiningMemberModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-    //获取餐厅员工状态
-    public static function getDiningMemberStatus($status = null, $has_choice = true) {
+    //获取菜品分类状态
+    public static function getFoodCategoryStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
         }
@@ -49,29 +47,10 @@ class DiningMemberModel extends Model {
         return $status_arr;
     }
 
-    //获取餐厅员工角色
-    public static function getDiningMemberRoleType($role, $has_choice = true) {
-        if ($has_choice) {
-            $role_arr = array('' => '请选择');
-        }
-        $role_arr[self::$ROLE_STAFF] = '店员';
-        $role_arr[self::$ROLE_MANAGER] = '经理';
-        if ($role !== null) {
-            return $role_arr[$role];
-        }
-        return $role_arr;
-    }
-
-    //获取餐厅名称
-    public static function getDiningRoomName($id) {
-        $dining_room = M('DiningRoom')->where(array('id' => $id))->find();
-        return $dining_room['dining_name'];
-    }
-
-    //获取餐厅列表
-    public static function getDiningRooms() {
-        $dining_rooms = M('DiningRoom')->where(array('mp_id' => MP_ID, 'member_id' => UID))->select();
-        return $dining_rooms;
+    //获取菜品分类名
+    public static function getFoodCategoryName($id) {
+        $food_category = M('FoodCategory')->where(array('id' => $id))->find();
+        return $food_category['cate_name'];
     }
 
 }

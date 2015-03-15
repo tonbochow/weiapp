@@ -149,6 +149,24 @@
                                     }
                                 }
                             });
+                    }else{
+                        $('.submit').attr('disabled', 'true');
+                        $http({
+                            method: "POST",
+                            url: "/Admin/WeixinMenu/recommend",
+                            data: $.param($scope.wxmenu),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function (data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
                     }
                 });
             };
