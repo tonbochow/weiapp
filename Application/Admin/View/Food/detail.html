@@ -1,0 +1,172 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>{$dining_room.dining_name} | 餐厅图片添加(最多添加5张)</h2>
+    </div>
+
+    <div id="dialog" title="餐厅图片添加" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_dining" ng-app="weiapp_dining" id="ng-app"  name="DiningForm" ng-controller="DiningController" ng-submit="submitForm()">
+
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_1.$invalid && !DiningForm.input_1.$pristine}">
+            <label class="item-label">第一张图片<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$detail_info.input_1}" id="pic_input_1" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_1" id="file_input_1" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_1" name="input_1" value="{$detail_info.input_1}" ng-model="dining.input_1">
+                <p ng-show="DiningForm.input_1.$invalid && !DiningForm.input_1.$pristine" class="help-block">第一张图片</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_2.$invalid && !DiningForm.input_2.$pristine}">
+            <label class="item-label">第二张图片<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$detail_info.input_2}" id="pic_input_2" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_2" id="file_input_2" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_2" name="input_2" value="{$detail_info.input_2}"  ng-model="dining.input_2">
+                <p ng-show="DiningForm.input_2.$invalid && !DiningForm.input_2.$pristine" class="help-block">第二张图片</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_3.$invalid && !DiningForm.input_3.$pristine}">
+            <label class="item-label">第三张图片<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$detail_info.input_3}" id="pic_input_3" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_3" id="file_input_3" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_3" name="input_3" value="{$detail_info.input_3}"  ng-model="dining.input_3">
+                <p ng-show="DiningForm.input_3.$invalid && !DiningForm.input_3.$pristine" class="help-block">第三张图片</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_4.$invalid && !DiningForm.input_4.$pristine}">
+            <label class="item-label">第四张图片<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$detail_info.input_4}" id="pic_input_4" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_4" id="file_input_4" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_4" name="input_4" value="{$detail_info.input_4}"  ng-model="dining.input_4">
+                <p ng-show="DiningForm.input_4.$invalid && !DiningForm.input_4.$pristine" class="help-block">第四张图片</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : DiningForm.input_5.$invalid && !DiningForm.input_5.$pristine}">
+            <label class="item-label">第五张图片<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$detail_info.input_5}" id="pic_input_5" style="max-width: 300px;"><br>
+                <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_5" id="file_input_5" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="input_5" name="input_5" value="{$detail_info.input_5}"  ng-model="dining.input_5">
+                <p ng-show="DiningForm.input_5.$invalid && !DiningForm.input_5.$pristine" class="help-block">第五张图片</p>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <button type="submit" class="btn btn-success submit" ng-disabled="DiningForm.$invalid">保 存</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);
+                            return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript" src="__STATIC__/LocalResizeIMG/LocalResizeIMG.js"></script>
+    <script type="text/javascript" src="__STATIC__/LocalResizeIMG/patch/mobileBUGFix.mini.js"></script>
+    <script type="text/javascript">
+                var DiningModule = angular.module("weiapp_dining", []);
+                DiningModule.controller("DiningController", function ($scope, $http) {
+                    $(function(){
+                        $('#file_input_1').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_input_1 = result.clearBase64;
+                                $('#pic_input_1').attr("src",result.base64);
+                                $('#input_1').val(compress_input_1);
+                                console.log(result);
+                            }
+                        });
+                        $('#file_input_2').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_input_2 = result.clearBase64;
+                                $('#pic_input_2').attr("src",result.base64);
+                                $('#input_2').val(compress_input_2);
+                                console.log(result);
+                            }
+                        });
+                        $('#file_input_3').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_input_3 = result.clearBase64;
+                                $('#pic_input_3').attr("src",result.base64);
+                                $('#input_3').val(compress_input_3);
+                                console.log(result);
+                            }
+                        });
+                        $('#file_input_4').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_input_4 = result.clearBase64;
+                                $('#pic_input_4').attr("src",result.base64);
+                                $('#input_4').val(compress_input_4);
+                                console.log(result);
+                            }
+                        });
+                        $('#file_input_5').localResizeIMG({
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_input_5 = result.clearBase64;
+                                $('#pic_input_5').attr("src",result.base64);
+                                $('#input_5').val(compress_input_5);
+                                console.log(result);
+                            }
+                        });
+                    });
+                    $scope.dining = {$json_detail};
+                    $scope.submitForm = function () {
+                        $('.submit').attr('disabled', 'true');
+                        $scope.dining.input_1 = $('#input_1').val();
+                        $scope.dining.input_2 = $('#input_2').val();
+                        $scope.dining.input_3 = $('#input_3').val();
+                        $scope.dining.input_4 = $('#input_4').val();
+                        $scope.dining.input_5 = $('#input_5').val();
+                        $http({
+                            method: "POST",
+                            url: "/Admin/DiningRoom/detail",
+                            data: $.param($scope.dining),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function (data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+//                    if (status) {
+//                        $('.submit').removeAttr("disabled");
+//                    } else {
+//                        $('.submit').removeAttr("disabled");
+//                    }
+                }
+    </script>
+</block>

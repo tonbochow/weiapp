@@ -56,3 +56,10 @@ CREATE TABLE `weiapp_chain_dining` (
 ALTER TABLE `weiapp_dining_room_detail`
 CHANGE COLUMN `file_name` `url`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图片或微视url' AFTER `ext_fileid`;
 
+
+
+ALTER TABLE `weiapp_food`
+ADD COLUMN `share_title`  varchar(60) NOT NULL DEFAULT '' COMMENT '微信内分享显示标题' AFTER `status`,
+ADD COLUMN `share_desc`  varchar(128) NOT NULL DEFAULT '' COMMENT '微信内分享描述' AFTER `share_title`,
+ADD COLUMN `share_imgurl`  varchar(255) NOT NULL DEFAULT '' COMMENT '微信内分享图片url' AFTER `share_desc`;
+
