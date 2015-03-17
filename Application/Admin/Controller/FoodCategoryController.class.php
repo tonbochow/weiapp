@@ -41,7 +41,9 @@ class FoodCategoryController extends FoodBaseController {
                 $this->error('请先创建餐厅!');
             }
         }
-        $dining_room_arr[] = array('id' => '0', 'dining_name' => '所有门店通用');
+        if (IS_CHAIN) {
+            $dining_room_arr[] = array('id' => '0', 'dining_name' => '所有门店通用');
+        }
         foreach ($dining_rooms as $val) {
             $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
         }
@@ -104,7 +106,9 @@ class FoodCategoryController extends FoodBaseController {
 
         //检索所有连锁餐厅
         $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
-        $dining_room_arr[] = array('id' => '0', 'dining_name' => '所有门店通用');
+        if (IS_CHAIN) {
+            $dining_room_arr[] = array('id' => '0', 'dining_name' => '所有门店通用');
+        }
         foreach ($dining_rooms as $val) {
             $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
         }
