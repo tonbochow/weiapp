@@ -70,7 +70,7 @@ class DiningMemberModel extends Model {
 
     //获取餐厅列表
     public static function getDiningRooms() {
-        $dining_rooms = M('DiningRoom')->where(array('mp_id' => MP_ID, 'member_id' => UID))->select();
+        $dining_rooms = M('DiningRoom')->where(array('mp_id' => MP_ID))->select();
         return $dining_rooms;
     }
 

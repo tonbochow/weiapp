@@ -73,13 +73,13 @@ class MicroPlatformModel extends Model {
         array('status', 1, self::MODEL_INSERT),
         array('start_time', 'strtotime', self::MODEL_BOTH, 'function'),
         array('end_time', 'strtotime', self::MODEL_BOTH, 'function'),
-        array('create_time', NOW_TIME, self::MODEL_BOTH),
+        array('create_time', NOW_TIME, self::MODEL_INSERT),
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
-    
+
     //获取微信公众平台名称
-    public static function getMpName($mp_id){
-        $micro_platform = M('MicroPlatform')->where(array('id'=>$mp_id))->find();
+    public static function getMpName($mp_id) {
+        $micro_platform = M('MicroPlatform')->where(array('id' => $mp_id))->find();
         return $micro_platform['mp_name'];
     }
 
@@ -236,8 +236,7 @@ class MicroPlatformModel extends Model {
      * $appsecret 微信公众平台appsecret
      */
     public static function getWeixinSeverIp($appid, $appsecret) {
-        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" . $appid . "&secret=" . $appsecret;
-        $access_token = self::wxAccessToken($url);
+        $access_token = self::getAccessToken($appid, $appsecret);
         $url = "https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=$access_token";
         $wx_ips = self::curl($url);
         return $wx_ips['ip_list'];
@@ -252,8 +251,8 @@ class MicroPlatformModel extends Model {
         $access_token = self::getAccessToken($appid, $appsecret);
         $menu_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=$access_token";
         $create_menu_res = self::curl($menu_url, $menu);
-        if($create_menu_res['errcode'] == 0 && $create_menu_res['errmsg'] == 'ok'){
-            return true;   
+        if ($create_menu_res['errcode'] == 0 && $create_menu_res['errmsg'] == 'ok') {
+            return true;
         }
         return false;
     }

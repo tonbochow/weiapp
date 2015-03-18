@@ -63,3 +63,10 @@ ADD COLUMN `share_title`  varchar(60) NOT NULL DEFAULT '' COMMENT '微信内分�
 ADD COLUMN `share_desc`  varchar(128) NOT NULL DEFAULT '' COMMENT '微信内分享描述' AFTER `share_title`,
 ADD COLUMN `share_imgurl`  varchar(255) NOT NULL DEFAULT '' COMMENT '微信内分享图片url' AFTER `share_desc`;
 
+
+ALTER TABLE `weiapp_food`
+MODIFY COLUMN `stock`  decimal(10,2) NOT NULL DEFAULT '-1' COMMENT '库存' AFTER `unit`,
+MODIFY COLUMN `is_offline`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '餐到付款1允许0禁止' AFTER `style_name`,
+MODIFY COLUMN `use_card`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否允许使用卡卷1允许0禁止' AFTER `red_envelope_percent`;
+
+

@@ -20,17 +20,18 @@ class FoodController extends FoodBaseController {
     //餐厅菜品列表(前台面向商家)
     public function show() {
         $map['mp_id'] = MP_ID;
-        $get_cate_name = I('get.cate_name');
-        if (isset($get_cate_name)) {
-            $map['cate_name'] = array('like', '%' . (string) I('cate_name') . '%');
+        $get_name = I('get.name');
+        if (isset($get_name)) {
+            $map['food_name'] = array('like', '%' . $get_name . '%');
+            $map['dining_name'] = array('like', '%' . $get_name . '%');
         }
-        $list = $this->lists('FoodCategory', $map, 'status,id');
+        $list = $this->lists('Food', $map, 'status,id');
         $this->assign('list', $list);
-        $this->meta_title = '餐厅菜品分类列表';
+        $this->meta_title = '餐厅菜品列表';
         $this->display('show');
     }
 
-    //创建餐厅菜品(前台面向商家) 一个餐厅可以创建多个
+    //创建餐厅菜品(前台面向商家) 平台管理人员或连锁餐厅员工负责添加
     public function add() {
         //检索所有连锁餐厅
         $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
@@ -41,14 +42,16 @@ class FoodController extends FoodBaseController {
                 $this->error('请先创建餐厅!');
             }
         }
-        if (IS_CHAIN) {
-            $dining_room_arr[] = array('id' => '0', 'dining_name' => '所有门店通用');
+        //检索是否设置了菜品分类
+        $food_category = M('FoodCategory')->where(array('mp_id' => MP_ID))->select();
+        if (empty($food_category)) {
+            if (IS_POST) {
+                $this->error('请先创建菜品分类!', '', true);
+            } else {
+                $this->error('请先创建菜品分类!');
+            }
         }
-        foreach ($dining_rooms as $val) {
-            $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
-        }
-        $this->assign('dining_room_arr', json_encode($dining_room_arr));
-        $this->assign('selected_dining_room_id', json_encode(null));
+
         if (IS_POST) {
             $food_cate_data = I('post.');
             $foodCateModel = D('FoodCategory');
@@ -74,7 +77,26 @@ class FoodController extends FoodBaseController {
             }
         }
 
-        $this->meta_title = '创建餐厅菜品分类';
+        if (IS_CHAIN) {
+            $dining_room_arr[] = array('id' => '0', 'dining_name' => '所有门店通用');
+        }
+        foreach ($dining_rooms as $val) {
+            $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
+        }
+        $promotion_arr = \Admin\Model\FoodModel::getFoodPromotion(null, false);
+        $hot_arr = \Admin\Model\FoodModel::getFoodHot(null, false);
+        $offline_arr = \Admin\Model\FoodModel::getFoodOffline(null, false);
+        $card_arr = \Admin\Model\FoodModel::getFoodCard(null, false);
+        $status_arr = \Admin\Model\FoodModel::getFoodStatus(null, false);
+        $this->assign('promotiion_arr', json_encode($promotion_arr));
+        $this->assign('hot_arr', json_encode($hot_arr));
+        $this->assign('offline_arr', json_encode($offline_arr));
+        $this->assign('card_arr', json_encode($card_arr));
+        $this->assign('status_arr', json_encode($status_arr));
+        $this->assign('dining_room_arr', json_encode($dining_room_arr));
+        $this->assign('selected_dining_room_id', json_encode(null));
+
+        $this->meta_title = '创建餐厅菜品';
         $this->display('add');
     }
 
@@ -158,6 +180,12 @@ class FoodController extends FoodBaseController {
             $this->success('禁用餐厅菜品分类成功!');
         }
         $this->error('禁用餐厅菜品分类失败!');
+    }
+
+    //菜品详细查看及保存(面向商家)
+    public function detail() {
+        $this->meta_title = '餐厅菜品详细';
+        $this->display('edit');
     }
 
 }
