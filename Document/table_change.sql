@@ -70,3 +70,9 @@ MODIFY COLUMN `is_offline`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '餐到付款1
 MODIFY COLUMN `use_card`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否允许使用卡卷1允许0禁止' AFTER `red_envelope_percent`;
 
 
+ALTER TABLE `weiapp_food_style`
+DROP COLUMN `food_id`,
+DROP COLUMN `dining_room_id`,
+CHANGE COLUMN `description` `name`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '风格名称' AFTER `member_id`,
+COMMENT='菜品风格';
+

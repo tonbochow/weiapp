@@ -24,7 +24,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.dining_room_id.$invalid && !FoodForm.dining_room_id.$pristine}">
             <label class="item-label">所属餐厅<span class="check-tips">（*必填）</span></label>
             <div class="controls">
-                <select class="form-control" name="dining_room_id" required ng-model="food.dining_room_id" ng-options="m.id as m.dining_name for m in food.dining_room_arr">
+                <select class="form-control" name="dining_room_id" required ng-model="food.dining_room_id" ng-change="select_dining(food.dining_room_id)" ng-options="m.id as m.dining_name for m in food.dining_room_arr">
                     <option value="">请选择</option>
                 </select>
                 <p ng-show="FoodForm.dining_room_id.$invalid && !FoodForm.dining_room_id.$pristine" class="help-block">请选择所属餐厅</p>
@@ -34,7 +34,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.cate_id.$invalid && !FoodForm.cate_id.$pristine}">
             <label class="item-label">所属菜品分类<span class="check-tips">（*必填）</span></label>
             <div class="controls">
-                <select class="form-control" name="cate_id" required ng-model="food.cate_id" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                <select class="form-control" name="cate_id" required ng-model="food.cate_id" ng-options="m.id as m.cate_name for m in food.cate_arr">
                     <option value="">请选择</option>
                 </select>
                 <p ng-show="FoodForm.cate_id.$invalid && !FoodForm.cate_id.$pristine" class="help-block">请选择所属菜品分类</p>
@@ -93,7 +93,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.is_hot.$invalid && !FoodForm.is_hot.$pristine}">
             <label class="item-label">是否热销菜品<span class="check-tips">(默认为非热销商品)</span></label>
             <div class="controls">
-                <select class="form-control" name="is_hot"  ng-model="food.is_hot" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                <select class="form-control" name="is_hot"  ng-model="food.is_hot" ng-options="m.id as m.hot_name for m in food.hot_arr">
                     <option value="">请选择</option>
                 </select>
                 <p ng-show="FoodForm.is_hot.$invalid && !FoodForm.is_hot.$pristine" class="help-block">请选择是否热销菜品</p>
@@ -103,7 +103,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.is_promotion.$invalid && !FoodForm.is_promotion.$pristine}">
             <label class="item-label">是否促销菜品<span class="check-tips">(默认为非促销商品)</span></label>
             <div class="controls">
-                <select class="form-control" name="is_promotion"  ng-model="food.is_promotion" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                <select class="form-control" name="is_promotion"  ng-model="food.is_promotion" ng-options="m.id as m.promotion_name for m in food.promotion_arr">
                     <option value="">请选择</option>
                 </select>
                 <p ng-show="FoodForm.is_promotion.$invalid && !FoodForm.is_promotion.$pristine" class="help-block">请选择是否促销菜品</p>
@@ -123,7 +123,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.is_offline.$invalid && !FoodForm.is_offline.$pristine}">
             <label class="item-label">是否允许餐到付款<span class="check-tips">(默认为允许餐到付款)</span></label>
             <div class="controls">
-                <select class="form-control" name="is_offline" ng-model="food.is_offline" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                <select class="form-control" name="is_offline" ng-model="food.is_offline" ng-options="m.id as m.offline_name for m in food.offline_arr">
                     <option value="">请选择</option>
                 </select>
                 <p ng-show="FoodForm.is_offline.$invalid && !FoodForm.is_offline.$pristine" class="help-block">请选择是否允许餐到付款</p>
@@ -133,7 +133,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.use_card.$invalid && !FoodForm.use_card.$pristine}">
             <label class="item-label">是否允许使用卡劵<span class="check-tips">(默认为允许使用卡劵)</span></label>
             <div class="controls">
-                <select class="form-control" name="use_card"  ng-model="food.use_card" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                <select class="form-control" name="use_card"  ng-model="food.use_card" ng-options="m.id as m.card_name for m in food.card_arr">
                     <option value="">请选择</option>
                 </select>
                 <p ng-show="FoodForm.use_card.$invalid && !FoodForm.use_card.$pristine" class="help-block">请选择是否允许使用卡劵</p>
@@ -143,7 +143,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.status.$invalid && !FoodForm.status.$pristine}">
             <label class="item-label">菜品状态<span class="check-tips">(默认为菜品状态为上架)</span></label>
             <div class="controls">
-                <select class="form-control" name="status"  ng-model="food.status" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                <select class="form-control" name="status"  ng-model="food.status" ng-options="m.id as m.status_name for m in food.status_arr">
                     <option value="">请选择</option>
                 </select>
                 <p ng-show="FoodForm.status.$invalid && !FoodForm.status.$pristine" class="help-block">请选择菜品状态</p>
@@ -162,7 +162,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.share_desc.$invalid && !FoodForm.share_desc.$pristine}">
             <label class="item-label">微信朋友圈分享显示描述<span class="check-tips">（默认分享标题为菜品名称）</span></label>
             <div class="controls">
-                <input name="share_desc" type="text" value="" ng-model="food.share_desc"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,128}$/" ng-trim="true" ng-minlength="1" ng-maxlength="128" required class="form-control text input-large" id="share_desc" placeholder="微信朋友圈分享显示描述">
+                <input name="share_desc" type="text" value="" ng-model="food.share_desc"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,128}$/" ng-trim="true" ng-minlength="1" ng-maxlength="128" class="form-control text input-large" id="share_desc" placeholder="微信朋友圈分享显示描述">
                 <p ng-show="FoodForm.share_desc.$invalid && !FoodForm.share_desc.$pristine" class="help-block">微信朋友圈分享显示描述(长度1-128)</p>
             </div>
         </div>
@@ -189,16 +189,41 @@
     <script type="text/javascript" src="__STATIC__/angularjs-ueditor/angular-ueditor.js"></script>
     <script type="text/javascript">
                 var FoodModule = angular.module("weiapp_food", ['ng.ueditor']);
-                FoodModule.controller("FoodController", function($scope, $http) {
+                FoodModule.controller("FoodController", function($scope, $http) {                  
                     $scope.food = {};
                     $scope.food.dining_room_arr = {$dining_room_arr};
-                    $scope.food.dining_room_id = {$selected_dining_room_id};
+                    $scope.food.promotion_arr = {$promotion_arr};
+                    $scope.food.hot_arr = {$hot_arr};
+                    $scope.food.offline_arr = {$offline_arr};
+                    $scope.food.card_arr = {$card_arr};
+                    $scope.food.status_arr = {$status_arr};
+                    $scope.food.food_styles = {$food_styles};
+                    $scope.select_dining = function(selected_dining_room_id){
+                        if(typeof(selected_dining_room_id) != 'undefined'){
+                            $scope.cate_data={'select_dining_room_id':selected_dining_room_id};
+                            $http({
+                                method: "POST",
+                                url: "/Admin/Food/cate",
+                                data: $.param($scope.cate_data),
+                                headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                            }).success(function (data) {
+                                if (data.status) {
+                                    $scope.food.cate_arr = data.info;
+                                } else {
+                                    $scope.food.cate_arr = {};
+                                    $('#dialog_content').text(data.info);
+                                    $("#dialog").dialog({modal: true});
+                                    setTimeout("result(" + data.status + ")", 1000);
+                                }
+                            });
+                        }
+                    }
                     $scope.submitForm = function() {
                         $('.submit').attr('disabled', 'true');
                         $http({
                             method: "POST",
                             url: "/Admin/Food/add",
-                            data: $.param($scope.food_cate),
+                            data: $.param($scope.food),
                             headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                         }).success(function(data) {
                             if (data.status) {

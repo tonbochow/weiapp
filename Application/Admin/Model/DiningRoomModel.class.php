@@ -57,6 +57,19 @@ class DiningRoomModel extends Model {
         $dining_room = M('DiningRoom')->where(array('id' => $id))->find();
         return $dining_room['dining_name'];
     }
+    
+    //获取所有餐厅拼接的名称
+    public static function getAllDiningRoomNames(){
+        $dining_rooms = M('DiningRoom')->where(array('mp_id'=>MP_ID))->select();
+        if(empty($dining_rooms)){
+            return '';
+        }
+        $dining_room_str = '';
+        foreach($dining_rooms as $dining_room){
+            $dining_room_str .= $dining_room['dining_name'];
+        }
+        return $dining_room_str;
+    }
 
     //获取餐厅是否连锁
     public static function getDiningRoomChain($chain = null, $has_choice = true) {
