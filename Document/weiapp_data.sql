@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50612
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50612
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-03-18 23:36:07
+Date: 2015-03-19 19:06:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,7 +65,7 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
@@ -85,6 +85,7 @@ INSERT INTO `weiapp_action_log` VALUES ('12', '1', '1', '2130706433', 'member', 
 INSERT INTO `weiapp_action_log` VALUES ('13', '10', '1', '2130706433', 'Menu', '182', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426688660');
 INSERT INTO `weiapp_action_log` VALUES ('14', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-18 22:24登录了后台', '1', '1426688685');
 INSERT INTO `weiapp_action_log` VALUES ('15', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-18 23:10登录了后台', '1', '1426691426');
+INSERT INTO `weiapp_action_log` VALUES ('16', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-19 09:40登录了后台', '1', '1426729253');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -1112,7 +1113,7 @@ CREATE TABLE `weiapp_food` (
 -- ----------------------------
 -- Records of weiapp_food
 -- ----------------------------
-INSERT INTO `weiapp_food` VALUES ('1', '1', '2', '0', '百花北斗星裕华路北斗星', '2', '湘菜', '宫保鸡丁', '19.00', '15.00', '10.00', '份', '-1.00', '&lt;p&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: Tahoma, Geneva, sans-serif, &amp;#39;Microsoft Yahei&amp;#39;; font-size: 14px; line-height: 25.2000007629395px; background-color: rgb(255, 255, 255);&quot;&gt;辣中有点甜，甜中有点辣，是宫保鸡丁的特色，是餐馆中上桌率极高的一道菜，尤其是在国外的餐馆中，外国人说起中国菜，就是宫保鸡丁了，这更是外国人吃中餐时，最常点的一道菜。&lt;/span&gt;&lt;/p&gt;', '0', '0', '0', '0', '0', '0', '0', '', '1', '0', '0.00', '1', '1', '宫保鸡丁', '宫保鸡丁', '', '1426692888', '1426692888');
+INSERT INTO `weiapp_food` VALUES ('1', '1', '2', '0', '百花北斗星裕华路北斗星', '2', '湘菜', '宫保鸡丁', '19.00', '13.00', '10.00', '份', '-1.00', '&lt;p&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: Tahoma, Geneva, sans-serif, &amp;#39;Microsoft Yahei&amp;#39;; font-size: 14px; line-height: 25.2000007629395px; background-color: rgb(255, 255, 255);&quot;&gt;辣中有点甜，甜中有点辣，是宫保鸡丁的特色，是餐馆中上桌率极高的一道菜，尤其是在国外的餐馆中，外国人说起中国菜，就是宫保鸡丁了，这更是外国人吃中餐时，最常点的一道菜。&lt;img src=&quot;http://img.baidu.com/hi/jx2/j_0013.gif&quot;/&gt;&lt;/span&gt;&lt;/p&gt;', '0', '0', '0', '0', '0', '0', '0', '', '1', '0', '0.00', '1', '1', '宫保鸡丁', '宫保鸡丁', '', '1426692888', '1426733630');
 
 -- ----------------------------
 -- Table structure for `weiapp_food_car`
@@ -1162,6 +1163,7 @@ INSERT INTO `weiapp_food_category` VALUES ('2', '1', '2', '0', '湘菜', '0', '2
 -- ----------------------------
 DROP TABLE IF EXISTS `weiapp_food_detail`;
 CREATE TABLE `weiapp_food_detail` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `food_id` int(11) NOT NULL DEFAULT '0' COMMENT '饭菜id对应food表id',
   `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
   `member_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联用户表member的主键id(创建餐厅用户)',
@@ -1170,9 +1172,11 @@ CREATE TABLE `weiapp_food_detail` (
   `ext_fileid` char(32) NOT NULL DEFAULT '' COMMENT '图片或者微视的md5值',
   `file_name` varchar(256) NOT NULL DEFAULT '' COMMENT '图片或微视url',
   `input_name` varchar(32) NOT NULL DEFAULT '' COMMENT '表单字段名称',
+  `default_share` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否为默认微信分享图片',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态1有效0无效',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间'
+  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='饭菜详细';
 
 -- ----------------------------
@@ -1455,7 +1459,7 @@ CREATE TABLE `weiapp_member` (
 -- Records of weiapp_member
 -- ----------------------------
 INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '140', '97', '0', '1423289473', '2130706433', '1426688627', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '100', '87', '0', '0', '2130706433', '1426691426', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '100', '88', '0', '0', '2130706433', '1426729253', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -5234,7 +5238,7 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- Records of weiapp_ucenter_member
 -- ----------------------------
 INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1426688627', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1426691426', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1426729253', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`
