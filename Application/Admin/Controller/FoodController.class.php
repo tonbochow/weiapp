@@ -67,13 +67,13 @@ class FoodController extends FoodBaseController {
             $food_data['mp_id'] = MP_ID;
             $food_data['member_id'] = UID;
             $food_data['dining_name'] = \Admin\Model\DiningRoomModel::getDiningRoomName($food_data['dining_room_id']);
-            if (empty($food_data['dining_name'])) {//保存所有门店
+            if(empty($food_data['dining_name'])){//保存所有门店
                 $food_data['dining_name'] = \Admin\Model\DiningRoomModel::getAllDiningRoomNames();
             }
             $food_data['cate_name'] = \Admin\Model\FoodCategoryModel::getFoodCategoryName($food_data['cate_id']);
-            $food_data['share_title'] = !empty($food_data['share_title']) ? $food_data['share_title'] : $food_data['food_name'];
-            $food_data['share_desc'] = !empty($food_data['share_desc']) ? $food_data['share_desc'] : $food_data['food_name'];
-            if ($foodModel->create($food_data, \Admin\Model\FoodModel::MODEL_INSERT)) {
+            $food_data['share_title'] = !empty($food_data['share_title'])?$food_data['share_title']:$food_data['food_name'];
+            $food_data['share_desc'] = !empty($food_data['share_desc'])?$food_data['share_desc']:$food_data['food_name'];
+            if ($foodModel->create($food_data,  \Admin\Model\FoodModel::MODEL_INSERT)) {
                 $food_add = $foodModel->add();
                 if ($food_add) {
                     $this->success('保存餐厅菜品成功!', '', true);
@@ -92,49 +92,49 @@ class FoodController extends FoodBaseController {
             $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
         }
         //检索菜品风格
-        $food_styles = M('FoodStyle')->where(array('mp_id' => MP_ID, 'status' => 1))->select();
+        $food_styles = M('FoodStyle')->where(array('mp_id'=>MP_ID,'status'=>1))->select();
         $arr_food_styles = array();
-        if (!empty($food_styles)) {
-            foreach ($food_styles as $food_style) {
+        if(!empty($food_styles)){
+            foreach($food_styles as $food_style){
                 $arr_food_styles[] = array(
-                    'id' => $food_style['id'],
-                    'food_style_name' => $food_style['name'],
+                    'id'=>$food_style['id'],
+                    'food_style_name' =>$food_style['name'],
                 );
             }
         }
         $promotion_arr = \Admin\Model\FoodModel::getFoodPromotion(null, false);
-        foreach ($promotion_arr as $key => $promotion) {
+        foreach($promotion_arr as $key=>$promotion){
             $arr_promotion[] = array(
-                'id' => $key,
-                'promotion_name' => $promotion,
+                'id'=>$key,
+                'promotion_name'=>$promotion,
             );
         }
         $hot_arr = \Admin\Model\FoodModel::getFoodHot(null, false);
-        foreach ($hot_arr as $key => $hot) {
+        foreach($hot_arr as $key=>$hot){
             $arr_hot[] = array(
-                'id' => $key,
-                'hot_name' => $hot,
+                'id'=>$key,
+                'hot_name'=>$hot,
             );
         }
         $offline_arr = \Admin\Model\FoodModel::getFoodOffline(null, false);
-        foreach ($offline_arr as $key => $offline) {
+        foreach($offline_arr as $key=>$offline){
             $arr_offline[] = array(
-                'id' => $key,
-                'offline_name' => $offline,
+                'id'=>$key,
+                'offline_name'=>$offline,
             );
         }
         $card_arr = \Admin\Model\FoodModel::getFoodCard(null, false);
-        foreach ($card_arr as $key => $card) {
+        foreach($card_arr as $key=>$card){
             $arr_card[] = array(
-                'id' => $key,
-                'card_name' => $card,
+                'id'=>$key,
+                'card_name'=>$card,
             );
         }
         $status_arr = \Admin\Model\FoodModel::getFoodStatus(null, false);
-        foreach ($status_arr as $key => $status) {
+        foreach($status_arr as $key=>$status){
             $arr_status[] = array(
-                'id' => $key,
-                'status_name' => $status,
+                'id'=>$key,
+                'status_name'=>$status,
             );
         }
         $this->assign('promotion_arr', json_encode($arr_promotion));
@@ -144,7 +144,7 @@ class FoodController extends FoodBaseController {
         $this->assign('status_arr', json_encode($arr_status));
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
         $this->assign('selected_dining_room_id', json_encode(null));
-        $this->assign('food_styles', json_encode($arr_food_styles));
+        $this->assign('food_styles',  json_encode($arr_food_styles));
 
         $this->meta_title = '创建餐厅菜品';
         $this->display('add');
@@ -153,35 +153,29 @@ class FoodController extends FoodBaseController {
     //编辑餐厅菜品(前台面向商家)
     public function edit() {
         if (IS_POST) {
-            $food_data = I('post.');
-            unset($food_data['dining_room_arr']);
-            unset($food_data['promotion_arr']);
-            unset($food_data['hot_arr']);
-            unset($food_data['offline_arr']);
-            unset($food_data['card_arr']);
-            unset($food_data['status_arr']);
-            unset($food_data['cate_arr']);
-            $foodModel = D('Food');
-            if ($foodModel->create($food_data, \Admin\Model\FoodModel::MODEL_UPDATE)) {
-                $food_edit = $foodModel->save();
-                if ($food_edit) {
-                    $this->success('保存餐厅菜品成功', '', true);
+            $food_cate_data = I('post.');
+            unset($food_cate_data['dining_room_arr']);
+            $foodCateModel = D('FoodCategory');
+            if ($foodCateModel->create($food_cate_data)) {
+                $food_cate_edit = $foodCateModel->save();
+                if ($food_cate_edit) {
+                    $this->success('保存餐厅菜品分类成功', '', true);
                 } else {
-                    $this->error($foodModel->getError(), '', true);
+                    $this->error($foodCateModel->getError(), '', true);
                 }
             } else {
-                $this->error($foodModel->getError(), '', true);
+                $this->error('餐厅菜品分类编辑失败!', '', true);
             }
         }
         $id = intval(I('get.id', '', 'trim'));
-        $foodModel = M('Food');
+        $foodCateModel = M('FoodCategory');
         $map['id'] = $id;
         $map['mp_id'] = MP_ID;
-        $food = $foodModel->where($map)->find();
-        if ($food == false) {
-            $this->error('未检索到您要编辑的餐厅菜品!');
+        $food_cate = $foodCateModel->where($map)->find();
+        if ($food_cate == false) {
+            $this->error('未检索到您要编辑的餐厅菜品分类!');
         }
-        $food['description'] = htmlspecialchars_decode(stripslashes($food['description']));
+
         //检索所有连锁餐厅
         $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
         if (IS_CHAIN) {
@@ -190,225 +184,77 @@ class FoodController extends FoodBaseController {
         foreach ($dining_rooms as $val) {
             $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
         }
-        //检索菜品分类
-        $food_categorys = M('FoodCategory')->where(array('mp_id' => MP_ID, 'dining_room_id' => $food['dining_room_id'], 'status' => \Admin\Model\FoodCategoryModel::$STATUS_ENABLED))->select();
-        foreach ($food_categorys as $food_category) {
-            $arr_food_cates[] = array(
-                'id' => $food_category['id'],
-                'cate_name' => $food_category['cate_name'],
-            );
-        }
-        //检索菜品风格
-        $food_styles = M('FoodStyle')->where(array('mp_id' => MP_ID, 'status' => 1))->select();
-        $arr_food_styles = array();
-        if (!empty($food_styles)) {
-            foreach ($food_styles as $food_style) {
-                $arr_food_styles[] = array(
-                    'id' => $food_style['id'],
-                    'food_style_name' => $food_style['name'],
-                );
-            }
-        }
-        $promotion_arr = \Admin\Model\FoodModel::getFoodPromotion(null, false);
-        foreach ($promotion_arr as $key => $promotion) {
-            $arr_promotion[] = array(
-                'id' => $key,
-                'promotion_name' => $promotion,
-            );
-        }
-        $hot_arr = \Admin\Model\FoodModel::getFoodHot(null, false);
-        foreach ($hot_arr as $key => $hot) {
-            $arr_hot[] = array(
-                'id' => $key,
-                'hot_name' => $hot,
-            );
-        }
-        $offline_arr = \Admin\Model\FoodModel::getFoodOffline(null, false);
-        foreach ($offline_arr as $key => $offline) {
-            $arr_offline[] = array(
-                'id' => $key,
-                'offline_name' => $offline,
-            );
-        }
-        $card_arr = \Admin\Model\FoodModel::getFoodCard(null, false);
-        foreach ($card_arr as $key => $card) {
-            $arr_card[] = array(
-                'id' => $key,
-                'card_name' => $card,
-            );
-        }
-        $status_arr = \Admin\Model\FoodModel::getFoodStatus(null, false);
-        foreach ($status_arr as $key => $status) {
-            $arr_status[] = array(
-                'id' => $key,
-                'status_name' => $status,
-            );
-        }
-        $this->assign('promotion_arr', json_encode($arr_promotion));
-        $this->assign('hot_arr', json_encode($arr_hot));
-        $this->assign('offline_arr', json_encode($arr_offline));
-        $this->assign('card_arr', json_encode($arr_card));
-        $this->assign('status_arr', json_encode($arr_status));
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
-        $this->assign('food_cate_arr', json_encode($arr_food_cates));
-        $this->assign('food_styles', json_encode($arr_food_styles));
-        $this->assign('food', $food);
-        $this->assign('json_food', json_encode($food));
+        $this->assign('selected_dining_room_id', json_encode($food_cate['dining_room_id']));
+        $this->assign('food_cate', $food_cate);
+        $this->assign('json_food_cate', json_encode($food_cate));
         $this->meta_title = '编辑餐厅菜品分类';
         $this->display('edit');
     }
 
-    //上架餐厅菜品(前台面向商家)
+    //启用餐厅菜品(前台面向商家)
     public function enable() {
-        $food_id_arr = I('post.id');
-        if (empty($food_id_arr)) {
+        $food_cate_id_arr = I('post.id');
+        if (empty($food_cate_id_arr)) {
             $this->error('请选择要操作的数据!');
         }
-        $food_ids = array_unique($food_id_arr);
-        $food_ids_str = is_array($food_ids) ? implode(',', $food_ids) : $food_ids;
-        $map['id'] = array('in', $food_ids_str);
+        $food_cate_ids = array_unique($food_cate_id_arr);
+        $food_cate_ids_str = is_array($food_cate_ids) ? implode(',', $food_cate_ids) : $food_cate_ids;
+        $map['id'] = array('in', $food_cate_ids_str);
         $map['mp_id'] = MP_ID;
-        $foodModel = M('Food');
-        $food_data['status'] = \Admin\Model\FoodModel::$STATUS_ENABLED;
-        $food_data['update_time'] = time();
-        $food_enable = $foodModel->where($map)->save($food_data);
-        if ($food_enable) {
-            $this->success('上架餐厅菜品成功!');
+        $foodCateModel = M('FoodCategory');
+        $food_cate_data['status'] = \Admin\Model\FoodCategoryModel::$STATUS_ENABLED;
+        $food_cate_data['update_time'] = time();
+        $food_cate_enable = $foodCateModel->where($map)->save($food_cate_data);
+        if ($food_cate_enable) {
+            $this->success('启用餐厅菜品分类成功!');
         }
-        $this->error('上架餐厅菜品失败!');
+        $this->error('启用餐厅菜品分类失败!');
     }
 
-    //下架餐厅菜品(前台面向商家)
+    //禁用餐厅菜品(前台面向商家)
     public function disable() {
-        $food_id_arr = I('post.id');
-        if (empty($food_id_arr)) {
+        $food_cate_id_arr = I('post.id');
+        if (empty($food_cate_id_arr)) {
             $this->error('请选择要操作的数据!');
         }
-        $food_ids = array_unique($food_id_arr);
-        $food_ids_str = is_array($food_ids) ? implode(',', $food_ids) : $food_ids;
-        $map['id'] = array('in', $food_ids_str);
+        $food_cate_ids = array_unique($food_cate_id_arr);
+        $food_cate_ids_str = is_array($food_cate_ids) ? implode(',', $food_cate_ids) : $food_cate_ids;
+        $map['id'] = array('in', $food_cate_ids_str);
         $map['mp_id'] = MP_ID;
-        $foodModel = M('Food');
-        $food_data['status'] = \Admin\Model\FoodModel::$STATUS_DISABLED;
-        $food_data['update_time'] = time();
-        $food_disable = $foodModel->where($map)->save($food_data);
-        if ($food_disable) {
-            $this->success('下架餐厅菜品成功!');
+        $foodCateModel = M('FoodCategory');
+        $food_cate_data['status'] = \Admin\Model\FoodCategoryModel::$STATUS_DISABLED;
+        $food_cate_data['update_time'] = time();
+        $food_cate_disable = $foodCateModel->where($map)->save($food_cate_data);
+        if ($food_cate_disable) {
+            $this->success('禁用餐厅菜品分类成功!');
         }
-        $this->error('下架餐厅菜品失败!');
+        $this->error('禁用餐厅菜品分类失败!');
     }
 
     //根据餐厅id检索菜品分类
-    public function cate() {
-        if (IS_POST) {
+    public function cate(){
+        if(IS_POST){
             $dining_room_id = I('post.select_dining_room_id');
             $foodCategoryModel = M('FoodCategory');
-            $food_categorys = $foodCategoryModel->where(array('mp_id' => MP_ID, 'dining_room_id' => $dining_room_id, 'status' => \Admin\Model\FoodCategoryModel::$STATUS_ENABLED))->select();
-            if (empty($food_categorys)) {
-                $this->error('该餐厅未创建菜品分类请先创建菜品分类', '', true);
+            $food_categorys = $foodCategoryModel->where(array('mp_id'=>MP_ID,'dining_room_id'=>$dining_room_id,'status'=>  \Admin\Model\FoodCategoryModel::$STATUS_ENABLED))->select();
+            if(empty($food_categorys)){
+                $this->error('该餐厅未创建菜品分类请先创建菜品分类','',true);
             }
-            foreach ($food_categorys as $food_category) {
+            foreach($food_categorys as $food_category){
                 $arr_cate[] = array(
-                    'id' => $food_category['id'],
-                    'cate_name' => $food_category['cate_name'],
+                    'id'=>$food_category['id'],
+                    'cate_name'=>$food_category['cate_name'],
                 );
             }
-            $this->success($arr_cate, "", true);
+            $this->success($arr_cate,"",true);
         }
     }
-
+    
     //菜品详细查看及保存(面向商家)
     public function detail() {
-        if (IS_POST) {
-            $detail_data = I('post.');
-            $dining_room_id = I('post.id');
-            $map['id'] = $dining_room_id;
-            $map['mp_id'] = MP_ID;
-            $map['member_id'] = UID;
-            $dining_room = M('DiningRoom')->where($map)->find();
-            if ($dining_room == false) {
-                $this->error('未检索到您要添加图片的餐厅信息!', '', true);
-            }
-            $save_path = C('WEBSITE_URL') . '/Uploads/Mp/' . MP_ID . '/dining_room/' . $dining_room_id . '/';
-            if (!file_exists($save_path)) {
-                $mkdir_res = mkdir($save_path, 0777, true);
-                if (!$mkdir_res) {
-                    $this->error('创建上传图片目录失败', '', true);
-                }
-            }
-            unset($detail_data['id']);
-            foreach ($detail_data as $input_name => $image_data) {
-                if (!empty($image_data) && !preg_match('/\/Uploads\w*/', $image_data)) {
-                    $pic_url = $save_path . "$input_name.jpg";
-                    $final_url = '/Uploads/Mp/' . MP_ID . '/dining_room/' . $dining_room_id . '/' . "$input_name.jpg";
-                    $pic_tmp = base64_decode($image_data);
-                    $create_pic = file_put_contents($pic_url, $pic_tmp);
-                    if ($create_pic == false) {
-                        $this->error('生成图片失败!', '', true);
-                    }
-                    //写入或更新餐厅明细表
-                    $detail_map['mp_id'] = MP_ID;
-                    $detail_map['member_id'] = UID;
-                    $detail_map['input_name'] = $input_name;
-                    $detail_map['dining_room_id'] = $dining_room_id;
-                    $detail_exist = M('DiningRoomDetail')->where($detail_map)->find();
-                    if ($detail_exist == false) {//写入明细表
-                        $add_data['mp_id'] = MP_ID;
-                        $add_data['member_id'] = UID;
-                        $add_data['input_name'] = $input_name;
-                        $add_data['dining_room_id'] = $dining_room_id;
-                        $add_data['url'] = $final_url;
-                        $detailModel = D('DiningRoomDetail');
-                        if ($detailModel->create($add_data)) {
-                            $add_res = $detailModel->add();
-                            if (!$add_res) {
-                                $this->error($detailModel->getError(), '', true);
-                            }
-                        } else {
-                            $this->error('保存餐厅图片失败!');
-                        }
-                    } else {//更新明细表
-                        $save_data['id'] = $detail_exist['id'];
-                        $save_data['mp_id'] = MP_ID;
-                        $save_data['member_id'] = UID;
-                        $save_data['dining_room_id'] = $dining_room_id;
-                        $save_data['input_name'] = $input_name;
-                        $save_data['url'] = $final_url;
-                        $detailModel = D('DiningRoomDetail');
-                        if ($detailModel->create($save_data)) {
-                            $save_res = $detailModel->save();
-                            if (!$save_res) {
-                                $this->error($detailModel->getError(), '', true);
-                            }
-                        } else {
-                            $this->error('更新餐厅图片失败!');
-                        }
-                    }
-                }
-            }
-            $this->success('保存餐厅图片成功!', '', true);
-        }
-        $id = intval(I('get.id', '', 'trim'));
-        $map['id'] = $id;
-        $map['mp_id'] = MP_ID;
-        $food = M('Food')->where($map)->find();
-        if ($food == false) {
-            $this->error('未检索到您要查看的菜品信息!');
-        }
-        //检索菜品明细信息
-        $detail_info['id'] = $id;
-        $food_details = M('FoodDetail')->where(array('mp_id' => MP_ID, 'food_id' => $id))->select();
-        if ($food_details != false) {
-            foreach ($food_details as $detail) {
-                $food_info[$detail['input_name']] = $detail['url'];
-            }
-        }
-
-        $this->assign('detail_info', $detail_info);
-        $this->assign('json_detail', json_encode($detail_info));
-        $this->assign('food', $food);
         $this->meta_title = '餐厅菜品详细';
-        $this->display('detail');
+        $this->display('edit');
     }
 
 }
