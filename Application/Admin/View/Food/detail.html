@@ -6,66 +6,180 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>{$dining_room.dining_name} | 餐厅图片添加(最多添加5张)</h2>
+        <h2>{$food.dining_name} | {$food.food_name} | 菜品图片添加(最多添加5张)</h2>
     </div>
 
-    <div id="dialog" title="餐厅图片添加" style="display:none;">
+    <div id="dialog" title="菜品图片添加" style="display:none;">
         <p id="dialog_content"></p>
     </div>
-    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_dining" ng-app="weiapp_dining" id="ng-app"  name="DiningForm" ng-controller="DiningController" ng-submit="submitForm()">
+    
+     <div class="data-table table-striped">
+        <table>
+            
+            <tbody>
+                <thead>
+                <tr>
+                    <th>所属餐厅</th>
+                    <th>菜品名</th>
+                    <th>所属分类</th>
+                    <th>原价</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>{$food.dining_name}</td>
+                    <td>{$food.food_name}</td>
+                    <td>{$food.cate_name}</td>
+                    <td>{$food.price}</td>
+                </tr>
+                <thead>
+                    <tr>
+                        <th>微信价</th>
+                        <th>成本价</th>
+                        <th>单位</th>
+                        <th>库存</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>{$food.weixin_price}</td>
+                    <td>{$food.cost_price}</td>
+                    <td>{$food.unit}</td>
+                    <td>
+                <if condition="$food.stock eq -1">
+                    不限库存
+                    <else />
+                    {$food.stock}
+                </if>
+                    </td>
+                </tr>
+                <thead>
+                <tr>
+                    <th>浏览次数</th>
+                    <th>评论次数</th>
+                    <th>收藏次数</th>
+                    <th>销售数量</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>{$food.view_times}</td>
+                    <td>{$food.comment_times}</td>
+                    <td>{$food.favorite_times}</td>
+                    <td>{$food.sell_count}</td>
+                </tr>
+                <thead>
+                <tr>
+                    <th>热销菜品</th>
+                    <th>促销菜品</th>
+                    <th>餐到付款</th>
+                    <th>菜品风格</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td><?php echo \Admin\Model\FoodModel::getFoodHot($food['is_hot'])?></td>
+                    <td><?php echo \Admin\Model\FoodModel::getFoodPromotion($food['is_promotion'])?></td>
+                    <td><?php echo \Admin\Model\FoodModel::getFoodOffline($food['is_offline'])?></td>
+                    <td>{$food.style_name}</td>
+                </tr>
+                <thead>
+                <tr>
+                    <th>允许使用卡劵</th>
+                    <th>菜品状态</th>
+                    <th>微信分享标题</th>
+                    <th>微信分享描述</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td><?php echo \Admin\Model\FoodModel::getFoodCard($food['use_card'])?></td>
+                    <td><?php echo \Admin\Model\FoodModel::getFoodStatus($food['status'])?></td>
+                    <td>{$food.share_title}</td>
+                    <td>{$food.share_desc}</td>
+                </tr>
+                <thead>
+                <tr>
+                    <th colspan="4">菜品描述</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td colspan="4">{$food.description|htmlspecialchars_decode|stripslashes}</td>
+                </tr>
+                <thead>
+                <tr>
+                    <th colspan="2">创建时间</th>
+                    <th colspan="2">更新时间</th>
+                </tr>
+                </thead>
+                <tr>
+                    <if condition="$food.create_time neq 0">
+                        <td colspan="2">{$food.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td colspan="2">{$food.create_time}</td>
+                    </if>
+                    <if condition="$food.update_time neq 0">
+                        <td colspan="2">{$food.update_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td colspan="2">{$food.update_time}</td>
+                    </if>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    
+    
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food" ng-app="weiapp_food" id="ng-app"  name="FoodForm" ng-controller="FoodController" ng-submit="submitForm()">
 
-        <div class="form-item" ng-class="{'has-error' : DiningForm.input_1.$invalid && !DiningForm.input_1.$pristine}">
-            <label class="item-label">第一张图片<span class="check-tips"></span></label>
+        <div class="form-item" ng-class="{'has-error' : FoodForm.input_1.$invalid && !FoodForm.input_1.$pristine}">
+            <label class="item-label">第一张图片<if condition="$food_info.default_share eq 'input_1'">[默认分享显示图片]</if><span class="check-tips"></span><button class="btn ajax-post"  ng-click='set_default_share("input_1")' target-form="ids">设为默认微信分享图片</button></label>
             <div class="controls">
-                <img src="{$detail_info.input_1}" id="pic_input_1" style="max-width: 300px;"><br>
+                <img src="{$food_info.input_1}" id="pic_input_1" style="max-width: 300px;"><br>
                 <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_1" id="file_input_1" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="input_1" name="input_1" value="{$detail_info.input_1}" ng-model="dining.input_1">
-                <p ng-show="DiningForm.input_1.$invalid && !DiningForm.input_1.$pristine" class="help-block">第一张图片</p>
+                <input type="hidden" id="input_1" name="input_1" value="{$food_info.input_1}" ng-model="food_detail.input_1">
+                <p ng-show="FoodForm.input_1.$invalid && !FoodForm.input_1.$pristine" class="help-block">第一张图片</p>
             </div>
         </div>
 
-        <div class="form-item" ng-class="{'has-error' : DiningForm.input_2.$invalid && !DiningForm.input_2.$pristine}">
-            <label class="item-label">第二张图片<span class="check-tips"></span></label>
+        <div class="form-item" ng-class="{'has-error' : FoodForm.input_2.$invalid && !FoodForm.input_2.$pristine}">
+            <label class="item-label">第二张图片<if condition="$food_info.default_share eq 'input_2'">[默认分享显示图片]</if><span class="check-tips"></span><button class="btn ajax-post"  ng-click='set_default_share("input_2")' target-form="ids">设为默认微信分享图片</button></label>
             <div class="controls">
-                <img src="{$detail_info.input_2}" id="pic_input_2" style="max-width: 300px;"><br>
+                <img src="{$food_info.input_2}" id="pic_input_2" style="max-width: 300px;"><br>
                 <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_2" id="file_input_2" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="input_2" name="input_2" value="{$detail_info.input_2}"  ng-model="dining.input_2">
-                <p ng-show="DiningForm.input_2.$invalid && !DiningForm.input_2.$pristine" class="help-block">第二张图片</p>
+                <input type="hidden" id="input_2" name="input_2" value="{$food_info.input_2}"  ng-model="food_detail.input_2">
+                <p ng-show="FoodForm.input_2.$invalid && !FoodForm.input_2.$pristine" class="help-block">第二张图片</p>
             </div>
         </div>
 
-        <div class="form-item" ng-class="{'has-error' : DiningForm.input_3.$invalid && !DiningForm.input_3.$pristine}">
-            <label class="item-label">第三张图片<span class="check-tips"></span></label>
+        <div class="form-item" ng-class="{'has-error' : FoodForm.input_3.$invalid && !FoodForm.input_3.$pristine}">
+            <label class="item-label">第三张图片<if condition="$food_info.default_share eq 'input_3'">[默认分享显示图片]</if><span class="check-tips"></span><button class="btn ajax-post"  ng-click='set_default_share("input_3")' target-form="ids">设为默认微信分享图片</button></label>
             <div class="controls">
-                <img src="{$detail_info.input_3}" id="pic_input_3" style="max-width: 300px;"><br>
+                <img src="{$food_info.input_3}" id="pic_input_3" style="max-width: 300px;"><br>
                 <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_3" id="file_input_3" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="input_3" name="input_3" value="{$detail_info.input_3}"  ng-model="dining.input_3">
-                <p ng-show="DiningForm.input_3.$invalid && !DiningForm.input_3.$pristine" class="help-block">第三张图片</p>
+                <input type="hidden" id="input_3" name="input_3" value="{$food_info.input_3}"  ng-model="food_detail.input_3">
+                <p ng-show="FoodForm.input_3.$invalid && !FoodForm.input_3.$pristine" class="help-block">第三张图片</p>
             </div>
         </div>
         
-        <div class="form-item" ng-class="{'has-error' : DiningForm.input_4.$invalid && !DiningForm.input_4.$pristine}">
-            <label class="item-label">第四张图片<span class="check-tips"></span></label>
+        <div class="form-item" ng-class="{'has-error' : FoodForm.input_4.$invalid && !FoodForm.input_4.$pristine}">
+            <label class="item-label">第四张图片<if condition="$food_info.default_share eq 'input_4'">[默认分享显示图片]</if><span class="check-tips"></span><button class="btn ajax-post"  ng-click='set_default_share("input_4")' target-form="ids">设为默认微信分享图片</button></label>
             <div class="controls">
-                <img src="{$detail_info.input_4}" id="pic_input_4" style="max-width: 300px;"><br>
+                <img src="{$food_info.input_4}" id="pic_input_4" style="max-width: 300px;"><br>
                 <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_4" id="file_input_4" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="input_4" name="input_4" value="{$detail_info.input_4}"  ng-model="dining.input_4">
-                <p ng-show="DiningForm.input_4.$invalid && !DiningForm.input_4.$pristine" class="help-block">第四张图片</p>
+                <input type="hidden" id="input_4" name="input_4" value="{$food_info.input_4}"  ng-model="food_detail.input_4">
+                <p ng-show="FoodForm.input_4.$invalid && !FoodForm.input_4.$pristine" class="help-block">第四张图片</p>
             </div>
         </div>
         
-        <div class="form-item" ng-class="{'has-error' : DiningForm.input_5.$invalid && !DiningForm.input_5.$pristine}">
-            <label class="item-label">第五张图片<span class="check-tips"></span></label>
+        <div class="form-item" ng-class="{'has-error' : FoodForm.input_5.$invalid && !FoodForm.input_5.$pristine}">
+            <label class="item-label">第五张图片<if condition="$food_info.default_share eq 'input_5'">[默认分享显示图片]</if><span class="check-tips"></span><button class="btn ajax-post"  ng-click='set_default_share("input_5")' target-form="ids">设为默认微信分享图片</button></label>
             <div class="controls">
-                <img src="{$detail_info.input_5}" id="pic_input_5" style="max-width: 300px;"><br>
+                <img src="{$food_info.input_5}" id="pic_input_5" style="max-width: 300px;"><br>
                 <input type="file" title="选择图片"   multiple="true" class="btn btn-success"  name="file_input_5" id="file_input_5" accept="image/gif,image/jpeg,image/png,image/jpg">
-                <input type="hidden" id="input_5" name="input_5" value="{$detail_info.input_5}"  ng-model="dining.input_5">
-                <p ng-show="DiningForm.input_5.$invalid && !DiningForm.input_5.$pristine" class="help-block">第五张图片</p>
+                <input type="hidden" id="input_5" name="input_5" value="{$food_info.input_5}"  ng-model="food_detail.input_5">
+                <p ng-show="FoodForm.input_5.$invalid && !FoodForm.input_5.$pristine" class="help-block">第五张图片</p>
             </div>
         </div>
 
         <div class="form-item">
-            <button type="submit" class="btn btn-success submit" ng-disabled="DiningForm.$invalid">保 存</button>
+            <input type="hidden" id="default_share" name="default_share"  ng-model="food_detail.default_share">
+            <button type="submit" class="btn btn-success submit" ng-disabled="FoodForm.$invalid">保 存</button>
             <button class="btn btn-primary" onclick="javascript:history.back(-1);
                             return false;">返 回</button>
         </div>
@@ -84,8 +198,8 @@
     <script type="text/javascript" src="__STATIC__/LocalResizeIMG/LocalResizeIMG.js"></script>
     <script type="text/javascript" src="__STATIC__/LocalResizeIMG/patch/mobileBUGFix.mini.js"></script>
     <script type="text/javascript">
-                var DiningModule = angular.module("weiapp_dining", []);
-                DiningModule.controller("DiningController", function ($scope, $http) {
+                var FoodModule = angular.module("weiapp_food", []);
+                FoodModule.controller("FoodController", function ($scope, $http) {
                     $(function(){
                         $('#file_input_1').localResizeIMG({
                             quality: 0.6,
@@ -133,18 +247,38 @@
                             }
                         });
                     });
-                    $scope.dining = {$json_detail};
-                    $scope.submitForm = function () {
-                        $('.submit').attr('disabled', 'true');
-                        $scope.dining.input_1 = $('#input_1').val();
-                        $scope.dining.input_2 = $('#input_2').val();
-                        $scope.dining.input_3 = $('#input_3').val();
-                        $scope.dining.input_4 = $('#input_4').val();
-                        $scope.dining.input_5 = $('#input_5').val();
+                    $scope.food_detail = {$json_food_info};
+                    $scope.set_default_share = function(default_share){
+                        $scope.food_detail.default_share = default_share;
                         $http({
                             method: "POST",
-                            url: "/Admin/DiningRoom/detail",
-                            data: $.param($scope.dining),
+                            url: "/Admin/Food/share",
+                            data: $.param($scope.food_detail),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function (data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                                window.location.reload();
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                    $scope.submitForm = function () {
+                        $('.submit').attr('disabled', 'true');
+                        $scope.food_detail.input_1 = $('#input_1').val();
+                        $scope.food_detail.input_2 = $('#input_2').val();
+                        $scope.food_detail.input_3 = $('#input_3').val();
+                        $scope.food_detail.input_4 = $('#input_4').val();
+                        $scope.food_detail.input_5 = $('#input_5').val();
+                        $http({
+                            method: "POST",
+                            url: "/Admin/Food/detail",
+                            data: $.param($scope.food_detail),
                             headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                         }).success(function (data) {
                             if (data.status) {
@@ -162,11 +296,6 @@
                 function result(status) {
                     $("#dialog").dialog("close");
                     $('.submit').removeAttr("disabled");
-//                    if (status) {
-//                        $('.submit').removeAttr("disabled");
-//                    } else {
-//                        $('.submit').removeAttr("disabled");
-//                    }
                 }
     </script>
 </block>

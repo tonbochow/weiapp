@@ -76,3 +76,6 @@ DROP COLUMN `dining_room_id`,
 CHANGE COLUMN `description` `name`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '风格名称' AFTER `member_id`,
 COMMENT='菜品风格';
 
+ALTER TABLE `weiapp_food_detail`
+CHANGE COLUMN `file_name` `url`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图片或微视url' AFTER `ext_fileid`;
+
