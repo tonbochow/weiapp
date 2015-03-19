@@ -76,3 +76,9 @@ DROP COLUMN `dining_room_id`,
 CHANGE COLUMN `description` `name`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '风格名称' AFTER `member_id`,
 COMMENT='菜品风格';
 
+ALTER TABLE `weiapp_food_detail`
+ADD COLUMN `id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT FIRST ,
+ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `weiapp_food_detail`
+ADD COLUMN `default_share`  tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否为默认微信分享图片' AFTER `input_name`;
