@@ -32,6 +32,7 @@
                     <th>用餐人数</th>
                     <th>预计用餐时间</th>
                     <th>状态</th>
+                    <th>预定备注</th>
                     <th>预定时间</th>
                 </tr>
             </thead>
@@ -58,7 +59,7 @@
                              echo \Admin\Model\DiningReserveModel::getDiningReserveStatus($reserve['status']);
                         ?>
                     </td>
-                    <td>
+                    <td>{$reserve.remark}</td>
                     <if condition="$reserve.create_time neq 0">
                         <td>{$reserve.create_time|date="Y-m-d H:i:s",###}</td>
                         <else />
@@ -68,7 +69,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="8" class="text-center">您检索到客户预定 </td>
+                <td colspan="9" class="text-center">您检索到客户预定 </td>
             </notempty>
             </tbody>
         </table>

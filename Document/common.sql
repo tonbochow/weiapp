@@ -549,6 +549,37 @@ CREATE TABLE IF NOT EXISTS `weiapp_dining_setmenu_detail` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='套餐明细';
 
 
+CREATE TABLE IF NOT EXISTS `weiapp_food_setmenu` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
+  `member_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联用户表member的主键id(创建菜品套餐用户)',
+  `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
+  `setmenu_name` varchar(30) NOT NULL DEFAULT '' COMMENT '套餐名',
+  `description` varchar(256) NOT NULL DEFAULT '' COMMENT '套餐描述',
+  `use_card` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否允许使用优惠券0禁止1允许',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '套餐应付总价',
+  `setmenu_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '套餐优惠价',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '套餐状态1上架0下架',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜品套餐';
+
+
+CREATE TABLE IF NOT EXISTS `weiapp_food_setmenu_detail` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
+  `setmenu_id` int(11) NOT NULL DEFAULT '0' COMMENT '套餐id',
+  `food_id` int(11) NOT NULL DEFAULT '0' COMMENT '饭菜id对应food表id',
+  `food_name` varchar(30) NOT NULL DEFAULT '' COMMENT '菜名',
+  `weixin_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '价格',
+  `count` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '数量',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否属于套餐1是0否',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜品套餐明细';
 
 
 

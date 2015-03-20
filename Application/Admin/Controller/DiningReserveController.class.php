@@ -27,7 +27,7 @@ class DiningReserveController extends FoodBaseController {
         if (isset($get_user_name)) {
             $map['user_name'] = array('like', '%' . (string) I('user_name') . '%');
         }
-        $list = $this->lists('DiningReserve', $map, 'status,id');
+        $list = $this->lists('DiningReserve', $map, 'status,id', array('status' => array('egt', \Admin\Model\DiningReserveModel::$STATUS_DROP)));
         $this->assign('list', $list);
         $this->meta_title = '客户预定';
         $this->display('show');
@@ -75,6 +75,10 @@ class DiningReserveController extends FoodBaseController {
             $map['mp_id'] = MP_ID;
             $map['status'] = \Admin\Model\DiningReserveModel::$STATUS_COMMITED; //只有已提交的预定才能确认
             $reserveModel = M('DiningReserve');
+            $exist_drop = $reserveModel->where($map)->select();
+            if ($exist_drop == false) {
+                $this->error('选择的预定无需确认!', '', true);
+            }
             $reserve_data['status'] = \Admin\Model\DiningReserveModel::$STATUS_CONFIRM;
             $reserve_data['update_time'] = time();
             $reserve_confirm = $reserveModel->where($map)->save($reserve_data);
@@ -93,42 +97,52 @@ class DiningReserveController extends FoodBaseController {
 
     //完成预定(前台面向商家|客户)
     public function finish() {
-        $food_style_id_arr = I('post.id');
-        if (empty($food_style_id_arr)) {
+        $reserve_id_arr = I('post.id');
+        if (empty($reserve_id_arr)) {
             $this->error('请选择要操作的数据!');
         }
-        $food_style_ids = array_unique($food_style_id_arr);
-        $food_style_ids_str = is_array($food_style_ids) ? implode(',', $food_style_ids) : $food_style_ids;
-        $map['id'] = array('in', $food_style_ids_str);
+        $reserve_ids = array_unique($reserve_id_arr);
+        $reserve_ids_str = is_array($reserve_ids) ? implode(',', $reserve_ids) : $reserve_ids;
+        $map['id'] = array('in', $reserve_ids_str);
         $map['mp_id'] = MP_ID;
-        $foodStyleModel = M('FoodStyle');
-        $food_style_data['status'] = \Admin\Model\FoodStyleModel::$STATUS_DISABLED;
-        $food_style_data['update_time'] = time();
-        $food_style_disable = $foodStyleModel->where($map)->save($food_style_data);
-        if ($food_style_disable) {
-            $this->success('禁用餐厅菜品风格成功!');
+        $map['status'] = \Admin\Model\DiningReserveModel::$STATUS_CONFIRM;
+        $reserveModel = M('DiningReserve');
+        $exist_drop = $reserveModel->where($map)->select();
+        if ($exist_drop == false) {
+            $this->error('选择的预定无需完成!', '', true);
         }
-        $this->error('禁用餐厅菜品风格失败!');
+        $reserve_data['status'] = \Admin\Model\DiningReserveModel::$STATUS_FINISH;
+        $reserve_data['update_time'] = time();
+        $reserve_finish = $reserveModel->where($map)->save($reserve_data);
+        if ($reserve_finish) {
+            $this->success('客户预定完成!');
+        }
+        $this->error('客户预定完成失败!');
     }
 
     //商家作废客户预定(前台面向商家)
     public function drop() {
-        $food_style_id_arr = I('post.id');
-        if (empty($food_style_id_arr)) {
+        $reserve_id_arr = I('post.id');
+        if (empty($reserve_id_arr)) {
             $this->error('请选择要操作的数据!');
         }
-        $food_style_ids = array_unique($food_style_id_arr);
-        $food_style_ids_str = is_array($food_style_ids) ? implode(',', $food_style_ids) : $food_style_ids;
-        $map['id'] = array('in', $food_style_ids_str);
+        $reserve_ids = array_unique($reserve_id_arr);
+        $reserve_ids_str = is_array($reserve_ids) ? implode(',', $reserve_ids) : $reserve_ids;
+        $map['id'] = array('in', $reserve_ids_str);
         $map['mp_id'] = MP_ID;
-        $foodStyleModel = M('FoodStyle');
-        $food_style_data['status'] = \Admin\Model\FoodStyleModel::$STATUS_ENABLED;
-        $food_style_data['update_time'] = time();
-        $food_style_enable = $foodStyleModel->where($map)->save($food_style_data);
-        if ($food_style_enable) {
-            $this->success('启用餐厅菜品风格成功!');
+        $map['status'] = array(array('elt', \Admin\Model\DiningReserveModel::$STATUS_COMMITED),array('gt', \Admin\Model\DiningReserveModel::$STATUS_DROP));
+        $reserveModel = M('DiningReserve');
+        $exist_drop = $reserveModel->where($map)->select();
+        if ($exist_drop == false) {
+            $this->error('选择的预定无需作废!', '', true);
         }
-        $this->error('启用餐厅菜品风格失败!');
+        $reserve_data['status'] = \Admin\Model\DiningReserveModel::$STATUS_DROP;
+        $reserve_data['update_time'] = time();
+        $reserve_drop = $reserveModel->where($map)->save($reserve_data);
+        if ($reserve_drop) {
+            $this->success('作废客户预定成功!');
+        }
+        $this->error('作废客户预定失败!');
     }
 
 }
