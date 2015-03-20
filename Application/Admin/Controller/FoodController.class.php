@@ -61,7 +61,7 @@ class FoodController extends FoodBaseController {
             unset($food_data['card_arr']);
             unset($food_data['status_arr']);
             unset($food_data['cate_arr']);
-            unset($food_data['food_styles']);
+            unset($food_data['food_styles_arr']);
             $foodModel = D('Food');
             //保存餐厅菜品
             $food_data['mp_id'] = MP_ID;
@@ -70,6 +70,7 @@ class FoodController extends FoodBaseController {
             if (empty($food_data['dining_name'])) {//保存所有门店
                 $food_data['dining_name'] = \Admin\Model\DiningRoomModel::getAllDiningRoomNames();
             }
+            $food_data['style_name'] = \Admin\Model\FoodStyleModel::getFoodStyleName($food_data['style_id']);
             $food_data['cate_name'] = \Admin\Model\FoodCategoryModel::getFoodCategoryName($food_data['cate_id']);
             $food_data['share_title'] = !empty($food_data['share_title']) ? $food_data['share_title'] : $food_data['food_name'];
             $food_data['share_desc'] = !empty($food_data['share_desc']) ? $food_data['share_desc'] : $food_data['food_name'];
@@ -92,7 +93,7 @@ class FoodController extends FoodBaseController {
             $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
         }
         //检索菜品风格
-        $food_styles = M('FoodStyle')->where(array('mp_id' => MP_ID, 'status' => 1))->select();
+        $food_styles = M('FoodStyle')->where(array('mp_id' => MP_ID, 'status' => \Admin\Model\FoodStyleModel::$STATUS_ENABLED))->select();
         $arr_food_styles = array();
         if (!empty($food_styles)) {
             foreach ($food_styles as $food_style) {
@@ -161,6 +162,8 @@ class FoodController extends FoodBaseController {
             unset($food_data['card_arr']);
             unset($food_data['status_arr']);
             unset($food_data['cate_arr']);
+            unset($food_data['food_styles_arr']);
+            $food_data['style_name'] = \Admin\Model\FoodStyleModel::getFoodStyleName($food_data['style_id']);
             $foodModel = D('Food');
             if ($foodModel->create($food_data, \Admin\Model\FoodModel::MODEL_UPDATE)) {
                 $food_edit = $foodModel->save();
@@ -199,7 +202,7 @@ class FoodController extends FoodBaseController {
             );
         }
         //检索菜品风格
-        $food_styles = M('FoodStyle')->where(array('mp_id' => MP_ID, 'status' => 1))->select();
+        $food_styles = M('FoodStyle')->where(array('mp_id' => MP_ID, 'status' => \Admin\Model\FoodStyleModel::$STATUS_ENABLED))->select();
         $arr_food_styles = array();
         if (!empty($food_styles)) {
             foreach ($food_styles as $food_style) {
@@ -212,35 +215,35 @@ class FoodController extends FoodBaseController {
         $promotion_arr = \Admin\Model\FoodModel::getFoodPromotion(null, false);
         foreach ($promotion_arr as $key => $promotion) {
             $arr_promotion[] = array(
-                'id' => $key,
+                'id' => strval($key),
                 'promotion_name' => $promotion,
             );
         }
         $hot_arr = \Admin\Model\FoodModel::getFoodHot(null, false);
         foreach ($hot_arr as $key => $hot) {
             $arr_hot[] = array(
-                'id' => $key,
+                'id' => strval($key),
                 'hot_name' => $hot,
             );
         }
         $offline_arr = \Admin\Model\FoodModel::getFoodOffline(null, false);
         foreach ($offline_arr as $key => $offline) {
             $arr_offline[] = array(
-                'id' => $key,
+                'id' => strval($key),
                 'offline_name' => $offline,
             );
         }
         $card_arr = \Admin\Model\FoodModel::getFoodCard(null, false);
         foreach ($card_arr as $key => $card) {
             $arr_card[] = array(
-                'id' => $key,
+                'id' => strval($key),
                 'card_name' => $card,
             );
         }
         $status_arr = \Admin\Model\FoodModel::getFoodStatus(null, false);
         foreach ($status_arr as $key => $status) {
             $arr_status[] = array(
-                'id' => $key,
+                'id' => strval($key),
                 'status_name' => $status,
             );
         }
@@ -251,7 +254,7 @@ class FoodController extends FoodBaseController {
         $this->assign('status_arr', json_encode($arr_status));
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
         $this->assign('food_cate_arr', json_encode($arr_food_cates));
-        $this->assign('food_styles', json_encode($arr_food_styles));
+        $this->assign('food_styles_arr', json_encode($arr_food_styles));
         $this->assign('food', $food);
         $this->assign('json_food', json_encode($food));
         $this->meta_title = '编辑餐厅菜品分类';
@@ -321,8 +324,6 @@ class FoodController extends FoodBaseController {
     public function detail() {
         if (IS_POST) {
             $detail_data = I('post.');
-//            dump($detail_data);
-//            exit;
             $food_id = I('post.id');
             $map['id'] = $food_id;
             $map['mp_id'] = MP_ID;
@@ -421,7 +422,7 @@ class FoodController extends FoodBaseController {
             }
         }
 
-        $this->assign('food_info',$food_info);
+        $this->assign('food_info', $food_info);
         $this->assign('json_food_info', json_encode($food_info));
         $this->assign('food', $food);
         $this->meta_title = '餐厅菜品详细';
@@ -429,45 +430,49 @@ class FoodController extends FoodBaseController {
     }
 
     //设置微信分享显示图片(前台商家)
-    public function share(){
-        if(IS_POST){
+    public function share() {
+        if (IS_POST) {
             $post_data = I('post.');
             $food_id = I('post.id');
             $input_name = I('post.default_share');
             $foodDetailModel = M('FoodDetail');
-            $exist = $foodDetailModel->where(array('mp_id'=>MP_ID,'food_id'=>$food_id,'input_name'=>$input_name))->find();
-            if($exist == false){
-                $this->error('请先设置图片！','',true);
+            $exist = $foodDetailModel->where(array('mp_id' => MP_ID, 'food_id' => $food_id, 'input_name' => $input_name))->find();
+            if ($exist == false) {
+                $this->error('请先设置图片！', '', true);
             }
             $foodDetailModel->startTrans();
             $detail_data['default_share'] = \Admin\Model\FoodDetailModel::$DEFAULT_SHARE_YES;
             $detail_data['update_time'] = time();
-            $default_save = $foodDetailModel->where(array('food_id'=>$food_id,'mp_id'=>MP_ID,'input_name'=>$input_name))->save($detail_data);
-            if($default_save  == false){
+            $default_save = $foodDetailModel->where(array('food_id' => $food_id, 'mp_id' => MP_ID, 'input_name' => $input_name))->save($detail_data);
+            if ($default_save == false) {
                 $foodDetailModel->rollback();
-                $this->error('设为默认分享图片失败','',true);
+                $this->error('设为默认分享图片失败', '', true);
             }
             $not_default_data['default_share'] = \Admin\Model\FoodDetailModel::$DEFAULT_SHARE_NO;
             $not_default_data['update_time'] = time();
             $map['food_id'] = $food_id;
             $map['mp_id'] = MP_ID;
-            $map['input_name'] = array('neq',$input_name);
-            $not_default_save = $foodDetailModel->where($map)->save($not_default_data);
-            if($not_default_save == false){
-                $foodDetailModel->rollback();
-                $this->error('设置其它图片为非默认分享图片失败','',true);
+            $map['input_name'] = array('neq', $input_name);
+            $exist_other = $foodDetailModel->where($map)->select();
+            if ($exist_other != false) {
+                $not_default_save = $foodDetailModel->where($map)->save($not_default_data);
+                if ($not_default_save == false) {
+                    $foodDetailModel->rollback();
+                    $this->error('设置其它图片为非默认分享图片失败', '', true);
+                }
             }
             $default_share_url = $post_data[$input_name];
             $foodModel = M('Food');
             $food_data['share_imgurl'] = $default_share_url;
             $food_data['update_time'] = time();
-            $food_save = $foodModel->where(array('id'=>$food_id,'mp_id'=>MP_ID))->save($food_data);
-            if($food_save == false){
+            $food_save = $foodModel->where(array('id' => $food_id, 'mp_id' => MP_ID))->save($food_data);
+            if ($food_save == false) {
                 $foodDetailModel->rollback();
-                $this->error('保存商品默认图片url失败','',true);
+                $this->error('保存商品默认图片url失败', '', true);
             }
             $foodDetailModel->commit();
-            $this->success('设置默认分享图片成功','',true);
+            $this->success('设置默认分享图片成功', '', true);
         }
     }
+
 }

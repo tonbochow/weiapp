@@ -57,7 +57,7 @@ class FoodCategoryController extends FoodBaseController {
             unset($food_cate_data['dining_room_arr']);
             $food_cate_data['mp_id'] = MP_ID;
             $food_cate_data['member_id'] = UID;
-            $food_cate_data['status'] = \Admin\Model\DiningMemberModel::$STATUS_ENABLED;
+            $food_cate_data['status'] = \Admin\Model\FoodCategoryModel::$STATUS_ENABLED;
             $food_cate_data['create_time'] = time();
             if ($foodCateModel->create($food_cate_data)) {
                 $food_cate_add = $foodCateModel->add();

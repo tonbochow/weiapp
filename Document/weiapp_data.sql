@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50612
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50612
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-03-19 22:56:36
+Date: 2015-03-20 12:39:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,7 +65,7 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
@@ -90,6 +90,14 @@ INSERT INTO `weiapp_action_log` VALUES ('17', '1', '2', '2130706433', 'member', 
 INSERT INTO `weiapp_action_log` VALUES ('18', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-03-19 22:06登录了后台', '1', '1426773994');
 INSERT INTO `weiapp_action_log` VALUES ('19', '10', '1', '2130706433', 'Menu', '183', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426774063');
 INSERT INTO `weiapp_action_log` VALUES ('20', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-19 22:11登录了后台', '1', '1426774262');
+INSERT INTO `weiapp_action_log` VALUES ('21', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-20 09:34登录了后台', '1', '1426815249');
+INSERT INTO `weiapp_action_log` VALUES ('22', '1', '1', '2130706433', 'member', '1', 'admin在2015-03-20 09:37登录了后台', '1', '1426815467');
+INSERT INTO `weiapp_action_log` VALUES ('23', '10', '1', '2130706433', 'Menu', '184', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426815635');
+INSERT INTO `weiapp_action_log` VALUES ('24', '10', '1', '2130706433', 'Menu', '185', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426815677');
+INSERT INTO `weiapp_action_log` VALUES ('25', '10', '1', '2130706433', 'Menu', '186', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426815699');
+INSERT INTO `weiapp_action_log` VALUES ('26', '10', '1', '2130706433', 'Menu', '187', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426815717');
+INSERT INTO `weiapp_action_log` VALUES ('27', '10', '1', '2130706433', 'Menu', '188', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426815734');
+INSERT INTO `weiapp_action_log` VALUES ('28', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-20 09:42登录了后台', '1', '1426815779');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -257,7 +265,7 @@ CREATE TABLE `weiapp_auth_group` (
 -- ----------------------------
 INSERT INTO `weiapp_auth_group` VALUES ('1', 'admin', '1', '默认用户组', '', '1', '1,2,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,81,82,83,84,86,87,88,89,90,91,92,93,94,95,96,97,100,102,103,105,106');
 INSERT INTO `weiapp_auth_group` VALUES ('2', 'admin', '1', '测试用户', '测试用户', '1', '1,2,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,82,83,84,88,89,90,91,92,93,96,97,100,102,103,195');
-INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,240,242,243,244,245,246,247,248,249,250,251,254,255,256,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289');
+INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,240,242,243,244,245,246,247,248,249,250,251,254,255,256,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294');
 INSERT INTO `weiapp_auth_group` VALUES ('4', 'admin', '1', '微餐饮店员', 'food_member', '1', '');
 
 -- ----------------------------
@@ -291,7 +299,7 @@ CREATE TABLE `weiapp_auth_rule` (
   `condition` varchar(300) NOT NULL DEFAULT '' COMMENT '规则附加条件',
   PRIMARY KEY (`id`),
   KEY `module` (`module`,`status`,`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=290 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=295 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_auth_rule
@@ -582,6 +590,11 @@ INSERT INTO `weiapp_auth_rule` VALUES ('286', 'admin', '1', 'Admin/Food/disable'
 INSERT INTO `weiapp_auth_rule` VALUES ('287', 'admin', '1', 'Admin/Food/detail', '详细', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('288', 'admin', '1', 'Admin/Food/cate', '获取餐厅菜品分类', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('289', 'admin', '1', 'Admin/Food/share', '设置微信分享图片', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('290', 'admin', '1', 'Admin/FoodStyle/show', '菜品风格', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('291', 'admin', '1', 'Admin/FoodStyle/add', '创建', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('292', 'admin', '1', 'Admin/FoodStyle/edit', '编辑', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('293', 'admin', '1', 'Admin/FoodStyle/enable', '启用', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('294', 'admin', '1', 'Admin/FoodStyle/disable', '禁用', '1', '');
 
 -- ----------------------------
 -- Table structure for `weiapp_category`
@@ -1113,12 +1126,13 @@ CREATE TABLE `weiapp_food` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='菜';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='菜';
 
 -- ----------------------------
 -- Records of weiapp_food
 -- ----------------------------
-INSERT INTO `weiapp_food` VALUES ('1', '1', '2', '0', '百花北斗星裕华路北斗星', '2', '湘菜', '宫保鸡丁', '19.00', '13.00', '10.00', '份', '-1.00', '&lt;p&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: Tahoma, Geneva, sans-serif, &amp;#39;Microsoft Yahei&amp;#39;; font-size: 14px; line-height: 25.2000007629395px; background-color: rgb(255, 255, 255);&quot;&gt;辣中有点甜，甜中有点辣，是宫保鸡丁的特色，是餐馆中上桌率极高的一道菜，尤其是在国外的餐馆中，外国人说起中国菜，就是宫保鸡丁了，这更是外国人吃中餐时，最常点的一道菜。&lt;img src=&quot;http://img.baidu.com/hi/jx2/j_0013.gif&quot;/&gt;&lt;/span&gt;&lt;/p&gt;', '0', '0', '0', '0', '0', '0', '0', '', '1', '0', '0.00', '1', '1', '宫保鸡丁', '宫保鸡丁', '/Uploads/Mp/1/food/1/input_2.jpg', '1426692888', '1426775719');
+INSERT INTO `weiapp_food` VALUES ('1', '1', '2', '0', '百花北斗星裕华路北斗星', '2', '湘菜', '宫保鸡丁', '19.00', '13.00', '10.00', '份', '-1.00', '&lt;p&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: Tahoma, Geneva, sans-serif, &amp;#39;Microsoft Yahei&amp;#39;; font-size: 14px; line-height: 25.2000007629395px; background-color: rgb(255, 255, 255);&quot;&gt;辣中有点甜，甜中有点辣，是宫保鸡丁的特色，是餐馆中上桌率极高的一道菜，尤其是在国外的餐馆中，外国人说起中国菜，就是宫保鸡丁了，这更是外国人吃中餐时，最常点的一道菜。&lt;img src=&quot;http://img.baidu.com/hi/jx2/j_0013.gif&quot;/&gt;&lt;/span&gt;&lt;/p&gt;', '0', '0', '0', '0', '0', '0', '4', '微辣', '1', '0', '0.00', '1', '1', '宫保鸡丁', '宫保鸡丁', '/Uploads/Mp/1/food/1/input_4.jpg', '1426692888', '1426823215');
+INSERT INTO `weiapp_food` VALUES ('2', '1', '2', '1', '百花北斗星', '1', '精品川菜', '鱼香肉丝', '20.00', '15.00', '10.00', '份', '-1.00', '&lt;p&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;鱼香肉丝&lt;/span&gt;&amp;nbsp;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;是一道经典的中国汉族传统名菜，鱼香是川菜主要传统味型之一。成菜具有鱼香味，但其味并不来自鱼，而是泡红辣椒、&lt;/span&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://baike.baidu.com/view/30870.htm&quot; style=&quot;text-decoration: none; color: rgb(19, 110, 194); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; white-space: normal; background-color: rgb(255, 255, 255);&quot;&gt;葱&lt;/a&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;、&lt;/span&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://baike.baidu.com/view/30248.htm&quot; style=&quot;text-decoration: none; color: rgb(19, 110, 194); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; white-space: normal; background-color: rgb(255, 255, 255);&quot;&gt;姜&lt;/a&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;、&lt;/span&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://baike.baidu.com/view/616727.htm&quot; style=&quot;text-decoration: none; color: rgb(19, 110, 194); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; white-space: normal; background-color: rgb(255, 255, 255);&quot;&gt;蒜&lt;/a&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;、&lt;/span&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://baike.baidu.com/view/49321.htm&quot; style=&quot;text-decoration: none; color: rgb(19, 110, 194); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; white-space: normal; background-color: rgb(255, 255, 255);&quot;&gt;糖&lt;/a&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;、盐、酱油等调味品调制而成。此法源出于&lt;/span&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://baike.baidu.com/subview/7627/15402623.htm&quot; style=&quot;text-decoration: none; color: rgb(19, 110, 194); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; white-space: normal; background-color: rgb(255, 255, 255);&quot;&gt;四川&lt;/a&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;地区民间独具特色的烹鱼调味方法，而今已广泛用于川味的熟菜中，具有咸、酸、甜、辣、香、鲜和浓郁的&lt;/span&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://baike.baidu.com/subview/30870/11872863.htm&quot; style=&quot;text-decoration: none; color: rgb(19, 110, 194); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; white-space: normal; background-color: rgb(255, 255, 255);&quot;&gt;葱&lt;/a&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;、&lt;/span&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://baike.baidu.com/subview/30248/8492821.htm&quot; style=&quot;text-decoration: none; color: rgb(19, 110, 194); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; white-space: normal; background-color: rgb(255, 255, 255);&quot;&gt;姜&lt;/a&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;、&lt;/span&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://baike.baidu.com/subview/616727/12821557.htm&quot; style=&quot;text-decoration: none; color: rgb(19, 110, 194); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; white-space: normal; background-color: rgb(255, 255, 255);&quot;&gt;蒜&lt;/a&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: arial, 宋体, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);&quot;&gt;味的特色&lt;/span&gt;&lt;/p&gt;', '0', '0', '0', '0', '1', '1', '1', '酸', '0', '0', '0.00', '1', '1', '促销鱼香肉丝', '促销鱼香肉丝', '/Uploads/Mp/1/food/2/input_1.jpg', '1426823321', '1426825860');
 
 -- ----------------------------
 -- Table structure for `weiapp_food_car`
@@ -1182,14 +1196,15 @@ CREATE TABLE `weiapp_food_detail` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='饭菜详细';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='饭菜详细';
 
 -- ----------------------------
 -- Records of weiapp_food_detail
 -- ----------------------------
-INSERT INTO `weiapp_food_detail` VALUES ('1', '1', '1', '2', '0', '', '', '/Uploads/Mp/1/food/1/input_1.jpg', 'input_1', '0', '1', '1426772260', '1426775719');
-INSERT INTO `weiapp_food_detail` VALUES ('2', '1', '1', '2', '0', '', '', '/Uploads/Mp/1/food/1/input_2.jpg', 'input_2', '1', '1', '1426772260', '1426775719');
-INSERT INTO `weiapp_food_detail` VALUES ('3', '1', '1', '2', '0', '', '', '/Uploads/Mp/1/food/1/input_4.jpg', 'input_4', '0', '1', '1426772755', '1426775719');
+INSERT INTO `weiapp_food_detail` VALUES ('1', '1', '1', '2', '0', '', '', '/Uploads/Mp/1/food/1/input_1.jpg', 'input_1', '0', '1', '1426772260', '1426818657');
+INSERT INTO `weiapp_food_detail` VALUES ('2', '1', '1', '2', '0', '', '', '/Uploads/Mp/1/food/1/input_2.jpg', 'input_2', '0', '1', '1426772260', '1426818657');
+INSERT INTO `weiapp_food_detail` VALUES ('3', '1', '1', '2', '0', '', '', '/Uploads/Mp/1/food/1/input_4.jpg', 'input_4', '1', '1', '1426772755', '1426818657');
+INSERT INTO `weiapp_food_detail` VALUES ('4', '2', '1', '2', '0', '', '', '/Uploads/Mp/1/food/2/input_1.jpg', 'input_1', '1', '1', '1426823369', '1426825860');
 
 -- ----------------------------
 -- Table structure for `weiapp_food_money_water`
@@ -1299,11 +1314,15 @@ CREATE TABLE `weiapp_food_style` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜品风格';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='菜品风格';
 
 -- ----------------------------
 -- Records of weiapp_food_style
 -- ----------------------------
+INSERT INTO `weiapp_food_style` VALUES ('1', '1', '2', '酸', '1', '1426818183', '1426818199');
+INSERT INTO `weiapp_food_style` VALUES ('2', '1', '2', '甜', '1', '1426818222', '1426818222');
+INSERT INTO `weiapp_food_style` VALUES ('3', '1', '2', '麻辣', '1', '1426818237', '1426818269');
+INSERT INTO `weiapp_food_style` VALUES ('4', '1', '2', '微辣', '1', '1426818247', '1426818269');
 
 -- ----------------------------
 -- Table structure for `weiapp_food_wx_feedback`
@@ -1466,8 +1485,8 @@ CREATE TABLE `weiapp_member` (
 -- ----------------------------
 -- Records of weiapp_member
 -- ----------------------------
-INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '140', '98', '0', '1423289473', '2130706433', '1426773994', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '100', '90', '0', '0', '2130706433', '1426774262', '1');
+INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '140', '99', '0', '1423289473', '2130706433', '1426815467', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '100', '92', '0', '0', '2130706433', '1426815779', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -1592,7 +1611,7 @@ CREATE TABLE `weiapp_menu` (
   `is_dev` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否仅开发者模式可见',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM AUTO_INCREMENT=184 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=189 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_menu
@@ -1770,6 +1789,11 @@ INSERT INTO `weiapp_menu` VALUES ('180', '下架', '142', '0', 'Food/disable', '
 INSERT INTO `weiapp_menu` VALUES ('181', '详细', '142', '0', 'Food/detail', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('182', '获取餐厅菜品分类', '142', '0', 'Food/cate', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('183', '设置微信分享图片', '142', '0', 'Food/share', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('184', '菜品风格', '135', '0', 'FoodStyle/show', '0', '', '微菜品分类', '0');
+INSERT INTO `weiapp_menu` VALUES ('185', '创建', '184', '0', 'FoodStyle/add', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('186', '编辑', '184', '0', 'FoodStyle/edit', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('187', '启用', '184', '0', 'FoodStyle/enable', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('188', '禁用', '184', '0', 'FoodStyle/disable', '1', '', '', '0');
 
 -- ----------------------------
 -- Table structure for `weiapp_micro_platform`
@@ -5246,8 +5270,8 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- ----------------------------
 -- Records of weiapp_ucenter_member
 -- ----------------------------
-INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1426773994', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1426774262', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1426815467', '2130706433', '1423289473', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1426815779', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`

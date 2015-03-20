@@ -113,7 +113,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.style_id.$invalid && !FoodForm.style_id.$pristine}">
             <label class="item-label">菜品风格<span class="check-tips"></span></label>
             <div class="controls">
-                <select class="form-control" name="style_id"  ng-model="food.style_id" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                <select class="form-control" name="style_id"  ng-model="food.style_id" ng-options="m.id as m.food_style_name for m in food.food_styles_arr">
                     <option value="">请选择</option>
                 </select>
                 <p ng-show="FoodForm.style_id.$invalid && !FoodForm.style_id.$pristine" class="help-block">请选择菜品风格</p>
@@ -191,19 +191,19 @@
                 var FoodModule = angular.module("weiapp_food", ['ng.ueditor']);
                 FoodModule.controller("FoodController", function($scope, $http) {                  
                     $scope.food = {$json_food};
-                    $scope.food.is_hot = {$food.is_hot};
-                    $scope.food.is_promotion = {$food.is_promotion};
-                    $scope.food.style_id = {$food.style_id};
-                    $scope.food.is_offline = {$food.is_offline};
-                    $scope.food.use_card = {$food.use_card};
-                    $scope.food.status = {$food.status};
+//                    $scope.food.is_hot = {$food.is_hot};
+//                    $scope.food.is_promotion = {$food.is_promotion};
+//                    $scope.food.style_id = {$food.style_id};
+//                    $scope.food.is_offline = {$food.is_offline};
+//                    $scope.food.use_card = {$food.use_card};
+//                    $scope.food.status = {$food.status};
                     $scope.food.dining_room_arr = {$dining_room_arr};
                     $scope.food.promotion_arr = {$promotion_arr};
                     $scope.food.hot_arr = {$hot_arr};
                     $scope.food.offline_arr = {$offline_arr};
                     $scope.food.card_arr = {$card_arr};
                     $scope.food.status_arr = {$status_arr};
-                    $scope.food.food_styles = {$food_styles};
+                    $scope.food.food_styles_arr = {$food_styles_arr};
                     $scope.food.cate_arr = {$food_cate_arr};
                     $scope.select_dining = function(selected_dining_room_id){
                         if(typeof(selected_dining_room_id) != 'undefined'){

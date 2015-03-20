@@ -113,7 +113,7 @@
         <div class="form-item" ng-class="{'has-error' : FoodForm.style_id.$invalid && !FoodForm.style_id.$pristine}">
             <label class="item-label">菜品风格<span class="check-tips"></span></label>
             <div class="controls">
-                <select class="form-control" name="style_id"  ng-model="food.style_id" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                <select class="form-control" name="style_id"  ng-model="food.style_id" ng-options="m.id as m.food_style_name for m in food.food_styles_arr">
                     <option value="">请选择</option>
                 </select>
                 <p ng-show="FoodForm.style_id.$invalid && !FoodForm.style_id.$pristine" class="help-block">请选择菜品风格</p>
@@ -197,7 +197,7 @@
                     $scope.food.offline_arr = {$offline_arr};
                     $scope.food.card_arr = {$card_arr};
                     $scope.food.status_arr = {$status_arr};
-                    $scope.food.food_styles = {$food_styles};
+                    $scope.food.food_styles_arr = {$food_styles};
                     $scope.select_dining = function(selected_dining_room_id){
                         if(typeof(selected_dining_room_id) != 'undefined'){
                             $scope.cate_data={'select_dining_room_id':selected_dining_room_id};

@@ -95,14 +95,6 @@
                 </tr>
                 <thead>
                 <tr>
-                    <th colspan="4">菜品描述</th>
-                </tr>
-                </thead>
-                <tr>
-                    <td colspan="4">{$food.description|htmlspecialchars_decode|stripslashes}</td>
-                </tr>
-                <thead>
-                <tr>
                     <th colspan="2">创建时间</th>
                     <th colspan="2">更新时间</th>
                 </tr>
@@ -119,6 +111,14 @@
                         <td colspan="2">{$food.update_time}</td>
                     </if>
                 </tr>
+                <thead>
+                <tr>
+                    <th colspan="4">菜品描述</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td colspan="4">{$food.description|htmlspecialchars_decode|stripslashes}</td>
+                </tr>              
             </tbody>
         </table>
     </div>
