@@ -7,9 +7,9 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>微信支付订单列表 {$dining_room_name}</h2>
+        <h2>订单列表 {$dining_room_name}</h2>
     </div>
-    <div id="dialog" title="微信支付订单列表" style="display:none;">
+    <div id="dialog" title="订单列表" style="display:none;">
         <p id="dialog_content"></p>
     </div>
 
@@ -19,9 +19,20 @@
 
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
+            <div class="sleft">支付类型:
+                <select name="pay_type">
+                    <foreach name="pay_type_arr" item="val">
+                        <if condition="$key eq $select_pay_type">
+                            <option value="{$key}" selected="selected">{$val}</option>
+                            <else />
+                            <option value="{$key}">{$val}</option>
+                        </if>
+                    </foreach>
+                </select>
+            </div>
             <div class="sleft">
                 <input type="text" name="order_no" class="search-input" value="{:I('order_no')}" placeholder="请输入订单号">
-                <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodOrder/weixinpay')}"><i class="btn-search"></i></a>
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodOrder/show')}"><i class="btn-search"></i></a>
             </div>
         </div>
     </div>
@@ -36,6 +47,7 @@
                     <th>订单号</th>
                     <th>购餐用户</th>
                     <th>餐厅</th>
+                    <th>支付类型</th>
                     <th>订单类型</th>
                     <th>数量</th>
                     <th>总金额</th>
@@ -55,6 +67,7 @@
                         <td>{$food_order.order_no}</td>
                         <td><?php echo \Admin\Model\MemberModel::getMemberNickName($food_order['member_id']);?></td>
                         <td><?php echo \Admin\Model\DiningRoomModel::getDiningRoomName($food_order['dining_room_id']);?></td>
+                        <td><?php echo \Admin\Model\FoodOrderModel::getFoodPayType($food_order['pay_type']);?></td>
                         <td><?php echo \Admin\Model\FoodOrderModel::getFoodOrderType($food_order['type']);?></td>
                         <td>{$food_order.count}</td>
                         <td>{$food_order.amount}</td>
@@ -76,10 +89,10 @@
                         <td>{$food_order.create_time}</td>
                     </if>
                         <td>
-                            <a title="查看明细" href="{:U('wxpayview?id='.$food_order['id'])}">查看明细</a>
+                            <a title="查看明细" href="{:U('view?id='.$food_order['id'])}">查看明细</a>
                             <?php
-                               //if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED) || ($food_order['status']==\Admin\Model\FoodOrderModel::$STATUS_COMMITED && $food_order['pay_type'] == Admin\Model\FoodOrderModel::$PAY_TYPE_OFFLINE)){
-                               if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED)){
+                               if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED) || ($food_order['status']==\Admin\Model\FoodOrderModel::$STATUS_COMMITED && $food_order['pay_type'] == Admin\Model\FoodOrderModel::$PAY_TYPE_OFFLINE)){
+                               //if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED)){
                             ?>
                             <!--<a title="确认送餐" class="btn ajax-post" href="{:U('confirm?id='.$food_order['id'])}">确认送餐</a>-->
                             <button class="btn" onclick="javascript:delivery_confirm({$food_order['id']})" id="confirm_{$food_order['id']}" target-form="ids">确认送餐</button>
@@ -98,7 +111,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="13" class="text-center">还没有微信支付订单!</td>
+                <td colspan="14" class="text-center">还没有微信支付订单!</td>
             </notempty>
             </tbody>
         </table>
@@ -155,7 +168,7 @@
             //搜索功能
             $("#search").click(function() {
                 var url = $(this).attr('url');
-                var query = $('.search-form').find('input').serialize();
+                var query = $('.search-form').find('input,select').serialize();
                 query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
                 query = query.replace(/^&/g, '');
                 if (url.indexOf('?') > 0) {

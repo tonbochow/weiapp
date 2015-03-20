@@ -19,63 +19,71 @@ class FoodOrderController extends FoodBaseController {
         $this->display();
     }
 
-    //微信支付的订单(前台面向商家)
-    public function weixinpay() {
+    //订单列表页面(前台面向商家)
+    public function show() {
+//        dump(I('get.'));exit;
         /* 查询条件初始化 */
         if (DINING_ROOM_ID != '') {//连锁分店店员登录
             $map['dining_room_id'] = DINING_ROOM_ID;
             $map['dining_member_id'] = UID;
             $map['mp_id'] = MP_ID;
-            $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
+//            $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
             $dining_room_name = \Admin\Model\DiningRoomModel::getDiningRoomName(DINING_ROOM_ID);
         } else {
             $map['mp_id'] = MP_ID;
-            $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
+//            $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
             $dining_room_name = '';
         }
         $get_order_no = I('get.order_no'); //订单编号唯一
         if (isset($get_order_no)) {
             $map['order_no'] = $get_order_no;
         }
-        $list = $this->lists('FoodOrder', $map, 'status,id', array('status' => array('egt', -1)));
+        $get_pay_type = I('get.pay_type');
+        if ($get_pay_type) {
+            $map['pay_type'] = $get_pay_type;
+        }
+        $list = $this->lists('FoodOrder', $map, 'pay_type,status,id', array('status' => array('egt', -1)));
+        $pay_type_arr = \Admin\Model\FoodOrderModel::getFoodPayType();
+        $this->assign('pay_type_arr', $pay_type_arr);
+        $this->assign('select_pay_type',$get_pay_type);
 
         $this->assign('dining_room_name', $dining_room_name);
         $this->assign('list', $list);
-        $this->meta_title = '微信支付的订单列表';
-        $this->display('weixinpay');
+        $this->meta_title = '订单列表';
+        $this->display('show');
     }
 
-    //微信支付的订单查看明细页面(前台面向商家)
-    public function wxpayview() {
+    //订单查看明细页面(前台面向商家)
+    public function view() {
         $id = I('get.id');
-        $food_order = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID, 'pay_type' => \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN))->find();
+        $food_order = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID))->find();
         if ($food_order == false) {
             $this->error('未检索到订单!', '', true);
         }
         $foodOrderViewModel = D('FoodOrderView');
         $map['mp_id'] = MP_ID;
         $map['id'] = $id;
-        $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
+//        $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
         $food_order_info = $foodOrderViewModel->where($map)->select();
 
         $this->assign('food_order', $food_order);
         $this->assign('food_order_info', $food_order_info);
-        $this->meta_title = '微信支付订单详细页面';
-        $this->display('wxpayview');
+        $this->meta_title = '订单详细页面';
+        $this->display('view');
     }
 
-    //微信支付订单确认送餐页面(前台面向商家)
+    //订单确认送餐页面(前台面向商家)
     public function confirm() {
         if (IS_POST) {
             $id = I('post.id');
-            $food_order = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID, 'pay_type' => \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN))->find();
+            $food_order = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID))->find();
             if ($food_order == false) {
                 $this->error('未检索到可确认送餐的订单!', '', true);
             }
             $food_order_data['status'] = \Admin\Model\FoodOrderModel::$STATUS_DELIVERY;
             $food_order_data['update_time'] = time();
             $food_order_data['delivery_time'] = time();
-            $food_order_confirm = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID, 'pay_type' => \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN))->save($food_order_data);
+            $food_order_confirm = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID))->save($food_order_data);
             import('Common.Extends.Weixin.Wechat');
             ob_clean();
             $access_token = \Admin\Model\MicroPlatformModel::getAccessToken(APPID, APPSERCERT);
@@ -96,29 +104,29 @@ class FoodOrderController extends FoodBaseController {
             $this->error('确认送餐失败!', '', true);
         }
 
-        $this->meta_title = '微信支付订单确认送餐页面';
+        $this->meta_title = '订单确认送餐页面';
         $this->display('wxpayview');
     }
 
-    //微信支付订单确认完成(前台面向商家)
+    //订单确认完成(前台面向商家)
     public function finish() {
         if (IS_POST) {
             $id = I('post.id');
-            $food_order = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID, 'pay_type' => \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN))->find();
+            $food_order = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID))->find();
             if ($food_order == false) {
                 $this->error('未检索到可确认完成的订单!', '', true);
             }
             $food_order_data['status'] = \Admin\Model\FoodOrderModel::$STATUS_FINISHED;
             $food_order_data['update_time'] = time();
             $food_order_data['finish_time'] = time();
-            $food_order_finish = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID, 'pay_type' => \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN))->save($food_order_data);
+            $food_order_finish = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID))->save($food_order_data);
             if ($food_order_finish) {
                 $this->success('确认订单完成成功!', '', true);
             }
             $this->error('确认订单完成失败!', '', true);
         }
 
-        $this->meta_title = '微信支付订单确认完成页面';
+        $this->meta_title = '订单确认完成页面';
         $this->display('wxpayview');
     }
 
@@ -129,7 +137,7 @@ class FoodOrderController extends FoodBaseController {
             $foodOrderModel = M('FoodOrder');
             $map['id'] = $id;
             $map['mp_id'] = MP_ID;
-            $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
+//            $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
             $food_order = $foodOrderModel->where($map)->select();
             if (empty($food_order)) {
                 $this->error('未检索到打印的订单!');
@@ -137,23 +145,23 @@ class FoodOrderController extends FoodBaseController {
             $print_data['is_printed'] = \Admin\Model\FoodOrderModel::$PRINT_STATUS_YES;
             $print_data['update_time'] = time();
             $food_order_print = $foodOrderModel->where($map)->save($print_data);
-            if($food_order_print){
-                $this->success('更新订单打印状态成功!','',true);
+            if ($food_order_print) {
+                $this->success('更新订单打印状态成功!', '', true);
             }
-            $this->error('更新订单打印状态失败!','',true);
+            $this->error('更新订单打印状态失败!', '', true);
         }
         $id = I('post.id');
         $foodOrderModel = D('FoodOrderView');
         $map['id'] = $id;
         $map['mp_id'] = MP_ID;
-        $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
+//        $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
         $food_order = $foodOrderModel->where($map)->select();
         if (empty($food_order)) {
             $this->error('未检索到打印的订单!');
         }
 
         $this->assign('food_order', $food_order);
-        $this->meta_title = '微信支付订单打印页面';
+        $this->meta_title = '订单打印页面';
         $this->display('orderprint');
     }
 

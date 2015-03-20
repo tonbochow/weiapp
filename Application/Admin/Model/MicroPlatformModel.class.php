@@ -257,4 +257,27 @@ class MicroPlatformModel extends Model {
         return false;
     }
 
+    /**
+     * 主动发送微信客服消息
+     * $appid 微信公众平台appid
+     * $appsecret 微信公众平台appsecret
+     * $wx_openid 微信用户openid
+     * $info_content 发送消息内容
+     */
+    public static function sendCustomerMessage($appid, $appsecret, $wx_openid, $info_content) {
+        import('Common.Extends.Weixin.Wechat');
+        ob_clean();
+        $access_token = self::getAccessToken($appid, $appsecret);
+        $info_url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . $access_token;
+        $post_data = '{
+                            "touser":"' . $wx_openid . '",
+                            "msgtype":"text",
+                            "text":
+                            {
+                                "content":"' . $info_content . '"
+                            }
+                        }';
+        sel::curl($info_url, $post_data);
+    }
+
 }

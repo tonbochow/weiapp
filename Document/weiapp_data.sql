@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-03-20 12:39:49
+Date: 2015-03-20 17:34:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,7 +65,7 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
@@ -98,6 +98,22 @@ INSERT INTO `weiapp_action_log` VALUES ('25', '10', '1', '2130706433', 'Menu', '
 INSERT INTO `weiapp_action_log` VALUES ('26', '10', '1', '2130706433', 'Menu', '187', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426815717');
 INSERT INTO `weiapp_action_log` VALUES ('27', '10', '1', '2130706433', 'Menu', '188', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426815734');
 INSERT INTO `weiapp_action_log` VALUES ('28', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-20 09:42登录了后台', '1', '1426815779');
+INSERT INTO `weiapp_action_log` VALUES ('29', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-03-20 14:24登录了后台', '1', '1426832678');
+INSERT INTO `weiapp_action_log` VALUES ('30', '10', '1', '2130706433', 'Menu', '158', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1426833985');
+INSERT INTO `weiapp_action_log` VALUES ('31', '10', '1', '2130706433', 'Menu', '159', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1426833998');
+INSERT INTO `weiapp_action_log` VALUES ('32', '10', '1', '2130706433', 'Menu', '160', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1426834008');
+INSERT INTO `weiapp_action_log` VALUES ('33', '10', '1', '2130706433', 'Menu', '161', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1426834017');
+INSERT INTO `weiapp_action_log` VALUES ('34', '10', '1', '2130706433', 'Menu', '0', '操作url：/index.php?s=/Admin/Menu/del/id/155.html', '1', '1426834052');
+INSERT INTO `weiapp_action_log` VALUES ('35', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-20 14:48登录了后台', '1', '1426834122');
+INSERT INTO `weiapp_action_log` VALUES ('36', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-03-20 16:19登录了后台', '1', '1426839547');
+INSERT INTO `weiapp_action_log` VALUES ('37', '10', '1', '2130706433', 'Menu', '189', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426839678');
+INSERT INTO `weiapp_action_log` VALUES ('38', '10', '1', '2130706433', 'Menu', '190', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426839705');
+INSERT INTO `weiapp_action_log` VALUES ('39', '10', '1', '2130706433', 'Menu', '191', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426839841');
+INSERT INTO `weiapp_action_log` VALUES ('40', '10', '1', '2130706433', 'Menu', '192', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426839865');
+INSERT INTO `weiapp_action_log` VALUES ('41', '10', '1', '2130706433', 'Menu', '191', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1426839873');
+INSERT INTO `weiapp_action_log` VALUES ('42', '10', '1', '2130706433', 'Menu', '193', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426839891');
+INSERT INTO `weiapp_action_log` VALUES ('43', '10', '1', '2130706433', 'Menu', '194', '操作url：/index.php?s=/Admin/Menu/add.html', '1', '1426839945');
+INSERT INTO `weiapp_action_log` VALUES ('44', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-20 16:26登录了后台', '1', '1426839981');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -265,7 +281,7 @@ CREATE TABLE `weiapp_auth_group` (
 -- ----------------------------
 INSERT INTO `weiapp_auth_group` VALUES ('1', 'admin', '1', '默认用户组', '', '1', '1,2,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,81,82,83,84,86,87,88,89,90,91,92,93,94,95,96,97,100,102,103,105,106');
 INSERT INTO `weiapp_auth_group` VALUES ('2', 'admin', '1', '测试用户', '测试用户', '1', '1,2,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,82,83,84,88,89,90,91,92,93,96,97,100,102,103,195');
-INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,240,242,243,244,245,246,247,248,249,250,251,254,255,256,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294');
+INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,240,242,243,244,245,246,247,248,249,250,255,256,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,297,298,299,300,301');
 INSERT INTO `weiapp_auth_group` VALUES ('4', 'admin', '1', '微餐饮店员', 'food_member', '1', '');
 
 -- ----------------------------
@@ -299,7 +315,7 @@ CREATE TABLE `weiapp_auth_rule` (
   `condition` varchar(300) NOT NULL DEFAULT '' COMMENT '规则附加条件',
   PRIMARY KEY (`id`),
   KEY `module` (`module`,`status`,`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=295 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=302 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_auth_rule
@@ -551,10 +567,10 @@ INSERT INTO `weiapp_auth_rule` VALUES ('247', 'admin', '1', 'Admin/WeixinMenu/ad
 INSERT INTO `weiapp_auth_rule` VALUES ('248', 'admin', '1', 'Admin/WeixinMenu/recommend', '一键创建推荐菜单', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('249', 'admin', '1', 'Admin/WeixinMenu/custom', '一键创建自定义菜单', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('250', 'admin', '1', 'Admin/WeixinCard/food', '微信卡劵', '1', '');
-INSERT INTO `weiapp_auth_rule` VALUES ('251', 'admin', '1', 'Admin/FoodOrder/weixinpay', '微信支付订单', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('251', 'admin', '1', 'Admin/FoodOrder/weixinpay', '微信支付订单', '-1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('252', 'admin', '1', 'Admin/FoodWx/warn', '微信告警', '-1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('253', 'admin', '1', 'Admin/FoodWx/Feedback', '微信维权', '-1', '');
-INSERT INTO `weiapp_auth_rule` VALUES ('254', 'admin', '1', 'Admin/FoodOrder/wxpayview', '查看详细', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('254', 'admin', '1', 'Admin/FoodOrder/wxpayview', '查看详细', '-1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('255', 'admin', '1', 'Admin/FoodOrder/confirm', '确认送餐', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('256', 'admin', '1', 'Admin/FoodOrder/finish', '确认完成', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('257', 'admin', '1', 'Admin/FoodWxWarn/lists', '微信告警', '-1', '');
@@ -595,6 +611,13 @@ INSERT INTO `weiapp_auth_rule` VALUES ('291', 'admin', '1', 'Admin/FoodStyle/add
 INSERT INTO `weiapp_auth_rule` VALUES ('292', 'admin', '1', 'Admin/FoodStyle/edit', '编辑', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('293', 'admin', '1', 'Admin/FoodStyle/enable', '启用', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('294', 'admin', '1', 'Admin/FoodStyle/disable', '禁用', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('295', 'admin', '1', 'Admin/DiningReserve/show', '客户预定', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('296', 'admin', '1', 'Admin/FoodOrder/view', '查看详细', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('297', 'admin', '1', 'Admin/DiningReserve/add', '创建', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('298', 'admin', '1', 'Admin/DiningReserve/confirm', '确认预定', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('299', 'admin', '1', 'Admin/DiningReserve/finish', '完成预定', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('300', 'admin', '1', 'Admin/DiningReserve/cancel', '取消预定', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('301', 'admin', '1', 'Admin/DiningReserve/drop', '作废预定', '1', '');
 
 -- ----------------------------
 -- Table structure for `weiapp_category`
@@ -857,16 +880,10 @@ CREATE TABLE `weiapp_dining_reserve` (
   `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
   `user_name` varchar(30) NOT NULL DEFAULT '' COMMENT '联系人',
   `mobile` char(11) NOT NULL DEFAULT '' COMMENT '手机号码',
-  `num` smallint(6) NOT NULL DEFAULT '0' COMMENT '用餐人数',
-  `use_setmenu` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否是套餐活动预定如年夜饭0否1是',
-  `setmenu_id` int(11) NOT NULL DEFAULT '0' COMMENT '套餐id',
-  `reserve_name` varchar(128) NOT NULL DEFAULT '' COMMENT '预定活动名',
+  `user_num` smallint(6) NOT NULL DEFAULT '0' COMMENT '用餐人数',
   `meal_time` int(11) NOT NULL DEFAULT '0' COMMENT '用餐时间',
-  `pay_deposit` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否需要支付押金0否1是',
-  `deposit_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '押金金额',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态1有效0无效',
-  `start_time` int(11) NOT NULL DEFAULT '0' COMMENT '接受预定开始时间(套餐)',
-  `end_time` int(11) NOT NULL DEFAULT '0' COMMENT '接受预定结束时间(套餐)',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态-2已作废-1已取消1已提交2已确认3已完成',
+  `remark` varchar(256) NOT NULL DEFAULT '' COMMENT '预定简单描述',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -1485,8 +1502,8 @@ CREATE TABLE `weiapp_member` (
 -- ----------------------------
 -- Records of weiapp_member
 -- ----------------------------
-INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '140', '99', '0', '1423289473', '2130706433', '1426815467', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '100', '92', '0', '0', '2130706433', '1426815779', '1');
+INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '140', '101', '0', '1423289473', '2130706433', '1426839547', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '100', '94', '0', '0', '2130706433', '1426839981', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -1611,7 +1628,7 @@ CREATE TABLE `weiapp_menu` (
   `is_dev` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否仅开发者模式可见',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM AUTO_INCREMENT=189 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=195 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_menu
@@ -1760,13 +1777,13 @@ INSERT INTO `weiapp_menu` VALUES ('151', '创建二级菜单', '146', '0', 'Weix
 INSERT INTO `weiapp_menu` VALUES ('152', '一键创建推荐菜单', '146', '0', 'WeixinMenu/recommend', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('153', '一键创建自定义菜单', '146', '0', 'WeixinMenu/custom', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('154', '微信卡劵', '135', '0', 'WeixinCard/food', '0', '', '微餐饮公众平台', '0');
-INSERT INTO `weiapp_menu` VALUES ('155', '微信支付订单', '135', '0', 'FoodOrder/weixinpay', '0', '', '微餐饮公众平台', '0');
+INSERT INTO `weiapp_menu` VALUES ('189', '客户预定', '135', '0', 'DiningReserve/show', '0', '', '微餐饮订单', '0');
 INSERT INTO `weiapp_menu` VALUES ('156', '微信告警', '135', '0', 'FoodWxWarn/show', '0', '', '微餐饮公众平台', '0');
 INSERT INTO `weiapp_menu` VALUES ('157', '微信维权', '135', '0', 'FoodWxFeedback/show', '0', '', '微餐饮公众平台', '0');
-INSERT INTO `weiapp_menu` VALUES ('158', '查看详细', '155', '0', 'FoodOrder/wxpayview', '1', '', '', '0');
-INSERT INTO `weiapp_menu` VALUES ('159', '确认送餐', '155', '0', 'FoodOrder/confirm', '1', '', '', '0');
-INSERT INTO `weiapp_menu` VALUES ('160', '确认完成', '155', '0', 'FoodOrder/finish', '1', '', '', '0');
-INSERT INTO `weiapp_menu` VALUES ('161', '打印', '155', '0', 'FoodOrder/orderprint', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('158', '查看详细', '143', '0', 'FoodOrder/view', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('159', '确认送餐', '143', '0', 'FoodOrder/confirm', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('160', '确认完成', '143', '0', 'FoodOrder/finish', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('161', '打印', '143', '0', 'FoodOrder/orderprint', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('162', '创建', '140', '0', 'DiningRoom/add', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('163', '编辑', '140', '0', 'DiningRoom/edit', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('164', '启用', '140', '0', 'DiningRoom/enable', '1', '', '', '0');
@@ -1794,6 +1811,11 @@ INSERT INTO `weiapp_menu` VALUES ('185', '创建', '184', '0', 'FoodStyle/add', 
 INSERT INTO `weiapp_menu` VALUES ('186', '编辑', '184', '0', 'FoodStyle/edit', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('187', '启用', '184', '0', 'FoodStyle/enable', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('188', '禁用', '184', '0', 'FoodStyle/disable', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('190', '创建', '189', '0', 'DiningReserve/add', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('191', '确认预定', '189', '0', 'DiningReserve/confirm', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('192', '完成预定', '189', '0', 'DiningReserve/finish', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('193', '取消预定', '189', '0', 'DiningReserve/cancel', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('194', '作废预定', '189', '0', 'DiningReserve/drop', '1', '', '', '0');
 
 -- ----------------------------
 -- Table structure for `weiapp_micro_platform`
@@ -5270,8 +5292,8 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- ----------------------------
 -- Records of weiapp_ucenter_member
 -- ----------------------------
-INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1426815467', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1426815779', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1426839547', '2130706433', '1423289473', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1426839981', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`

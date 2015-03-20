@@ -1,0 +1,70 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>创建餐厅菜品风格</h2>
+    </div>
+
+    <div id="dialog" title="餐厅菜品风格" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food_style" ng-app="weiapp_food_style" id="ng-app"  name="FoodStyleForm" ng-controller="FoodStyleController" ng-submit="submitForm()">
+        <div class="form-item" ng-class="{'has-error' : FoodStyleForm.name.$invalid && !FoodStyleForm.name.$pristine}">
+            <label class="item-label">菜品风格内容<span class="check-tips">（*必填:最大长度256）</span></label>
+            <div class="controls">
+                <input name="name" type="text" value="" ng-model="food_style.name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="name" placeholder="餐厅菜品风格内容">
+                <p ng-show="FoodStyleForm.name.$invalid && !FoodStyleForm.name.$pristine" class="help-block">餐厅菜品风格内容(长度1-256)</p>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <button type="submit" class="btn btn-success submit" ng-disabled="FoodStyleForm.$invalid">保 存</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);
+                        return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript">
+                var FoodStyleModule = angular.module("weiapp_food_style", []);
+                FoodStyleModule.controller("FoodStyleController", function($scope, $http) {
+                    $scope.food_style = {};
+                    $scope.submitForm = function() {
+                        $('.submit').attr('disabled', 'true');
+                        $http({
+                            method: "POST",
+                            url: "/Admin/FoodStyle/add",
+                            data: $.param($scope.food_style),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function(data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+                }
+    </script>
+</block>
