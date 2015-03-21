@@ -1,0 +1,168 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>菜品套餐明细</h2>
+    </div>
+
+    <div class="data-table table-striped">
+        <table>
+            <tbody>
+            <thead>
+                <tr>
+                    <th>所属餐厅</th>
+                    <th>套餐名</th>
+                    <th>总金额</th>
+                    <th>套餐优惠价</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>
+                    <?php
+                    if($food_setmenu['dining_room_id'] == 0){
+                        echo '所有门店通用';
+                    }else{
+                        echo \Admin\Model\DiningRoomModel::getDiningRoomName($food_setmenu['dining_room_id']);
+                    }
+                    ?>
+                </td>
+                <td>{$food_setmenu.setmenu_name}</td>
+                <td>{$food_setmenu.amount}</td>
+                <td>{$food_setmenu.setmenu_money}</td>
+            </tr>
+            <thead>
+                <tr>
+                    <th>状态</th>
+                    <th>使用卡劵</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>
+                    <?php echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuStatus($food_setmenu['status']);?>
+                </td>
+                <td>
+                    <?php echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuCard($food_setmenu['use_card']);?>
+                </td>
+                <if condition="$food_setmenu.create_time neq 0">
+                    <td>{$food_setmenu.create_time|date="Y-m-d H:i:s",###}</td>
+                    <else />
+                    <td>{$food_setmenu.create_time}</td>
+                </if>
+                <if condition="$food_setmenu.update_time neq 0">
+                    <td>{$food_setmenu.update_time|date="Y-m-d H:i:s",###}</td>
+                    <else />
+                    <td>{$food_setmenu.update_time}</td>
+                </if>
+            </tr>
+            <thead>
+            <thead>
+                <tr>
+                    <th colspan="4">描述</th>
+                </tr>
+            </thead>
+            <tr>
+                <td colspan="4">{$food_setmenu.description}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="cf">
+        <button class="btn ajax-post" url="{:U('FoodSetmenu/enable')}" target-form="ids">套餐中启用</button>
+        <button class="btn ajax-post" url="{:U('FoodSetmenu/disable')}" target-form="ids">套餐中禁用</button>
+
+        <!-- 高级搜索 -->
+        <!--        <div class="search-form fr cf">
+                    <div class="sleft">
+                        <input type="text" name="setmenu_name" class="search-input" value="{:I('setmenu_name')}" placeholder="请输入菜品套餐名">
+                        <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodSetmenu/show')}"><i class="btn-search"></i></a>
+                    </div>
+                </div>-->
+    </div>
+
+    <div class="data-table table-striped">
+        <table>
+            <thead>
+                <tr>
+                    <th class="row-selected">
+                        <input class="checkbox check-all" type="checkbox">
+                    </th>
+                    <th>所属套餐</th>
+                    <th>菜品名</th>
+                    <th>菜品微信价</th>
+                    <th>菜品数量</th>
+                    <th>菜品金额</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="food_setmenu_detail">
+                    <tr>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$food_setmenu_detail.id}"></td>
+                        <td>
+                            <?php 
+                            echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuName($food_setmenu_detail['setmenu_id']);
+                            ?>
+                        </td>
+                        <td>
+                            <?php echo \Admin\Model\FoodModel::getFoodName($food_setmenu_detail['food_id']);?>
+                        </td>
+                        <td>{$food_setmenu_detail.weixin_price}</td>
+                        <td>{$food_setmenu_detail.count}</td>
+                        <td>{$food_setmenu_detail.amount}</td>
+                        <td><?php echo \Admin\Model\FoodSetmenuDetailModel::getFoodSetmenuDetailStatus($food_setmenu_detail['status']); ?></td>
+                    <if condition="$food_setmenu_detail.create_time neq 0">
+                        <td>{$food_setmenu_detail.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$food_setmenu_detail.create_time}</td>
+                    </if>
+                    <td>
+                        <a title="编辑明细" href="{:U('editfood?id='.$food_setmenu_detail['id'])}">编辑明细</a>
+                    </td>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center">您未添加菜品入套餐</td>
+            </notempty>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //搜索功能
+            $("#search").click(function () {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+</block>

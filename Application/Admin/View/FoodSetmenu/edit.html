@@ -6,23 +6,59 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>编辑餐厅菜品风格</h2>
+        <h2>编辑餐厅菜品套餐</h2>
     </div>
 
-    <div id="dialog" title="餐厅菜品风格" style="display:none;">
+    <div id="dialog" title="餐厅菜品套餐" style="display:none;">
         <p id="dialog_content"></p>
     </div>
-    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food_style" ng-app="weiapp_food_style" id="ng-app"  name="FoodStyleForm" ng-controller="FoodStyleController" ng-submit="submitForm()">
-        <div class="form-item" ng-class="{'has-error' : FoodStyleForm.name.$invalid && !FoodStyleForm.name.$pristine}">
-            <label class="item-label">菜品风格内容<span class="check-tips">（*必填:最大长度256）</span></label>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food_setmenu" ng-app="weiapp_food_setmenu" id="ng-app"  name="FoodSetmenuForm" ng-controller="FoodSetmenuController" ng-submit="submitForm()">
+        <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.dining_room_id.$invalid && !FoodSetmenuForm.dining_room_id.$pristine}">
+            <label class="item-label">所属餐厅<span class="check-tips">（*必填）</span></label>
             <div class="controls">
-                <input name="name" type="text" value="" ng-model="food_style.name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="name" placeholder="餐厅菜品风格内容">
-                <p ng-show="FoodStyleForm.name.$invalid && !FoodStyleForm.name.$pristine" class="help-block">餐厅菜品风格内容(长度1-256)</p>
+                <select class="form-control" name="dining_room_id" required ng-model="food_setmenu.dining_room_id" ng-change="select_dining(food_setmenu.dining_room_id)" ng-options="m.id as m.dining_name for m in food_setmenu.dining_room_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="FoodSetmenuForm.dining_room_id.$invalid && !FoodSetmenuForm.dining_room_id.$pristine" class="help-block">请选择所属餐厅</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.setmenu_name.$invalid && !FoodSetmenuForm.setmenu_name.$pristine}">
+            <label class="item-label">菜品套餐名<span class="check-tips">（*必填:最大长度30）</span></label>
+            <div class="controls">
+                <input name="setmenu_name" type="text" value="" ng-model="food_setmenu.setmenu_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="30" required class="form-control text input-large" id="setmenu_name" placeholder="餐厅菜品套餐名">
+                <p ng-show="FoodSetmenuForm.setmenu_name.$invalid && !FoodSetmenuForm.setmenu_name.$pristine" class="help-block">餐厅菜品套餐名(长度1-30)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.description.$invalid && !FoodSetmenuForm.description.$pristine}">
+            <label class="item-label">菜品套餐描述<span class="check-tips">（*必填:最大长度256）</span></label>
+            <div class="controls">
+                <input name="description" type="text" value="" ng-model="food_setmenu.description"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="description" placeholder="餐厅菜品套餐描述">
+                <p ng-show="FoodSetmenuForm.description.$invalid && !FoodSetmenuForm.description.$pristine" class="help-block">餐厅菜品套餐描述(长度1-256)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.use_card.$invalid && !FoodSetmenuForm.use_card.$pristine}">
+            <label class="item-label">是否允许使用卡劵<span class="check-tips">(默认为允许使用卡劵)</span></label>
+            <div class="controls">
+                <select class="form-control" name="use_card"  ng-model="food_setmenu.use_card" ng-options="m.id as m.card_name for m in food_setmenu.card_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="FoodSetmenuForm.use_card.$invalid && !FoodSetmenuForm.use_card.$pristine" class="help-block">请选择是否允许使用卡劵</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.setmenu_money.$invalid && !FoodSetmenuForm.setmenu_money.$pristine}">
+            <label class="item-label">菜品套餐优惠价<span class="check-tips">（不填写则优惠价格为所有菜品价格总和）</span></label>
+            <div class="controls">
+                <input name="setmenu_money" type="text" value="" ng-model="food_setmenu.setmenu_money"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="setmenu_money" placeholder="餐厅菜品套餐优惠价">
+                <p ng-show="FoodSetmenuForm.setmenu_money.$invalid && !FoodSetmenuForm.setmenu_money.$pristine" class="help-block">餐厅菜品套餐优惠价</p>
             </div>
         </div>
 
         <div class="form-item">
-            <button type="submit" class="btn btn-success submit" ng-disabled="FoodStyleForm.$invalid">保 存</button>
+            <button type="submit" class="btn btn-success submit" ng-disabled="FoodSetmenuForm.$invalid">保 存</button>
             <button class="btn btn-primary" onclick="javascript:history.back(-1);
                         return false;">返 回</button>
         </div>
@@ -39,15 +75,17 @@
     <script type="text/javascript" src="__STATIC__/json2.js"></script>
     <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
     <script type="text/javascript">
-                var FoodStyleModule = angular.module("weiapp_food_style", []);
-                FoodStyleModule.controller("FoodStyleController", function($scope, $http) {
-                    $scope.food_style = {$json_food_style};
+                var FoodSetmenuModule = angular.module("weiapp_food_setmenu", []);
+                FoodSetmenuModule.controller("FoodSetmenuController", function($scope, $http) {
+                    $scope.food_setmenu = {$json_food_setmenu};
+                    $scope.food_setmenu.dining_room_arr = {$dining_room_arr};
+                    $scope.food_setmenu.card_arr = {$card_arr};
                     $scope.submitForm = function() {
                         $('.submit').attr('disabled', 'true');
                         $http({
                             method: "POST",
-                            url: "/Admin/FoodStyle/edit",
-                            data: $.param($scope.food_style),
+                            url: "/Admin/FoodSetmenu/edit",
+                            data: $.param($scope.food_setmenu),
                             headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                         }).success(function(data) {
                             if (data.status) {

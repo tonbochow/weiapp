@@ -1,0 +1,110 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>编辑菜品套餐明细</h2>
+    </div>
+
+    <div id="dialog" title="菜品套餐明细" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_setmenu_detail" ng-app="weiapp_setmenu_detail" id="ng-app"  name="SetmenuDetailForm" ng-controller="SetmenuDetailController" ng-submit="submitForm()">
+        <div class="form-item">
+            <label class="item-label">套餐名<span class="check-tips"></span></label>
+            <div class="controls">
+                <?php
+                echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuName($setmenu_detail['setmenu_id']);
+                ?>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">菜品名<span class="check-tips"></span></label>
+            <div class="controls">
+               {$setmenu_detail.food_name}
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">菜品微信价格<span class="check-tips"></span></label>
+            <div class="controls">
+               {$setmenu_detail.weixin_price}
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : SetmenuDetailForm.count.$invalid && !SetmenuDetailForm.count.$pristine}">
+            <label class="item-label">菜品数量<span class="check-tips"></span></label>
+            <div class="controls">
+                <input name="count" type="text" value="" ng-model="setmenu_detail.count"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required class="form-control text input-large" id="count" placeholder="菜品数量">
+                <p ng-show="SetmenuDetailForm.setmenu_money.$invalid && !SetmenuDetailForm.setmenu_money.$pristine" class="help-block">餐厅菜品套餐优惠价</p>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">菜品价格<span class="check-tips"></span></label>
+            <div class="controls">
+                <!--<input type="text" name="amount" ng-model="setmenu_detail.amount" readonly value="" />-->
+                {{setmenu_detail.count*setmenu_detail.weixin_price}}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">套餐菜品明细状态<span class="check-tips"></span></label>
+            <div class="controls">
+                <?php
+                echo \Admin\Model\FoodSetmenuDetailModel::getFoodSetmenuDetailStatus($setmenu_detail['status']);
+                ?>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <button type="submit" class="btn btn-success submit" ng-disabled="SetmenuDetailForm.$invalid">保 存</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);
+                        return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript">
+                var SetmenuDetailModule = angular.module("weiapp_setmenu_detail", []);
+                SetmenuDetailModule.controller("SetmenuDetailController", function($scope, $http) {
+                    $scope.setmenu_detail = {$json_setmenu_detail};
+                    $scope.submitForm = function() {
+                        $('.submit').attr('disabled', 'true');
+                        $http({
+                            method: "POST",
+                            url: "/Admin/FoodSetmenu/editfood",
+                            data: $.param($scope.setmenu_detail),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function(data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+                }
+    </script>
+</block>

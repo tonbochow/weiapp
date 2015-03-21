@@ -2,19 +2,19 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>餐厅菜品风格列表</h2>
+        <h2>餐厅菜品套餐列表</h2>
     </div>
 
     <div class="cf">
-        <a class="btn" href="{:U('FoodStyle/add')}">创建餐厅菜品风格</a>
-        <button class="btn ajax-post" url="{:U('FoodStyle/enable')}" target-form="ids">启 用</button>
-        <button class="btn ajax-post" url="{:U('FoodStyle/disable')}" target-form="ids">禁 用</button>
+        <a class="btn" href="{:U('FoodSetmenu/add')}">创建菜品套餐</a>
+        <button class="btn ajax-post" url="{:U('FoodSetmenu/up')}" target-form="ids">上 架</button>
+        <button class="btn ajax-post" url="{:U('FoodSetmenu/down')}" target-form="ids">下 架</button>
 
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
-                <input type="text" name="name" class="search-input" value="{:I('name')}" placeholder="请输入菜品风格名">
-                <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodStyle/show')}"><i class="btn-search"></i></a>
+                <input type="text" name="setmenu_name" class="search-input" value="{:I('setmenu_name')}" placeholder="请输入菜品套餐名">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodSetmenu/show')}"><i class="btn-search"></i></a>
             </div>
         </div>
     </div>
@@ -26,8 +26,11 @@
                     <th class="row-selected">
                         <input class="checkbox check-all" type="checkbox">
                     </th>
-                    <th>所属公众平台</th>
-                    <th>风格内容</th>
+                    <th>所属餐厅</th>
+                    <th>套餐名</th>
+                    <th>套餐应付金额</th>
+                    <th>套餐优惠金额</th>
+                    <th>使用卡劵</th>
                     <th>状态</th>
                     <th>创建时间</th>
                     <th>操作</th>
@@ -35,28 +38,37 @@
             </thead>
             <tbody>
             <notempty name="list">
-                <volist name="list" id="food_style">
+                <volist name="list" id="food_setmenu">
                     <tr>
-                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$food_style.id}"></td>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$food_setmenu.id}"></td>
                         <td>
                             <?php 
-                                echo \Admin\Model\MicroPlatformModel::getMpName($food_style['mp_id']);
+                            if($food_setmenu['dining_room_id'] == 0){
+                                echo '所有门店通用';
+                            }else{
+                                echo \Admin\Model\DiningRoomModel::getDiningRoomName($food_setmenu['dining_room_id']);
+                            }
                             ?>
                         </td>
-                        <td>{$food_style.name}</td>
-                        <td><?php echo \Admin\Model\FoodStyleModel::getFoodStyleStatus($food_style['status']);?></td>
-                    <if condition="$food_style.create_time neq 0">
-                        <td>{$food_style.create_time|date="Y-m-d H:i:s",###}</td>
+                        <td>{$food_setmenu.setmenu_name}</td>
+                        <td>{$food_setmenu.amount}</td>
+                        <td>{$food_setmenu.setmenu_money}</td>
+                        <td><?php echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuCard($food_setmenu['use_card']); ?></td>
+                        <td><?php echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuStatus($food_setmenu['status']); ?></td>
+                    <if condition="$food_setmenu.create_time neq 0">
+                        <td>{$food_setmenu.create_time|date="Y-m-d H:i:s",###}</td>
                         <else />
-                        <td>{$food_style.create_time}</td>
+                        <td>{$food_setmenu.create_time}</td>
                     </if>
                     <td>
-                        <a title="编辑" href="{:U('edit?id='.$food_style['id'])}">编辑</a>
+                        <a title="编辑" href="{:U('view?id='.$food_setmenu['id'])}">查看</a>
+                        <a title="编辑" href="{:U('edit?id='.$food_setmenu['id'])}">编辑</a>
+                        <a title="添加菜品" href="{:U('addfood?id='.$food_setmenu['id'])}">添加菜品</a>
                     </td>
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="6" class="text-center">您未创建餐厅菜品风格 </td>
+                <td colspan="9" class="text-center">您未创建餐厅菜品套餐 </td>
             </notempty>
             </tbody>
         </table>

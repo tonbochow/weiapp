@@ -556,7 +556,7 @@ CREATE TABLE IF NOT EXISTS `weiapp_food_setmenu` (
   `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
   `setmenu_name` varchar(30) NOT NULL DEFAULT '' COMMENT '套餐名',
   `description` varchar(256) NOT NULL DEFAULT '' COMMENT '套餐描述',
-  `use_card` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否允许使用优惠券0禁止1允许',
+  `use_card` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否允许使用优惠券0禁止1允许',
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '套餐应付总价',
   `setmenu_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '套餐优惠价',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '套餐状态1上架0下架',
