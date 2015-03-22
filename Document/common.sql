@@ -362,7 +362,7 @@ CREATE TABLE IF NOT EXISTS `weiapp_food_money_water` (
   `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
   `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
   `pay_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '支付方式1微信2支付吧',
-  `order_id` int(11) NOT NULL DEFAULT '0' COMMENT '订单id对应food_order表id',
+  `order_no` varchar(32) NOT NULL DEFAULT '' COMMENT '订单order_no对应food_order表order_no',
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '订单金额对应food_order表real_pay_amount',
   `current_amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '当前帐号金额',
   `note` varchar(256) NOT NULL DEFAULT '' COMMENT '备注',
