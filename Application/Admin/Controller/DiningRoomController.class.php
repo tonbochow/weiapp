@@ -16,7 +16,14 @@ class DiningRoomController extends FoodBaseController {
 
     //餐厅列表(后台管理员)
     public function index() {
-        
+        $get_dining_name = I('get.dining_name');
+        if (!empty($get_dining_name)) {
+            $map['dining_name'] = array('like', '%' . (string) I('dining_name') . '%');
+        }
+        $list = $this->lists('DiningRoom', $map, 'mp_id,status,id');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮餐厅列表';
+        $this->display('index');
     }
 
     //餐厅列表(前台面向商家)

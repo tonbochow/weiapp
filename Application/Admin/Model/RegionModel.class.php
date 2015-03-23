@@ -21,5 +21,13 @@ class RegionModel extends Model {
         }
         return $list;
     }
+    
+    //获取省市县名称
+    public static function  getRegionName($id){
+        $regionModel = M('Region');
+        $data['id'] = $id;
+        $res = $regionModel->where($data)->find();
+        return $res['name'];
+    }
 
 }

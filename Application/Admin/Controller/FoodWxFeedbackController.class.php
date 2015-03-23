@@ -16,7 +16,10 @@ class FoodWxFeedbackController extends FoodBaseController {
      * 维权管理(后台管理员)
      */
     public function index() {
-        $this->display();
+        $list = $this->lists('FoodWxFeedback', $map, 'mp_id,msg_type');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮维权管理';
+        $this->display('index');
     }
 
     //微信公众平台维权列表(前台面向商家)

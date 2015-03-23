@@ -16,7 +16,14 @@ class ChainDiningController extends FoodBaseController {
      * 连锁餐厅管理(后台管理员)
      */
     public function index() {
-        $this->display();
+        $get_chain_dining_name = I('get.chain_dining_name');
+        if (!empty($get_chain_dining_name)) {
+            $map['chain_dining_name'] = array('like', '%' . (string) I('chain_dining_name') . '%');
+        }
+        $list = $this->lists('ChainDining', $map, 'mp_id,status,id');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮连锁餐厅列表';
+        $this->display('index');
     }
 
     //连锁餐厅信息设置(前台面向商家)
@@ -78,7 +85,7 @@ class ChainDiningController extends FoodBaseController {
                     $this->error($chainDiningModel->getError(), '', true);
                 }
                 $this->error('保存连锁餐厅信息失败!', '', true);
-            }else{
+            } else {
                 $this->error('连锁餐厅数据创建失败!', '', true);
             }
         }
@@ -86,7 +93,7 @@ class ChainDiningController extends FoodBaseController {
         $map['mp_id'] = MP_ID;
         $map['member_id'] = UID;
         $chain_dining = $chainDiningModel->where($map)->find();
-        $chain_dining['description'] =htmlspecialchars_decode(stripslashes($chain_dining['description']));
+        $chain_dining['description'] = htmlspecialchars_decode(stripslashes($chain_dining['description']));
 
         $this->assign('chain_dining', $chain_dining);
         $this->assign('json_chain_dining', json_encode($chain_dining));

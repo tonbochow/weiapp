@@ -1,0 +1,108 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>微餐饮告警列表</h2>
+    </div>
+
+    <div class="cf">
+        <!--        <button class="btn ajax-post" url="{:U('MicroPlatform/enable')}" target-form="ids">启 用</button>
+                <button class="btn ajax-post" url="{:U('MicroPlatform/disable')}" target-form="ids">禁用</button>-->
+
+        <!-- 高级搜索 -->
+        <!--        <div class="search-form fr cf">
+                    <div class="sleft">
+                        <input type="text" name="menu_name" class="search-input" value="{:I('menu_name')}" placeholder="请输入微信公众平台菜单名称">
+                        <a class="sch-btn" href="javascript:;" id="search" url="{:U('WeixinMenu/index')}"><i class="btn-search"></i></a>
+                    </div>
+                </div>-->
+    </div>
+
+    <div class="data-table table-striped">
+        <table>
+            <thead>
+                <tr>
+                    <th class="row-selected">
+                        <input class="checkbox check-all" type="checkbox">
+                    </th>
+                    <th>微信平台</th>
+                    <th>餐厅</th>
+                    <th>错误代码</th>
+                    <th>告警描述</th>
+                    <th>状态</th>
+                    <th>生成时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="warn">
+                    <tr>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$warn.id}"></td>
+                        <td>
+                            <?php
+                            echo \Admin\Model\MicroPlatformModel::getMpName($warn['mp_id']);
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            echo \Admin\Model\DiningRoomModel::getDiningRoomName($warn['dining_room_id']);
+                            ?>
+                        </td>
+                        <td>
+                            {$warn.error_type}
+                        </td>
+                        <td>
+                            {$warn.description}
+                        </td>
+                        <td>
+                            <?php
+                            echo \Admin\Model\FoodWxWarnModel::getFoodWxWarnStatus($warn['status']);
+                            ?>
+                        </td>
+                    <if condition="$warn.create_time neq 0">
+                        <td>{$warn.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$warn.create_time}</td>
+                    </if>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="7" class="text-center">未检索微餐饮平台告警信息</td>
+            </notempty>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //搜索功能
+            $("#search").click(function () {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+</block>

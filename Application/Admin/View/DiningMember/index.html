@@ -1,0 +1,104 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>微餐饮餐厅员工列表</h2>
+    </div>
+
+    <div class="cf">
+        <!--        <button class="btn ajax-post" url="{:U('MicroPlatform/enable')}" target-form="ids">启 用</button>
+                <button class="btn ajax-post" url="{:U('MicroPlatform/disable')}" target-form="ids">禁用</button>-->
+
+        <!-- 高级搜索 -->
+        <div class="search-form fr cf">
+            <div class="sleft">
+                <input type="text" name="real_name" class="search-input" value="{:I('real_name')}" placeholder="请输入微餐饮餐厅员工名称">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('DiningMember/index')}"><i class="btn-search"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-table table-striped">
+        <table>
+            <thead>
+                <tr>
+                    <th>微信平台</th>
+                    <th>餐厅名</th>
+                    <th>姓名</th>
+                    <th>手机号</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="dining_member">
+                    <tr>
+                        <td>
+                            <?php
+                            echo \Admin\Model\MicroPlatformModel::getMpName($dining_member['mp_id']);
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            echo \Admin\Model\DiningRoomModel::getDiningRoomName($dining_member['dining_room_id']);
+                            ?>
+                        </td>
+                        <td>
+                            {$dining_member.real_name}
+                        </td>
+                        <td>
+                            {$dining_member.mobile}
+                        </td>
+                        <td>
+                            <?php
+                            echo \Admin\Model\DiningMemberModel::getDiningMemberStatus($dining_member['status']);
+                            ?>
+                        </td>
+                    <if condition="$dining_member.create_time neq 0">
+                        <td>{$dining_member.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$dining_member.create_time}</td>
+                    </if>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="6" class="text-center">未检索微餐饮餐厅员工信息</td>
+            </notempty>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //搜索功能
+            $("#search").click(function () {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+</block>

@@ -14,7 +14,14 @@ class FoodCategoryController extends FoodBaseController {
 
     //餐厅菜品分类列表(后台管理员)
     public function index() {
-        
+        $get_cate_name= I('get.cate_name');
+        if (!empty($get_cate_name)) {
+            $map['cate_name'] = array('like', '%' . (string) I('cate_name') . '%');
+        }
+        $list = $this->lists('FoodCategory', $map, 'mp_id,status,sort');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮菜品分类列表';
+        $this->display('index');
     }
 
     //餐厅菜品分类列表(前台面向商家)

@@ -1,0 +1,110 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>微餐饮维权列表</h2>
+    </div>
+
+    <div class="cf">
+<!--        <button class="btn ajax-post" url="{:U('MicroPlatform/enable')}" target-form="ids">启 用</button>
+        <button class="btn ajax-post" url="{:U('MicroPlatform/disable')}" target-form="ids">禁用</button>-->
+
+        <!-- 高级搜索 -->
+<!--        <div class="search-form fr cf">
+            <div class="sleft">
+                <input type="text" name="menu_name" class="search-input" value="{:I('menu_name')}" placeholder="请输入微信公众平台菜单名称">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('WeixinMenu/index')}"><i class="btn-search"></i></a>
+            </div>
+        </div>-->
+    </div>
+
+    <div class="data-table table-striped">
+        <table>
+            <thead>
+                <tr>
+                    <th>微信平台</th>
+                    <th>餐厅</th>
+                    <th>交易订单号</th>
+                    <th>维权类型</th>
+                    <th>维权时间</th>
+                    <th>维权原因</th>
+                    <th>希望解决方案</th>
+                    <th>创建时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="feedback">
+                    <tr>
+                        <td>
+                            <?php
+                            echo \Admin\Model\MicroPlatformModel::getMpName($feedback['mp_id']);
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            echo \Admin\Model\DiningRoomModel::getDiningRoomName($feedback['dining_room_id']);
+                            ?>
+                        </td>
+                        <td>
+                            {$feedback.trans_id}
+                        </td>
+                        <td>
+                            {$feedback.msg_type}
+                        </td>
+                        <td>
+                            {$feedback.feedback_time|date="Y-m-d H:i:s",###}
+                        </td>
+                        <td>
+                            {$feedback.reason}
+                        </td>
+                        <td>
+                            {$feedback.solution}
+                        </td>
+                    <if condition="$feedback.create_time neq 0">
+                        <td>{$feedback.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$feedback.create_time}</td>
+                    </if>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="8" class="text-center">未检索微餐饮维权信息</td>
+            </notempty>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //搜索功能
+            $("#search").click(function () {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+</block>

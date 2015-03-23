@@ -16,7 +16,10 @@ class FoodWxWarnController extends FoodBaseController {
      * 告警管理(后台管理员)
      */
     public function index() {
-        $this->display();
+        $list = $this->lists('FoodWxWarn', $map, 'mp_id,status,id');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮告警管理';
+        $this->display('index');
     }
 
     //微信公众平台告警列表(前台面向商家)
@@ -33,5 +36,5 @@ class FoodWxWarnController extends FoodBaseController {
         $this->meta_title = '微信支付告警';
         $this->display('show');
     }
-    
+
 }

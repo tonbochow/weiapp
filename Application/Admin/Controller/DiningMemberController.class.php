@@ -16,7 +16,14 @@ class DiningMemberController extends FoodBaseController {
 
     //餐厅员工列表(后台管理员)
     public function index() {
-        
+        $get_real_name = I('get.real_name');
+        if (!empty($get_real_name)) {
+            $map['real_name'] = array('like', '%' . (string) I('real_name') . '%');
+        }
+        $list = $this->lists('DiningMember', $map, 'mp_id,member_id,status');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮餐厅员工列表';
+        $this->display('index');
     }
 
     //餐厅员工列表(前台面向商家)

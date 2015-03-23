@@ -16,7 +16,16 @@ class WeixinMenuController extends FoodBaseController {
      * 菜单管理(后台)
      */
     public function index() {
-        $this->display();
+        $get_menu_name = I('get.menu_name');
+        if (!empty($get_menu_name)) {
+            $map['menu_name'] = array('like', '%' . (string) I('menu_name') . '%');
+        }
+        $list = $this->lists('WeixinMenu', $map, 'mp_id,status,id');
+        $weixin_menu_num = count($list);
+        $this->assign('weixin_menu_num', $weixin_menu_num);
+        $this->assign('list', $list);
+        $this->meta_title = '微信公众平台菜单列表';
+        $this->display('index');
     }
 
     //微餐饮公众平台微信菜单(前台)

@@ -1,0 +1,192 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>{$micro_platform.mp_name}</h2>
+    </div>
+    <div id="dialog" title="{$micro_platform.mp_name}" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" >
+        <div class="form-item">
+            <label class="item-label">微信公众平台名称</label>
+            <div class="controls">
+                {$micro_platform.mp_name}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台原始ID</label>
+            <div class="controls">
+                {$micro_platform.mp_original_id}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台微信号</label>
+            <div class="controls">
+                {$micro_platform.mp_wxcode}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台appid</label>
+            <div class="controls">
+                {$micro_platform.appid}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台appsecret</label>
+            <div class="controls">
+                {$micro_platform.appsecret}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台partnerid</label>
+            <div class="controls">
+                {$micro_platform.partnerid}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台partnerkey</label>
+            <div class="controls">
+                {$micro_platform.partnerkey}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台paysignkey</label>
+            <div class="controls">
+                {$micro_platform.paysignkey}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台类型</label>
+            <div class="controls">
+                <?php
+                echo \Admin\Model\MicroPlatformModel::getMpAppType($micro_platform['app_type']);
+                ?>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信支付</label>
+            <div class="controls">
+                <?php
+                echo \Admin\Model\MicroPlatformModel::getMpWxPay($micro_platform['support_wxpay']);
+                ?>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">连锁</label>
+            <div class="controls">
+                <?php
+                echo \Admin\Model\MicroPlatformModel::getMpChain($micro_platform['is_chain']);
+                ?>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">连锁个数</label>
+            <div class="controls">
+                {$micro_platform.chain_num}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台二维码</label>
+            <div class="controls">
+                <img src="{$micro_platform.mp_qrcode}">
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台图标</label>
+            <div class="controls">
+                <img src="{$micro_platform.mp_img}">
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台接入URL</label>
+            <div class="controls">
+                {$micro_platform.mp_url}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台接入token</label>
+            <div class="controls">
+                {$micro_platform.mp_token}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台状态</label>
+            <div class="controls">
+                <?php
+                echo \Admin\Model\MicroPlatformModel::getMpStatus($micro_platform['status']);
+                ?>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台账户金额</label>
+            <div class="controls">
+                {$micro_platform.account}
+            </div>
+        </div>
+
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台开始使用时间</label>
+            <div class="controls">
+                <if condition="$micro_platform.start_time neq 0">
+                    {$micro_platform.start_time|date="Y-m-d H:i:s",###}
+                    <else />
+                    {$micro_platform.start_time}
+                </if>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台结束使用时间</label>
+            <div class="controls">
+                <if condition="$micro_platform.end_time neq 0">
+                    {$micro_platform.end_time|date="Y-m-d H:i:s",###}
+                    <else />
+                    {$micro_platform.end_time}
+                </if>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台创建时间</label>
+            <div class="controls">
+                <if condition="$micro_platform.create_time neq 0">
+                    {$micro_platform.create_time|date="Y-m-d H:i:s",###}
+                    <else />
+                    {$micro_platform.create_time}
+                </if>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);
+                    return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+</block>

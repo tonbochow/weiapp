@@ -64,6 +64,9 @@ class FoodWaterController extends FoodBaseController {
         }
         $map['mp_id'] = MP_ID;
         $data = M('FoodMoneyWater')->where($map)->select();
+        if($data == false){
+            $this->error('根据您的检索条件暂无资金流水记录!');
+        }
         import('Common.Extends.phpexcel.PHPExcel');
         $resultPHPExcel = new \PHPExcel();
         $resultPHPExcel->getActiveSheet()->setCellValue('A1', '餐厅');
