@@ -16,7 +16,14 @@ class FoodOrderController extends FoodBaseController {
      * 订单管理(后台管理员)
      */
     public function index() {
-        $this->display();
+        $get_order_no = I('get.order_no');
+        if (!empty($get_order_no)) {
+            $map['order_no'] = $get_order_no;
+        }
+        $list = $this->lists('FoodOrder', $map, 'mp_id,status,id');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮订单列表';
+        $this->display('index');
     }
 
     //订单列表页面(前台面向商家)
@@ -45,7 +52,7 @@ class FoodOrderController extends FoodBaseController {
         $list = $this->lists('FoodOrder', $map, 'pay_type,status,id', array('status' => array('egt', -1)));
         $pay_type_arr = \Admin\Model\FoodOrderModel::getFoodPayType();
         $this->assign('pay_type_arr', $pay_type_arr);
-        $this->assign('select_pay_type',$get_pay_type);
+        $this->assign('select_pay_type', $get_pay_type);
 
         $this->assign('dining_room_name', $dining_room_name);
         $this->assign('list', $list);

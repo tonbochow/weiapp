@@ -14,7 +14,14 @@ class FoodController extends FoodBaseController {
 
     //餐厅菜品列表(后台管理员)
     public function index() {
-        
+        $get_food_name= I('get.food_name');
+        if (!empty($get_food_name)) {
+            $map['food_name'] = array('like', '%' . (string) I('food_name') . '%');
+        }
+        $list = $this->lists('Food', $map, 'mp_id,status,id');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮菜品列表';
+        $this->display('index');
     }
 
     //餐厅菜品列表(前台面向商家)

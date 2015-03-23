@@ -1,0 +1,94 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>微餐饮菜品风格列表</h2>
+    </div>
+
+    <div class="cf">
+        <!--        <button class="btn ajax-post" url="{:U('MicroPlatform/enable')}" target-form="ids">启 用</button>
+                <button class="btn ajax-post" url="{:U('MicroPlatform/disable')}" target-form="ids">禁用</button>-->
+
+        <!-- 高级搜索 -->
+        <div class="search-form fr cf">
+            <div class="sleft">
+                <input type="text" name="name" class="search-input" value="{:I('name')}" placeholder="请输入微餐饮菜品风格名称">
+                <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodStyle/index')}"><i class="btn-search"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-table table-striped">
+        <table>
+            <thead>
+                <tr>
+                    <th>微信平台</th>
+                    <th>风格名</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="food_style">
+                    <tr>
+                        <td>
+                            <?php
+                            echo \Admin\Model\MicroPlatformModel::getMpName($food_style['mp_id']);
+                            ?>
+                        </td>
+                        <td>
+                            {$food_style.name}
+                        </td>
+                        <td>
+                            <?php
+                            echo \Admin\Model\FoodStyleModel::getFoodStyleStatus($food_style['status']);
+                            ?>
+                        </td>
+                    <if condition="$food_style.create_time neq 0">
+                        <td>{$food_style.create_time|date="Y-m-d H:i:s",###}</td>
+                        <else />
+                        <td>{$food_style.create_time}</td>
+                    </if>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="4" class="text-center">未检索到菜品风格信息</td>
+            </notempty>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //搜索功能
+            $("#search").click(function () {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+</block>

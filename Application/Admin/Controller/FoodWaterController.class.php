@@ -16,7 +16,14 @@ class FoodWaterController extends FoodBaseController {
      * 资金流水管理(后台管理员)
      */
     public function index() {
-        $this->display();
+        $get_order_no = I('get.order_no');
+        if (!empty($get_order_no)) {
+            $map['order_no'] = $get_order_no;
+        }
+        $list = $this->lists('FoodMoneyWater', $map, 'mp_id,id');
+        $this->assign('list', $list);
+        $this->meta_title = '资金流水列表';
+        $this->display('index');
     }
 
     //资金流水列表页面(前台面向商家)

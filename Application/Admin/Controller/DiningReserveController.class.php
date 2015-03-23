@@ -14,7 +14,14 @@ class DiningReserveController extends FoodBaseController {
 
     //客户预定列表(后台管理员)
     public function index() {
-        
+        $get_user_name = I('get.user_name');
+        if (!empty($get_user_name)) {
+            $map['user_name'] = array('like', '%' . (string) I('get_user_name') . '%');
+        }
+        $list = $this->lists('DiningReserve', $map, 'mp_id,status,id');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮客户预定列表';
+        $this->display('index');
     }
 
     //客户预定列表(前台面向商家)

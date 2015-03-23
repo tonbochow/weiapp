@@ -14,7 +14,14 @@ class FoodStyleController extends FoodBaseController {
 
     //餐厅菜品风格列表(后台管理员)
     public function index() {
-        
+        $get_name= I('get.name');
+        if (!empty($get_name)) {
+            $map['name'] = array('like', '%' . (string) I('name') . '%');
+        }
+        $list = $this->lists('FoodStyle', $map, 'mp_id,status');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮菜品风格列表';
+        $this->display('index');
     }
 
     //餐厅菜品风格列表(前台面向商家)

@@ -14,7 +14,14 @@ class FoodSetmenuController extends FoodBaseController {
 
     //餐厅菜品风格列表(后台管理员)
     public function index() {
-        
+        $get_setmenu_name= I('get.setmenu_name');
+        if (!empty($get_setmenu_name)) {
+            $map['setmenu_name'] = array('like', '%' . (string) I('setmenu_name') . '%');
+        }
+        $list = $this->lists('FoodSetmenu', $map, 'mp_id,status,id');
+        $this->assign('list', $list);
+        $this->meta_title = '微餐饮菜品套餐列表';
+        $this->display('index');
     }
 
     //餐厅菜品套餐列表(前台面向商家)
