@@ -14,7 +14,7 @@ class FoodBaseController extends AdminController {
 
     protected function _initialize() {
         parent::_initialize();
-        if(!is_administrator()) {
+        if (!is_administrator()) {
             $this->checkUserRequire();
             if (strtolower(CONTROLLER_NAME) != 'microplatform' && strtolower(ACTION_NAME) != 'food') {
                 $this->checkMicroPlatformRequire();
@@ -46,8 +46,9 @@ class FoodBaseController extends AdminController {
             } else {
                 define('DINING_ROOM_ID', ''); //定义连锁分店id
             }
-            $mp_id = !empty($micro_platform) ? $micro_platform['id'] : '';
-            $appid = !empty($micro_platform['appid']) ? $micro_platform['appid'] : '';
+            $mp_id = !empty($micro_platform) ? trim($micro_platform['id']) : '';
+            $mp_name = !empty($micro_platform['mp_name']) ? trim($micro_platform['mp_name']) : '';
+            $appid = !empty($micro_platform['appid']) ? trim($micro_platform['appid']) : '';
             $appsecret = !empty($micro_platform['appsecret']) ? trim($micro_platform['appsecret']) : '';
             $partnerid = !empty($micro_platform['partnerid']) ? trim($micro_platform['partnerid']) : '';
             $partnerkey = !empty($micro_platform['partnerkey']) ? trim($micro_platform['partnerkey']) : '';
@@ -56,6 +57,7 @@ class FoodBaseController extends AdminController {
             $is_chain = !empty($micro_platform['is_chain']) ? true : false;
             define('IS_CHAIN', $is_chain); //餐厅是否连锁
             define('MP_ID', $mp_id); //微信公众平台ID
+            define('MP_NAME', $mp_name);
             define('APPID', $appid); //微信公众平台APPID  基本参数
             define('APPSERCERT', $appsecret); //微信公众平台APPSERCERT 基本参数
             define("PARTNERID", $partnerid); //微信公众平台PARTNERID  微信支付必需参数

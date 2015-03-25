@@ -22,11 +22,6 @@ class WxCardModel extends Model {
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('wx_openid', 'require', '告警用户wx_openid不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('appid', 'require', '告警appid不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('error_type', 'require', '告警error_type不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('description', 'require', '告警description不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('alarm_content', 'require', '告警alarm_content不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
@@ -37,7 +32,7 @@ class WxCardModel extends Model {
     );
 
 //获取卡劵状态
-    public static function getFoodWxWarnStatus($status = null, $has_choice = true) {
+    public static function getWxCardStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
         }
