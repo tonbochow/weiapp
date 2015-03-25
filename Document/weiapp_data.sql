@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50612
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50612
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-03-23 21:56:07
+Date: 2015-03-25 16:07:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,11 +65,18 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
 -- ----------------------------
+INSERT INTO `weiapp_action_log` VALUES ('1', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-24 09:41登录了后台', '1', '1427161265');
+INSERT INTO `weiapp_action_log` VALUES ('2', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-24 16:46登录了后台', '1', '1427186779');
+INSERT INTO `weiapp_action_log` VALUES ('3', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-25 09:33登录了后台', '1', '1427247195');
+INSERT INTO `weiapp_action_log` VALUES ('4', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-03-25 10:34登录了后台', '1', '1427250872');
+INSERT INTO `weiapp_action_log` VALUES ('5', '10', '1', '2130706433', 'Menu', '154', '操作url：/index.php?s=/Admin/Menu/edit.html', '1', '1427250940');
+INSERT INTO `weiapp_action_log` VALUES ('6', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-03-25 10:36登录了后台', '1', '1427250994');
+INSERT INTO `weiapp_action_log` VALUES ('7', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-03-25 11:22登录了后台', '1', '1427253759');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -237,7 +244,7 @@ CREATE TABLE `weiapp_auth_group` (
 -- ----------------------------
 INSERT INTO `weiapp_auth_group` VALUES ('1', 'admin', '1', '默认用户组', '', '1', '1,2,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,81,82,83,84,86,87,88,89,90,91,92,93,94,95,96,97,100,102,103,105,106');
 INSERT INTO `weiapp_auth_group` VALUES ('2', 'admin', '1', '测试用户', '测试用户', '1', '1,2,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,82,83,84,88,89,90,91,92,93,96,97,100,102,103,195');
-INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,240,242,243,244,245,246,247,248,249,250,255,256,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312');
+INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,240,242,243,244,245,246,247,248,249,255,256,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,314');
 INSERT INTO `weiapp_auth_group` VALUES ('4', 'admin', '1', '微餐饮店员', 'food_member', '1', '');
 
 -- ----------------------------
@@ -271,7 +278,7 @@ CREATE TABLE `weiapp_auth_rule` (
   `condition` varchar(300) NOT NULL DEFAULT '' COMMENT '规则附加条件',
   PRIMARY KEY (`id`),
   KEY `module` (`module`,`status`,`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=313 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=324 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_auth_rule
@@ -491,8 +498,8 @@ INSERT INTO `weiapp_auth_rule` VALUES ('215', 'admin', '1', 'Admin/Category/oper
 INSERT INTO `weiapp_auth_rule` VALUES ('216', 'admin', '1', 'Admin/Category/operate/type/merge', '合并', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('217', 'admin', '1', 'Admin/MemberInfo/apply', '试用申请管理', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('218', 'admin', '1', 'Admin/MicroPlatform/index', '微信公众平台列表管理', '1', '');
-INSERT INTO `weiapp_auth_rule` VALUES ('219', 'admin', '1', 'Admin/PlatformMenu/index', '微信公众平台菜单管理', '1', '');
-INSERT INTO `weiapp_auth_rule` VALUES ('220', 'admin', '1', 'Admin/Dining/index', '连锁餐厅管理', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('219', 'admin', '1', 'Admin/PlatformMenu/index', '微信公众平台菜单管理', '-1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('220', 'admin', '1', 'Admin/Dining/index', '连锁餐厅管理', '-1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('221', 'admin', '1', 'Admin/DiningRoom/index', '餐厅列表管理', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('222', 'admin', '1', 'Admin/FoodCategory/index', '菜品分类列表管理', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('223', 'admin', '1', 'Admin/Food/index', '菜品列表管理', '1', '');
@@ -522,7 +529,7 @@ INSERT INTO `weiapp_auth_rule` VALUES ('246', 'admin', '1', 'Admin/WeixinMenu/di
 INSERT INTO `weiapp_auth_rule` VALUES ('247', 'admin', '1', 'Admin/WeixinMenu/addsubmenu', '创建二级菜单', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('248', 'admin', '1', 'Admin/WeixinMenu/recommend', '一键创建推荐菜单', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('249', 'admin', '1', 'Admin/WeixinMenu/custom', '一键创建自定义菜单', '1', '');
-INSERT INTO `weiapp_auth_rule` VALUES ('250', 'admin', '1', 'Admin/WeixinCard/food', '微信卡劵', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('250', 'admin', '1', 'Admin/WeixinCard/food', '微信卡劵', '-1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('251', 'admin', '1', 'Admin/FoodOrder/weixinpay', '微信支付订单', '-1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('252', 'admin', '1', 'Admin/FoodWx/warn', '微信告警', '-1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('253', 'admin', '1', 'Admin/FoodWx/Feedback', '微信维权', '-1', '');
@@ -585,6 +592,17 @@ INSERT INTO `weiapp_auth_rule` VALUES ('309', 'admin', '1', 'Admin/FoodSetmenu/e
 INSERT INTO `weiapp_auth_rule` VALUES ('310', 'admin', '1', 'Admin/FoodSetmenu/disable', '禁用明细', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('311', 'admin', '1', 'Admin/FoodSetmenu/view', '查看', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('312', 'admin', '1', 'Admin/FoodWater/csv', '导出EXCEL', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('313', 'admin', '1', 'Admin/WeixinMenu/index', '微信公众平台菜单管理', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('314', 'admin', '1', 'Admin/WeixinCard/show', '微信卡劵', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('315', 'admin', '1', 'Admin/MicroPlatform/detail', '详细', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('316', 'admin', '1', 'Admin/FoodWxWarn/index', '微餐饮告警管理', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('317', 'admin', '1', 'Admin/FoodWxFeedback/index', '微餐饮维权管理', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('318', 'admin', '1', 'Admin/FoodWater/index', '资金流水管理', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('319', 'admin', '1', 'Admin/ChainDining/index', '连锁餐厅管理', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('320', 'admin', '1', 'Admin/DiningMember/index', '餐厅员工管理', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('321', 'admin', '1', 'Admin/FoodStyle/index', '菜品风格管理', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('322', 'admin', '1', 'Admin/FoodSetmenu/index', '菜品套餐管理', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('323', 'admin', '1', 'Admin/DiningReserve/index', '客户预定管理', '1', '');
 
 -- ----------------------------
 -- Table structure for `weiapp_category`
@@ -1441,8 +1459,8 @@ CREATE TABLE `weiapp_member` (
 -- ----------------------------
 -- Records of weiapp_member
 -- ----------------------------
-INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '160', '107', '0', '1423289473', '2130706433', '1427114518', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '120', '109', '0', '0', '2130706433', '1427097259', '1');
+INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '170', '109', '0', '1423289473', '2130706433', '1427253759', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '130', '113', '0', '0', '2130706433', '1427250994', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -1715,7 +1733,7 @@ INSERT INTO `weiapp_menu` VALUES ('150', '禁用', '146', '0', 'WeixinMenu/disab
 INSERT INTO `weiapp_menu` VALUES ('151', '创建二级菜单', '146', '0', 'WeixinMenu/addsubmenu', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('152', '一键创建推荐菜单', '146', '0', 'WeixinMenu/recommend', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('153', '一键创建自定义菜单', '146', '0', 'WeixinMenu/custom', '1', '', '', '0');
-INSERT INTO `weiapp_menu` VALUES ('154', '微信卡劵', '135', '0', 'WeixinCard/food', '0', '', '微餐饮公众平台', '0');
+INSERT INTO `weiapp_menu` VALUES ('154', '微信卡劵', '135', '0', 'WeixinCard/show', '0', '', '微餐饮公众平台', '0');
 INSERT INTO `weiapp_menu` VALUES ('189', '客户预定', '135', '0', 'DiningReserve/show', '0', '', '微餐饮订单', '0');
 INSERT INTO `weiapp_menu` VALUES ('156', '微信告警', '135', '0', 'FoodWxWarn/show', '0', '', '微餐饮公众平台', '0');
 INSERT INTO `weiapp_menu` VALUES ('157', '微信维权', '135', '0', 'FoodWxFeedback/show', '0', '', '微餐饮公众平台', '0');
@@ -1794,6 +1812,7 @@ CREATE TABLE `weiapp_micro_platform` (
   `mp_wxcode` varchar(128) NOT NULL DEFAULT '' COMMENT '微信公众平台微信号',
   `mp_qrcode` varchar(256) NOT NULL DEFAULT '' COMMENT '微信公众平台二维码',
   `mp_img` varchar(256) NOT NULL DEFAULT '' COMMENT '微信公众平台形象图片',
+  `card_pic_url` varchar(256) NOT NULL DEFAULT '' COMMENT '微信卡劵图片在微信服务器的url',
   `support_wxpay` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否支持微信支付0不支持1支持',
   `access_token` varchar(512) NOT NULL DEFAULT '' COMMENT '微信公众号的全局唯一票据access_token',
   `token_expire` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众号access_token有效期(过期时间)',
@@ -1818,7 +1837,7 @@ CREATE TABLE `weiapp_micro_platform` (
 -- ----------------------------
 -- Records of weiapp_micro_platform
 -- ----------------------------
-INSERT INTO `weiapp_micro_platform` VALUES ('1', 'wx571d493fc32f0ba4', '6677a350c853729910c9481dab475570', '', '', '', 'local.weiapp.com/Mobile/Base/weixin/token/91692FB7569443A68D7C357488CB54C2', '91692FB7569443A68D7C357488CB54C2', '1', 'gh_dde71cd2712f', '邻购网', 'LINGOU5106', '/Uploads/Mp/1/info/mp_qrcode.jpg', '/Uploads/Mp/1/info/mp_img.jpg', '0', '', '1425869162', '2', '', '0', '0', '1', '1', '1', '1', '1', '0.00', '1425285691', '1534543454', '0', '1427091499');
+INSERT INTO `weiapp_micro_platform` VALUES ('1', 'wx571d493fc32f0ba4', '6677a350c853729910c9481dab475570', '', '', '', 'local.weiapp.com/Mobile/Base/weixin/token/91692FB7569443A68D7C357488CB54C2', '91692FB7569443A68D7C357488CB54C2', '1', 'gh_dde71cd2712f', '邻购网', 'LINGOU5106', '/Uploads/Mp/1/info/mp_qrcode.jpg', '/Uploads/Mp/1/info/mp_img.jpg', '', '0', '', '1425869162', '2', '', '0', '0', '1', '1', '1', '1', '1', '0.00', '1425285691', '1534543454', '0', '1427091499');
 
 -- ----------------------------
 -- Table structure for `weiapp_model`
@@ -5250,8 +5269,8 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- ----------------------------
 -- Records of weiapp_ucenter_member
 -- ----------------------------
-INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1427114518', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1427097259', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1427253759', '2130706433', '1423289473', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1427250994', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`
@@ -5344,3 +5363,113 @@ INSERT INTO `weiapp_weixin_menu` VALUES ('51', '1', '2', 'view', '我的预定',
 INSERT INTO `weiapp_weixin_menu` VALUES ('52', '1', '2', 'view', '我的订单', '', 'http://www.52gdp.com/Mobile/order/list/token/91692FB7569443A68D7C357488CB54C2', '', '49', '3', '3', '1', '1426430110', '1426430110');
 INSERT INTO `weiapp_weixin_menu` VALUES ('53', '1', '2', 'view', '我的会员卡', '', 'http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2', '', '49', '4', '3', '1', '1426430110', '1426430110');
 INSERT INTO `weiapp_weixin_menu` VALUES ('54', '1', '2', 'view', '我要说说', '', 'http://www.52gdp.com/Mobile/comment/index/token/91692FB7569443A68D7C357488CB54C2', '', '49', '5', '3', '1', '1426430110', '1426430110');
+
+-- ----------------------------
+-- Table structure for `weiapp_wx_card`
+-- ----------------------------
+DROP TABLE IF EXISTS `weiapp_wx_card`;
+CREATE TABLE `weiapp_wx_card` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id',
+  `member_id` int(10) NOT NULL DEFAULT '0' COMMENT '创建卡劵用户id',
+  `card_id` varchar(255) NOT NULL DEFAULT '' COMMENT '微信服务器返回的卡劵id',
+  `code` varchar(20) NOT NULL DEFAULT '' COMMENT '商户自定义的卡劵code',
+  `card_type` varchar(32) NOT NULL DEFAULT '' COMMENT '卡劵类型',
+  `logo_url` varchar(255) NOT NULL DEFAULT '' COMMENT '对应micro_platform.card_pic_url 卡劵logo',
+  `brand_name` varchar(60) NOT NULL DEFAULT '' COMMENT '微信公众平台名称',
+  `code_type` varchar(32) NOT NULL DEFAULT '' COMMENT 'code码展示类型',
+  `title` varchar(9) NOT NULL DEFAULT '' COMMENT '劵名最多9个汉字',
+  `sub_title` varchar(18) NOT NULL DEFAULT '' COMMENT '券名副标题最多18个汉字',
+  `color` varchar(16) NOT NULL DEFAULT '' COMMENT '劵颜色值',
+  `notice` varchar(9) NOT NULL DEFAULT '' COMMENT '使用提醒最多9个汉字',
+  `service_phone` varchar(15) NOT NULL DEFAULT '' COMMENT '固话或手机号码',
+  `description` text NOT NULL COMMENT '使用说明最多1000汉字',
+  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '使用时间的类型1固定日期区间2固定时长',
+  `begin_timestamp` int(10) NOT NULL DEFAULT '0' COMMENT '固定日期区间专用表示起用时间',
+  `end_timestamp` int(10) NOT NULL DEFAULT '0' COMMENT '固定日期区间专用表示结束时间',
+  `fixed_term` int(10) NOT NULL DEFAULT '0' COMMENT '固定时长字领取后多少天有效默认0当天有效',
+  `fixed_begin_term` int(10) NOT NULL DEFAULT '0' COMMENT '固定时长 表示自领取后多少天开始生效',
+  `quantity` int(10) NOT NULL DEFAULT '0' COMMENT '卡劵库存数量不支持填写0或无限大',
+  `get_limit` int(10) NOT NULL DEFAULT '1' COMMENT '每人最大领取次数默认等于quantity',
+  `use_custom_code` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否自定义code默认false即0',
+  `bind_openid` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否指定用户领取默认false即0',
+  `can_share` tinyint(1) NOT NULL DEFAULT '1' COMMENT '领取卡劵原生页面是否可分享默认true即1',
+  `can_give_friend` tinyint(1) NOT NULL DEFAULT '1' COMMENT '卡劵是否可转赠默认true即1',
+  `location_id_list` text NOT NULL COMMENT '门店位置id(微信服务器)',
+  `url_name_type` varchar(64) NOT NULL DEFAULT '' COMMENT '商户自定义cell名称',
+  `custom_url` varchar(255) NOT NULL DEFAULT '' COMMENT '商户自定义cell跳转外链的地址链接',
+  `source` varchar(60) NOT NULL DEFAULT '' COMMENT '同brand_name第三方来源名',
+  `deal_detail` text NOT NULL COMMENT '详细内容',
+  `status` varchar(32) NOT NULL COMMENT '卡劵状态',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信卡劵表';
+
+-- ----------------------------
+-- Records of weiapp_wx_card
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `weiapp_wx_card_color`
+-- ----------------------------
+DROP TABLE IF EXISTS `weiapp_wx_card_color`;
+CREATE TABLE `weiapp_wx_card_color` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id',
+  `name` varchar(16) NOT NULL DEFAULT '' COMMENT '颜色名',
+  `value` char(7) NOT NULL DEFAULT '' COMMENT '颜色值',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信卡劵颜色表';
+
+-- ----------------------------
+-- Records of weiapp_wx_card_color
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `weiapp_wx_card_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `weiapp_wx_card_record`;
+CREATE TABLE `weiapp_wx_card_record` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id',
+  `fromusername_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '领劵方openid',
+  `friendusername_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '赠送方openid',
+  `event` varchar(32) NOT NULL DEFAULT '' COMMENT '事件类型如user_get_card',
+  `card_id` varchar(255) NOT NULL DEFAULT '' COMMENT '卡劵id',
+  `isgive_byfriend` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否赠送0否1是',
+  `usercard_code` varchar(20) NOT NULL DEFAULT '' COMMENT 'code序列号',
+  `outer_id` int(10) NOT NULL DEFAULT '0' COMMENT '领取的场景值',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='卡劵领取或删除记录表';
+
+-- ----------------------------
+-- Records of weiapp_wx_card_record
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `weipp_wx_card_diningroom`
+-- ----------------------------
+DROP TABLE IF EXISTS `weipp_wx_card_diningroom`;
+CREATE TABLE `weipp_wx_card_diningroom` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id',
+  `member_id` int(10) NOT NULL DEFAULT '0' COMMENT '从微信服务器拉取门店信息用户id',
+  `location_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信服务器门店id',
+  `business_name` varchar(60) NOT NULL DEFAULT '' COMMENT '微信公众平台名称',
+  `phone` varchar(15) NOT NULL DEFAULT '' COMMENT '固话或手机',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '门店详细地址',
+  `longitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '经度',
+  `latitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '纬度',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='从微信服务器拉取门店信息表';
+
+-- ----------------------------
+-- Records of weipp_wx_card_diningroom
+-- ----------------------------
