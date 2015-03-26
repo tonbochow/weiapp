@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50612
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50612
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-03-25 23:15:26
+Date: 2015-03-26 17:39:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1460,7 +1460,7 @@ CREATE TABLE `weiapp_member` (
 -- Records of weiapp_member
 -- ----------------------------
 INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '170', '110', '0', '1423289473', '2130706433', '1427290329', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '130', '116', '0', '0', '2130706433', '1427295876', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '140', '117', '0', '0', '2130706433', '1427332597', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -1819,7 +1819,7 @@ CREATE TABLE `weiapp_micro_platform` (
   `mp_wxcode` varchar(128) NOT NULL DEFAULT '' COMMENT '微信公众平台微信号',
   `mp_qrcode` varchar(256) NOT NULL DEFAULT '' COMMENT '微信公众平台二维码',
   `mp_img` varchar(256) NOT NULL DEFAULT '' COMMENT '微信公众平台形象图片',
-  `card_pic_url` varchar(256) NOT NULL DEFAULT '' COMMENT '微信卡劵图片在微信服务器的url',
+  `card_pic_url` varchar(256) NOT NULL DEFAULT '' COMMENT '微信平台logo图片url(微信服务器上)',
   `support_wxpay` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否支持微信支付0不支持1支持',
   `access_token` varchar(512) NOT NULL DEFAULT '' COMMENT '微信公众号的全局唯一票据access_token',
   `token_expire` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众号access_token有效期(过期时间)',
@@ -1844,7 +1844,7 @@ CREATE TABLE `weiapp_micro_platform` (
 -- ----------------------------
 -- Records of weiapp_micro_platform
 -- ----------------------------
-INSERT INTO `weiapp_micro_platform` VALUES ('1', 'wx571d493fc32f0ba4', '6677a350c853729910c9481dab475570', '', '', '', 'local.weiapp.com/Mobile/Base/weixin/token/91692FB7569443A68D7C357488CB54C2', '91692FB7569443A68D7C357488CB54C2', '1', 'gh_dde71cd2712f', '邻购网', 'LINGOU5106', '/Uploads/Mp/1/info/mp_qrcode.jpg', '/Uploads/Mp/1/info/mp_img.jpg', '', '0', '', '1425869162', '2', '', '0', '0', '1', '1', '1', '1', '1', '0.00', '1425285691', '1534543454', '0', '1427091499');
+INSERT INTO `weiapp_micro_platform` VALUES ('1', 'wx571d493fc32f0ba4', '6677a350c853729910c9481dab475570', '', '', '', 'local.weiapp.com/Mobile/Base/weixin/token/91692FB7569443A68D7C357488CB54C2', '91692FB7569443A68D7C357488CB54C2', '1', 'gh_dde71cd2712f', '邻购网', 'LINGOU5106', '/Uploads/Mp/1/info/mp_qrcode.jpg', '/Uploads/Mp/1/info/mp_img.jpg', '', '0', '', '1427336730', '2', '', '0', '0', '1', '1', '1', '1', '1', '0.00', '1425285691', '1534543454', '0', '1427336730');
 
 -- ----------------------------
 -- Table structure for `weiapp_model`
@@ -5277,7 +5277,7 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- Records of weiapp_ucenter_member
 -- ----------------------------
 INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1427290329', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1427295876', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1427332597', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`
@@ -5388,13 +5388,13 @@ CREATE TABLE `weiapp_wx_card` (
   `title` varchar(9) NOT NULL DEFAULT '' COMMENT '劵名最多9个汉字',
   `sub_title` varchar(18) NOT NULL DEFAULT '' COMMENT '券名副标题最多18个汉字',
   `color` varchar(16) NOT NULL DEFAULT '' COMMENT '劵颜色值',
-  `notice` varchar(9) NOT NULL DEFAULT '' COMMENT '使用提醒最多9个汉字',
+  `notice` varchar(16) NOT NULL DEFAULT '' COMMENT '使用提醒最多9个汉字',
   `service_phone` varchar(15) NOT NULL DEFAULT '' COMMENT '固话或手机号码',
   `description` text NOT NULL COMMENT '使用说明最多1000汉字',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '使用时间的类型1固定日期区间2固定时长',
   `begin_timestamp` int(10) NOT NULL DEFAULT '0' COMMENT '固定日期区间专用表示起用时间',
   `end_timestamp` int(10) NOT NULL DEFAULT '0' COMMENT '固定日期区间专用表示结束时间',
-  `fixed_term` int(10) NOT NULL DEFAULT '0' COMMENT '固定时长字领取后多少天有效默认0当天有效',
+  `fixed_term` int(10) NOT NULL DEFAULT '0' COMMENT '固定时长字领取后多少天内有效默认0当天有效',
   `fixed_begin_term` int(10) NOT NULL DEFAULT '0' COMMENT '固定时长 表示自领取后多少天开始生效',
   `quantity` int(10) NOT NULL DEFAULT '0' COMMENT '卡劵库存数量不支持填写0或无限大',
   `get_limit` int(10) NOT NULL DEFAULT '1' COMMENT '每人最大领取次数默认等于quantity',
@@ -5429,11 +5429,50 @@ CREATE TABLE `weiapp_wx_card_color` (
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信卡劵颜色表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='微信卡劵颜色表';
 
 -- ----------------------------
 -- Records of weiapp_wx_card_color
 -- ----------------------------
+INSERT INTO `weiapp_wx_card_color` VALUES ('1', '1', 'Color010', '#55bd47', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('2', '1', 'Color020', '#10ad61', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('3', '1', 'Color030', '#35a4de', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('4', '1', 'Color040', '#3d78da', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('5', '1', 'Color050', '#9058cb', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('6', '1', 'Color060', '#de9c33', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('7', '1', 'Color070', '#ebac16', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('8', '1', 'Color080', '#f9861f', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('9', '1', 'Color081', '#f08500', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('10', '1', 'Color090', '#e75735', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('11', '1', 'Color100', '#d54036', '0', '0');
+INSERT INTO `weiapp_wx_card_color` VALUES ('12', '1', 'Color101', '#cf3e36', '0', '0');
+
+-- ----------------------------
+-- Table structure for `weiapp_wx_card_diningroom`
+-- ----------------------------
+DROP TABLE IF EXISTS `weiapp_wx_card_diningroom`;
+CREATE TABLE `weiapp_wx_card_diningroom` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id',
+  `member_id` int(10) NOT NULL DEFAULT '0' COMMENT '从微信服务器拉取门店信息用户id',
+  `location_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信服务器门店id',
+  `business_name` varchar(60) NOT NULL DEFAULT '' COMMENT '微信公众平台名称',
+  `branch_name` varchar(60) NOT NULL DEFAULT '' COMMENT '分店名',
+  `phone` varchar(15) NOT NULL DEFAULT '' COMMENT '固话或手机',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '门店详细地址',
+  `longitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '经度',
+  `latitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '纬度',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='从微信服务器拉取门店信息表';
+
+-- ----------------------------
+-- Records of weiapp_wx_card_diningroom
+-- ----------------------------
+INSERT INTO `weiapp_wx_card_diningroom` VALUES ('1', '1', '2', '12121', '北斗星', '百花北斗星', '13112344321', '百花路', '0.00000000000000', '0.00000000000000', '0', '0');
+INSERT INTO `weiapp_wx_card_diningroom` VALUES ('2', '1', '2', '12122', '北斗星', '裕华路北斗星', '13443212343', '裕华路', '0.00000000000000', '0.00000000000000', '0', '0');
+INSERT INTO `weiapp_wx_card_diningroom` VALUES ('3', '1', '2', '12123', '北斗星', '天威路北斗星', '13554322223', '天威路', '0.00000000000000', '0.00000000000000', '0', '0');
 
 -- ----------------------------
 -- Table structure for `weiapp_wx_card_record`
@@ -5456,27 +5495,4 @@ CREATE TABLE `weiapp_wx_card_record` (
 
 -- ----------------------------
 -- Records of weiapp_wx_card_record
--- ----------------------------
-
--- ----------------------------
--- Table structure for `weipp_wx_card_diningroom`
--- ----------------------------
-DROP TABLE IF EXISTS `weipp_wx_card_diningroom`;
-CREATE TABLE `weipp_wx_card_diningroom` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id',
-  `member_id` int(10) NOT NULL DEFAULT '0' COMMENT '从微信服务器拉取门店信息用户id',
-  `location_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信服务器门店id',
-  `business_name` varchar(60) NOT NULL DEFAULT '' COMMENT '微信公众平台名称',
-  `phone` varchar(15) NOT NULL DEFAULT '' COMMENT '固话或手机',
-  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '门店详细地址',
-  `longitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '经度',
-  `latitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '纬度',
-  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='从微信服务器拉取门店信息表';
-
--- ----------------------------
--- Records of weipp_wx_card_diningroom
 -- ----------------------------

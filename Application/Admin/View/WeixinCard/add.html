@@ -1,0 +1,305 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>创建卡劵(带*并标注的为必填项)</h2>
+    </div>
+
+    <div id="dialog" title="卡劵" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_card" ng-app="weiapp_card" id="ng-app"  name="CardForm" ng-controller="CardController" ng-submit="submitForm()">
+        <div class="form-item">
+            <label class="item-label">商家名</label>
+            <div class="controls">
+                {:MP_NAME}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">商家logo</label>
+            <div class="controls">
+                <img src="{$platform.mp_img}" style="max-width: 300px;">
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.card_type.$invalid && !CardForm.card_type.$pristine}">
+            <label class="item-label">卡劵类型<span class="check-tips">（*必填）</span></label>
+            <div class="controls">
+                <select class="form-control" name="card_type" required   ng-model="card.card_type" ng-options="m.id as m.type_name for m in card.type_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="CardForm.card_type.$invalid && !CardForm.card_type.$pristine" class="help-block">请选择卡劵类型</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.color.$invalid && !CardForm.color.$pristine}">
+            <label class="item-label">卡劵颜色<span class="check-tips">（*必填）</span></label>
+            <div class="controls">
+                <select class="form-control" name="color" required ng-style="card_color" ng-change="select_color(card.color)" ng-model="card.color" ng-options="m.id as m.color_name for m in card.color_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="CardForm.cate_id.$invalid && !CardForm.cate_id.$pristine" class="help-block">请选择卡劵颜色</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : CardForm.title.$invalid && !CardForm.title.$pristine}">
+            <label class="item-label">卡劵标题<span class="check-tips">（*必填 长度1-9）</span></label>
+            <div class="controls">
+                <input name="title" type="text" value="" ng-model="card.title"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,9}$/" ng-trim="true" ng-minlength="1" ng-maxlength="9" required class="form-control text input-large" id="title" placeholder="卡劵标题">
+                <p ng-show="CardForm.title.$invalid && !CardForm.title.$pristine" class="help-block">卡劵标题(1-9个汉字)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.sub_title.$invalid && !CardForm.sub_title.$pristine}">
+            <label class="item-label">副标题<span class="check-tips">（*必填 长度1-9 建议填写优惠券提供的服务或商品名称，描述卡券提供的具体优惠）</span></label>
+            <div class="controls">
+                <input name="sub_title" type="text" value="" ng-model="card.sub_title"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,18}$/" ng-trim="true" ng-minlength="1" ng-maxlength="18" required class="form-control text input-large" id="sub_title" placeholder="副标题">
+                <p ng-show="CardForm.sub_title.$invalid && !CardForm.sub_title.$pristine" class="help-block">副标题(1-18个汉字)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.deal_detail.$invalid && !CardForm.deal_detail.$pristine}">
+            <label class="item-label">优惠详情<span class="check-tips">（*必填）</span></label>
+            <div class="controls">
+                <div class="ueditor" config="config" ng-model="card.deal_detail" ng-minlength="1" ng-maxlength="1000" ng-trim="true" required ></div>
+                <p ng-show="CardForm.deal_detail.$invalid && !CardForm.deal_detail.$pristine" class="help-block">优惠详情必填</p>
+            </div>
+        </div>
+        
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.description.$invalid && !CardForm.description.$pristine}">
+            <label class="item-label">使用须知<span class="check-tips">（*必填）</span></label>
+            <div class="controls">
+                <div class="ueditor" config="config" ng-model="card.description" ng-minlength="1"  ng-maxlength="1000" ng-trim="true" required ></div>
+                <p ng-show="CardForm.description.$invalid && !CardForm.description.$pristine" class="help-block">使用须知必填</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.notice.$invalid && !CardForm.notice.$pristine}">
+            <label class="item-label">操作提示<span class="check-tips">（长度1-16 建议引导用户到店出示卡券，由店员完成核销操作）</span></label>
+            <div class="controls">
+                <input name="notice" type="text" value="" ng-model="card.notice"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,16}$/" ng-trim="true" ng-minlength="1" ng-maxlength="18" required class="form-control text input-large" id="notice" placeholder="操作提示">
+                <p ng-show="CardForm.notice.$invalid && !CardForm.notice.$pristine" class="help-block">操作提示(1-16个汉字)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.service_phone.$invalid && !CardForm.service_phone.$pristine}">
+            <label class="item-label">客服电话<span class="check-tips">(例如:0312-1234567或手机号码)</span></label>
+            <div class="controls">
+                <input name="service_phone" type="text" value="" ng-model="card.service_phone" required ng-pattern="/^((\d{3}-|\d{4}-)?(\d{8}|\d{7}))|(1\d{10})$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="service_phone" placeholder="客服电话">
+                <p ng-show="CardForm.service_phone.$invalid && !CardForm.service_phone.$pristine" class="help-block">客服电话</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.stock.$invalid && !CardForm.stock.$pristine}">
+            <label class="item-label">库存<span class="check-tips">(*必填)</span></label>
+            <div class="controls">
+                <input name="stock" type="text" value="" ng-model="card.stock" required  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="stock" placeholder="库存">
+                <p ng-show="CardForm.stock.$invalid && !CardForm.stock.$pristine" class="help-block">库存应为数字</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.get_limit.$invalid && !CardForm.get_limit.$pristine}">
+            <label class="item-label">领券限制<span class="check-tips">(每个用户领券上限，如不填，则默认为1)</span></label>
+            <div class="controls">
+                <input name="get_limit" type="text" value="" ng-model="card.get_limit"  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required class="form-control text input-large" id="get_limit" placeholder="领劵限制">
+                <p ng-show="CardForm.get_limit.$invalid && !CardForm.get_limit.$pristine" class="help-block">领券限制</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.can_share.$invalid && !CardForm.can_share.$pristine}">
+            <label class="item-label">用户可以分享领券链接<span class="check-tips">（默认可分享）</span></label>
+            <div class="controls">
+                <select class="form-control" name="can_share"  ng-model="card.can_share" ng-options="m.id as m.share_name for m in card.share_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="CardForm.can_share.$invalid && !CardForm.can_share.$pristine" class="help-block">请选择用户可以分享领券链接</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.can_give_friend.$invalid && !CardForm.can_give_friend.$pristine}">
+            <label class="item-label">用户领券后可转赠其他好友<span class="check-tips">（默认可转赠）</span></label>
+            <div class="controls">
+                <select class="form-control" name="can_give_friend"  ng-model="card.can_give_friend" ng-options="m.id as m.give_name for m in card.give_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="CardForm.can_give_friend.$invalid && !CardForm.can_give_friend.$pristine" class="help-block">请选择用户领券后可转赠其他好友</p>
+            </div>
+        </div>
+        
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.location_id_list.$invalid && !CardForm.location_id_list.$pristine}">
+            <label class="item-label">适用门店<span class="check-tips">（默认所有门店试用）</span></label>
+            <div class="controls">
+                <select class="form-control" name="location_id_list"  ng-model="card.location_id_list" ng-options="m.id as m.diningroom_name for m in card.diningroom_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="CardForm.location_id_list.$invalid && !CardForm.location_id_list.$pristine" class="help-block">适用门店</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.type.$invalid && !CardForm.type.$pristine}">
+            <label class="item-label">有效期<span class="check-tips">（*必选 默认固定日期）</span></label>
+            <div class="controls">
+                <select class="form-control" name="type"  required  ng-change="select_type(card.type)" ng-model="card.type" ng-options="m.id as m.validate_type for m in card.validatetype_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="CardForm.type.$invalid && !CardForm.type.$pristine" class="help-block">默认固定日期</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-show="fixed_date" ng-class="{'has-error' : CardForm.begin_timestamp.$invalid && !CardForm.begin_timestamp.$pristine}">
+            <label class="item-label">固定日期开始时间<span class="check-tips">（*必选 固定日期开始时间）</span></label>
+            <div class="controls">
+                <div class="controls" ng-if="fixed_date">
+                    <input type="text" name="begin_timestamp" readonly  required ng-model="card.begin_timestamp" class="form-control text  time" id="begin_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择开始时间" />
+                </div>
+                <div class="controls" ng-if="!fixed_date">
+                    <input type="text" name="begin_timestamp" readonly ng-model="card.begin_timestamp" class="form-control text  time" id="begin_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择开始时间" />
+                </div>
+                <!--<input type="text" name="begin_timestamp" readonly  required ng-model="card.begin_timestamp" class="form-control text  time" id="begin_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择开始时间" />-->
+                <p ng-show="CardForm.begin_timestamp.$invalid && !CardForm.begin_timestamp.$pristine" class="help-block">固定日期开始时间必选</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-show="fixed_date" ng-class="{'has-error' : CardForm.end_timestamp.$invalid && !CardForm.end_timestamp.$pristine}">
+            <label class="item-label">固定日期结束时间<span class="check-tips">（*必选 固定日期结束时间）</span></label>
+            <div class="controls">
+                <div class="controls" ng-if="fixed_date">
+                    <input type="text" name="end_timestamp" readonly required ng-model="card.end_timestamp"  class="form-control text  time" id="end_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择结束时间" />
+                </div>
+                <div class="controls" ng-if="!fixed_date">
+                    <input type="text" name="end_timestamp" readonly  ng-model="card.end_timestamp"  class="form-control text  time" id="end_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择结束时间" />
+                </div>
+                <!--<input type="text" name="end_timestamp" readonly required ng-model="card.end_timestamp"  class="form-control text  time" id="end_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择结束时间" />-->
+                <p ng-show="CardForm.end_timestamp.$invalid && !CardForm.end_timestamp.$pristine" class="help-block">固定日期结束时间必选</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-show="fixed_term" ng-class="{'has-error' : CardForm.fixed_begin_term.$invalid && !CardForm.fixed_begin_term.$pristine}">
+            <label class="item-label">领取后多少天内生效<span class="check-tips">(*必填 填0领取后当天生效)</span></label>
+            <div class="controls">
+                <div class="controls" ng-if="fixed_term">
+                    <input name="fixed_begin_term" type="text" value="" ng-model="card.fixed_begin_term" required  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_begin_term" placeholder="领取后多少天生效(数字)">
+                </div>
+                <div class="controls" ng-if="!fixed_term">
+                    <input name="fixed_begin_term" type="text" value="" ng-model="card.fixed_begin_term"  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_begin_term" placeholder="领取后多少天生效(数字)">
+                </div>
+                <!--<input name="fixed_begin_term" type="text" value="" ng-model="card.fixed_begin_term" required  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_begin_term" placeholder="领取后多少天生效(数字)">-->
+                <p ng-show="CardForm.fixed_begin_term.$invalid && !CardForm.fixed_begin_term.$pristine" class="help-block">领取后多少天生效为正数</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-show="fixed_term" ng-class="{'has-error' : CardForm.fixed_term.$invalid && !CardForm.fixed_term.$pristine}">
+            <label class="item-label">领取后有效天数<span class="check-tips">(*必填 填0领取后当天有效)</span></label>
+            <div class="controls">
+                <div class="controls" ng-if="fixed_term">
+                    <input name="fixed_term" type="text" value="" ng-model="card.fixed_term" required  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_term" placeholder="领取后有效天数(数字)">
+                </div>
+                <div class="controls" ng-if="!fixed_term">
+                    <input name="fixed_term" type="text" value="" ng-model="card.fixed_term" ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_term" placeholder="领取后有效天数(数字)">
+                </div>
+                <!--<input name="fixed_term" type="text" value="" ng-model="card.fixed_term" required  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_term" placeholder="领取后有效天数(数字)">-->
+                <p ng-show="CardForm.fixed_term.$invalid && !CardForm.fixed_term.$pristine" class="help-block">领取后有效天数为正数</p>
+            </div>
+        </div>
+        
+        
+        <div class="form-item">
+            <button type="submit" class="btn btn-success submit" ng-disabled="CardForm.$invalid">创建卡劵</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);
+                        return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.config.food.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/angular-ueditor.js"></script>
+    <script type="text/javascript">
+                var CardModule = angular.module("weiapp_card", ['ng.ueditor']);
+                CardModule.controller("CardController", function($scope, $http) {
+                    $(function(){
+                        $('.time').datetimepicker({
+                            format: 'yyyy-mm-dd hh:ii',
+                            language: "zh-CN",
+                            minView: 2,
+                            autoclose: true
+                        });
+                    });
+                    $scope.card = {};
+                    $scope.card.type_arr = {$type_arr};
+                    $scope.card.color_arr = {$color_arr};
+                    $scope.card.share_arr = {$share_arr};
+                    $scope.card.give_arr = {$give_arr};
+                    $scope.card.diningroom_arr = {$diningroom_arr};
+                    $scope.card.validatetype_arr = {$validatetype_arr};
+                    $scope.select_color = function(selected_color){
+                        $scope.card_color = {'background-color':selected_color};
+                    };
+                    $scope.fixed_date = false;
+                    $scope.fixed_term = false;
+//                    if($scope.card.type == 1){
+//                        $scope.fixed_date = true;
+//                        $scope.fixed_term = false;
+//                    }else{
+//                        $scope.fixed_date = false;
+//                        $scope.fixed_term = true;
+//                    }
+                    $scope.select_type = function(type){
+                        if(typeof(type) == 'undefined'){
+                            $scope.fixed_date = false;
+                            $scope.fixed_term = false;
+                        }else if(type == 1){
+                            $scope.fixed_date = true;
+                            $scope.fixed_term = false;
+                        }else{
+                            $scope.fixed_date = false;
+                            $scope.fixed_term = true;
+                        }
+                    }
+                    $scope.submitForm = function() {
+                        $('.submit').attr('disabled', 'true');
+                        $http({
+                            method: "POST",
+                            url: "/Admin/Food/add",
+                            data: $.param($scope.card),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function(data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+                }
+    </script>
+</block>

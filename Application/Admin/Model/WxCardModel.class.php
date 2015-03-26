@@ -16,8 +16,28 @@ use Think\Model;
  */
 class WxCardModel extends Model {
 
-    public static $STATUS_UNDEAL = 0; //告警状态 未处理
-    public static $STATUS_DEALED = 1; //告警状态 已处理
+    public static $CARD_STATUS_NOT_VERIFY = 'CARD_STATUS_NOT_VERIFY'; //待审核
+    public static $CARD_STATUS_VERIFY_FALL = 'CARD_STATUS_VERIFY_FALL'; //审核失败
+    public static $CARD_STATUS_VERIFY_OK = 'CARD_STATUS_VERIFY_OK'; //通过审核
+    public static $CARD_STATUS_USER_DELETE = 'CARD_STATUS_USER_DELETE'; //卡劵被用户删除
+    public static $CARD_STATUS_USER_DISPATCH = 'CARD_STATUS_USER_DISPATCH'; //在公众平台投放过的卡劵
+    public static $CAN_SHARE_YES = 1; //可分享
+    public static $CAN_SHARE_NO = 0; //不可分享
+    public static $CAN_GIVE_FRIEND_YES = 1; //可转赠
+    public static $CAN_GIVE_FRIEND_NO = 0; //不可转赠
+    public static $FIXED_DATE = 1; //卡劵有效期类型:固定日期
+    public static $FIXED_TERM = 2; //固定时长
+    public static $GENERAL_COUPON = 'GENERAL_COUPON'; //通用劵 优惠券
+    public static $GROUPON = 'GROUPON'; //团购劵
+    public static $DISCOUNT = 'DISCOUNT'; //折扣劵
+    public static $GIFT = 'GIFT'; //礼品劵
+    public static $CASH = 'CASH'; //代金劵
+    public static $MEMBER_CARD = 'MEMBER_CARD'; //会员卡
+    public static $SCENIC_TICKET = 'SCENIC_TICKET'; //门票
+    public static $MOVIE_TICKET = 'MOVIE_TICKET'; //电影票
+    public static $BOARDING_PASS = 'BOARDING_PASS'; //飞机票
+    public static $LUCKY_MONEY = 'LUCKY_MONEY'; //红包
+    public static $MEETING_TICKET = 'MEETING_TICKET'; //会议门票
 
     /* 自动验证规则 */
     protected $_validate = array(
@@ -31,17 +51,84 @@ class WxCardModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-//获取卡劵状态
+    //获取卡劵状态
     public static function getWxCardStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
         }
-        $status_arr[self::$STATUS_UNDEAL] = '未处理';
-        $status_arr[self::$STATUS_DEALED] = '已处理';
+        $status_arr[self::$CARD_STATUS_NOT_VERIFY] = '待审核';
+        $status_arr[self::$CARD_STATUS_VERIFY_FALL] = '审核失败';
+        $status_arr[self::$CARD_STATUS_VERIFY_OK] = '通过审核';
+        $status_arr[self::$CARD_STATUS_USER_DELETE] = '卡劵被用户删除';
+        $status_arr[self::$CARD_STATUS_USER_DISPATCH] = '公众平台投放过的卡劵';
         if ($status !== null) {
             return $status_arr[$status];
         }
         return $status_arr;
+    }
+    
+    //获取卡劵领取页面是否可分享
+    public static function getCardShareStatus($share = null, $has_choice = true) {
+        if ($has_choice) {
+            $share_arr = array('' => '请选择');
+        }
+        $share_arr[self::$CAN_SHARE_NO] = '不可分享';
+        $share_arr[self::$CAN_SHARE_YES] = '可分享';
+        if ($share !== null) {
+            return $share_arr[$share];
+        }
+        return $share_arr;
+    }
+    
+    //获取卡劵领取页面是否可赠送
+    public static function getCardGiveStatus($give = null, $has_choice = true) {
+        if ($has_choice) {
+            $give_arr = array('' => '请选择');
+        }
+        $give_arr[self::$CAN_GIVE_FRIEND_NO] = '不可转赠';
+        $give_arr[self::$CAN_GIVE_FRIEND_YES] = '可转赠';
+        if ($give !== null) {
+            return $give_arr[$give];
+        }
+        return $give_arr;
+    }
+
+    //获取卡劵有效期类型
+    public static function getValidateType($type = null, $has_choice = true) {
+        if ($has_choice) {
+            $type_arr = array('' => '请选择');
+        }
+        $type_arr[self::$FIXED_DATE] = '固定日期';
+        $type_arr[self::$FIXED_TERM] = '固定时长';
+        if ($type !== null) {
+            return $type_arr[$type];
+        }
+        return $type_arr;
+    }
+
+    //获取卡劵类型
+    public static function getCardType($type = null, $has_choice = true, $base = true) {
+        if ($has_choice) {
+            $type_arr = array('' => '请选择');
+        }
+        $type_arr[self::$GENERAL_COUPON] = '通用劵|优惠券';
+        $type_arr[self::$GROUPON] = '团购劵';
+        $type_arr[self::$DISCOUNT] = '折扣劵';
+        $type_arr[self::$GIFT] = '礼品劵';
+        $type_arr[self::$CASH] = '代金劵';
+        $type_arr[self::$MEMBER_CARD] = '会员卡';
+        if (!$base) {
+            $type_arr[self::$SCENIC_TICKET] = '门票';
+            $type_arr[self::$MOVIE_TICKET] = '电影票';
+            $type_arr[self::$BOARDING_PASS] = '飞机票';
+            $type_arr[self::$LUCKY_MONEY] = '红包';
+            $type_arr[self::$MEETING_TICKET] = '会议门票';
+        }
+
+        if ($type !== null) {
+            return $type_arr[$type];
+        }
+        return $type_arr;
     }
 
     /**

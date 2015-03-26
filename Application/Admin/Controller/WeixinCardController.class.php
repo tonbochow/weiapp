@@ -84,6 +84,7 @@ class WeixinCardController extends FoodBaseController {
                     'member_id' => UID,
                     'location_id' => $dining_room['location_id'],
                     'business_name' => $dining_room['business_name'],
+                    'branch_name' => $dining_room['branch_name'],
                     'phone' => $dining_room['phone'],
                     'address' => $dining_room['address'],
                     'longitude' => $dining_room['longitude'],
@@ -119,14 +120,126 @@ class WeixinCardController extends FoodBaseController {
 
     //上传卡劵需要的商户logo
     public function uploadlogo() {
+        if (IS_POST) {
+            $mp_img = I('post.mp_img');
+            $save_path = C('WEBSITE_URL') . '/Uploads/Mp/' . MP_ID . '/info/';
+            if (!file_exists($save_path)) {
+                $mkdir_res = mkdir($save_path, 0777, true);
+                if (!$mkdir_res) {
+                    $this->error('创建上传图片目录失败', '', true);
+                }
+            }
+            if (!empty($mp_img) && !preg_match('/\/Uploads\w*/', $mp_img)) {//生成微信工作平台头像图片
+                $mp_img_path = $save_path . C('MP_IMG_UPLOAD')['saveName'] . '.jpg';
+                $mp_img_tmp = base64_decode($mp_img);
+                $create_mp_img = file_put_contents($mp_img_path, $mp_img_tmp);
+                if ($create_mp_img == false) {
+                    $this->error('生成微信公众平台头像图片失败!', '', true);
+                }
+                //上传logo图片到微信服务器
+                $upload_data['buffer'] = "@$mp_img_path";
+                $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSERCERT, $upload_data);
+                //更新公众平台
+                $platform_data['mp_img'] = '/Uploads/Mp/' . MP_ID . '/info/' . C('MP_IMG_UPLOAD')['saveName'] . '.jpg';
+                $platform_data['card_pic_url'] = $card_pic_url;
+                $platform_data['update_time'] = time();
+                $platform_update = M('MicroPlatform')->where(array('id' => MP_ID))->save($platform_data);
+                if ($platform_update == false) {
+                    $this->error('更新微信公众平台头像或logo图片失败!', '', true);
+                }
+            } else {
+                $mp_img_path = C('WEBSITE_URL') . $mp_img;
+                //上传logo图片到微信服务器
+                $upload_data['buffer'] = "@$mp_img_path";
+                $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSERCERT, $upload_data);
+                //更新公众平台
+                $platform_data['card_pic_url'] = $card_pic_url;
+                $platform_data['update_time'] = time();
+                $platform_update = M('MicroPlatform')->where(array('id' => MP_ID))->save($platform_data);
+                if ($platform_update == false) {
+                    $this->error('更新微信公众平台logo图片失败!', '', true);
+                }
+            }
+        }
+        $platform = M('MicroPlatform')->where(array('id' => MP_ID))->find();
+        $card = array('mp_img' => $platform['mp_img']);
+        $this->assign('card', $card);
+        $this->assign('json_card', json_encode($card));
         $this->meta_title = '上传微信卡劵logo';
         $this->display('uploadlogo');
     }
 
     //创建卡劵
     public function add() {
+        if (IS_POST) {
+            
+        }
         //检测创建卡劵条件
-        $this->checkcond();
+//        $this->checkcond();
+        $platform = M('MicroPlatform')->where(array('id' => MP_ID))->find();
+        //检索卡劵类型
+        $card_types = \Admin\Model\WxCardModel::getCardType(null, false);
+        foreach ($card_types as $card_id => $card_name) {
+            $type_arr[] = array(
+                'id' => $card_id,
+                'type_name' => $card_name,
+            );
+        }
+        //检索卡劵颜色
+        $card_colors = M('WxCardColor')->where(array('mp_id' => MP_ID))->select();
+        foreach ($card_colors as $color) {
+            $color_arr[] = array(
+                'id' => $color['value'],
+                'color_name' => $color['name'],
+            );
+        }
+        //分享领取链接
+        $card_shares = \Admin\Model\WxCardModel::getCardShareStatus(null, false);
+        foreach ($card_shares as $share_id => $share_name) {
+            $share_arr[] = array(
+                'id' => $share_id,
+                'share_name' => $share_name,
+            );
+        }
+        //卡劵转赠
+        $card_gives = \Admin\Model\WxCardModel::getCardGiveStatus(null, false);
+        foreach ($card_gives as $give_id => $give_name) {
+            $give_arr[] = array(
+                'id' => $give_id,
+                'give_name' => $give_name,
+            );
+        }
+        //检索微信服务器门店
+        $card_diningrooms = M('WxCardDiningroom')->where(array('mp_id' => MP_ID))->select();
+        foreach ($card_diningrooms as $diningroom) {
+            if (IS_CHAIN) {
+                $diningroom_arr[] = array(
+                    'id' => $diningroom['location_id'],
+                    'diningroom_name' => $diningroom['branch_name'],
+                );
+            } else {
+                $diningroom_arr[] = array(
+                    'id' => $diningroom['location_id'],
+                    'diningroom_name' => $diningroom['business_name'],
+                );
+            }
+        }
+        //检索卡劵有效期类型
+        $card_validatetype = \Admin\Model\WxCardModel::getValidateType(null, false);
+        foreach ($card_validatetype as $id => $validate_type) {
+            $validatetype_arr[] = array(
+                'id' => $id,
+                'validate_type' => $validate_type,
+            );
+        }
+
+        $this->assign('type_arr', !empty(json_encode($type_arr)) ? json_encode($type_arr) : '');
+        $this->assign('color_arr', !empty(json_encode($color_arr)) ? json_encode($color_arr) : '');
+        $this->assign('share_arr', !empty(json_encode($share_arr)) ? json_encode($share_arr) : '');
+        $this->assign('give_arr', !empty(json_encode($give_arr)) ? json_encode($give_arr) : '');
+        $this->assign('diningroom_arr', !empty(json_encode($diningroom_arr)) ? json_encode($diningroom_arr) : '');
+        $this->assign('validatetype_arr', !empty(json_encode($validatetype_arr)) ? json_encode($validatetype_arr) : '');
+        $this->assign('platform', $platform);
         $this->meta_title = '创建卡劵';
         $this->display('add');
     }
@@ -152,7 +265,8 @@ class WeixinCardController extends FoodBaseController {
     }
 
     //修改卡劵库存
-    public function modifystock(){
+    public function modifystock() {
         
     }
+
 }
