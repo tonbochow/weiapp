@@ -233,12 +233,12 @@ class WeixinCardController extends FoodBaseController {
             );
         }
 
-        $this->assign('type_arr', !empty(json_encode($type_arr)) ? json_encode($type_arr) : '');
-        $this->assign('color_arr', !empty(json_encode($color_arr)) ? json_encode($color_arr) : '');
-        $this->assign('share_arr', !empty(json_encode($share_arr)) ? json_encode($share_arr) : '');
-        $this->assign('give_arr', !empty(json_encode($give_arr)) ? json_encode($give_arr) : '');
-        $this->assign('diningroom_arr', !empty(json_encode($diningroom_arr)) ? json_encode($diningroom_arr) : '');
-        $this->assign('validatetype_arr', !empty(json_encode($validatetype_arr)) ? json_encode($validatetype_arr) : '');
+        $this->assign('type_arr', !empty($type_arr) ? json_encode($type_arr) : '');
+        $this->assign('color_arr', !empty($color_arr) ? json_encode($color_arr) : '');
+        $this->assign('share_arr', !empty($share_arr) ? json_encode($share_arr) : '');
+        $this->assign('give_arr', !empty($give_arr) ? json_encode($give_arr) : '');
+        $this->assign('diningroom_arr', !empty($diningroom_arr) ? json_encode($diningroom_arr) : '');
+        $this->assign('validatetype_arr', !empty($validatetype_arr) ? json_encode($validatetype_arr) : '');
         $this->assign('platform', $platform);
         $this->meta_title = '创建卡劵';
         $this->display('add');
