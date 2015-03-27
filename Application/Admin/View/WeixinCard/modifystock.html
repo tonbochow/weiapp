@@ -1,0 +1,86 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>修改卡劵库存(带*并标注的为必填项)</h2>
+    </div>
+
+    <div id="dialog" title="修改卡劵库存" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" class="ng-app:weiapp_card" ng-app="weiapp_card" id="ng-app"  name="CardForm" ng-controller="CardController" ng-submit="submitForm()">
+
+        <div class="form-item" ng-class="{'has-error' : CardForm.increase_stock_value.$invalid && !CardForm.increase_stock_value.$pristine}">
+            <label class="item-label">增加多少库存<span class="check-tips">（非必填 0或正整数）</span></label>
+            <div class="controls">
+                <input name="increase_stock_value" type="text" value="" ng-model="card.increase_stock_value"  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="increase_stock_value" placeholder="增加多少库存">
+                <p ng-show="CardForm.increase_stock_value.$invalid && !CardForm.increase_stock_value.$pristine" class="help-block">增加多少库存应为0或正整数</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.reduce_stock_value.$invalid && !CardForm.reduce_stock_value.$pristine}">
+            <label class="item-label">减少多少库存<span class="check-tips">（非必填 0或正整数）</span></label>
+            <div class="controls">
+                <input name="reduce_stock_value" type="text" value="" ng-model="card.reduce_stock_value"  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" class="form-control text input-large" id="reduce_stock_value" placeholder="减少多少库存">
+                <p ng-show="CardForm.reduce_stock_value.$invalid && !CardForm.reduce_stock_value.$pristine" class="help-block">减少多少库存应为0或正整数</p>
+            </div>
+        </div>
+        
+     
+        
+        <div class="form-item">
+            <input type="hidden" name="card_id" value="{$card_id}" ng-model="card.card_id" >
+            <button type="submit" class="btn btn-success submit" ng-disabled="CardForm.$invalid">修改库存</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);
+                        return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript">
+                var CardModule = angular.module("weiapp_card", []);
+                CardModule.controller("CardController", function($scope, $http) {
+                    $scope.card = {};
+                    $scope.card.card_id={$card_id};
+                    $scope.submitForm = function() {
+                        $('.submit').attr('disabled', 'true');
+                        $http({
+                            method: "POST",
+                            url: "/Admin/WeixinCard/modifystock",
+                            data: $.param($scope.card),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function(data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+                    if(status){
+                        window.location.href="/Admin/WeixinCard/show";
+                    }
+                }
+    </script>
+</block>

@@ -194,14 +194,14 @@ class WeixinCardController extends FoodBaseController {
                     "fixed_term" => $post_data['fixed_term'],
                 );
             }
-            if(empty($post_data['location_id_list'])){
+            if (empty($post_data['location_id_list'])) {
                 $card_diningrooms = M('WxCardDiningroom')->where(array('mp_id' => MP_ID))->select();
-                foreach($card_diningrooms as $dining_room){
+                foreach ($card_diningrooms as $dining_room) {
                     $dining_room_arr [] = $dining_room['location_id'];
                 }
-                $loction_id_str = implode(',',$dining_room_arr);
+                $loction_id_str = implode(',', $dining_room_arr);
                 $card_location_id_list = array($loction_id_str);
-            }else{
+            } else {
                 $card_location_id_list = array($post_data['location_id_list']);
             }
             //构造生成卡劵的数据
@@ -311,7 +311,7 @@ class WeixinCardController extends FoodBaseController {
             );
         }
 
-        $card_pic_url = !empty($platform['card_pic_url'])?$platform['card_pic_url']:"''";
+        $card_pic_url = !empty($platform['card_pic_url']) ? $platform['card_pic_url'] : "''";
         $this->assign('card_pic_url', $card_pic_url);
         $this->assign('type_arr', !empty($type_arr) ? json_encode($type_arr) : '');
         $this->assign('color_arr', !empty($color_arr) ? json_encode($color_arr) : '');
@@ -324,29 +324,123 @@ class WeixinCardController extends FoodBaseController {
         $this->display('add');
     }
 
+    //生成推广卡劵二维码
+    public function qrcode(){
+        $card_id = I('get.card_id','','intval');
+        $card_info = M('WxCard')->where(array('mp_id'=>MP_ID,'card_id'=>$card_id))->find();
+        if($card_info == false){
+            $this->error('未检索到要要创建二维码的卡劵');
+        }
+        $qrcode_data = array(
+            "action_name" => "QR_CARD",
+            "action_info" => array(
+                "card" => array(
+                    "card_id" => $card_id,
+                    "code" => '',
+                    "openid" => '',
+                    "expire_seconds"=>'',
+                    "is_unique_code" => false,
+                    "outer_id" => 0,
+                )
+            )
+        );
+        $qrcode_ticket = \Admin\Model\WxCardModel::createCardQrcode(APPID, APPSERCERT, $qrcode_data);
+        if($qrcode_ticket == false){
+            $this->error('获取二维码ticket失败');
+        }
+        $qrcode_url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$qrcode_ticket;
+        redirect($qrcode_url);
+    }
+    
+    //微信卡劵详细
+    public function detail(){
+        $this->meta_title = '卡劵详细';
+        $this->display('detail');
+    }
+    
     //批量投放卡劵
     public function batchuse() {
         
     }
 
-    //批量核销卡劵
-    public function batchdestroy() {
-        
+    //核销卡劵
+    public function destroy() {
+        if (IS_POST) {
+            $card_data = I('post.');
+            if (empty($card_data['card_id'])) {
+                unset($card_data['card_id']);
+            }
+            $consume_card = \Admin\Model\WxCardModel::consumeCard(APPID, APPSERCERT, $card_data);
+            if ($consume_card) {
+                $this->success('核销成功', '', true);
+            }
+            $this->error('核销失败', '', true);
+        }
+        $this->meta_title = '核销卡劵';
+        $this->display('destroy');
     }
 
     //批量删除卡劵
     public function batchdelete() {
-        
+        $card_id_arr = I('post.card_ids');
+        if (empty($card_id_arr)) {
+            $this->error('请选择要操作的卡劵!');
+        }
+        $card_ids = array_unique($card_id_arr);
+        //循环批量删除card_id
+        foreach ($card_ids as $card_id) {
+            $card_del = \Admin\Model\WxCardModel::deleteCard(APPID, APPSERCERT, $card_id);
+            if ($card_del == false) {
+                $this->error($card_id . "卡劵删除失败", '', true);
+            }
+        }
+        $this->success('卡劵删除成功', '', true);
     }
 
     //批量失效卡劵
     public function batchdisable() {
-        
+        $card_id_arr = I('post.card_ids');
+        if (empty($card_id_arr)) {
+            $this->error('请选择要操作的卡劵!');
+        }
+        $card_ids = array_unique($card_id_arr);
+        //循环批量设置card_id失效
+        foreach ($card_ids as $card_id) {
+            $card_info = M('WxCard')->where(array('mp_id' => MP_ID, 'card_id' => $card_id))->find();
+            if ($card_info['use_custom_code']) {
+                $card_data['card_id'] = $card_id;
+            }
+            $card_data['code'] = $card_info['code'];
+            $card_unavailable = \Admin\Model\WxCardModel::setCardUnavailable(APPID, APPSERCERT, $card_data);
+            if ($card_unavailable == false) {
+                $this->error($card_id . "设置卡劵失效失败", '', true);
+            }
+        }
+        $this->success('设置卡劵失效成功', '', true);
     }
 
     //修改卡劵库存
     public function modifystock() {
-        
+        if (IS_POST) {
+            dump(I('post.'));
+            exit;
+            $card_data = I('card_data');
+            $card_data['increase_stock_value'] = isset($card_data['increase_stock_value']) ? intval($card_data['increase_stock_value']) : 0;
+            $card_data['reduce_stock_value'] = isset($card_data['reduce_stock_value']) ? intval($card_data['reduce_stock_value']) : 0;
+            $modify_stock = \Admin\Model\WxCardModel::modifyCardStock(APPID, APPSERCERT, $card_data);
+            if ($modify_stock) {
+                $this->success('修改卡劵库存成功', '', true);
+            }
+            $this->error('修改卡劵库存失败', '', true);
+        }
+        $card_id = I('get.card_id', '', 'trim');
+        $card_info = M('WxCard')->where(array('mp_id' => MP_ID, 'card_id' => $card_id))->find();
+        if ($card_info == false) {
+            $this->error('修改库存的卡劵不存在');
+        }
+        $this->assign('card_id', $card_id);
+        $this->meta_title = '设置卡劵库存';
+        $this->display('modifystock');
     }
 
 }

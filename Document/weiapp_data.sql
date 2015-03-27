@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50617
+Source Server Version : 50612
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2015-03-26 17:39:19
+Date: 2015-03-27 23:10:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -237,7 +237,7 @@ CREATE TABLE `weiapp_auth_group` (
 -- ----------------------------
 INSERT INTO `weiapp_auth_group` VALUES ('1', 'admin', '1', '默认用户组', '', '1', '1,2,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,81,82,83,84,86,87,88,89,90,91,92,93,94,95,96,97,100,102,103,105,106');
 INSERT INTO `weiapp_auth_group` VALUES ('2', 'admin', '1', '测试用户', '测试用户', '1', '1,2,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,79,80,82,83,84,88,89,90,91,92,93,96,97,100,102,103,195');
-INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,240,242,243,244,245,246,247,248,249,255,256,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,314,324,325,326,327,328,329,330');
+INSERT INTO `weiapp_auth_group` VALUES ('3', 'admin', '1', '微餐饮', 'food', '1', '1,231,232,233,240,242,243,244,245,246,247,248,249,255,256,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,314,324,325,326,328,329,330,331');
 INSERT INTO `weiapp_auth_group` VALUES ('4', 'admin', '1', '微餐饮店员', 'food_member', '1', '');
 
 -- ----------------------------
@@ -271,7 +271,7 @@ CREATE TABLE `weiapp_auth_rule` (
   `condition` varchar(300) NOT NULL DEFAULT '' COMMENT '规则附加条件',
   PRIMARY KEY (`id`),
   KEY `module` (`module`,`status`,`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=331 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=332 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_auth_rule
@@ -599,10 +599,11 @@ INSERT INTO `weiapp_auth_rule` VALUES ('323', 'admin', '1', 'Admin/DiningReserve
 INSERT INTO `weiapp_auth_rule` VALUES ('324', 'admin', '1', 'Admin/WeixinCard/uploadlogo', '上传卡劵logo', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('325', 'admin', '1', 'Admin/WeixinCard/add', '创建', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('326', 'admin', '1', 'Admin/WeixinCard/batchuse', '批量投放', '1', '');
-INSERT INTO `weiapp_auth_rule` VALUES ('327', 'admin', '1', 'Admin/WeixinCard/batchdestroy', '批量核销', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('327', 'admin', '1', 'Admin/WeixinCard/batchdestroy', '批量核销', '-1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('328', 'admin', '1', 'Admin/WeixinCard/batchdelete', '批量删除', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('329', 'admin', '1', 'Admin/WeixinCard/batchdisable', '批量失效', '1', '');
 INSERT INTO `weiapp_auth_rule` VALUES ('330', 'admin', '1', 'Admin/WeixinCard/modifystock', '修改库存', '1', '');
+INSERT INTO `weiapp_auth_rule` VALUES ('331', 'admin', '1', 'Admin/WeixinCard/destroy', '核销', '1', '');
 
 -- ----------------------------
 -- Table structure for `weiapp_category`
@@ -1459,8 +1460,8 @@ CREATE TABLE `weiapp_member` (
 -- ----------------------------
 -- Records of weiapp_member
 -- ----------------------------
-INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '170', '110', '0', '1423289473', '2130706433', '1427290329', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '140', '117', '0', '0', '2130706433', '1427332597', '1');
+INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '180', '111', '0', '1423289473', '2130706433', '1427461709', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '150', '120', '0', '0', '2130706433', '1427461794', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -1585,7 +1586,7 @@ CREATE TABLE `weiapp_menu` (
   `is_dev` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否仅开发者模式可见',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM AUTO_INCREMENT=221 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=223 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_menu
@@ -1795,10 +1796,12 @@ INSERT INTO `weiapp_menu` VALUES ('213', '资金流水管理', '122', '0', 'Food
 INSERT INTO `weiapp_menu` VALUES ('214', '上传卡劵logo', '154', '0', 'WeixinCard/uploadlogo', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('215', '创建', '154', '0', 'WeixinCard/add', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('216', '批量投放', '154', '0', 'WeixinCard/batchuse', '1', '', '', '0');
-INSERT INTO `weiapp_menu` VALUES ('217', '批量核销', '154', '0', 'WeixinCard/batchdestroy', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('217', '核销', '154', '0', 'WeixinCard/destroy', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('218', '批量删除', '154', '0', 'WeixinCard/batchdelete', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('219', '批量失效', '154', '0', 'WeixinCard/batchdisable', '1', '', '', '0');
 INSERT INTO `weiapp_menu` VALUES ('220', '修改库存', '154', '0', 'WeixinCard/modifystock', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('221', '生成推广二维码', '154', '0', 'WeixinCard/qrcode', '1', '', '', '0');
+INSERT INTO `weiapp_menu` VALUES ('222', '详细', '154', '0', 'WeixinCard/detail', '1', '', '', '0');
 
 -- ----------------------------
 -- Table structure for `weiapp_micro_platform`
@@ -5276,8 +5279,8 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- ----------------------------
 -- Records of weiapp_ucenter_member
 -- ----------------------------
-INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1427290329', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1427332597', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1427461709', '2130706433', '1423289473', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1427461794', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`
@@ -5495,4 +5498,27 @@ CREATE TABLE `weiapp_wx_card_record` (
 
 -- ----------------------------
 -- Records of weiapp_wx_card_record
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `weipp_wx_card_diningroom`
+-- ----------------------------
+DROP TABLE IF EXISTS `weipp_wx_card_diningroom`;
+CREATE TABLE `weipp_wx_card_diningroom` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id',
+  `member_id` int(10) NOT NULL DEFAULT '0' COMMENT '从微信服务器拉取门店信息用户id',
+  `location_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信服务器门店id',
+  `business_name` varchar(60) NOT NULL DEFAULT '' COMMENT '微信公众平台名称',
+  `phone` varchar(15) NOT NULL DEFAULT '' COMMENT '固话或手机',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '门店详细地址',
+  `longitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '经度',
+  `latitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '纬度',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='从微信服务器拉取门店信息表';
+
+-- ----------------------------
+-- Records of weipp_wx_card_diningroom
 -- ----------------------------
