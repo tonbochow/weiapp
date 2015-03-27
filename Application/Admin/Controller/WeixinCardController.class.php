@@ -172,7 +172,85 @@ class WeixinCardController extends FoodBaseController {
     //创建卡劵
     public function add() {
         if (IS_POST) {
-            
+            dump(I('post.'));
+            exit;
+            $post_data = I('post.');
+            if ($post_data['type'] == 1) {
+                if (empty($post_data['begin_timestamp']) || empty($post_data['end_timestamp'])) {
+                    $this->error('固定日期开始或结束时间必填', '', true);
+                }
+                $card_date_arr = array(
+                    "type" => $post_data['type'],
+                    "begin_timestamp" => $post_data['begin_timestamp'],
+                    "end_timestamp" => $post_data['end_timestamp'],
+                );
+            } else if ($post_data['type'] == 2) {
+                if (empty($post_data['fixed_begin_term']) || empty($post_data['fixed_term'])) {
+                    $this->error('领取后多少天生效或有效天数必填', '', true);
+                }
+                $card_date_arr = array(
+                    "type" => $post_data['type'],
+                    "fixed_begin_term" => $post_data['fixed_begin_term'],
+                    "fixed_term" => $post_data['fixed_term'],
+                );
+            }
+            if(empty($post_data['location_id_list'])){
+                $card_diningrooms = M('WxCardDiningroom')->where(array('mp_id' => MP_ID))->select();
+                foreach($card_diningrooms as $dining_room){
+                    $dining_room_arr [] = $dining_room['location_id'];
+                }
+                $loction_id_str = implode(',',$dining_room_arr);
+                $card_location_id_list = array($loction_id_str);
+            }else{
+                $card_location_id_list = array($post_data['location_id_list']);
+            }
+            //构造生成卡劵的数据
+            $card_data["card"] = array(
+                "card_type" => $post_data['card_type'],
+                '"' . strtolower($post_data['card_type']) . '"' => array(
+                    "base_info" => array(
+                        "log_url" => $post_data['logo_url'],
+                        "brand_name" => MP_NAME,
+                        "code_type" => "CODE_TYPE_TEXT",
+                        "title" => $post_data['title'],
+                        "sub_title" => $post_data['sub_title'],
+                        "color" => \Admin\Model\WxCardModel::getCardColorStatus($post_data['color']),
+                        "notice" => $post_data['notice'],
+                        "service_phone" => $post_data['service_phone'],
+                        "description" => $post_data['description'],
+                        "date_info" => $card_date_arr,
+                        "sku" => array(
+                            "quantity" => $post_data['quantity'],
+                        ),
+                        "get_limit" => $post_data['get_limit'],
+                        "use_custom_code" => false,
+                        "bind_openid" => false,
+                        "can_share" => isset($post_data['can_share']) ? $post_data['can_share'] : true,
+                        "can_give_friend" => isset($post_data['can_give_friend']) ? $post_data['can_give_friend'] : true,
+                        "location_id_list" => $card_location_id_list,
+                        "url_name_type" => "URL_NAME_TYPE_RESERVATION ",
+                        "custom_url" => "http://www.52gdp.com",
+                        "source" => MP_NAME,
+                    ),
+                    "deal_detail" => $post_data['deal_detail'],
+                )
+            );
+            $card_id = \Admin\Model\WxCardModel::createCard(APPID, APPSERCERT, $card_data);
+            if ($card_id == false) {
+                $this->error('生成卡劵失败', '', true);
+            }
+            $post_data['card_id'] = $card_id;
+            $post_data['mp_id'] = MP_ID;
+            $post_data['member_id'] = UID;
+            $wxCardModel = D('WxCard');
+            if ($wxCardModel->create($post_data, \Admin\Model\WxCardModel::MODEL_INSERT)) {
+                $card_create = $wxCardModel->add();
+                if ($card_create) {
+                    $this->success('创建卡劵成功', '', true);
+                }
+            }
+            $this->error($wxCardModel->getError(), '', true);
+            //保存卡劵信息
         }
         //检测创建卡劵条件
 //        $this->checkcond();
@@ -233,6 +311,8 @@ class WeixinCardController extends FoodBaseController {
             );
         }
 
+        $card_pic_url = !empty($platform['card_pic_url'])?$platform['card_pic_url']:"''";
+        $this->assign('card_pic_url', $card_pic_url);
         $this->assign('type_arr', !empty($type_arr) ? json_encode($type_arr) : '');
         $this->assign('color_arr', !empty($color_arr) ? json_encode($color_arr) : '');
         $this->assign('share_arr', !empty($share_arr) ? json_encode($share_arr) : '');

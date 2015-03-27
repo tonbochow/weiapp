@@ -42,11 +42,21 @@ class WxCardModel extends Model {
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('card_id', 'require', '卡劵id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('card_type', 'require', '卡劵类型不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('logo_url', 'require', '卡劵logo不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('brand_name', 'require', '卡劵品牌名不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('title', 'require', '卡劵标题不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('sub_title', 'require', '卡劵副标题不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('color', 'require', '卡劵颜色不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('service_phone', 'require', '客服电话不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('deal_detail', 'require', '优惠详情不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('description', 'require', '使用须知不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('quantity', 'require', '库存不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
     protected $_auto = array(
-        array('status', 0, self::MODEL_INSERT),
         array('create_time', NOW_TIME, self::MODEL_INSERT),
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
@@ -91,6 +101,21 @@ class WxCardModel extends Model {
             return $give_arr[$give];
         }
         return $give_arr;
+    }
+    
+     //根据卡劵颜色值获取卡劵颜色名
+    public static function getCardColorStatus($value = null, $has_choice = true) {
+        if ($has_choice) {
+            $color_arr = array('' => '请选择');
+        }
+        $colors = M('WxCardColor')->where(array('mp_id'=>MP_ID))->select();
+        foreach($colors as $color){
+            $color_arr[$color['value']] = $color['name'];
+        }
+        if ($value !== null) {
+            return $color_arr[$value];
+        }
+        return $color_arr;
     }
 
     //获取卡劵有效期类型

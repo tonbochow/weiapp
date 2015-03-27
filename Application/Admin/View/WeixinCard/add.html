@@ -23,6 +23,7 @@
         <div class="form-item">
             <label class="item-label">商家logo</label>
             <div class="controls">
+                <input type="hidden" name="logo_url" ng-model="card.logo_url" value="{$platform.card_pic_url}">
                 <img src="{$platform.mp_img}" style="max-width: 300px;">
             </div>
         </div>
@@ -89,7 +90,7 @@
         </div>
         
         <div class="form-item" ng-class="{'has-error' : CardForm.service_phone.$invalid && !CardForm.service_phone.$pristine}">
-            <label class="item-label">客服电话<span class="check-tips">(例如:0312-1234567或手机号码)</span></label>
+            <label class="item-label">客服电话<span class="check-tips">(*必填 例如:0312-1234567或手机号码)</span></label>
             <div class="controls">
                 <input name="service_phone" type="text" value="" ng-model="card.service_phone" required ng-pattern="/^((\d{3}-|\d{4}-)?(\d{8}|\d{7}))|(1\d{10})$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="service_phone" placeholder="客服电话">
                 <p ng-show="CardForm.service_phone.$invalid && !CardForm.service_phone.$pristine" class="help-block">客服电话</p>
@@ -156,12 +157,8 @@
         <div class="form-item" ng-show="fixed_date" ng-class="{'has-error' : CardForm.begin_timestamp.$invalid && !CardForm.begin_timestamp.$pristine}">
             <label class="item-label">固定日期开始时间<span class="check-tips">（*必选 固定日期开始时间）</span></label>
             <div class="controls">
-                <div class="controls" ng-if="fixed_date">
-                    <input type="text" name="begin_timestamp" readonly  required ng-model="card.begin_timestamp" class="form-control text  time" id="begin_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择开始时间" />
-                    <p ng-show="CardForm.begin_timestamp.$invalid && !CardForm.begin_timestamp.$pristine" class="help-block">固定日期开始时间必选</p>
-                </div>
-                <div class="controls" ng-if="!fixed_date">
-                    <input type="text" name="begin_timestamp" readonly ng-model="card.begin_timestamp" class="form-control text  time" id="begin_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择开始时间" />
+                <div class="controls">
+                    <input type="text" name="begin_timestamp" readonly  ng-model="card.begin_timestamp" class="form-control text  time" id="begin_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择开始时间" />
                     <p ng-show="CardForm.begin_timestamp.$invalid && !CardForm.begin_timestamp.$pristine" class="help-block">固定日期开始时间必选</p>
                 </div>
             </div>
@@ -170,12 +167,8 @@
         <div class="form-item" ng-show="fixed_date" ng-class="{'has-error' : CardForm.end_timestamp.$invalid && !CardForm.end_timestamp.$pristine}">
             <label class="item-label">固定日期结束时间<span class="check-tips">（*必选 固定日期结束时间）</span></label>
             <div class="controls">
-                <div class="controls" ng-if="fixed_date">
-                    <input type="text" name="end_timestamp" readonly required ng-model="card.end_timestamp"  class="form-control text  time" id="end_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择结束时间" />
-                    <p ng-show="CardForm.end_timestamp.$invalid && !CardForm.end_timestamp.$pristine" class="help-block">固定日期结束时间必选</p>
-                </div>
-                <div class="controls" ng-if="!fixed_date">
-                    <input type="text" name="end_timestamp" readonly  ng-model="card.end_timestamp"  class="form-control text  time" id="end_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择结束时间" />
+                <div class="controls">
+                    <input type="text" name="end_timestamp" readonly ng-model="card.end_timestamp"  class="form-control text  time" id="end_timestamp"  value="<?php echo date('Y-m-d H:i:s',time());?>" placeholder="请选择结束时间" />
                     <p ng-show="CardForm.end_timestamp.$invalid && !CardForm.end_timestamp.$pristine" class="help-block">固定日期结束时间必选</p>
                 </div>
             </div>
@@ -184,32 +177,20 @@
         <div class="form-item" ng-show="fixed_term" ng-class="{'has-error' : CardForm.fixed_begin_term.$invalid && !CardForm.fixed_begin_term.$pristine}">
             <label class="item-label">领取后多少天内生效<span class="check-tips">(*必填 填0领取后当天生效)</span></label>
             <div class="controls">
-                <div class="controls" ng-if="fixed_term">
-                    <input name="fixed_begin_term" type="text" value="" ng-model="card.fixed_begin_term" required  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_begin_term" placeholder="领取后多少天生效(数字)">
-                    <p ng-show="CardForm.fixed_begin_term.$invalid && !CardForm.fixed_begin_term.$pristine" class="help-block">领取后多少天生效为正数</p>
-                </div>
-                <div class="controls" ng-if="!fixed_term">
+                <div class="controls">
                     <input name="fixed_begin_term" type="text" value="" ng-model="card.fixed_begin_term"  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_begin_term" placeholder="领取后多少天生效(数字)">
                     <p ng-show="CardForm.fixed_begin_term.$invalid && !CardForm.fixed_begin_term.$pristine" class="help-block">领取后多少天生效为正数</p>
                 </div>
-                <!--<input name="fixed_begin_term" type="text" value="" ng-model="card.fixed_begin_term" required  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_begin_term" placeholder="领取后多少天生效(数字)">-->
-                <!--<p ng-show="CardForm.fixed_begin_term.$invalid && !CardForm.fixed_begin_term.$pristine" class="help-block">领取后多少天生效为正数</p>-->
             </div>
         </div>
         
         <div class="form-item" ng-show="fixed_term" ng-class="{'has-error' : CardForm.fixed_term.$invalid && !CardForm.fixed_term.$pristine}">
             <label class="item-label">领取后有效天数<span class="check-tips">(*必填 填0领取后当天有效)</span></label>
             <div class="controls">
-                <div class="controls" ng-if="fixed_term">
-                    <input name="fixed_term" type="text" value="" ng-model="card.fixed_term" required  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_term" placeholder="领取后有效天数(数字)">
+                <div class="controls">
+                    <input name="fixed_term" type="text" value="" ng-model="card.fixed_term"  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_term" placeholder="领取后有效天数(数字)">
                     <p ng-show="CardForm.fixed_term.$invalid && !CardForm.fixed_term.$pristine" class="help-block">领取后有效天数为正数</p>
                 </div>
-                <div class="controls" ng-if="!fixed_term">
-                    <input name="fixed_term" type="text" value="" ng-model="card.fixed_term" ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_term" placeholder="领取后有效天数(数字)">
-                    <p ng-show="CardForm.fixed_term.$invalid && !CardForm.fixed_term.$pristine" class="help-block">领取后有效天数为正数</p>
-                </div>
-                <!--<input name="fixed_term" type="text" value="" ng-model="card.fixed_term" required  ng-pattern="/^\d+$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="fixed_term" placeholder="领取后有效天数(数字)">-->
-                <!--<p ng-show="CardForm.fixed_term.$invalid && !CardForm.fixed_term.$pristine" class="help-block">领取后有效天数为正数</p>-->
             </div>
         </div>
         
@@ -251,6 +232,7 @@
                         });
                     });
                     $scope.card = {};
+                    $scope.card.logo_url = {$card_pic_url};
                     $scope.card.type_arr = {$type_arr};
                     $scope.card.color_arr = {$color_arr};
                     $scope.card.share_arr = {$share_arr};
@@ -262,13 +244,6 @@
                     };
                     $scope.fixed_date = false;
                     $scope.fixed_term = false;
-//                    if($scope.card.type == 1){
-//                        $scope.fixed_date = true;
-//                        $scope.fixed_term = false;
-//                    }else{
-//                        $scope.fixed_date = false;
-//                        $scope.fixed_term = true;
-//                    }
                     $scope.select_type = function(type){
                         if(typeof(type) == 'undefined'){
                             $scope.fixed_date = false;
@@ -285,7 +260,7 @@
                         $('.submit').attr('disabled', 'true');
                         $http({
                             method: "POST",
-                            url: "/Admin/Food/add",
+                            url: "/Admin/WeixinCard/add",
                             data: $.param($scope.card),
                             headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                         }).success(function(data) {
@@ -304,6 +279,9 @@
                 function result(status) {
                     $("#dialog").dialog("close");
                     $('.submit').removeAttr("disabled");
+                    if(status){
+                        window.location.href="/Admin/WeixinCard/show";
+                    }
                 }
     </script>
 </block>
