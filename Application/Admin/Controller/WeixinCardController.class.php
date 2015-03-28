@@ -325,10 +325,10 @@ class WeixinCardController extends FoodBaseController {
     }
 
     //生成推广卡劵二维码
-    public function qrcode(){
-        $card_id = I('get.card_id','','intval');
-        $card_info = M('WxCard')->where(array('mp_id'=>MP_ID,'card_id'=>$card_id))->find();
-        if($card_info == false){
+    public function qrcode() {
+        $card_id = I('get.card_id', '', 'intval');
+        $card_info = M('WxCard')->where(array('mp_id' => MP_ID, 'card_id' => $card_id))->find();
+        if ($card_info == false) {
             $this->error('未检索到要要创建二维码的卡劵');
         }
         $qrcode_data = array(
@@ -338,26 +338,34 @@ class WeixinCardController extends FoodBaseController {
                     "card_id" => $card_id,
                     "code" => '',
                     "openid" => '',
-                    "expire_seconds"=>'',
+                    "expire_seconds" => '',
                     "is_unique_code" => false,
                     "outer_id" => 0,
                 )
             )
         );
         $qrcode_ticket = \Admin\Model\WxCardModel::createCardQrcode(APPID, APPSERCERT, $qrcode_data);
-        if($qrcode_ticket == false){
+        if ($qrcode_ticket == false) {
             $this->error('获取二维码ticket失败');
         }
-        $qrcode_url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$qrcode_ticket;
+        $qrcode_url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" . $qrcode_ticket;
         redirect($qrcode_url);
     }
-    
+
     //微信卡劵详细
-    public function detail(){
+    public function detail() {
+        $id = I('get.id', '', 'intval');
+        $wx_card = M('WxCard')->where(array('mp_id' => MP_ID, 'id' => $id))->find();
+        if (empty($wx_card)) {
+            $this->error('未检索到您要查看的卡劵');
+        }
+
+        $wx_card['color'] = \Admin\Model\WxCardModel::getCardColorStatus($wx_card['color']);
+        $this->assign('wx_card', $wx_card);
         $this->meta_title = '卡劵详细';
         $this->display('detail');
     }
-    
+
     //批量投放卡劵
     public function batchuse() {
         

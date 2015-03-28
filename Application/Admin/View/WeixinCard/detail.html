@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../favicon.ico">
+
+        <title>卡劵详细</title>
+
+        <!-- Bootstrap core CSS -->
+        <link type="text/css" rel="stylesheet" href="__STATIC__/bootstrap-3.3.2/css/bootstrap.min.css">
+        <link type="text/css" rel="stylesheet" href="__STATIC__/bootstrap-3.3.2/css/bootstrap-theme.min.css">
+
+    </head>
+
+    <body>
+
+        <div class="col-xs-12">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-4">
+                <div class="thumbnail" style="background-color: #eee;margin-top: 20px;">
+                    <div style="height: 200px; width: 100%; display: block;background-color: {$wx_card.color};">
+                        <p><img src="{$wx_card.card_pic_url}" style="height:80px;padding-left:30px;padding-top: 10px;"></p>
+                        <p><h2 style="text-align: center;">{$wx_card.title}</h2></p>
+                        <p style="text-align: center;">{$wx_card.sub_title}</p>
+                        <if condition="$wx_card.type eq 1">
+                            <p style="text-align: center;">有效期:{$wx_card.start_timestamp|date="Y-m-d",###} - {$wx_card.end_timestamp|date="Y-m-d",###}</p>
+                            <else />
+                            <p style="text-align: center;">领取后多少天生效:{$wx_card.fixed_begin_term} 领取后有效天数:{$wx_card.fixed_term}</p>
+                        </if>
+                    </div>
+                    <div class="caption" style="text-align: center;">
+                        <h3 id="thumbnail-label">{$wx_card.code}</h3>
+                        <p>{$wx_card.notice}</p>
+                    </div>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">优惠劵详情</li>
+                        <li class="list-group-item">查看公众号</li>
+                    </ul>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">立即使用</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-4"></div>
+        </div>
+
+        <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+        <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    </body>
+</html>

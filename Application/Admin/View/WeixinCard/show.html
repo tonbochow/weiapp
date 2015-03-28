@@ -55,7 +55,7 @@
                         <td>{$card.create_time}</td>
                     </if>
                     <td>
-                        <a title="详细" href="{:U('detail?id='.$card['id'])}">详细</a>
+                        <a target="_blank" title="详细" href="{:U('detail?id='.$card['id'])}">详细</a>
                         <a title="生成推广二维码" href="{:U('qrcode?card_id='.$card['card_id'])}">生成推广二维码</a>
                         <a title="修改库存" href="{:U('modifystock?card_id='.$card['card_id'])}">修改库存</a>
                     </td>
