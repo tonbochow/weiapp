@@ -77,7 +77,8 @@ class BaseController extends Controller {
     protected function getWeixinUserInfo() {
         $wx_openid = session('wx_openid');
         if (empty($wx_openid)) {//用户未登录
-            $current_url = !empty(session('current_url')) ? session('current_url') : get_current_url();
+            $session_current_url = session('current_url');
+            $current_url = !empty($session_current_url) ? $session_current_url : get_current_url();
             session('current_url', $current_url);
             //先通过基本授权snsapi_base获取微信用户信息是否已存在于系统
             $get_code = I('get.code');
