@@ -170,6 +170,12 @@ class MicroPlatformModel extends Model {
         return $name_arr[$app_type];
     }
 
+    //获取微信公众平台信息通过mp_token(永远唯一)
+    public static function getMpByToken($mp_token) {
+        $mp = M('MicroPlatform')->where(array('mp_token' => $mp_token))->find();
+        return $mp;
+    }
+
     /*     * ***************************************************************************************
      * 以下为与微信公众平台有关方法 
      * ********************************************************************************************
@@ -278,6 +284,29 @@ class MicroPlatformModel extends Model {
                             }
                         }';
         sel::curl($info_url, $post_data);
+    }
+
+    /**
+     * 通过code获取网页授权所需的access_token(与公众平台access_token不同)
+     * $appid 微信公众平台appid
+     * $appsecret 微信公众平台appsecret
+     * $code
+     */
+    public static function getSnsAccessTokenByCode($appid, $appsecret, $code) {
+        $code_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $appid . "&secret=" . $appsecret . "&code=$code&grant_type=authorization_code";
+        $sns_access_token_info = self::curl($code_url);
+        return $sns_access_token_info;
+    }
+
+    /**
+     * 通过openid 获取微信用户详细信息(snsapi_useinfo模式)
+     * $oauth_access_token oauth的access_token
+     * $openid
+     */
+    public static function getSnsUserinfoByOpenid($oauth_access_token, $openid) {
+        $user_info_url = "https://api.weixin.qq.com/sns/userinfo?access_token=$oauth_access_token&openid=$openid&lang=zh_CN";
+        $user_info = self::curl($user_info_url);
+        return $user_info;
     }
 
 }

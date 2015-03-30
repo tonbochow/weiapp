@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50612
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50612
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-03-27 23:10:00
+Date: 2015-03-30 17:27:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1534,10 +1534,15 @@ DROP TABLE IF EXISTS `weiapp_member_weixin`;
 CREATE TABLE `weiapp_member_weixin` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `member_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id关联member表id',
-  `user_name` varchar(20) NOT NULL DEFAULT '' COMMENT '用户名',
   `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)唯一',
   `wx_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid',
   `nickname` varchar(60) NOT NULL DEFAULT '' COMMENT '微信用户昵称',
+  `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '性别1男性2女性0未知',
+  `province` varchar(32) NOT NULL DEFAULT '' COMMENT '省份',
+  `city` varchar(32) NOT NULL DEFAULT '' COMMENT '城市',
+  `country` varchar(32) NOT NULL DEFAULT '' COMMENT '国家',
+  `headimgurl` varchar(255) NOT NULL DEFAULT '' COMMENT '头像url',
+  `privilege` text COMMENT '用户特权信息，json 数组，如微信沃卡用户为（chinaunicom）',
   `group_id` smallint(6) NOT NULL DEFAULT '0' COMMENT '微信用户所在分组(微信分组)',
   `is_subscribe` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否关注用户',
   `subscribe_time` int(11) NOT NULL DEFAULT '0' COMMENT '关注时间',
