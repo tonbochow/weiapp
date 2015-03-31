@@ -1,25 +1,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="renderer" content="webkit">
 <meta name="keywords" content="{:C('WEB_SITE_KEYWORD')}">
 <meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}">
 <title>{:C('WEB_SITE_TITLE')}</title>
 <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
 <link href="__STATIC__/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet">
-<link href="__CSS__/non-responsive.css" rel="stylesheet">
-<!--[if lt IE 9]><script src="__JS__/ie8-responsive-file-warning.js"></script><![endif]-->
-<script src="__JS__/ie-emulation-modes-warning.js"></script>
-<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-<script src="__STATIC__/bootstrap/js/respond.min.js"></script>
-<![endif]-->
+<link href="__STATIC__/bootstrap-3.3.2/Font-Awesome/css/font-awesome.min.css" rel="stylesheet">
+<style type="text/css">
+    body{
+        background: #f5f5f5;
+    }
+
+    a,a:hover,a:active,a:visited{
+        color:#333;
+        text-decoration: none;
+    }
+</style>
 <block name="style"></block>
 <script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="__STATIC__/bootstrap-3.3.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="__JS__/ie10-viewport-bug-workaround.js"></script>
-<script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
 <script type="text/javascript" src="__STATIC__/json2.js"></script>
 <script type="text/javascript" src="__STATIC__/angularjs/angular.min.js"></script>
+<script>
+    $(function () {
+        var nua = navigator.userAgent
+        var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1)
+        if (isAndroid) {
+            $('select.form-control').removeClass('form-control').css('width', '100%')
+        }
+    })
+</script>
 <!-- 页面header钩子，一般用于加载插件CSS文件和代码 -->
 {:hook('pageHeader')}

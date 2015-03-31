@@ -1,8 +1,30 @@
 <!-- 底部================================================== -->
 <footer class="footer">
-    <div class="container">
-        <p>Copyright © 微应用 <strong><a href="http://www.miitbeian.gov.cn" target="_blank">{:C('WEB_SITE_ICP')}</a></strong></p>
-    </div>
+    <!--    <div class="container">
+            <p>Copyright © 微应用 <strong><a href="http://www.miitbeian.gov.cn" target="_blank">{:C('WEB_SITE_ICP')}</a></strong></p>
+        </div>-->
+    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav navbar-nav" style="width:100%;text-align: center;">
+                        <li style="float:left;width:25%;text-align: center;">
+                            <a href="/Wechat/index/index" style="color:green;"><i class="fa fa-cutlery"></i> 点菜</a>
+                        </li>
+                        <li style="float:left;width:25%;text-align: center;">
+                            <a href="/Wechat/FoodCate/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-search"></i> 搜索</a>
+                        </li>
+                        <li style="float:left;width:25%;text-align: center;">
+                            <a href="/Wechat/FoodCar/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-shopping-cart"></i>  购餐车</a>
+                        </li>
+                        <li style="float:left;width:25%;text-align: center;">
+                            <a href="#" style="color:green;"><i class="fa fa-user-secret"></i> 个人中心</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
 </footer>
 
 <include file="Public/var"/>
