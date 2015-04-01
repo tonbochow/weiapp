@@ -22,7 +22,14 @@
                         </if>
                         <div class="caption">
                             <h4>{$food.food_name}</h4>
-                            <p><span style="text-decoration: line-through;color:#999;">原价:￥{$food.price}</span><br>微信价:<i class="fa fa-cny"></i>{$food.weixin_price}</p>
+                            <p>
+                            <if condition="$food.dining_room_id eq 0">
+                                所有门店通用<br>
+                                <else />
+                                <a href=""><?php echo \Admin\Model\DiningRoomModel::getDiningRoomName($food['dining_room_id']); ?> <i class="fa fa-location-arrow"></i></a><br>
+                            </if>
+                            <span style="text-decoration: line-through;color:#999;">原价:￥{$food.price}</span><br>微信价:<i class="fa fa-cny"></i>{$food.weixin_price}
+                            </p>
                             <p style="text-align:center;">
                                 <a href="/Wechat/food/view/id/{$food.id}/t/{$mp.mp_token}" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
                                 <a href="/Wechat/food/view/id/{$food.id}/t/{$mp.mp_token}" class="btn btn-success btn-sm" role="button"><i class="fa fa-search-plus"></i> 查看</a>
@@ -32,7 +39,7 @@
                 </div>
             </volist>
             <else />
-            <div class="col-xs-12">本店即将上线菜品,请稍等待...</div>
+            <div class="col-xs-12" style="text-align: center;">本店即将上线菜品,请稍等待...</div>
         </if>
         <div class="col-xs-12" style="text-align: center;">{$page}</div>
     </div>

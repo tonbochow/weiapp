@@ -47,7 +47,7 @@ class IndexController extends BaseController {
                         ->group('weiapp_food_detail.food_id')
                         //                        ->order('goods.addtime desc')
                         //                        ->page(1, $page_num)
-                        ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food_detail.url')
+                        ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
                         ->select();
             } else {
                 $foods = '';
@@ -61,7 +61,7 @@ class IndexController extends BaseController {
                     ->group('weiapp_food_detail.food_id')
                     ->order('weiapp_food_detail.default_share')
                     ->page(1, $page_num)
-                    ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food_detail.url')
+                    ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
                     ->select();
         }
         */
@@ -80,7 +80,7 @@ class IndexController extends BaseController {
                 ->where('weiapp_food.status=1' . " $cond")
                 ->group('weiapp_food_detail.food_id')
                 ->order('weiapp_food_detail.default_share')
-                ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food_detail.url')
+                ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
                 ->limit($Page->firstRow . ',' . $Page->listRows)
                 ->select();
         

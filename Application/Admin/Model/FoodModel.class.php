@@ -120,4 +120,17 @@ class FoodModel extends Model {
         return $card_arr;
     }
 
+    //获取餐厅菜品数量
+    public static function getFoodsCount($mp_id, $cate_id, $dining_room_id) {
+       if(!empty($cate_id)){
+           $map['cate_id'] = $cate_id;
+       }
+       if(!empty($dining_room_id)){
+           $map['dining_room_id'] = $dining_room_id;
+       }
+       $map['mp_id'] = $mp_id;
+       $foods_count = M('Food')->where($map)->count();
+       return $foods_count;
+    }
+
 }
