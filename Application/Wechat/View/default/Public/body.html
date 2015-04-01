@@ -7,14 +7,17 @@
             <strong style="position: absolute;z-index: 1;bottom: 30px;left:140px;font-size: 18px;color:#fff;">{$mp.mp_name}</strong>
         </div>
         <div class="col-xs-12" style="padding-right:0px;padding-left:0px;">
-            <div class="input-group">
-                <span class="input-group-addon"><a href="/Wechat/FoodCate/index/t/{$mp.mp_token}" style="color:red"><i class="fa fa-list"></i> 分类</a></span>
-                <input type="text" name="key"  id="key" value="{$key}" class="form-control" placeholder="餐厅名 菜品分类 菜品名">
-                <span class="input-group-btn">
-                    <input type="hidden" id="t" name="t" value="{$mp.mp_token}"> 
-                    <button class="btn btn-danger btn-small" type="submit">搜索</button>
-                </span>
-            </div>
+            <form style="margin:0px;padding:0px;" method="post" name="search_form" id="search_form" action="/Wechat/index/index">
+                <div class="input-group">
+                    <span class="input-group-addon"><a href="/Wechat/FoodCate/index/t/{$mp.mp_token}" style="color:red"><i class="fa fa-list"></i> 分类</a></span>
+                    <input type="text" name="key"  id="key" value="{$key}" class="form-control" placeholder="餐厅名 菜品分类 菜品名">
+                    <span class="input-group-btn">
+                        <input type="hidden" id="t" name="t" value="{$mp.mp_token}"> 
+                        <input type="hidden" id="cate_id" name="cate_id" value="{$cate_id}"> 
+                        <button class="btn btn-danger btn-small" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
         </div>
     </div>
     <!--    <block name="side">

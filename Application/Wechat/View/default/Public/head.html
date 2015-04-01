@@ -9,23 +9,122 @@
 <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
 <link href="__STATIC__/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="__STATIC__/bootstrap-3.3.2/Font-Awesome/css/font-awesome.min.css" rel="stylesheet">
-<style type="text/css">
-    body{
-        background: #f5f5f5;
-    }
-
-    a,a:hover,a:active,a:visited{
-        color:#333;
-        text-decoration: none;
-    }
-</style>
+<link href="__CSS__/common.css" rel="stylesheet">
 <block name="style"></block>
 <script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="__STATIC__/bootstrap-3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="__STATIC__/json2.js"></script>
 <script type="text/javascript" src="__STATIC__/angularjs/angular.min.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
+    var appId = '<?php echo $signPackage["appId"];?>';
+    var timestamp = <?php if($signPackage["timestamp"]){echo $signPackage["timestamp"];}else{echo '0';};?>;
+    var nonceStr = '<?php echo $signPackage["nonceStr"];?>';
+    var signature = '<?php echo $signPackage["signature"];?>';
+
+    wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: appId, // 必填，公众号的唯一标识
+        timestamp: timestamp, // 必填，生成签名的时间戳
+        nonceStr: nonceStr, // 必填，生成签名的随机串
+        signature: signature,// 必填，签名，见附录1
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo'
+        ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+    wx.ready(function(){
+        var title = '<?php echo $share_info["title"];?>';
+        var desc = '<?php echo $share_info["desc"];?>';
+        var link = '<?php echo $share_info["link"];?>';
+        var imgUrl = '<?php echo $share_info["imgUrl"];?>';	   
+
+        wx.onMenuShareAppMessage({
+            title: title,
+            desc: desc,
+            link: link,
+            imgUrl: imgUrl,
+            trigger: function (res) {
+      //        alert('用户点击发送给朋友');
+            },
+            success: function (res) {
+//		  alert('已分享');
+            },
+            cancel: function (res) {
+//		  alert('已取消');
+            },
+            fail: function (res) {
+              alert(JSON.stringify(res));
+            }
+          });
+
+          wx.onMenuShareTimeline({
+            title: title,
+            link: link,
+            imgUrl: imgUrl,
+            trigger: function (res) {
+      //        alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+//		  alert('已分享');
+            },
+            cancel: function (res) {
+//		  alert('已取消');
+            },
+            fail: function (res) {
+              alert(JSON.stringify(res));
+            }
+          });
+
+          wx.onMenuShareQQ({
+            title: title,
+            desc: desc,
+            link: link,
+            imgUrl: imgUrl,
+            trigger: function (res) {
+      //        alert('用户点击分享到QQ');
+            },
+            complete: function (res) {
+//		  alert(JSON.stringify(res));
+            },
+            success: function (res) {
+//		  alert('已分享');
+            },
+            cancel: function (res) {
+//		  alert('已取消');
+            },
+            fail: function (res) {
+              alert(JSON.stringify(res));
+            }
+          });
+
+          wx.onMenuShareWeibo({
+            title: title,
+            desc: desc,
+            link: link,
+            imgUrl: imgUrl,
+            trigger: function (res) {
+      //        alert('用户点击分享到微博');
+            },
+            complete: function (res) {
+//		  alert(JSON.stringify(res));
+            },
+            success: function (res) {
+//		  alert('已分享');
+            },
+            cancel: function (res) {
+//		  alert('已取消');
+            },
+            fail: function (res) {
+              alert(JSON.stringify(res));
+            }
+          });
+    });
+    
     $(function () {
         var nua = navigator.userAgent
         var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1)

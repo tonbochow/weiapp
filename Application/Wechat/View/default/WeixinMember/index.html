@@ -1,0 +1,89 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/weixinmember_index.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <div class="user_info">
+                <img src="{$mp.mp_img}" alt=""  width="80px" height="80px" class="img-circle">
+                <p>{$mp.mp_name}</p>
+            </div>
+            <ul class="padding-list">
+                <li>
+                    <a href="/FoodOrder/waitpay/t/{$mp.mp_token}">
+                        <p id="waite4PaymentSum">0</p>
+                        <p>待付款</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <p id="waitDeliveryOrderListSum">0</p>
+                        <p>已完成</p>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="menu-list">
+                <li>
+                    <a href="/Wechat/WeixinMember/manage">
+                        <i class="fa fa-user fa-5x" style="color:pink"></i>
+                        <p>账户管理</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Wechat/FoodOrder/index">
+                        <i class="fa fa-file-text-o fa-5x" style="color:#77cbf0"></i>
+                        <p>全部订单</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="">
+                        <i class="fa fa-cc-discover fa-5x" style="color:#ff8885"></i>
+                        <p>我的卡劵</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Wechat/DiningReserve/index">
+                        <i class="fa fa-calendar fa-5x" style="color:#ffc485"></i>
+                        <p>我的预定</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="">
+                        <i class="fa fa-credit-card fa-5x" style="color:#ffc485"></i>
+                        <p>我的会员卡</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Wechat/MemberAddress/index">
+                        <i class="fa fa-location-arrow fa-5x" style="color:#ff8885"></i>
+                        <p>我的地址</p>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="">
+                        <i class="fa fa-comment fa-5x" style="color:#77cbf0"></i>
+                        <p>我的评价</p>
+                    </a>
+                </li>
+                
+            </ul>
+
+        </div>
+    </div>
+</block>
+
+<block name="script">
+
+</block>

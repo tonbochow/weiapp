@@ -10,33 +10,33 @@
 
 <block name="body">
     <div class="row" style="margin-top:10px;">
-        <div class="col-xs-6">
-            <div class="thumbnail">
-                <img src="{$mp.mp_img}" alt="">
-                <div class="caption">
-                    <h4>{$mp.mp_name}</h4>
-                    <p><i class="fa fa-cny"></i>:15 <span style="text-decoration: line-through;color:#999;">￥20</span></p>
-                    <p style="text-align:center;">
-                        <a href="#" class="btn btn-success" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
-                        <a href="#" class="btn btn-success" role="button"><i class="fa fa-search-plus"></i> 查看</a>
-                    </p>
+
+        <if condition="$foods neq ''">
+            <volist name="foods" id="food">
+                <div class="col-xs-6">
+                    <div class="thumbnail" style="height:370px;">
+                        <if condition="$food.url eq ''">
+                            <img src="{$mp.mp_img}" alt="" style="height:200px;">
+                            <else />
+                            <img src="{$food.url}" alt="" style="height:200px;">
+                        </if>
+                        <div class="caption">
+                            <h4>{$food.food_name}</h4>
+                            <p><span style="text-decoration: line-through;color:#999;">原价:￥{$food.price}</span><br>微信价:<i class="fa fa-cny"></i>{$food.weixin_price}</p>
+                            <p style="text-align:center;">
+                                <a href="/Wechat/food/view/id/{$food.id}/t/{$mp.mp_token}" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                                <a href="/Wechat/food/view/id/{$food.id}/t/{$mp.mp_token}" class="btn btn-success btn-sm" role="button"><i class="fa fa-search-plus"></i> 查看</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-xs-6">
-            <div class="thumbnail">
-                <img src="{$mp.mp_img}" alt="">
-                <div class="caption">
-                    <h4>{$mp.mp_name}</h4>
-                    <p>微信价:<i class="fa fa-cny"></i>:15 <span style="text-decoration: line-through;color:#999;">原价:￥20</span></p>
-                    <p style="text-align:center;">
-                        <a href="#" class="btn btn-success" role="button">加入餐车</a>
-                        <a href="#" class="btn btn-success" role="button">查看</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+            </volist>
+            <else />
+            <div class="col-xs-12">本店即将上线菜品,请稍等待...</div>
+        </if>
+        <div class="col-xs-12" style="text-align: center;">{$page}</div>
     </div>
+
 </block>
 
 <block name="script">

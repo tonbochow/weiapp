@@ -50,8 +50,15 @@ class BaseController extends Controller {
         //4 检测是否登录(获取到openid即可)
 //        $weixin_userinfo = $this->getWeixinUserInfo();
 //        $this->weixin_userinfo = $weixin_userinfo;
-        $this->assign('mp',$this->mp);
+        $this->assign('mp', $this->mp);
 //        $this->assign('weixin_userinfo',$this->weixin_userinfo);
+        //5 设置微信分享基本参数
+//        $signPackage = \Admin\Model\MicroPlatformModel::getJsApiPrams(APPID);
+//        $this->assign('signPackage', $signPackage);
+        $cate_id = I('request.cate_id', '', 'trim');
+        $key = I('request.key', '', 'trim');
+        $this->assign('cate_id', $cate_id);
+        $this->assign('key', $key);
     }
 
     //获取微信公众平台信息

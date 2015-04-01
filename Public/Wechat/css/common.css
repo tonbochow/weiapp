@@ -1,0 +1,31 @@
+body{
+    background: #f5f5f5;
+}
+
+a,a:hover,a:active,a:visited li{
+    color:#333;
+    text-decoration: none;
+}
+
+.pagination>li>span {
+    color:#333;
+}
+
+.pagination>li>a{
+    color:#333;
+    text-decoration: none;
+}
+
+.pagination>li>a:hover{
+    color:#333;
+    text-decoration: none;
+}
+
+.pagination>li>a:visited{
+    color:#333;
+    text-decoration: none;
+}
+
+.container-fluid{
+    margin-bottom: 100px;
+}

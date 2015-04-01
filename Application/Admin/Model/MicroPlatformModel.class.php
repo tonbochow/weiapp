@@ -218,7 +218,7 @@ class MicroPlatformModel extends Model {
     public static function getAccessToken($appid, $appsecret) {
         $access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$appsecret";
         //先从weiapp_micro_platform检索access_token 或 过期再从微信服务器获取access_token
-        $wxPlatform = M(MicroPlatform);
+        $wxPlatform = M('MicroPlatform');
         $platform_data['appid'] = $appid;
         $platform_data['appsecret'] = $appsecret;
         $wx_platform = $wxPlatform->where($platform_data)->find();
@@ -307,6 +307,63 @@ class MicroPlatformModel extends Model {
         $user_info_url = "https://api.weixin.qq.com/sns/userinfo?access_token=$oauth_access_token&openid=$openid&lang=zh_CN";
         $user_info = self::curl($user_info_url);
         return $user_info;
+    }
+
+    /**
+     * JS-SDK获取jsapi_ticket
+     * $appid
+     * $appsecret
+     */
+    public static function getJsApiTicket($appid, $appsecret) {
+        $access_token = self::getAccessToken($appid, $appsecret);
+        $jsapi_ticket_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$access_token";
+        //先从micro_platform检索access_token 或 过期再从微信服务器获取access_token
+        $platform = M('MicroPlatform');
+        $plat_form = $platform->where("appid='" . $appid . "'")->find();
+        if ($plat_form['jsapi_expires'] < time()) {//已过期重新获取
+            $jsapi_ticket_info = self::curl($jsapi_ticket_url);
+            $jsapi_ticket = $jsapi_ticket_info['ticket'];
+            //更新micro_platform表
+            $platform_data['jsapi_ticket'] = $jsapi_ticket;
+            $platform_data['jsapi_expires'] = time() + $jsapi_ticket_info['expires_in'];
+            $platform_data['update_time'] = time();
+            $platform->where("appid='" . $appid . "'")->save($platform_data);
+        } else {
+            $jsapi_ticket = $plat_form['jsapi_ticket'];
+        }
+        return $jsapi_ticket;
+    }
+
+    /**
+     * JS-SDK获取生成签名的随机串
+     */
+    public static function createNonceStr($length = 16) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $str = "";
+        for ($i = 0; $i < $length; $i++) {
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+        return $str;
+    }
+
+    /**
+     * JS-SDK所需参数
+     * @param string 
+     * $appid
+     */
+    public static function getJsApiPrams($appid) {
+        $jsapi_ticked = self::getJsApiTicket();
+        $noncestr = self::createNonceStr();
+        $time = time();
+        $url = get_current_url();
+        $str = "jsapi_ticket=$jsapi_ticked&noncestr=$noncestr&timestamp=$time&url=$url";
+        $signature = sha1($str);
+        return array(
+            'appId' => $appid,
+            'timestamp' => $time,
+            'nonceStr' => $noncestr,
+            'signature' => $signature,
+        );
     }
 
 }
