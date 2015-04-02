@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50617
+Source Server Version : 50612
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2015-03-30 17:27:39
+Date: 2015-04-02 23:07:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1062,18 +1062,41 @@ INSERT INTO `weiapp_food` VALUES ('3', '1', '2', '1', '百花北斗星', '1', '�
 -- ----------------------------
 DROP TABLE IF EXISTS `weiapp_food_car`;
 CREATE TABLE `weiapp_food_car` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `member_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id对应member表id',
-  `content` text NOT NULL COMMENT '购餐车内容存json',
-  `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
-  `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `wx_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid',
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购餐车';
 
 -- ----------------------------
 -- Records of weiapp_food_car
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `weiapp_food_car_detail`
+-- ----------------------------
+DROP TABLE IF EXISTS `weiapp_food_car_detail`;
+CREATE TABLE `weiapp_food_car_detail` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `car_id` int(10) NOT NULL DEFAULT '0' COMMENT '购餐车id',
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台',
+  `wx_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid',
+  `dining_room_id` int(10) NOT NULL DEFAULT '0' COMMENT '菜品所属餐厅id',
+  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '类型:1菜品2套餐',
+  `food_setmenu_id` int(10) NOT NULL DEFAULT '0' COMMENT '菜品或套餐id',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '菜品或套餐名次',
+  `count` int(10) NOT NULL DEFAULT '0' COMMENT '菜品或套餐数量',
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '菜品或套餐单价',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '菜品或套餐总金额',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购餐车明细表';
+
+-- ----------------------------
+-- Records of weiapp_food_car_detail
 -- ----------------------------
 
 -- ----------------------------
@@ -1461,7 +1484,7 @@ CREATE TABLE `weiapp_member` (
 -- Records of weiapp_member
 -- ----------------------------
 INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '180', '111', '0', '1423289473', '2130706433', '1427461709', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '150', '120', '0', '0', '2130706433', '1427461794', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '170', '123', '0', '0', '2130706433', '1427979937', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -5285,7 +5308,7 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- Records of weiapp_ucenter_member
 -- ----------------------------
 INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1427461709', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1427461794', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1427979937', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`

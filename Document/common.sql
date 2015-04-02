@@ -288,15 +288,31 @@ CREATE TABLE IF NOT EXISTS `weiapp_food_style` (
 
 
 CREATE TABLE IF NOT EXISTS `weiapp_food_car` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `member_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id对应member表id',
-  `content` text NOT NULL COMMENT '购餐车内容存json',
-  `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
-  `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `wx_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid',
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购餐车';
+
+CREATE TABLE IF NOT EXISTS `weiapp_food_car_detail` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `car_id` int(10) NOT NULL DEFAULT '0' COMMENT '购餐车id',
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台',
+  `wx_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid',
+  `dining_room_id` int(10) NOT NULL DEFAULT '0' COMMENT '菜品所属餐厅id',
+  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '类型:1菜品2套餐',
+  `food_setmenu_id` int(10) NOT NULL DEFAULT '0' COMMENT '菜品或套餐id',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '菜品或套餐名次',
+  `count` int(10) NOT NULL DEFAULT '0' COMMENT '菜品或套餐数量',
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '菜品或套餐单价',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '菜品或套餐总金额',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购餐车明细表';
+
 
 
 CREATE TABLE IF NOT EXISTS  `weiapp_food_order` (

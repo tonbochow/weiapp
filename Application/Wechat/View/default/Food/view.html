@@ -1,5 +1,6 @@
 <extend name="Base/common"/>
 <block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="__CSS__/food_view.css" rel="stylesheet">
     <link href="__STATIC__/lightbox/css/lightbox.css" rel="stylesheet">
 </block>
@@ -8,6 +9,10 @@
 </block>
 
 <block name="body">
+    <div id="dialog" title="加入购餐车" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+   
     <div class="row" style="margin-top:10px;">
         <div class="col-xs-12">
             <div class="thumbnail">
@@ -49,7 +54,7 @@
                         </a>
                     </ul>
                     <p style="text-align:center;">
-                        <a href="#" class="btn btn-success" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                        <!--<a href="" class="btn btn-success" ng-mode="food.food_id" ng-click="addCar(food.food_id) role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>-->
                     </p>
                 </div>
             </div>
@@ -73,6 +78,7 @@
 </block>
 
 <block name="footer">
+<form novalidate  class="ng-app:weiapp_food" ng-app="weiapp_food" id="ng-app"  name="FoodForm" ng-controller="FoodController">
     <footer class="footer">
         <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
             <div class="container">
@@ -86,7 +92,7 @@
                                 <a href="/Wechat/FoodCar/index/t/{$mp.mp_token}" style="color:#fba949;"><i class="fa fa-list-alt"></i>  立即下单</a>
                             </li>
                             <li style="float:left;width:34%;text-align: center;">
-                                <a href="/Wechat/WeixinMember/index/t/{$mp.mp_token}" class="btn btn-danger"><i class="fa fa-cart-plus"></i> 加入餐车</a>
+                                <a href="#" class="btn btn-danger" ng-mode="food.id" ng-click="addCar(food.id)"><i class="fa fa-cart-plus"></i> 加入餐车</a>
                             </li>
                         </ul>
                     </div>
@@ -94,9 +100,43 @@
             </div>
         </nav>
     </footer>
+</form>
 </block>
 
 <block name="script">
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="__STATIC__/lightbox/js/lightbox.min.js"></script>
+    <script type="text/javascript">
+        var FoodModule = angular.module("weiapp_food", []);
+        FoodModule.controller("FoodController", function($scope, $http) {
+            $scope.food = {};
+            $scope.food.id = {$food[0].id};
+            $scope.food.t = '{$mp.mp_token}';
+            $scope.addCar = function(id){
+                if(typeof(id) != 'undefined'){
+                    $http({
+                        method: "POST",
+                        url: "/Wechat/Food/addcar/t/"+$scope.food.t,
+                        data: $.param($scope.food),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                    }).success(function (data) {
+                        if (data.status) {
+                            $('#dialog_content').text(data.info);
+                            $("#dialog").dialog({modal: true});
+                            setTimeout("result(" + data.status + ")", 1000);
+                        } else {
+                            $('#dialog_content').text(data.info);
+                            $("#dialog").dialog({modal: true});
+                            setTimeout("result(" + data.status + ")", 1000);
+                        }
+                    });
+                }
+            }
+        });
+        function result(status) {
+            $("#dialog").dialog("close");
+            $('.submit').removeAttr("disabled");
+        }
+    </script>
 </block>
 
