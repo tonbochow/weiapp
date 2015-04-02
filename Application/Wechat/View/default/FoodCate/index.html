@@ -14,17 +14,20 @@
         <if condition="$food_cates neq ''">
             <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food_cate" ng-app="weiapp_food_cate" id="ng-app"  name="FoodCateForm" ng-controller="FoodCateController" ng-submit="submitForm()">
                 <div class="col-xs-12">
+                    <if condition="$mp.is_chain eq 1">
                     <div class="form-item" ng-class="{'has-error' : FoodCateForm.dining_room_id.$invalid && !FoodCateForm.dining_room_id.$pristine}">
-                        <label class="item-label">所属餐厅<span class="check-tips">（*必须）</span></label>
+                        <label class="item-label">餐厅<span class="check-tips">（*选择餐厅检索菜品分类）</span></label>
                         <div class="controls">
-                            <select class="form-control" name="dining_room_id" required ng-model="food_cate.dining_room_id" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
+                            <select class="form-control" name="dining_room_id" required ng-model="food_cate.dining_room_id" ng-change="select_dining(food_cate.dining_room_id)" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
                                 <option value="">请选择</option>
                             </select>
                             <p ng-show="FoodCateForm.dining_room_id.$invalid && !FoodCateForm.dining_room_id.$pristine" class="help-block">请选择所属餐厅</p>
                         </div>
                     </div>
+                    </if>
+                    <br>
 
-                    <ul class="list-group">
+<!--                    <ul class="list-group">
                         <volist name="food_cates" id="cate">
                             <a href="/Wechat/index/index/t/{$mp.mp_token}/cate_id/{$cate.id}">
                                 <li class="list-group-item">
@@ -37,8 +40,23 @@
                                 </li>
                             </a>
                         </volist>
+                    </ul>-->
+                    
+                    
+                    <ul class="list-group"  >
+                            <a href="/Wechat/index/index/t/{$mp.mp_token}/cate_id/{{cate.id}}" ng-repeat="cate in food_cate.cates">
+                                <li class="list-group-item">
+                                    <i class="fa fa-circle" style="color:red"></i>
+                                    <span class="badge" style="background:pink">
+                                        {{cate.food_count}}
+                                        <i class="fa fa-chevron-right"></i>
+                                    </span>
+                                    {{cate.cate_name}}
+                                </li>
+                            </a>
                     </ul>
                 </div>
+                <input type="hidden" name="t" ng-model="food_cate.t" >
             </form>
             <else />
             <div class="col-xs-12" style="text-align:center;">本店未设置菜品分类</div>
@@ -52,27 +70,27 @@
         var FoodCateModule = angular.module("weiapp_food_cate", []);
         FoodCateModule.controller("FoodCateController", function($scope, $http) {
             $scope.food_cate = {};
+            $scope.food_cate.cates = {$json_food_cates};
+            $scope.food_cate.t = '{$mp.mp_token}';
             $scope.food_cate.dining_room_arr = {$dining_room_arr};
             $scope.food_cate.dining_room_id = {$selected_dining_room_id};
-            $scope.submitForm = function() {
-                $('.submit').attr('disabled', 'true');
-                $http({
-                    method: "POST",
-                    url: "/Wechat/FoodCate/add",
-                    data: $.param($scope.food_cate),
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-                }).success(function(data) {
-                    if (data.status) {
-                        $('#dialog_content').text(data.info);
-                        $("#dialog").dialog({modal: true});
-                        setTimeout("result(" + data.status + ")", 1000);
-                    } else {
-                        $('#dialog_content').text(data.info);
-                        $("#dialog").dialog({modal: true});
-                        setTimeout("result(" + data.status + ")", 1000);
-                    }
-                });
-            };
+            $scope.select_dining = function(selected_dining_room_id){
+                if(typeof(selected_dining_room_id) != 'undefined'){
+                    $scope.cate_data={'select_dining_room_id':selected_dining_room_id};
+                    $http({
+                        method: "POST",
+                        url: "/Wechat/FoodCate/index/t/"+$scope.food_cate.t,
+                        data: $.param($scope.cate_data),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                    }).success(function (data) {
+                        if (data.status) {
+                            $scope.food_cate.cates = data.info;
+                        } else {
+
+                        }
+                    });
+                }
+            }
         });
     </script>
 </block>

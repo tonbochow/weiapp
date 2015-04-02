@@ -1,0 +1,102 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/food_view.css" rel="stylesheet">
+    <link href="__STATIC__/lightbox/css/lightbox.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <div class="thumbnail">
+                <img src="{$food[0].url}" alt="">
+                <hr>
+                <div class="caption">
+                    <h4>{$food[0].food_name}</h4>
+                    <p><span class="weixin_price">微信价<i class="fa fa-cny"></i>:15</span> <span class="price">原价:￥20</span></p>
+                    <ul class="list-group"  >
+                        <li class="list-group-item">
+                            <i class="fa fa-columns" style="color:green"></i>
+                            单位:{$food[0]['unit']}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-bitbucket-square" style="color:green"></i>
+                            口味:{$food[0]['style_name']}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-thumbs-o-up" style="color:green"></i>
+                            销售数量:{$food[0]['sell_count']}
+                        </li>
+                        <a href="/Wechat/DiningRoom/view/t/{$mp.mp_token}/id/{$food[0].dining_room_id}">
+                            <li class="list-group-item">
+                                <i class="fa fa-map-marker" style="color:green"></i>
+                                <span class="badge" style="background:green">
+                                    <i class="fa fa-chevron-right"></i>
+                                </span>
+                                餐厅:{$food[0]['dining_name']}
+                            </li>
+                        </a>
+                        <a href="/Wechat/Food/comment/t/{$mp.mp_token}/id/{$food[0].id}">
+                            <li class="list-group-item">
+                                <i class="fa fa-comments" style="color:green"></i>
+                                <span class="badge" style="background:green">
+                                    <i class="fa fa-chevron-right"></i>
+                                </span>
+                                菜品评价
+                            </li>
+                        </a>
+                    </ul>
+                    <p style="text-align:center;">
+                        <a href="#" class="btn btn-success" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="thumbnail">
+                <p><i class="fa fa-star" style="color:red"></i> {$food[0].food_name}</p>
+                <hr>
+                <p>{$food[0].description|htmlspecialchars_decode|stripslashes}</p>
+            </div>
+
+            <volist name="food" id="vo" key="i">
+                <div class="thumbnail">
+                    <a href="{$vo.url}" data-lightbox="image-1" data-title="{$food[0].food_name}图片">
+                        <img src="{$vo.url}" class="img-responsive" alt="{$food[0].food_name}" title="{$food[0].food_name} -图片{$i}">
+                    </a>
+                </div>
+            </volist>
+
+        </div>
+    </div>
+</block>
+
+<block name="footer">
+    <footer class="footer">
+        <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <ul class="nav navbar-nav" style="width:100%;text-align: center;">
+                            <li style="float:left;width:33%;text-align: center;">
+                                <a href="/Wechat/index/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-cutlery"></i> 点菜</a>
+                            </li>
+                            <li style="float:left;width:33%;text-align: center;">
+                                <a href="/Wechat/FoodCar/index/t/{$mp.mp_token}" style="color:#fba949;"><i class="fa fa-list-alt"></i>  立即下单</a>
+                            </li>
+                            <li style="float:left;width:34%;text-align: center;">
+                                <a href="/Wechat/WeixinMember/index/t/{$mp.mp_token}" class="btn btn-danger"><i class="fa fa-cart-plus"></i> 加入餐车</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </footer>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/lightbox/js/lightbox.min.js"></script>
+</block>
+
