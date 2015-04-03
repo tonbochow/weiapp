@@ -1,38 +1,170 @@
 <extend name="Base/common"/>
 <block name="style">
-    <style type="text/css">
-
-    </style>
+    <link href="__CSS__/foodcar_index.css" rel="stylesheet">
 </block>
 <block name="header">
 
 </block>
 
 <block name="body">
-    <div class="row" style="margin-top:10px;">
+    <form novalidate  class="ng-app:weiapp_car" ng-app="weiapp_car" id="ng-app"  name="CarForm" ng-controller="CarController">
+    <div class="row" style="margin-top:10px;"> 
         <div class="col-xs-12">
-            <div style="text-align:center;color:#999;">
-                <i class="fa fa-shopping-cart fa-5x"></i>
-            </div>
-            <div class="caption">
-                <p style="text-align:center;color:#999;">
-                    点餐车空空如也，快去点餐吧!
-                </p>
-                <p style="text-align:center;">
-                    <a href="/Wechat/index/index/t/{$mp.mp_token}" class="btn btn-danger" role="button"><i class="fa fa-cutlery"></i> 去点餐</a>
-                </p>
-            </div>
+            <if condition="$car_details eq null">
+                <div style="text-align:center;color:#999;">
+                    <i class="fa fa-shopping-cart fa-5x"></i>
+                </div>
+                <div class="caption">
+                    <p style="text-align:center;color:#999;">
+                        点餐车空空如也，快去点餐吧!
+                    </p>
+                    <p style="text-align:center;">
+                        <a href="/Wechat/index/index/t/{$mp.mp_token}" class="btn btn-danger" role="button"><i class="fa fa-cutlery"></i> 去点餐</a>
+                    </p>
+                </div>
+                <else />
+                
+                
+                
+                <div class="thumbnail" ng-repeat="detail in car.car_details">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="/Wechat/food/view/id/{{detail.food_setmenu_id}}/t/{$mp.mp_token}">
+                                <img class="media-object" src="{{detail.url}}" style="max-height:120px;max-width: 120px;" alt="">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{detail.name}}</h4>
+                            微信价:{{detail.price}}<p>
+                            <div class="input-group" style="width:130px;">
+                                <a href class="input-group-addon" ng-click="reduce(detail.id)"><i class="fa fa-minus"></i></a>
+                                <input type="text" class="form-control" aria-label="" ng-model="detail.count" ng-pattern="/^\d+(\.\d+)?$/"  ng-trim="true" ng-minlength="1" ng-maxlength="10" value="{{detail.count}}">
+                                <a href class="input-group-addon" ng-click="add(detail.id)"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <h4 class="media-heading">￥{{detail.amount}}</h4>
+                            <a href ng-click="del(detail.id)">
+                                <i class="fa fa-trash fa-3x fa-align-center" style="color:#67738A"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+<!--                <volist name="car_details" id="detail">
+                    <div class="thumbnail">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/Wechat/food/view/id/{$detail.food_setmenu_id}/t/{$mp.mp_token}">
+                                    <img class="media-object" src="{$detail.url}" style="max-height:120px;max-width: 120px;" alt="">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">{$detail.name}</h4>
+                                微信价:{$detail.price}<p>
+                                <div class="input-group" style="width:130px;">
+                                    <a href class="input-group-addon" ng-click="reduce({$detail.food_setmenu_id})"><i class="fa fa-minus"></i></a>
+                                    <input type="text" class="form-control" aria-label="" ng-model="car.count_{$key}"  value="{$detail.amount}">
+                                    <a href class="input-group-addon" ng-click="add({$detail.food_setmenu_id})"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                            <div class="media-right">
+                                <h4 class="media-heading">￥{$detail.amount}</h4>
+                                <a href ng-click="del({$detail.food_setmenu_id})">
+                                    <i class="fa fa-trash fa-3x fa-align-center" style="color:#67738A"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </volist>-->
+            </if>
         </div>
     </div>
+    <!--</form>-->
+</block>
+
+<block name="footer">
+        <footer class="footer">
+            <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <ul class="nav navbar-nav" style="width:100%;text-align: center;">
+                                <li style="float:left;width:33%;text-align: center;">
+                                    <a href="/Wechat/index/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-cutlery"></i> 点菜</a>
+                                </li>
+                                <li style="float:left;width:33%;text-align: center;">
+                                    <a href="" style="color:red;font-weight: bold;"><i class="fa fa-money"></i> 总计:￥<span id="total_amount"></span></a>
+                                </li>
+                                <li style="float:left;width:34%;text-align: center;">
+                                    <a href="#" class="btn btn-danger"><i class="fa fa-cny"></i> 结算({$car_num})</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </footer>
+    </form>
 </block>
 
 <block name="script">
-    <!--    <script type="text/javascript">
-            $(function () {
-                $('.carousel').carousel();
-                $('.carousel').carousel({
-                    interval: 2000
-                })
-            });
-        </script>-->
+    <script type="text/javascript">
+        var CarModule = angular.module("weiapp_car", []);
+        CarModule.controller("CarController", function($scope, $http) {
+            $scope.car = {};
+            $scope.car.car_details = {$json_car_details};
+            $scope.car.t = '{$mp.mp_token}';
+            $scope.add = function(car_detail_id){
+                if(typeof(car_detail_id) != 'undefined'){
+                    $http({
+                        method: "POST",
+                        url: "/Wechat/FoodCar/add/t/"+$scope.car.t,
+                        data: $.param($scope.car),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                    }).success(function (data) {
+                        if (data.status) {
+                            
+                        } else {
+  
+                        }
+                    });
+                }
+            }
+            $scope.reduce = function(car_detail_id){
+                if(typeof(car_detail_id) != 'undefined'){
+                    $http({
+                        method: "POST",
+                        url: "/Wechat/FoodCar/reduce/t/"+$scope.car.t,
+                        data: $.param($scope.car),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                    }).success(function (data) {
+                        if (data.status) {
+                            
+                        } else {
+  
+                        }
+                    });
+                }
+            }
+            $scope.del = function(car_detail_id){
+                if(typeof(car_detail_id) != 'undefined'){
+                    $http({
+                        method: "POST",
+                        url: "/Wechat/FoodCar/del/t/"+$scope.car.t,
+                        data: $.param($scope.car),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                    }).success(function (data) {
+                        if (data.status) {
+                            
+                        } else {
+  
+                        }
+                    });
+                }
+            }
+        });
+    </script>
 </block>

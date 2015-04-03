@@ -1,0 +1,23 @@
+.thumbnail{
+    margin-bottom: 5px;
+}
+.media-right{
+    color:red;
+}
+.navbar-default .navbar-nav>li>a {
+    color: #fff;
+    font-weight: bold;
+}
+
+.navbar-default .navbar-nav>li>a.btn{
+    font-size: 16px;
+}
+
+.nav>li>a:focus, .nav>li>a.btn:hover {
+    text-decoration: none;
+    color:#fff;
+    background-color: #ac2925;
+}
+.form-control{
+    padding:5px;
+}

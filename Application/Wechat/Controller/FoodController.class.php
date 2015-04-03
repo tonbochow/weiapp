@@ -31,7 +31,7 @@ class FoodController extends BaseController {
                 ->order('weiapp_food_detail.default_share desc')
                 ->field('weiapp_food.*,weiapp_food_detail.url,weiapp_food_detail.default_share')
                 ->select();
-//        dump($food);
+        
         $this->assign('food', $food);
         $this->meta_title = $food['food_name'] . '详细页面';
         $this->display('view');

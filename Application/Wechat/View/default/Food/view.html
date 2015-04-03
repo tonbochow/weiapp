@@ -92,7 +92,11 @@
                                 <a href="/Wechat/FoodCar/index/t/{$mp.mp_token}" style="color:#fba949;"><i class="fa fa-list-alt"></i>  立即下单</a>
                             </li>
                             <li style="float:left;width:34%;text-align: center;">
+                                <if condition="$car_num neq 0">
+                                <a href="#" class="btn btn-danger" ng-mode="food.id" ng-click="addCar(food.id)"><i class="fa fa-cart-plus"></i> 加入餐车 <span class="badge">{$car_num}</span></a>
+                                    <else />
                                 <a href="#" class="btn btn-danger" ng-mode="food.id" ng-click="addCar(food.id)"><i class="fa fa-cart-plus"></i> 加入餐车</a>
+                                </if>
                             </li>
                         </ul>
                     </div>

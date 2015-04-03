@@ -59,6 +59,10 @@ class BaseController extends Controller {
         $key = I('request.key', '', 'trim');
         $this->assign('cate_id', $cate_id);
         $this->assign('key', $key);
+        //检索购餐车菜品或套餐数量
+//        $car_num = M('FoodCarDetail')->where(array('mp_id'=>MP_ID,'wx_openid'=>$this->weixin_userinfo['wx_openid']))->count();
+        $car_num = M('FoodCarDetail')->where(array('mp_id'=>MP_ID,'wx_openid'=>'wx_abcdef'))->count();
+        $this->assign('car_num',$car_num);
     }
 
     //获取微信公众平台信息

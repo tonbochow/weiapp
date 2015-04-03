@@ -16,7 +16,11 @@
                             <a href="/Wechat/FoodCate/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-search"></i> 搜索</a>
                         </li>
                         <li style="float:left;width:25%;text-align: center;">
+                            <if condition="$car_num neq 0">
+                            <a href="/Wechat/FoodCar/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-shopping-cart"></i>  购餐车 <span class="badge" style="background-color:red;">{$car_num}</span></a>
+                                <else />
                             <a href="/Wechat/FoodCar/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-shopping-cart"></i>  购餐车</a>
+                            </if>
                         </li>
                         <li style="float:left;width:25%;text-align: center;">
                             <a href="/Wechat/WeixinMember/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-user-secret"></i> 个人中心</a>
