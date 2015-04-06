@@ -46,6 +46,25 @@
             </div>
         </div>
 
+        <div class="form-item" ng-class="{'has-error' : DiningForm.type.$invalid && !DiningForm.type.$pristine}">
+            <label class="item-label">餐厅类型<span class="check-tips">（*必填）</span></label>
+            <div class="controls">
+                <select class="form-control" name="type"  ng-model="dining.type" ng-options="m.id as m.dining_type for m in dining.dining_type_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="DiningForm.type.$invalid && !DiningForm.type.$pristine" class="help-block">请选择正确的餐厅类型</p>
+            </div>
+        </div>
+
+        <div class="form-item" ng-class="{'has-error' : DiningForm.pay_type.$invalid && !DiningForm.pay_type.$pristine}">
+            <label class="item-label">餐厅支付类型<span class="check-tips">（*必填 默认微信支付）</span></label>
+            <div class="controls">
+                <select class="form-control" name="pay_type"  ng-model="dining.pay_type" ng-options="m.id as m.dining_pay_type for m in dining.dining_pay_type_arr">
+                    <option value="">请选择</option>
+                </select>
+                <p ng-show="DiningForm.pay_type.$invalid && !DiningForm.pay_type.$pristine" class="help-block">请选择正确的餐厅支付类型</p>
+            </div>
+        </div>
 
         <div class="form-item"  ng-class="{'has-error' : DiningForm.description.$invalid && !DiningForm.description.$pristine}">
             <label class="item-label">餐厅描述<span class="check-tips">（*必填）</span></label>
@@ -183,6 +202,8 @@
                 var DiningModule = angular.module("weiapp_dining", ['ng.ueditor']);
                 DiningModule.controller("DiningController", function ($scope, $http) {
                     $scope.dining = {$json_dining};
+                    $scope.dining.dining_type_arr = {$dining_type_arr};
+                    $scope.dining.dining_pay_type_arr = {$dining_pay_type_arr};
                     $scope.submitForm = function () {
                         $('.submit').attr('disabled', 'true');
                         $scope.dining.longitude = $('#longitude').val();

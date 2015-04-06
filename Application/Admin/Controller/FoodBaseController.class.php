@@ -54,6 +54,7 @@ class FoodBaseController extends AdminController {
             $partnerkey = !empty($micro_platform['partnerkey']) ? trim($micro_platform['partnerkey']) : '';
             $paysignkey = !empty($micro_platform['paysignkey']) ? trim($micro_platform['paysignkey']) : '';
             $mp_token = !empty($micro_platform['mp_token']) ? trim($micro_platform['mp_token']) : '';
+            $support_wxpay = !empty($micro_platform['support_wxpay']) ? trim($micro_platform['support_wxpay']) : '';
             $is_chain = !empty($micro_platform['is_chain']) ? true : false;
             define('IS_CHAIN', $is_chain); //餐厅是否连锁
             define('MP_ID', $mp_id); //微信公众平台ID
@@ -64,6 +65,7 @@ class FoodBaseController extends AdminController {
             define("PARTNERKEY", $partnerkey); //微信公众平台PARTNERKEY  微信支付必需参数
             define("APPKEY", $paysignkey); //微信公众平台APPKEY 微信支付必需参数
             define("MP_TOKEN", $mp_token); //微信公众平台接入token  唯一  非常重要参数
+            define("SUPPORT_WXPAY", $support_wxpay);
         }
     }
 

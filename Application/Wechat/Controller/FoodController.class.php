@@ -31,7 +31,13 @@ class FoodController extends BaseController {
                 ->order('weiapp_food_detail.default_share desc')
                 ->field('weiapp_food.*,weiapp_food_detail.url,weiapp_food_detail.default_share')
                 ->select();
-        
+
+        $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
+        foreach ($dining_rooms as $val) {
+            $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
+        }
+
+        $this->assign('dining_room_arr', json_encode($dining_room_arr));
         $this->assign('food', $food);
         $this->meta_title = $food['food_name'] . '详细页面';
         $this->display('view');
@@ -49,6 +55,7 @@ class FoodController extends BaseController {
             if ($food_car_detail) {
                 $this->error('已加入购餐车', '', true);
             }
+
             $foodCarModel = D('FoodCar');
             $foodCarModel->startTrans();
             $car_map['wx_openid'] = $wx_open_id;
@@ -67,14 +74,20 @@ class FoodController extends BaseController {
                     $foodCarModel->rollback();
                     $this->error($foodCarModel->getError(), '', true);
                 }
-            }else{
+            } else {
                 $car_id = $food_car['id'];
             }
             $food_info = M('Food')->where(array('id' => $food_id))->find();
+            if (intval($food_info['dining_room_id']) == 0) {
+                $dining_room_id = I('post.dining_room_id');
+                if (intval($dining_room_id) == 0) {
+                    $this->error('请先选择用餐或配送餐厅', '', true);
+                }
+            }
             $car_detail_data['mp_id'] = MP_ID;
             $car_detail_data['wx_openid'] = $wx_open_id;
             $car_detail_data['car_id'] = $car_id;
-            $car_detail_data['dining_room_id'] = $food_info['dining_room_id'];
+            $car_detail_data['dining_room_id'] = !empty($food_info['dining_room_id']) ? $food_info['dining_room_id'] : $dining_room_id;
             $car_detail_data['type'] = \Wechat\Model\FoodCarDetailModel::$TYPE_FOOD;
             $car_detail_data['food_setmenu_id'] = $food_id;
             $car_detail_data['name'] = $food_info['food_name'];

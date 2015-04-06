@@ -66,6 +66,18 @@ class DiningRoomController extends FoodBaseController {
                 $this->error('非连锁餐厅最多允许创建1个餐厅!', '/Admin/DiningRoom/show');
             }
         }
+        
+        $dining_types = \Admin\Model\DiningRoomModel::getDiningRoomType(null,false);
+        foreach ($dining_types as $key=>$val) {
+            $dining_type_arr[] = array('id' => $key, 'dining_type' => $val);
+        }
+        $this->assign('dining_type_arr',  json_encode($dining_type_arr));
+        
+        $dining_pay_types = \Admin\Model\DiningRoomModel::getDiningRoomPayType(null, false, false);
+        foreach ($dining_pay_types as $key=>$val) {
+            $dining_pay_type_arr[] = array('id' => $key, 'dining_pay_type' => $val);
+        }
+        $this->assign('dining_pay_type_arr',  json_encode($dining_pay_type_arr));
         if (IS_POST) {
             $dining_room_data = I('post.');
             $diningRoomModel = D('DiningRoom');
@@ -97,6 +109,12 @@ class DiningRoomController extends FoodBaseController {
 //            $dining_room_data['dining_staff_id'] = $dining_uid;
             $dining_room_data['is_chain_dining'] = IS_CHAIN ? \Admin\Model\DiningRoomModel::$IS_CHAIN : \Admin\Model\DiningRoomModel::$NOT_CHAIN;
             $dining_room_data['chain_dining_id'] = IS_CHAIN ? $chain_dining['id'] : '';
+            //判断是否支持微信支付
+            if(!SUPPORT_WXPAY){
+                if($dining_room_data['pay_type'] == \Admin\Model\DiningRoomModel::$PAY_TYPE_WEIXIN  || $dining_room_data['pay_type'] == \Admin\Model\DiningRoomModel::$PAY_TYPE_WEIXIN_OFFLINE){
+                    $this->error("当前平台不支持微信支付",'',true);
+                }
+            }
             if ($diningRoomModel->create($dining_room_data)) {
                 $dining_room_res = $diningRoomModel->add();
                 if ($dining_room_res) {
@@ -132,6 +150,12 @@ class DiningRoomController extends FoodBaseController {
     public function edit() {
         if (IS_POST) {
             $dining_room_data = I('post.');
+            //判断是否支持微信支付
+            if(!SUPPORT_WXPAY){
+                if($dining_room_data['pay_type'] == \Admin\Model\DiningRoomModel::$PAY_TYPE_WEIXIN || $dining_room_data['pay_type'] == \Admin\Model\DiningRoomModel::$PAY_TYPE_WEIXIN_OFFLINE){
+                    $this->error("当前平台不支持微信支付",'',true);
+                }
+            }
             $diningRoomModel = D('DiningRoom');
             if ($diningRoomModel->create($dining_room_data)) {
                 $dining_room_edit = $diningRoomModel->save();
@@ -154,6 +178,17 @@ class DiningRoomController extends FoodBaseController {
             $this->error('未检索到您要编辑的餐厅信息!');
         }
         $dining_room['description'] = htmlspecialchars_decode(stripslashes($dining_room['description']));
+        
+        $dining_types = \Admin\Model\DiningRoomModel::getDiningRoomType(null,false);
+        foreach ($dining_types as $key=>$val) {
+            $dining_type_arr[] = array('id' => strval($key), 'dining_type' => $val);
+        }
+        $this->assign('dining_type_arr',  json_encode($dining_type_arr));
+        $dining_pay_types = \Admin\Model\DiningRoomModel::getDiningRoomPayType(null, false, false);
+        foreach ($dining_pay_types as $key=>$val) {
+            $dining_pay_type_arr[] = array('id' => strval($key), 'dining_pay_type' => $val);
+        }
+        $this->assign('dining_pay_type_arr',  json_encode($dining_pay_type_arr));
         //省市县设置
         $region_model = D('Region');
         $province = $region_model->getRegion(86);

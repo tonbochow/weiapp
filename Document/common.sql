@@ -181,6 +181,7 @@ CREATE TABLE IF NOT EXISTS `weiapp_dining_room` (
   `chain_dining_id` int(11) NOT NULL DEFAULT '0' COMMENT '连锁餐厅id对应chain_dining_info.id',
   `dining_name` varchar(60) NOT NULL DEFAULT '' COMMENT '餐厅名称',
   `dining_header` varchar(20) NOT NULL DEFAULT '' COMMENT '餐厅负责人',
+  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '类型：1餐厅用餐和配送到家2餐厅用餐3配送到家',
   `phone` varchar(15) NOT NULL DEFAULT '' COMMENT '固定电话',
   `mobile` char(11) NOT NULL DEFAULT '' COMMENT '手机号码',
   `province` int(11) NOT NULL DEFAULT '0' COMMENT '省id',
@@ -194,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `weiapp_dining_room` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='餐厅信息';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='餐厅信息';
 
 CREATE TABLE IF NOT EXISTS  `weiapp_dining_room_detail` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

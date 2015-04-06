@@ -1,0 +1,250 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/foodcar_index.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div id="dialog" title="加入购餐车" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form novalidate   name="CarForm" id="car_form" >
+        <div class="row" style="margin-top:10px;"> 
+            <div class="col-xs-12">
+                <volist name="car_details" id="details">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <h4>餐厅:{$details.0.dining_info.dining_name}</h4>
+                            送餐费:{$details.0.dining_info.delivery_fee}
+                        </div>
+                        <volist name="details" id="detail">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="/Wechat/food/view/id/{$detail.food_setmenu_id}/t/{$mp.mp_token}">
+                                        <img class="media-object" src="{$detail.url}" style="max-height:120px;max-width: 120px;" alt="">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading"><a href="/Wechat/food/view/id/{$detail.food_setmenu_id}/t/{$mp.mp_token}">{$detail.name}</a></h4>
+                                    微信价:{$detail.price}<br>
+                                    数量:{$detail.count}<br>
+                                    <div class="input-group" style="width:130px;">
+                                    </div>
+                                </div>
+                                <div class="media-right">
+                                    <h4 class="media-heading">￥{$detail.amount}</h4>
+                                </div>
+                            </div>
+                        </volist>
+                        <div class="caption">
+                            <p>
+                                <?php
+                                if($details[0]['dining_info']['type'] == \Admin\Model\DiningRoomModel::$TYPE_DINING_HOME){
+                                ?>
+
+                                <select name="dining_type[{$details.0.dining_info.id}]" class="form-control" onchange="javascript:select_type(this.value, {$details.0.dining_info.id});">
+                                    <foreach name="dining_types" item="vo" >
+                                        <?php
+                                        if($details[0]['dining_info']['type'] == $key){
+                                        ?>
+                                        <option value="{$key}" selected="selected">{$vo}</option>
+                                        <?php
+                                        }else{
+                                        ?>
+                                        <option value="{$key}">{$vo}</option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </foreach>
+                                </select>
+                                <?php
+                                }else{
+                                ?>
+                                <!--                             <select name="dining_type[{$details.0.dining_info.dining_room_id}]" class="form-control" disabled="disabled">
+                                                                 <foreach name="dining_types" item="vo" >
+                                                                    <?php
+                                                                    if($details[0]['dining_info']['type'] == $key){
+                                                                    ?>
+                                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                                    <?php
+                                                                    }else{
+                                                                    ?>
+                                                                    <option value="{$key}">{$vo}</option>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                 </foreach>
+                                                             </select>-->
+                                就餐方式:<?php echo \Admin\Model\DiningRoomModel::getDiningRoomType($details[0]['dining_info']['type']);?>
+                                <input type="hidden" name="dining_type[{$details.0.dining_info.id}]" value="{$details.0.dining_info.type}">
+                                <?php
+                                }
+                                ?>
+                            </p>
+                            <p>
+                                <?php 
+                                if($details[0]['dining_info']['type'] == \Admin\Model\DiningRoomModel::$TYPE_HOME){
+                                ?>
+                            <div id="address_{$details.0.dining_info.id}" style="display:block;">
+                                <?php
+                                }else{
+                                ?>
+                                <div id="address_{$details.0.dining_info.id}" style="display:none;">
+                                    <?php
+                                    }
+                                    ?>
+                                    送餐地址:<span id="address_detail_{$details.0.dining_info.id}"></span>
+                                    <input type="hidden" name="real_name[{$details.0.dining_info.id}]" value="" id="real_name_{$details.0.dining_info.id}">
+                                    <input type="hidden" name="province_name[{$details.0.dining_info.id}]" value="" id="province_name_{$details.0.dining_info.id}">
+                                    <input type="hidden" name="city_name[{$details.0.dining_info.id}]" value="" id="city_name_{$details.0.dining_info.id}">
+                                    <input type="hidden" name="town_name[{$details.0.dining_info.id}]" value="" id="town_name_{$details.0.dining_info.id}">
+                                    <input type="hidden" name="detail_addr[{$details.0.dining_info.id}]" value="" id="detail_addr_{$details.0.dining_info.id}">
+                                    <input type="hidden" name="phone[{$details.0.dining_info.id}]" value="" id="phone_{$details.0.dining_info.id}">
+                                    <button type="button" class="btn btn-success btn-block" onclick="get_address({$details.0.dining_info.id})">添加送餐地址</button>
+                                </div>
+                                </p>
+
+                                <p>
+                                    <?php
+                                    if($mp['support_wxpay'] && $details[0]['dining_info']['pay_type'] == \Admin\Model\DiningRoomModel::$PAY_TYPE_WEIXIN_OFFLINE){
+                                    ?>
+                                    <select name="dining_pay_type[{$details.0.dining_info.id}]" class="form-control">
+                                        <foreach name="dining_pay_types" item="vo" >
+                                            <?php
+                                            if($details[0]['dining_info']['pay_type'] == $key){
+                                            ?>
+                                            <option value="{$key}" selected="selected">{$vo}</option>
+                                            <?php
+                                            }else{
+                                            ?>
+                                            <option value="{$key}">{$vo}</option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </foreach>
+                                    </select>
+                                    <?php
+                                    }else if($mp['support_wxpay'] && $details[0]['dining_info']['pay_type'] != \Admin\Model\DiningRoomModel::$PAY_TYPE_WEIXIN_OFFLINE){
+                                    ?>
+                                    <!--                                <select name="dining_pay_type[{$details.0.dining_info.dining_room_id}]" class="form-control" disabled="disabled">
+                                                                     <foreach name="dining_pay_types" item="vo" >
+                                                                        <?php
+                                                                        if($details[0]['dining_info']['pay_type'] == $key){
+                                                                        ?>
+                                                                        <option value="{$key}" selected="selected">{$vo}</option>
+                                                                        <?php
+                                                                        }else{
+                                                                        ?>
+                                                                        <option value="{$key}">{$vo}</option>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
+                                                                     </foreach>
+                                                                    </select>-->
+                                    支付方式:<?php echo  \Admin\Model\DiningRoomModel::getDiningRoomPayType($details[0]['dining_info']['pay_type']);?>
+                                    <input type="hidden" name="dining_pay_type[{$details.0.dining_info.id}]" value="{$details.0.dining_info.pay_type}">
+                                    <?php
+                                    }else if(!$mp['support_wxpay']){
+                                    ?>
+                                    <!--                                <select name="dining_pay_type[{$details.0.dining_info.dining_room_id}]" class="form-control" disabled="disabled">
+                                                                     <foreach name="dining_pay_types" item="vo" >
+                                                                        <?php
+                                                                        if(\Admin\Model\DiningRoomModel::$PAY_TYPE_OFFLINE == $key){
+                                                                        ?>
+                                                                        <option value="{$key}" selected="selected">{$vo}</option>
+                                                                        <?php
+                                                                        }else{
+                                                                        ?>
+                                                                        <option value="{$key}">{$vo}</option>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
+                                                                     </foreach>
+                                                                    </select>-->
+                                    支付方式:<?php echo  \Admin\Model\DiningRoomModel::$PAY_TYPE_OFFLINE;?>
+                                    <input type="hidden" name="dining_pay_type[{$details.0.dining_info.id}]" value="<?php echo \Admin\Model\DiningRoomModel::$PAY_TYPE_OFFLINE;?>">
+                                    <?php
+                                    }
+                                    ?>
+                                </p>
+                            </div>
+                        </div>
+                </volist>
+
+
+                <div class="thumbnail">
+                    <i class="fa fa-money"></i> 总餐费:<span style="color:red;">￥{$total_amount}</span>
+                </div>
+
+            </div>
+
+            <div class="col-xs-12">
+                <input type="hidden" name="car_id" value="{$car_id}">
+                <button type="button" class="btn btn-danger btn-block" id="commit" onclick="javascript:commit_order();"><i class="fa fa-list-alt"></i> 提交订单</button>
+            </div>
+        </div>
+    </form>
+</block>
+
+
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        function get_addresinfo(dining_room_id){
+            WeixinJSBridge.invoke(
+                    'editAddress', <?php echo $address_sign_info; ?> ,
+                    function(res){
+                        $('#address_'+dining_room_id).css('display','block');
+                        var address_detail = res.userName +' '+ res.telNumber + ' '+res.addressCitySecondStageName + " " + res.addressCountiesThirdStageName + " " + res.addressDetailInfo;
+                        $('#address_detail_'+dining_room_id).html(address_detail);
+                    }
+            );
+        }
+
+        function get_address(dining_room_id) {
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', get_addresinfo(dining_room_id), false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', get_addresinfo(dining_room_id));
+                    document.attachEvent('onWeixinJSBridgeReady', get_addresinfo(dining_room_id));
+                }
+            } else {
+                get_addresinfo(dining_room_id);
+            }
+        }
+
+        function commit_order() {
+            $('#commit').attr('disabled', 'true');
+            $.ajax({
+                type: "POST",
+                url: "/Wechat/FoodOrder/create/t/{$mp.mp_token}",
+                data: $('#car_form').serialize(),
+                success: function(data) {
+                    var obj = eval(data);
+                    if (obj.status) {
+                        window.location.href="/Wechat/FoodOrder/index";
+                    } else {
+                        $('#commit').removeAttr("disabled");
+                        alert(obj.info);
+                    }
+                }
+            });
+        }
+
+        function select_type(type, dining_room_id) {/*type:2餐厅用餐 3配送到家*/
+            if (type == 2) {
+                $('#address_' + dining_room_id).css('display', 'none');
+            } else if (type == 3) {
+                $('#address_' + dining_room_id).css('display', 'block');
+            }
+        }
+
+        function result(status) {
+            $("#dialog").dialog("close");
+        }
+    </script>
+</block>

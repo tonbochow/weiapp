@@ -1,5 +1,6 @@
 <extend name="Base/common"/>
 <block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="__CSS__/foodcar_index.css" rel="stylesheet">
 </block>
 <block name="header">
@@ -7,6 +8,9 @@
 </block>
 
 <block name="body">
+    <div id="dialog" title="加入购餐车" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
     <form novalidate  class="ng-app:weiapp_car" ng-app="weiapp_car" id="ng-app"  name="CarForm" ng-controller="CarController">
     <div class="row" style="margin-top:10px;"> 
         <div class="col-xs-12">
@@ -26,7 +30,7 @@
                 
                 
                 
-                <div class="thumbnail" ng-repeat="detail in car.car_details">
+                <div class="thumbnail" ng-repeat="detail in car.car_details" id="car_detail_{{detail.id}}">
                     <div class="media">
                         <div class="media-left">
                             <a href="/Wechat/food/view/id/{{detail.food_setmenu_id}}/t/{$mp.mp_token}">
@@ -34,17 +38,17 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">{{detail.name}}</h4>
+                            <h4 class="media-heading"><a href="/Wechat/food/view/id/{{detail.food_setmenu_id}}/t/{$mp.mp_token}">{{detail.name}}</a></h4>
                             微信价:{{detail.price}}<p>
                             <div class="input-group" style="width:130px;">
-                                <a href class="input-group-addon" ng-click="reduce(detail.id)"><i class="fa fa-minus"></i></a>
-                                <input type="text" class="form-control" aria-label="" ng-model="detail.count" ng-pattern="/^\d+(\.\d+)?$/"  ng-trim="true" ng-minlength="1" ng-maxlength="10" value="{{detail.count}}">
-                                <a href class="input-group-addon" ng-click="add(detail.id)"><i class="fa fa-plus"></i></a>
+                                <a href class="input-group-addon" ng-click="reduce(this)"><i class="fa fa-minus"></i></a>
+                                <input type="text" readonly class="form-control" aria-label=""  ng-pattern="/^\d+(\.\d+)?$/"  ng-trim="true" ng-minlength="1" ng-maxlength="10" value="{{detail.count}}">
+                                <a href class="input-group-addon" ng-click="add(this)"><i class="fa fa-plus"></i></a>
                             </div>
                         </div>
                         <div class="media-right">
-                            <h4 class="media-heading">￥{{detail.amount}}</h4>
-                            <a href ng-click="del(detail.id)">
+                            <h4 class="media-heading">￥{{detail.count*detail.price}}</h4>
+                            <a href ng-click="del(this)">
                                 <i class="fa fa-trash fa-3x fa-align-center" style="color:#67738A"></i>
                             </a>
                         </div>
@@ -82,7 +86,7 @@
             </if>
         </div>
     </div>
-    <!--</form>-->
+    </form>
 </block>
 
 <block name="footer">
@@ -96,10 +100,10 @@
                                     <a href="/Wechat/index/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-cutlery"></i> 点菜</a>
                                 </li>
                                 <li style="float:left;width:33%;text-align: center;">
-                                    <a href="" style="color:red;font-weight: bold;"><i class="fa fa-money"></i> 总计:￥<span id="total_amount"></span></a>
+                                    <a href="javascript:void()" style="color:red;font-weight: bold;"><i class="fa fa-money"></i> 总计:￥<span id="total_amount"></span></a>
                                 </li>
                                 <li style="float:left;width:34%;text-align: center;">
-                                    <a href="#" class="btn btn-danger"><i class="fa fa-cny"></i> 结算({$car_num})</a>
+                                    <a href="/Wechat/FoodCar/commitorder/t/{$mp.mp_token}" class="btn btn-danger"><i class="fa fa-cny"></i> 结算(<span id="total_num">{$car_num}</span>)</a>
                                 </li>
                             </ul>
                         </div>
@@ -107,64 +111,97 @@
                 </div>
             </nav>
         </footer>
-    </form>
 </block>
 
 <block name="script">
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript">
         var CarModule = angular.module("weiapp_car", []);
         CarModule.controller("CarController", function($scope, $http) {
             $scope.car = {};
+            $scope.car_detail = {};
             $scope.car.car_details = {$json_car_details};
             $scope.car.t = '{$mp.mp_token}';
-            $scope.add = function(car_detail_id){
-                if(typeof(car_detail_id) != 'undefined'){
+            $scope.total_amount = 0;
+//            for(var i=0;i<$scope.car.car_details.length;i++){
+//                var node = $scope.car.car_details[i];
+//                $scope.total_amount = parseFloat($scope.total_amount) + parseFloat(node.amount);
+//            }
+            $('#total_amount').html({$total_amount});
+            $scope.add = function(obj){
+                if(typeof(obj) != 'undefined'){
+                    var node = obj.detail;
+                    $scope.car_detail.id = node.id;
                     $http({
                         method: "POST",
                         url: "/Wechat/FoodCar/add/t/"+$scope.car.t,
-                        data: $.param($scope.car),
+                        data: $.param($scope.car_detail),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                     }).success(function (data) {
                         if (data.status) {
-                            
+                            node.count = parseFloat(node.count) + parseFloat(1);
+//                            $scope.total_amount = parseFloat($scope.total_amount) + parseFloat(node.price);
+                            $('#total_amount').html(data.info);
                         } else {
-  
+                            $('#dialog_content').text(data.info);
+                            $("#dialog").dialog({modal: true});
+                            setTimeout("result(" + data.status + ")", 1000);
                         }
                     });
                 }
             }
-            $scope.reduce = function(car_detail_id){
-                if(typeof(car_detail_id) != 'undefined'){
-                    $http({
-                        method: "POST",
-                        url: "/Wechat/FoodCar/reduce/t/"+$scope.car.t,
-                        data: $.param($scope.car),
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-                    }).success(function (data) {
-                        if (data.status) {
-                            
-                        } else {
-  
-                        }
-                    });
+            $scope.reduce = function(obj){
+                if(typeof(obj) != 'undefined'){
+                    var node = obj.detail;
+                    $scope.car_detail.id = node.id;
+                    node.count = parseFloat(node.count) - parseFloat(1);
+                    if(node.count > 0){
+                        $http({
+                            method: "POST",
+                            url: "/Wechat/FoodCar/reduce/t/"+$scope.car.t,
+                            data: $.param($scope.car_detail),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function (data) {
+                            if (data.status) {               
+//                                $scope.total_amount = parseFloat($scope.total_amount) - parseFloat(node.price);
+                                $('#total_amount').html(data.info);
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    }else{
+                        node.count = parseFloat(node.count) + parseFloat(1);
+                    }
                 }
             }
-            $scope.del = function(car_detail_id){
-                if(typeof(car_detail_id) != 'undefined'){
+            $scope.del = function(obj){
+                if(typeof(obj) != 'undefined'){
+                    var node = obj.detail;
+                    $scope.car_detail.id = node.id;
                     $http({
                         method: "POST",
                         url: "/Wechat/FoodCar/del/t/"+$scope.car.t,
-                        data: $.param($scope.car),
+                        data: $.param($scope.car_detail),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
                     }).success(function (data) {
                         if (data.status) {
-                            
+                            $('#car_detail_'+node.id).remove();
+                            var total_num = $('#total_num').html() - 1;
+                            $('#total_num').html(total_num);
+                            $('#total_amount').html(data.info);
                         } else {
-  
+                            $('#dialog_content').text(data.info);
+                            $("#dialog").dialog({modal: true});
+                            setTimeout("result(" + data.status + ")", 1000);
                         }
                     });
                 }
             }
         });
+        function result(status) {
+            $("#dialog").dialog("close");
+        }
     </script>
 </block>

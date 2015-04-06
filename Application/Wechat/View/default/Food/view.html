@@ -12,7 +12,7 @@
     <div id="dialog" title="加入购餐车" style="display:none;">
         <p id="dialog_content"></p>
     </div>
-   
+
     <div class="row" style="margin-top:10px;">
         <div class="col-xs-12">
             <div class="thumbnail">
@@ -78,53 +78,109 @@
 </block>
 
 <block name="footer">
-<form novalidate  class="ng-app:weiapp_food" ng-app="weiapp_food" id="ng-app"  name="FoodForm" ng-controller="FoodController">
-    <footer class="footer">
-        <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <ul class="nav navbar-nav" style="width:100%;text-align: center;">
-                            <li style="float:left;width:33%;text-align: center;">
-                                <a href="/Wechat/index/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-cutlery"></i> 点菜</a>
-                            </li>
-                            <li style="float:left;width:33%;text-align: center;">
-                                <a href="/Wechat/FoodCar/index/t/{$mp.mp_token}" style="color:#fba949;"><i class="fa fa-list-alt"></i>  立即下单</a>
-                            </li>
-                            <li style="float:left;width:34%;text-align: center;">
+    <form novalidate  class="ng-app:weiapp_food" ng-app="weiapp_food" id="ng-app"  name="FoodForm" ng-controller="FoodController">
+        <footer class="footer">
+            <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <ul class="nav navbar-nav" style="width:100%;text-align: center;">
+                                <li style="float:left;width:40%;text-align: center;">
+                                    <a href="/Wechat/index/index/t/{$mp.mp_token}" style="color:green;"><i class="fa fa-cutlery"></i> 点菜</a>
+                                </li>
+<!--                                <li style="float:left;width:33%;text-align: center;">
+                                    <a href="/Wechat/FoodCar/index/t/{$mp.mp_token}" style="color:#fba949;"><i class="fa fa-list-alt"></i>  立即下单</a>
+                                </li>-->
+                                <li style="float:left;width:60%;text-align: center;">
                                 <if condition="$car_num neq 0">
-                                <a href="#" class="btn btn-danger" ng-mode="food.id" ng-click="addCar(food.id)"><i class="fa fa-cart-plus"></i> 加入餐车 <span class="badge">{$car_num}</span></a>
+                                    <?php
+                                    if(intval($food[0]['dining_room_id']) > 0){
+                                    ?>
+                                    <a href="#" class="btn btn-danger" ng-model="food.id" ng-click="addCar(food.id)"><i class="fa fa-cart-plus"></i> 加入餐车 <span class="badge"><span id="total_num">{$car_num}</span></span></a>
+                                    <?php
+                                    }else{
+                                    ?>
+                                    <a href="#" class="btn btn-danger" ng-model="food.id"   data-toggle="modal" data-target="#exampleModal" ><i class="fa fa-cart-plus"></i> 加入餐车 <span class="badge"><span id="total_num">{$car_num}</span></span></a>
+                                    <?php
+                                    }
+                                    ?>
                                     <else />
-                                <a href="#" class="btn btn-danger" ng-mode="food.id" ng-click="addCar(food.id)"><i class="fa fa-cart-plus"></i> 加入餐车</a>
+                                    <?php
+                                    if(intval($food[0]['dining_room_id']) > 0){
+                                    ?>
+                                    <a href="#" class="btn btn-danger" ng-model="food.id" ng-click="addCar(food.id)"><i class="fa fa-cart-plus"></i> 加入餐车</a>
+                                    <?php
+                                    }else{
+                                    ?>
+                                    <a href="#" class="btn btn-danger" ng-model="food.id"   data-toggle="modal" data-target="#exampleModal" ><i class="fa fa-cart-plus"></i> 加入餐车</a>
+                                    <?php
+                                    }
+                                    ?>
+<!--                                    <a href="#" class="btn btn-danger" ng-model="food.id" ng-click="addCar(food.id)"><i class="fa fa-cart-plus"></i> 加入餐车</a>-->
                                 </if>
-                            </li>
-                        </ul>
+
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="exampleModalLabel"></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <!--<label for="recipient-name" class="control-label">餐厅:</label>-->
+                                                    <select class="form-control" name="dining_room_id" required ng-model="food.dining_room_id"  ng-options="m.id as m.dining_name for m in food.dining_room_arr">
+                                                        <option value="">请选择</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+                                                <button type="button" class="btn btn-primary"  ng-click="addCar(food.id)">确认</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-    </footer>
-</form>
+            </nav>
+        </footer>
+    </form>
 </block>
 
 <block name="script">
     <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="__STATIC__/lightbox/js/lightbox.min.js"></script>
     <script type="text/javascript">
+        $('#exampleModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var recipient = button.data('whatever') ;
+            var modal = $(this);
+            modal.find('.modal-title').text('请选择用餐或配送餐厅');
+            modal.find('.modal-body input').val(recipient);
+        });
+
         var FoodModule = angular.module("weiapp_food", []);
         FoodModule.controller("FoodController", function($scope, $http) {
             $scope.food = {};
+            $scope.food.dining_room_arr = {$dining_room_arr};
             $scope.food.id = {$food[0].id};
             $scope.food.t = '{$mp.mp_token}';
-            $scope.addCar = function(id){
-                if(typeof(id) != 'undefined'){
+            $scope.addCar = function(id) {
+                if (typeof (id) != 'undefined') {
                     $http({
                         method: "POST",
-                        url: "/Wechat/Food/addcar/t/"+$scope.food.t,
+                        url: "/Wechat/Food/addcar/t/" + $scope.food.t,
                         data: $.param($scope.food),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-                    }).success(function (data) {
+                    }).success(function(data) {
+                        $('#exampleModal').modal('hide');
                         if (data.status) {
+                            var total_num = parseInt($('#total_num').html()) + parseInt(1);
+                            $('#total_num').html(total_num);
                             $('#dialog_content').text(data.info);
                             $("#dialog").dialog({modal: true});
                             setTimeout("result(" + data.status + ")", 1000);
