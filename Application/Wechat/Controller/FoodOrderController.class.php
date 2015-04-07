@@ -13,7 +13,29 @@ class FoodOrderController extends BaseController {
 
     //订单列表
     public function index() {
+        $foodOrderModel = M('FoodOrder');
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+        $map['mp_id'] = MP_ID;
+        $order_no = I('request.order_no','','trim');
+        $cond = '';
+        if(!empty($order_no)){
+            $cond =" and weiapp_food_order.order_no='$order_no'";
+        }
+        $page_num = 10;
+        $order_count = $foodOrderModel->where($map)->count();
+        import('Common.Extends.Page.BootstrapPage');
+        $Page = new \BootstrapPage($order_count, $page_num);
+        $show = $Page->show();
+        $food_orders = $foodOrderModel
+                ->join('left  join weiapp_food_detail ON weiapp_food.id = weiapp_food_detail.food_id')
+                ->where('weiapp_food.status=1' . " $cond")
+                ->group('weiapp_food_detail.food_id')
+                ->order('weiapp_food_detail.default_share')
+                ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
+                ->limit($Page->firstRow . ',' . $Page->listRows)
+                ->select();
 
+        $this->assign('page', $show);
         $this->meta_title = $this->mp['mp_name'] . "订单列表";
         $this->display('index');
     }
@@ -202,7 +224,7 @@ class FoodOrderController extends BaseController {
             }
         }
         //4 微信发送消息通知餐厅有用户下单
-        
+
         $foodOrderModel->commit();
         if ($wxpay_flag) {
             echo json_encode(array(
@@ -217,6 +239,159 @@ class FoodOrderController extends BaseController {
                 'out_trade_no' => false,
             ));
         }
+    }
+
+    //微信支付页面
+    public function pay() {
+        //先检测微信版本
+        $weixin_version = intval(get_weixin_browser_version());
+        if ($weixin_version < 5) {
+            $this->error('微信支付需微信版本大于5,请升级微信到最新版本', '/Wechat/FoodOrder/index');
+        }
+        $out_trade_no = I('get.out_trade_no', '', 'trim');
+        $order_id = I('get.order_id', '', 'trim');
+        $map['mp_id'] = MP_ID;
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+        $map['out_trade_no'] = $out_trade_no;
+        $wx_order = M('FoodWxOrder')->where($map)->find();
+        if ($wx_order == false) {
+            $this->error('未检索到微信支付订单', '/Wechat/FoodOrder/index');
+        }
+        //检索订单
+        $map['status'] = \Admin\Model\FoodOrderModel::$STATUS_COMMITED;
+        if (empty($order_id)) {//下完订单直接跳转到支付页面(以out_trad_no为微信支付唯一交易号进行微信支付)
+            $wx_pay_outTradeNo = $out_trade_no;
+        } else {//从订单列表或详细页面跳转到支付页面(以order_no为微信支付唯一交易号进行微信支付)
+            $map['id'] = $order_id;
+        }
+        $food_orders = M('FoodOrder')->where($map)->select();
+        if (empty($food_orders)) {
+            $this->error('未检测到您的微信订单', '/Wechat/FoodOrder/index');
+        }
+        if (!empty($order_id)) {
+            $wx_pay_outTradeNo = $food_orders[0]['order_no'];
+        }
+        $total_amount = 0; //微信支付总金额
+        $wxPay_desc = '';
+        foreach ($food_orders as $food_order) {
+            $total_amount += $food_order['real_pay_amount'];
+            $wxPay_desc .= '订单号:' . trim($food_order['order_no']);
+            $orderDetailModel = D('FoodOrderDetailView');
+            $detail_cond['order_id'] = $food_order['id'];
+            $order_details = $orderDetailModel->where($detail_cond)->order("default_share desc")->group('food_id')->select();
+            $goods_desc = '';
+            foreach ($order_details as $order_detail) {
+                $wxPay_desc .= '菜品:' . trim($order_detail['food_name']) . '微信价:' . trim($order_detail['weixin_price']);
+                $goods_desc .= '菜品:' . trim($order_detail['food_name']) . '微信价:' . trim($order_detail['weixin_price']);
+            }
+            $order_ids_arr[] = $food_order['id'];
+            $food_order_info[] = array(
+                'order_id' => $food_order['id'],
+                'order_no' => $food_order['order_no'],
+                'goods_desc' => $goods_desc,
+            );
+        }
+
+        $food_order_ids = implode(",", $order_ids_arr);
+        $body = $attach = mb_substr($wxPay_desc, 0, 40, 'utf-8') . '..';
+
+        $jsApiParameters = $this->_wxPay($wx_pay_outTradeNo, $body, $attach, $total_amount);
+
+        $this->assign('out_trade_no', $wx_pay_outTradeNo);
+        $this->assign('wx_pay_amount', $total_amount);
+        $this->assign('food_order_ids', $food_order_ids);
+        $this->assign('food_order_info', $food_order_info);
+        $this->assign('jsApiParameters', $jsApiParameters);
+        $this->meta_title = $this->mp['mp_name'] . "微信支付页面";
+        $this->display('pay');
+    }
+
+    //微信支付
+    private function _wxPay($out_trade_no, $body, $attach, $total_amount) {
+        //引入微信支付相关文件
+        import('Common.Extends.WxPay.lib.Log'); //日志记录类
+        import('Common.Extends.WxPay.lib.JsApiPay'); //微信支付类
+        //初始化日志
+        $logHandler = new \CLogFileHandler("../logs/" . date('Y-m-d') . '.log');
+        $log = \Log::Init($logHandler, 15);
+        //微信支付
+        $tools = new \JsApiPay();
+        $input = new \WxPayUnifiedOrder();
+        $input->SetBody($body);
+        $input->SetAttach($attach);
+        $input->SetOut_trade_no($out_trade_no); //微信支付out_trade_no
+        $input->SetTotal_fee(strval($total_amount * 100)); //微信支付总金额
+        $input->SetTime_start(date("YmdHis")); //微信支付开始时间
+        $input->SetTime_expire(date("YmdHis", time() + 600)); //微信支付有效时间
+        $input->SetGoods_tag("'" . MP_NAME . "'");
+        $input->SetNotify_url("http://www.52gdp.com/Wechat/WxNotify/ReceivePayResult");
+        $input->SetTrade_type("JSAPI");
+        $input->SetOpenid($this->weixin_userinfo['wx_openid']); //微信用户openid
+        $order = \WxPayApi::unifiedOrder($input);
+        $jsApiParameters = $tools->GetJsApiParameters($order);
+
+        return $jsApiParameters;
+    }
+
+    //完成微信支付
+    public function completepay() {
+        $food_order_ids = I('post.fod_order_ids');
+        $out_trade_no = I('post.out_trade_no');
+        $wx_pay_amount = I('post.wx_pay_amount');
+        if (empty($food_order_ids)) {
+            $this->error('支付成功后处理订单失败');
+        }
+        $food_orderIds_arr = explode(',', $food_order_ids);
+        $foodOrderModel = M('FoodOrder');
+        $foodOrderModel->startTrans();
+        foreach ($food_orderIds_arr as $order_id) {
+            $food_order = $foodOrderModel->where(array('id' => $order_id))->find();
+            //1更新订单状态
+            $order_data['status'] = \Admin\Model\FoodOrderModel::$STATUS_WXPAYED;
+            $order_data['update_time'] = time();
+            $food_save = $foodOrderModel->where(array('id' => $order_id, 'mp_id' => MP_ID, 'wx_openid' => $this->weixin_userinfo['wx_openid']))->save($order_data);
+            if ($food_save == false) {
+                $foodOrderModel->rollback();
+            }
+            //2生成餐厅资金流水
+            $waterModel = M('FoodMoneyWater');
+            $water_data['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+            $water_data['mp_id'] = MP_ID;
+            $water_data['order_no'] = \Admin\Model\FoodOrderModel::getFoodOrderNo($order_id);
+            $water_data['amount'] = $wx_pay_amount;
+            $water_data['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
+            $water_data['create_time'] = time();
+            $water_data['update_time'] = time();
+            $water_data['current_amount'] = bcadd($this->mp['account'], $wx_pay_amount, 2);
+            $water_data['note'] = '订单号:' . $order_id . '生成的订单流水';
+            $water_id = $waterModel->add($water_data);
+            if (!$water_id) {//资金流水生成失败回滚
+                $foodOrderModel->rollback();
+            }
+            //3更新微信公众平台帐号资金
+            $mp_data['account'] = bcadd($this->mp['account'], $wx_pay_amount, 2);
+            $mp_data['update_time'] = time();
+            $mp_save = M('MicroPlatform')->where(array('id' => MP_ID))->save($mp_data);
+            //4微信通知餐厅有用户下订单
+            $info_data['title'] = '支付通知';
+            $info_data['url'] = 'http://www.52gdp.com/Wechat/FoodOrder/index/id/' . $order_id . '/t/' . MP_TOKEN;
+            if (isset($this->weixin_userinfo['headimgurl']) && !empty($this->weixin_userinfo['headimgurl'])) {
+                $info_data['image_url'] = $this->weixin_userinfo['headimgurl'];
+            } else {
+                $info_data['image_url'] = $this->mp['mp_img'];
+            }
+            $address_info = M('MemberAddress')->where(array('id' => $food_order['address_id']))->find();
+            $info_data["description"] = "用户下单成功:\n收货人：" . $address_info['real_name'] . "\n联系电话：" . $address_info['phone'];
+            //发送微信消息通知餐厅的微信号 需要绑定餐厅 每日进行签到
+            $dining_wx_openid = 'wx_abc'; //暂时写死
+            \Admin\Model\MicroPlatformModel::sendCustomerArticleMessage(APPID, APPSERCERT, $dining_wx_openid, $info_data);
+        }
+        $foodOrderModel->commit();
+        echo json_encode(array(
+            'status' => true,
+            'info' => '支付成功',
+            'out_trade_no' => $out_trade_no,
+        ));
     }
 
 }

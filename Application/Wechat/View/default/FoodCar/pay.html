@@ -1,0 +1,111 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div id="dialog" title="微信支付" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+
+    <div class="row" id="content" style="margin-right: 0px;margin-left: 0px;">
+        <ul class="list-group">
+            <volist name="food_order_info" id="food_order">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-xs-6 col-md-3">
+                            订单:<br>{food_order.order_no}
+                        </div>
+                        <div class="col-xs-6 col-md-3">
+                            {food_order.goods_desc}
+                        </div>
+                    </div>
+                </li>
+            </volist>
+        </ul>
+
+
+        <div class="form-group has-error has-feedback" style="text-align: center;">
+            <label class="control-label">实际需支付金额:<span class="label label-danger" id="total_pay_amount">￥{$wx_pay_amount}</span></label><br>
+        </div>
+
+        <form class="form-horizontal"  role="form" id="order_form" method="post">
+
+            <input type="hidden" name="out_trade_no"  value="{$out_trade_no}">   
+            <input type="hidden" name="food_order_ids" value="{$food_order_ids}">
+            <input type="hidden" name="wxpay_amount" value="{$wx_pay_amount}">
+
+            <div class="alert alert-danger" style="display:none;" id="alert_div">
+                <button type="button" class="close" onclick="javascript:hiddenAlert();">&times;</button>
+                <span id="alert_info"></span>
+            </div>
+        </form>
+
+
+        <button type="button" id="wx_btn" class="btn btn-success btn-lg btn-block" onclick="javascript:callpay();">微信支付</button>
+
+
+    </div> 
+</block>
+
+
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+            function jsApiCall() {
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest',
+                    <?php echo $jsApiParameters; ?> ,
+                    function (res) {
+                        WeixinJSBridge.log(res.err_msg);
+//                        alert(res.err_code + res.err_desc + res.err_msg);
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            //2支付成功：更改订单为待送餐 更新平台资金流水
+                            $.ajax({
+                                type: "POST",
+                                url: "/Wechat/FoodOrder/completepay",
+                                async: false,
+                                data: $("#order_form").serialize(),
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data.status) {
+                                        window.location.href = '/Wechat/FoodOrder/index/t/{$mp.mp_token}';
+                                    } else {
+                                        $('#dialog_content').text(data.info);
+                                        $("#dialog").dialog({modal: true});
+                                        setTimeout("closeDialog()", 1000);
+                                    }
+                                }
+                            });
+                        }else {//跳转到微信支付失败页面 
+                            $('#wx_btn').attr('disabled', false);
+                            $('#dialog_content').text('支付失败');
+                            $("#dialog").dialog({modal: true});
+                            setTimeout("result(" + false + ")", 1000);
+                        }
+                    }
+                );
+            }
+
+            function callpay() {
+                $('#wx_btn').attr('disabled', "disabled");
+                if (typeof WeixinJSBridge == "undefined") {
+                    if (document.addEventListener) {
+                        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                    } else if (document.attachEvent) {
+                        document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                    }
+                } else {
+                    jsApiCall();
+                }
+            }
+
+            function result(status) {
+                $("#dialog").dialog("close");
+            }
+    </script>
+</block>

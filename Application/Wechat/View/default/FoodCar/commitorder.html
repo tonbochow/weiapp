@@ -8,7 +8,7 @@
 </block>
 
 <block name="body">
-    <div id="dialog" title="加入购餐车" style="display:none;">
+    <div id="dialog" title="提交订单" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form novalidate   name="CarForm" id="car_form" >
@@ -226,10 +226,15 @@
                 success: function(data) {
                     var obj = eval(data);
                     if (obj.status) {
+                        if(obj.out_trade_no != false){
+                            window.location.href="/Wechat/FoodOrder/pay/t/{$mp.mp_token}/out_trade_no/"+obj.out_trade_no;
+                        }
                         window.location.href="/Wechat/FoodOrder/index";
                     } else {
                         $('#commit').removeAttr("disabled");
-                        alert(obj.info);
+                        $('#dialog_content').text(obj.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + obj.status + ")", 1000);
                     }
                 }
             });
