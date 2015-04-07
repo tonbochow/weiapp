@@ -1,0 +1,32 @@
+#dining_img{
+    max-height:120px;
+    max-width: 120px;
+}
+
+#title{
+    height:20px;
+    overflow: hidden;
+    font-size: 16px;
+    vertical-align: bottom;
+    color: #000;
+    font-weight: bold;
+}
+
+#amount{
+    color: #c00000;
+    font-size: 14px;
+}
+
+#order-date {
+    color: #7b7b7b;
+}
+
+.media-right{
+    color:#7b7b7b;
+    vertical-align: middle;
+}
+
+.caption{
+    padding: 0px;
+    text-align: center;
+}

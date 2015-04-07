@@ -1,0 +1,117 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/foodorder_index.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <volist name="food_orders" id="food_order">
+                <div class="thumbnail">             
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="/Wechat/DiningRoom/view/id/{$food_order.dining_room_id}/t/{$mp.mp_token}">
+                                <img class="media-object" src="<?php echo \Admin\Model\DiningRoomDetailModel::getDiningRoomPic($food_order['dining_room_id']); ?>" id="dining_img" alt="">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading" id="title">
+                                <a href="/Wechat/DiningRoom/view/id/{$food_order.dining_room_id}/t/{$mp.mp_token}">
+                                    <?php echo \Admin\Model\DiningRoomModel::getDiningRoomName($food_order['dining_room_id']); ?>
+                                </a>
+                            </h4>
+                            <p id="amount">订单号:{$food_order.order_no} ￥:{$food_order.real_pay_amount}</p>
+                            <p id="amount"><?php echo \Admin\Model\FoodOrderModel::getFoodPayType($food_order['pay_type']); ?> <span id="status_{$food_order.id}"><?php echo \Admin\Model\FoodOrderModel::getFoodOrderStatus($food_order['status']); ?></span></p>
+                            <p id="order-date">{$food_order.create_time|date="Y-m-d H:i:s",###}</p>
+                        </div>
+                        <div class="media-right">
+                            <i class="fa fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    <div class="caption">
+                        <p>
+                            <a href="/Wechat/FoodOrder/view/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-primary" role="button"><i class="fa fa-list-alt"></i> 查看订单</a>
+                            <?php
+                            if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_DELIVERY){
+                            ?>
+                            <a id="finish_{$food_order.id}" href="javascript:void();" onclick="finish({$food_order.id});" class="btn btn-success" role="button"><i class="fa fa-check"></i> 确认完成</a>
+                            <?php
+                            }
+                            ?>
+                            <?php
+                            if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_COMMITED  && $food_order['pay_type'] == \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN){
+                            ?>
+                            <a href="/Wechat/FoodOrder/pay/out_trade_no/{$food_order.out_trade_no}/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-success" role="button"><i class="fa fa-weixin"></i> 微信支付</a>
+                            <?php
+                            }
+                            ?>
+                            <?php
+                            if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_COMMITED){
+                            ?>
+                            <a id="cancel_{$food_order.id}" href="javascript:void();" onclick="cancel({$food_order.id});" class="btn btn-default" role="button"><i class="fa fa-times"></i> 取消订单</a>
+                            <?php
+                            }
+                            ?>
+                        </p>
+                    </div>
+                </div>
+            </volist>
+        </div>
+        <div class="col-xs-12" style="text-align: center;">{$page}</div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+         function cancel(order_id){
+             $('#cancel_'+order_id).attr('disabled', 'true');
+             $.ajax({
+                type: "POST",
+                url: "/Wechat/FoodOrder/cancel/t/{$mp.mp_token}",
+                data: {'order_id':order_id},
+                success: function(data) {
+                    var obj = eval(data);
+                    if (obj.status) {
+                        $('#cancel_'+order_id).remove();
+                        $('#status_'+order_id).html(obj.info);
+                    } else {
+                        $('#cancel_'+order_id).removeAttr("disabled");
+                        $('#dialog_content').text(obj.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + obj.status + ")", 1000);
+                    }
+                }
+            });
+         }
+         
+         function finish(order_id){
+             $('#finish_'+order_id).attr('disabled', 'true');
+             $.ajax({
+                type: "POST",
+                url: "/Wechat/FoodOrder/finish/t/{$mp.mp_token}",
+                data: {'order_id':order_id},
+                success: function(data) {
+                    var obj = eval(data);
+                    if (obj.status) {
+                        $('#finish_'+order_id).remove();
+                        $('#status_'+order_id).html(obj.info);
+                    } else {
+                        $('#finish_'+order_id).removeAttr("disabled");
+                        $('#dialog_content').text(obj.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + obj.status + ")", 1000);
+                    }
+                }
+            });
+         }
+         
+         function result(status) {
+            $("#dialog").dialog("close");
+        }
+    </script>
+</block>

@@ -35,6 +35,7 @@ class FoodOrderViewModel extends ViewModel {
             'status',
             'pay_time',
             'delivery_time',
+            'create_time',
             'finish_time',
             '_type' => 'LEFT',
         ),

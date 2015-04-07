@@ -45,4 +45,11 @@ class DiningRoomDetailModel extends Model {
         return $status_arr;
     }
 
+    //获取一张餐厅展示图片
+    public static function getDiningRoomPic($dining_room_id){
+        $map['dining_room_id'] = $dining_room_id;
+        $map['status'] = self::$STATUS_ENABLED;
+        $dining_room_detail = M('DiningRoomDetail')->where($map)->order('create_time')->find();
+        return $dining_room_detail['url'];
+    }
 }

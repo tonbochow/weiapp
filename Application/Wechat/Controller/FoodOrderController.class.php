@@ -14,12 +14,13 @@ class FoodOrderController extends BaseController {
     //订单列表
     public function index() {
         $foodOrderModel = M('FoodOrder');
+        $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
         $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $map['mp_id'] = MP_ID;
-        $order_no = I('request.order_no','','trim');
+        $order_no = I('request.order_no', '', 'trim');
         $cond = '';
-        if(!empty($order_no)){
-            $cond =" and weiapp_food_order.order_no='$order_no'";
+        if (!empty($order_no)) {
+            $cond = " and weiapp_food_order.order_no='$order_no'";
         }
         $page_num = 10;
         $order_count = $foodOrderModel->where($map)->count();
@@ -27,23 +28,38 @@ class FoodOrderController extends BaseController {
         $Page = new \BootstrapPage($order_count, $page_num);
         $show = $Page->show();
         $food_orders = $foodOrderModel
-                ->join('left  join weiapp_food_detail ON weiapp_food.id = weiapp_food_detail.food_id')
-                ->where('weiapp_food.status=1' . " $cond")
-                ->group('weiapp_food_detail.food_id')
-                ->order('weiapp_food_detail.default_share')
-                ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
+                ->join('left  join weiapp_food_order_detail ON weiapp_food_order.id = weiapp_food_order_detail.order_id')
+                ->where('weiapp_food_order.mp_id=' . MP_ID . ' and weiapp_food_order.wx_openid ="' . $this->weixin_userinfo['wx_openid'] . '"' . $cond)
+                ->order('weiapp_food_order.create_time desc')
+                ->field('weiapp_food_order.*,weiapp_food_order_detail.food_id')
                 ->limit($Page->firstRow . ',' . $Page->listRows)
                 ->select();
+//        dump($food_orders);
+//        echo $foodOrderModel->getLastSql();
 
+        $this->assign('food_orders', $food_orders);
         $this->assign('page', $show);
         $this->meta_title = $this->mp['mp_name'] . "订单列表";
         $this->display('index');
     }
 
+    //查看订单
+    public function view() {
+        
+    }
+
+    //取消订单
+    public function cancel() {
+        $order_id = I('post.order_id', '', 'trim');
+    }
+
+    //完成订单
+    public function finish() {
+        $order_id = I('post.order_id', '', 'trim');
+    }
+
     //创建订单(微信支付订单 | 线下付款订单)
     public function create() {
-        dump(I('post.'));
-        exit;
         $car_id = I('post.car_id');
         $real_name_arr = I('post.real_name');
         $phone_arr = I('post.phone');
