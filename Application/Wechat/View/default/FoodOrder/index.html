@@ -8,6 +8,9 @@
 </block>
 
 <block name="body">
+    <div id="dialog" title="订单管理" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
     <div class="row" style="margin-top:10px;">
         <div class="col-xs-12">
             <volist name="food_orders" id="food_order">
@@ -45,7 +48,7 @@
                             <?php
                             if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_COMMITED  && $food_order['pay_type'] == \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN){
                             ?>
-                            <a href="/Wechat/FoodOrder/pay/out_trade_no/{$food_order.out_trade_no}/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-success" role="button"><i class="fa fa-weixin"></i> 微信支付</a>
+                            <a id="pay_{$food_order.id}" href="/Wechat/FoodOrder/pay/out_trade_no/{$food_order.out_trade_no}/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-success" role="button"><i class="fa fa-weixin"></i> 微信支付</a>
                             <?php
                             }
                             ?>
@@ -75,15 +78,15 @@
                 url: "/Wechat/FoodOrder/cancel/t/{$mp.mp_token}",
                 data: {'order_id':order_id},
                 success: function(data) {
-                    var obj = eval(data);
-                    if (obj.status) {
+                    if (data.status) {
                         $('#cancel_'+order_id).remove();
-                        $('#status_'+order_id).html(obj.info);
+                        $('#pay_'+order_id).remove();
+                        $('#status_'+order_id).html(data.info);
                     } else {
                         $('#cancel_'+order_id).removeAttr("disabled");
-                        $('#dialog_content').text(obj.info);
+                        $('#dialog_content').text(data.info);
                         $("#dialog").dialog({modal: true});
-                        setTimeout("result(" + obj.status + ")", 1000);
+                        setTimeout("result(" + data.status + ")", 1000);
                     }
                 }
             });
@@ -96,15 +99,14 @@
                 url: "/Wechat/FoodOrder/finish/t/{$mp.mp_token}",
                 data: {'order_id':order_id},
                 success: function(data) {
-                    var obj = eval(data);
-                    if (obj.status) {
+                    if (data.status) {
                         $('#finish_'+order_id).remove();
-                        $('#status_'+order_id).html(obj.info);
+                        $('#status_'+order_id).html(data.info);
                     } else {
                         $('#finish_'+order_id).removeAttr("disabled");
-                        $('#dialog_content').text(obj.info);
+                        $('#dialog_content').text(data.info);
                         $("#dialog").dialog({modal: true});
-                        setTimeout("result(" + obj.status + ")", 1000);
+                        setTimeout("result(" + data.status + ")", 1000);
                     }
                 }
             });

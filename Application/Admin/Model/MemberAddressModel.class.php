@@ -13,9 +13,9 @@ namespace Admin\Model;
 use Think\Model;
 
 class MemberAddressModel extends Model {
-    
-    public static $STATUS_ENABLE = 1;//可用
-    public static $STATUS_DISABLE = 0;//不可用
+
+    public static $STATUS_ENABLE = 1; //可用
+    public static $STATUS_DISABLE = 0; //不可用
 
     /* 自动验证规则 */
     protected $_validate = array(
@@ -41,4 +41,14 @@ class MemberAddressModel extends Model {
         }
         return $status_arr;
     }
+
+    //获取微信用户地址
+    public static function getMemberAddress($address_id) {
+        $addressModel = M('MemberAddress');
+        $map['id'] = $address_id;
+        $map['status'] = self::$STATUS_ENABLE;
+        $member_address = $addressModel->where($map)->order("is_default desc,create_time asc")->find();
+        return $member_address;
+    }
+
 }

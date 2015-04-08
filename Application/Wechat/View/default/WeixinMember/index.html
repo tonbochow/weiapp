@@ -15,14 +15,20 @@
             </div>
             <ul class="padding-list">
                 <li>
-                    <a href="/FoodOrder/waitpay/t/{$mp.mp_token}">
-                        <p id="waite4PaymentSum">0</p>
+                    <a href="/Wechat/FoodOrder/index/status/{$status_need_pay}/pay_type/{$weixin_pay}/t/{$mp.mp_token}">
+                        <p id="waite4PaymentSum">{$need_pay_count}</p>
                         <p>待付款</p>
                     </a>
                 </li>
                 <li>
-                    <a href="">
-                        <p id="waitDeliveryOrderListSum">0</p>
+                    <a href="/Wechat/FoodOrder/index/status/{$status_delivery}/t/{$mp.mp_token}">
+                        <p id="waitDeliveryOrderListSum">{$delivery_count}</p>
+                        <p>送餐中</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Wechat/FoodOrder/index/status/{$status_finish}/t/{$mp.mp_token}">
+                        <p id="waitDeliveryOrderListSum">{$finish_count}</p>
                         <p>已完成</p>
                     </a>
                 </li>

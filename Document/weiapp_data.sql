@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-04-07 17:24:06
+Date: 2015-04-08 17:35:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1217,11 +1217,12 @@ CREATE TABLE `weiapp_food_order` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购餐订单';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='购餐订单';
 
 -- ----------------------------
 -- Records of weiapp_food_order
 -- ----------------------------
+INSERT INTO `weiapp_food_order` VALUES ('1', '0', 'wx_abcdef', '0', '1', '1', '20153232', '2', '1', '0.00', '1.00', '25.50', '25.50', '25.50', '0.00', '0.00', '1', 'asfdsaf2sf23wdf', '0', '', '1', '0', '0', '0', '1484532364', '1428465099');
 
 -- ----------------------------
 -- Table structure for `weiapp_food_order_detail`
@@ -1251,11 +1252,13 @@ CREATE TABLE `weiapp_food_order_detail` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购餐订单明细';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='购餐订单明细';
 
 -- ----------------------------
 -- Records of weiapp_food_order_detail
 -- ----------------------------
+INSERT INTO `weiapp_food_order_detail` VALUES ('1', '0', 'wx_abcdef', '0', '1', '1', '1', '2', '1.00', '25.50', '25.50', '', '25.50', '25.50', '0', '0.00', '0.00', '0', '0.00', '', '1482234432', '1482234432');
+INSERT INTO `weiapp_food_order_detail` VALUES ('2', '0', 'wx_abcdef', '0', '1', '1', '1', '3', '1.00', '12.50', '12.50', '', '12.50', '12.50', '0', '0.00', '0.00', '0', '0.00', '', '1482234432', '1482234432');
 
 -- ----------------------------
 -- Table structure for `weiapp_food_setmenu`
@@ -1517,11 +1520,12 @@ CREATE TABLE `weiapp_member_address` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of weiapp_member_address
 -- ----------------------------
+INSERT INTO `weiapp_member_address` VALUES ('1', '0', 'wx_abcdef', '周东宝', '13112344321', '0', '河北省', '0', '保定市', '0', '新市区', '东风西路', '0', '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_info`

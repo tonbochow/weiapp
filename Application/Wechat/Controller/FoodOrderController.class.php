@@ -19,8 +19,16 @@ class FoodOrderController extends BaseController {
         $map['mp_id'] = MP_ID;
         $order_no = I('request.order_no', '', 'trim');
         $cond = '';
+        $status = I('get.status', '', 'trim');
+        $pay_type = I('get.pay_type', '', 'trim');
+        if(!empty($status)){
+            $cond .= " and weiapp_food_order.status=$status";
+        }
+        if(!empty($pay_type)){
+            $cond .= " and weiapp_food_order.pay_type=$pay_type";
+        }
         if (!empty($order_no)) {
-            $cond = " and weiapp_food_order.order_no='$order_no'";
+            $cond .= " and weiapp_food_order.order_no='$order_no'";
         }
         $page_num = 10;
         $order_count = $foodOrderModel->where($map)->count();
@@ -31,6 +39,7 @@ class FoodOrderController extends BaseController {
                 ->join('left  join weiapp_food_order_detail ON weiapp_food_order.id = weiapp_food_order_detail.order_id')
                 ->where('weiapp_food_order.mp_id=' . MP_ID . ' and weiapp_food_order.wx_openid ="' . $this->weixin_userinfo['wx_openid'] . '"' . $cond)
                 ->order('weiapp_food_order.create_time desc')
+                ->group('id')
                 ->field('weiapp_food_order.*,weiapp_food_order_detail.food_id')
                 ->limit($Page->firstRow . ',' . $Page->listRows)
                 ->select();
@@ -45,17 +54,76 @@ class FoodOrderController extends BaseController {
 
     //查看订单
     public function view() {
-        
+        $order_id = I('get.id', '', 'trim');
+        $foodOrderModel = M('FoodOrder');
+        $map['id'] = $order_id;
+        $map['mp_id'] = MP_ID;
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $food_order_info = $foodOrderModel->where($map)->find();
+        if ($food_order_info == false) {
+            $this->error('未检索您要查看的订单', '/Wechat/FoodOrder/index/t/' . MP_TOKEN);
+        }
+        $food_orders = $foodOrderModel
+                ->join("left join weiapp_food_order_detail on weiapp_food_order.id = weiapp_food_order_detail.order_id")
+                ->where('weiapp_food_order.mp_id=' . MP_ID . ' and weiapp_food_order.wx_openid ="' . $this->weixin_userinfo['wx_openid'] . '" and weiapp_food_order.id =' . $order_id)
+                ->field('weiapp_food_order.*,weiapp_food_order_detail.food_id,weiapp_food_order_detail.count as food_count,weiapp_food_order_detail.weixin_price as food_weixin_price,weiapp_food_order_detail.unit,weiapp_food_order_detail.real_pay_amount as food_real_pay_amount')
+                ->select();
+        $address_info = array();
+        if ($food_orders[0]['type'] == \Admin\Model\FoodOrderModel::$TYPE_DELIVERY_HOME) {
+            $address_info = \Admin\Model\MemberAddressModel::getMemberAddress($food_orders[0]['address_id']);
+        }
+
+//        echo $foodOrderModel->getLastSql();
+//        dump($food_orders);
+
+        $this->assign('address_info', $address_info);
+        $this->assign('food_orders', $food_orders);
+        $this->meta_title = $this->mp['mp_name'] . "订单详细页面";
+        $this->display('view');
     }
 
     //取消订单
     public function cancel() {
         $order_id = I('post.order_id', '', 'trim');
+        $map['id'] = $order_id;
+        $map['mp_id'] = MP_ID;
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $food_order = M('FoodOrder')->where($map)->find();
+        if ($food_order == false) {
+            $this->error('未检索到您要取消的订单', '', true);
+        }
+        if ($food_order['status'] != \Admin\Model\FoodOrderModel::$STATUS_COMMITED) {
+            $this->error('此订单不允许取消', '', true);
+        }
+        $order_data['status'] = \Admin\Model\FoodOrderModel::$STATUS_CANCEL;
+        $order_data['update_time'] = time();
+        $order_save = M('FoodOrder')->where($map)->save($order_data);
+        if ($order_save) {
+            $this->success('已取消', '', true);
+        }
+        $this->error('取消订单失败', '', true);
     }
 
     //完成订单
     public function finish() {
         $order_id = I('post.order_id', '', 'trim');
+        $map['id'] = $order_id;
+        $map['mp_id'] = MP_ID;
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $food_order = M('FoodOrder')->where($map)->find();
+        if ($food_order == false) {
+            $this->error('未检索到您要完成的订单', '', true);
+        }
+        if ($food_order['status'] != \Admin\Model\FoodOrderModel::$STATUS_DELIVERY) {
+            $this->error('此订单不允许完成', '', true);
+        }
+        $order_data['status'] = \Admin\Model\FoodOrderModel::$STATUS_FINISHED;
+        $order_data['update_time'] = time();
+        $order_save = M('FoodOrder')->where($map)->save($order_data);
+        if ($order_save) {
+            $this->success('已完成', '', true);
+        }
+        $this->error('完成订单失败', '', true);
     }
 
     //创建订单(微信支付订单 | 线下付款订单)

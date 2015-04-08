@@ -34,7 +34,6 @@ class FoodDetailModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-
     //获取菜品状态
     public static function getFoodDetailStatus($status = null, $has_choice = true) {
         if ($has_choice) {
@@ -46,6 +45,15 @@ class FoodDetailModel extends Model {
             return $status_arr[$status];
         }
         return $status_arr;
+    }
+
+    //获取一张菜品默认图片
+    public static function getFoodPic($food_id) {
+        $map['food_id'] = $food_id;
+        $map['mp_id'] = MP_ID;
+        $map['status'] = self::$STATUS_ENABLED;
+        $food_detail = M('FoodDetail')->where($map)->order("default_share desc,input_name asc")->find();
+        return $food_detail['url'];
     }
 
 }
