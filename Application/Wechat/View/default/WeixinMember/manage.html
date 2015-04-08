@@ -1,0 +1,22 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/weixinmember_index.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <ul class="list-group">
+                <a href="/Wechat/WeixinMember/info/t/{$mp.mp_token}"><li class="list-group-item list-group-item-warning"><i class="fa fa-info-circle"></i> 个人信息</li></a>
+                <a href="/Wechat/WeixinMember/bind/t/{$mp.mp_token}"><li class="list-group-item list-group-item-success"><i class="fa fa-user"></i> 账户绑定</li></a>
+            </ul>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+
+</block>

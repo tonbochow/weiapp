@@ -1,0 +1,42 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/weixinmember_index.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">{$this->weixin_userinfo['nickname']}个人信息</div>
+                <div class="panel-body">
+                    <p></p>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item">微信昵称:{$weixin_userinfo.nickname}</li>
+                    <li class="list-group-item">性别:
+                    <if condition="$weixin_userinfo.sex eq 1">
+                        男
+                        <elseif condition="$weixin_userinfo.sex eq 0">
+                        女
+                        <else />
+                        未知
+                    </if>
+                    </li>
+                    <li class="list-group-item">省份:{$weixin_userinfo.province}</li>
+                    <li class="list-group-item">城市:{$weixin_userinfo.city}</li>
+                    <li class="list-group-item">国家:{$weixin_userinfo.country}</li>
+                    <li class="list-group-item">头像:<img src="{$weixin_userinfo.headimgurl}" style="max-height: 150px;max-width: 150px;"></li>
+                    <li class="list-group-item">关注时间:{$weixin_userinfo.subscribe_time|date='Y-m-d H:i:s',###}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+
+</block>

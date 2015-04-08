@@ -22,9 +22,11 @@ class FoodOrderController extends BaseController {
         $status = I('get.status', '', 'trim');
         $pay_type = I('get.pay_type', '', 'trim');
         if(!empty($status)){
+            $map['status'] = $status;
             $cond .= " and weiapp_food_order.status=$status";
         }
         if(!empty($pay_type)){
+            $map['pay_type'] = $pay_type;
             $cond .= " and weiapp_food_order.pay_type=$pay_type";
         }
         if (!empty($order_no)) {

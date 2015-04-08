@@ -13,6 +13,7 @@
     </div>
     <div class="row" style="margin-top:10px;">
         <div class="col-xs-12">
+            <if condition="$food_orders neq ''">
             <volist name="food_orders" id="food_order">
                 <div class="thumbnail">             
                     <div class="media">
@@ -63,6 +64,9 @@
                     </div>
                 </div>
             </volist>
+                <else />
+                <div class="alert alert-danger" role="alert">未检索到订单</div>
+            </if>
         </div>
         <div class="col-xs-12" style="text-align: center;">{$page}</div>
     </div>

@@ -1,0 +1,83 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/weixinmember_index.css" rel="stylesheet">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="/Public/Admin/css/bootstrap_form.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div id="dialog" title="帐号绑定" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <div class="thumbnail">
+                <if condition="$weixin_userinfo.member_id gt 0">
+                    <div class="alert alert-success" role="alert">已绑定：{$username}</div>
+                    <else/>
+                    <form novalidate  class="ng-app:weiapp_member" ng-app="weiapp_member" id="ng-app"  name="MemberForm" ng-controller="MemberController" ng-submit="submitForm()">
+                        <div class="form-group" ng-class="{'has-error' : MemberForm.username.$invalid && !MemberForm.username.$pristine}">
+                            <label for="username">登录用户名(*必填)</label>
+                            <input type="username" class="form-control" ng-model="member.username" ng-trim="true" ng-minlength="1" ng-maxlength="16" required id="username" placeholder="请输入用户名">
+                            <p ng-show="MemberForm.username.$invalid && !MemberForm.username.$pristine" class="help-block">用户名必填</p>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error' : MemberForm.password.$invalid && !MemberForm.password.$pristine}">
+                            <label for="password">密码(*必填)</label>
+                            <input type="password" class="form-control" ng-model="member.password" ng-trim="true" ng-minlength="1" ng-maxlength="32" required id="password" placeholder="请输入密码">
+                            <p ng-show="MemberForm.password.$invalid && !MemberForm.password.$pristine" class="help-block">密码必填</p>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error' : MemberForm.email.$invalid && !MemberForm.email.$pristine}">
+                            <label for="email">邮箱(*必填)</label>
+                            <input type="text" class="form-control" ng-model="member.email" ng-pattern="/^[\w\d]+[\w\d-.]*@[\w\d-.]+\.[\w\d]{2,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="32" required id="email" placeholder="请输入邮箱">
+                            <p ng-show="MemberForm.email.$invalid && !MemberForm.email.$pristine" class="help-block">邮箱必填</p>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block submit" ng-disabled="MemberForm.$invalid">绑定</button>
+                    </form>
+                </if>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript">
+                var MemberModule = angular.module("weiapp_member", []);
+                MemberModule.controller("MemberController", function($scope, $http) {                  
+                    $scope.member = {};
+                    $scope.submitForm = function() {
+                        $('.submit').attr('disabled', 'true');
+                        $http({
+                            method: "POST",
+                            url: "/Wechat/WeixinMember/bind/t/{$mp.mp_token}",
+                            data: $.param($scope.member),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function(data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                                windown.location.href = '/Wechat/WeixinMember/manage/t/{$mp.mp_token}';
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+                }
+    </script>
+</block>

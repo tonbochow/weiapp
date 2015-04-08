@@ -38,4 +38,49 @@ class WeixinMemberController extends BaseController {
         $this->display('index');
     }
 
+    //用户账户面板
+    public function manage() {
+
+        $this->meta_title = $this->mp['mp_name'] . "微信用户账户管理面板";
+        $this->display('manage');
+    }
+
+    //微信用户查看个人信息
+    public function info() {
+        $this->meta_title = $this->mp['mp_name'] . "微信用户个人信息";
+        $this->display('info');
+    }
+
+    //微信用户账户绑定
+    public function bind() {
+        if (IS_POST) {
+            $username = I('post.username', '', 'trim');
+            $map['username'] = $username;
+            $password = I('post.password', '', 'trim');
+            $map['password'] = md5($password);
+            $email = I('post.email', '', 'trim');
+            $map['email'] = $email;
+            $ucenter_member = M('UcenterMember')->where($map)->find();
+            if ($ucenter_member == false) {
+                $this->error('绑定失败,您输入的绑定信息有误', '', true);
+            }
+            $weixinMemberModel = M('WeixinMember');
+            $data['member_id'] = $ucenter_member['id'];
+            $data['update_time'] = time();
+            $bind = $weixinMemberModel->where(array('wx_openid' => $this->weixin_userinfo['wx_openid'], 'mp_id' => MP_ID))->save($data);
+            if ($bind) {
+                $this->success('绑定成功', '', true);
+            }
+            $this->error('绑定失败', '', true);
+        }
+        $username = '';
+        if ($this->weixin_userinfo['member_id']) {
+            $user_info = M(UcenterMember)->where(array('id' => $this->weixin_userinfo['member_id']))->find();
+            $username = $user_info['username'];
+        }
+        $this->assign('username', $username);
+        $this->meta_title = $this->mp['mp_name'] . "微信用户绑定帐号";
+        $this->display('bind');
+    }
+
 }
