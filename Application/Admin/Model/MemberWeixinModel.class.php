@@ -45,4 +45,9 @@ class MemberWeixinModel extends Model {
         return $status_arr;
     }
 
+    //获取微信用户昵称
+    public static function getWeixinUserNickname($wx_openid) {
+        return M('MemberWeixin')->where(array('wx_openid' => $wx_openid, 'mp_id' => MP_ID))->field('nickname');
+    }
+
 }

@@ -1,0 +1,90 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/foodorder_index.css" rel="stylesheet">
+    <link href="/Public/Admin/css/bootstrap_form.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div id="dialog" title="评论" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <div class="thumbnail">
+                <if condition="$type eq 1">
+                    <img src="<?php echo \Admin\Model\FoodDetailModel::getFoodPic($food['id']); ?>" alt="" id="dining_img">
+                    <else />
+                    <img src="" alt="" id="dining_img">
+                </if>
+                <div class="caption">
+                    <h3>{$food.food_name}</h3>
+                    <p></p>
+                    <p>
+                    <form  novalidate  class="ng-app:weiapp_comment" ng-app="weiapp_comment" id="ng-app"  name="CommentForm" ng-controller="CommentController" ng-submit="submitForm()">
+                        <div class="form-item" ng-class="{'has-error' : CommentForm.comment.$invalid && !CommentForm.comment.$pristine}">
+                            <label class="item-label"><i class="fa fa-comments"></i>评论:<span class="check-tips">（*必填）</span></label>
+                            <div class="controls">
+                                <div class="ueditor" config="config" ng-model="comment_info.comment" ng-minlength="1" ng-trim="true" required ></div>
+                                <p ng-show="CommentForm.comment.$invalid && !CommentForm.comment.$pristine" class="help-block">菜品描述必填</p>
+                            </div>
+                        </div>
+                        <p>
+                        <div class="form-item">
+                            <button type="submit" class="btn btn-success submit" ng-disabled="CommentForm.$invalid"><i class="fa fa-comments"></i>提交评论</button>
+                        </div>
+                    </form>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.config.comment.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/angular-ueditor.js"></script>
+    <script type="text/javascript">
+                var CommentModule = angular.module("weiapp_comment", ['ng.ueditor']);
+                CommentModule.controller("CommentController", function($scope, $http) {                  
+                    $scope.comment_info = {};
+                    $scope.comment_info.type = {$type};
+                    $scope.comment_info.food_setmenu_id = {$food_setmenu_id};
+                    $scope.submitForm = function() {
+                        $('.submit').attr('disabled', 'true');
+                        $http({
+                            method: "POST",
+                            url: "/Wechat/FoodComment/create/t/{$mp.mp_token}",
+                            data: $.param($scope.comment_info),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                        }).success(function(data) {
+                            if (data.status) {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                                window.location.href="/Wechat/FoodComment/index/t/{$mp.mp_token}";
+                            } else {
+                                $('#dialog_content').text(data.info);
+                                $("#dialog").dialog({modal: true});
+                                setTimeout("result(" + data.status + ")", 1000);
+                            }
+                        });
+                    };
+                });
+                function result(status) {
+                    $("#dialog").dialog("close");
+                    $('.submit').removeAttr("disabled");
+                }
+    </script>
+</block>
