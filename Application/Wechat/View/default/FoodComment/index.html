@@ -1,0 +1,53 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/foodorder_index.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <volist name="comments" id="comment">
+                <div class="thumbnail" onclick="javascript:window.location.href='/Wechat/FoodComment/view/id/{$comment.id}/t/{$mp.mp_token}'">             
+                    <div class="media">
+                        <div class="media-left">
+                            <if condition="$comment.type eq 1">
+                            <a href="/Wechat/Food/view/id/{$comment.food_setmenu_id}/t/{$mp.mp_token}">
+                                <img class="media-object" src="<?php echo \Admin\Model\FoodDetailModel::getFoodPic($comment['food_setmenu_id']); ?>" id="dining_img" alt="">
+                            </a>
+                            <else />
+                            <a href="/Wechat/FoodSetmenu/view/id/{$comment.food_setmenu_id}/t/{$mp.mp_token}">
+                                <img class="media-object" src="<?php echo \Admin\Model\FoodDetailModel::getFoodPic($comment['food_setmenu_id']); ?>" id="dining_img" alt="">
+                            </a>
+                            </if>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading" id="title">
+                                <if condition="$comment.type eq 1">
+                                <a href="/Wechat/Food/view/id/{$comment.food_setmenu_id}/t/{$mp.mp_token}">
+                                <else />
+                                <a href="/Wechat/FoodSetmenu/view/id/{$comment.food_setmenu_id}/t/{$mp.mp_token}">
+                                </if>
+                                    {$comment.food_setmenu_name} 
+                                    
+                                </a>
+                            </h4>
+                            <p><i class="fa fa-comments"></i>:{$comment.create_time|date='Y-m-d H:i:s',###}  <?php echo \Admin\Model\FoodCommentModel::getFoodCommentStatus($comment['status']);?></p>
+                            <p>{$comment.comment|substr=0,180}...</p>
+                        </div>
+                        <div class="media-right">
+                            <i class="fa fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </volist>
+        </div>
+        <div class="col-xs-12" style="text-align: center;">{$page}</div>
+    </div>
+</block>
+
+<block name="script">
+
+</block>

@@ -34,8 +34,8 @@ class MemberAddressModel extends Model {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
         }
-        $status_arr[self::$STATUS_ENABLE] = '可用';
-        $status_arr[self::$STATUS_DISABLE] = '不可用';
+        $status_arr[self::$STATUS_ENABLE] = '启用';
+        $status_arr[self::$STATUS_DISABLE] = '禁用';
         if ($status !== null) {
             return $status_arr[$status];
         }

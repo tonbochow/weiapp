@@ -68,7 +68,7 @@ class FoodOrderController extends BaseController {
         $food_orders = $foodOrderModel
                 ->join("left join weiapp_food_order_detail on weiapp_food_order.id = weiapp_food_order_detail.order_id")
                 ->where('weiapp_food_order.mp_id=' . MP_ID . ' and weiapp_food_order.wx_openid ="' . $this->weixin_userinfo['wx_openid'] . '" and weiapp_food_order.id =' . $order_id)
-                ->field('weiapp_food_order.*,weiapp_food_order_detail.food_id,weiapp_food_order_detail.count as food_count,weiapp_food_order_detail.weixin_price as food_weixin_price,weiapp_food_order_detail.unit,weiapp_food_order_detail.real_pay_amount as food_real_pay_amount')
+                ->field('weiapp_food_order.*,weiapp_food_order_detail.food_id,weiapp_food_order_detail.count as food_count,weiapp_food_order_detail.weixin_price as food_weixin_price,weiapp_food_order_detail.unit,weiapp_food_order_detail.real_pay_amount as food_real_pay_amount,weiapp_food_order_detail.type as detail_type')
                 ->select();
         $address_info = array();
         if ($food_orders[0]['type'] == \Admin\Model\FoodOrderModel::$TYPE_DELIVERY_HOME) {

@@ -226,6 +226,21 @@ CREATE TABLE IF NOT EXISTS `weiapp_food_category` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='餐厅菜分类';
 
+CREATE TABLE IF NOT EXISTS `weiapp_food_comment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '菜品评论表主键',
+  `member_id` int(10) NOT NULL DEFAULT '0' COMMENT '评论用户id',
+  `wx_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid',
+  `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id',
+  `food_setmenu_id` int(10) NOT NULL DEFAULT '0' COMMENT '评论菜品或套餐id',
+  `food_setmenu_name` varchar(30) NOT NULL DEFAULT '' COMMENT '菜品或套餐名称',
+  `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '类型1菜品2套餐',
+  `comment` text NOT NULL COMMENT '评论内容',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '评论状态1显示0隐藏',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '评论时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户购买完后菜品或套餐评论';
+
 CREATE TABLE IF NOT EXISTS `weiapp_food` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
