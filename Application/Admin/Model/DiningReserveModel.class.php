@@ -27,9 +27,12 @@ class DiningReserveModel extends Model {
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('dining_room_id', 'require', '餐厅id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('user_name', 'require', '联系人不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('user_num', '/^[1-9]\d*$/', '用餐人数应为正整数', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('mobile', 'require', '联系人手机号不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('mobile', '/^1\d{10}$/', '联系人手机号不正确', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('user_num', 'require', '用餐人数不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('meal_time', 'require', '用餐时间不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('remark', 'require', '用餐描述不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */

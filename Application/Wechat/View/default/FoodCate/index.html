@@ -1,8 +1,6 @@
 <extend name="Base/common"/>
 <block name="style">
-    <style type="text/css">
-
-    </style>
+    <link href="__CSS__/weixinmember_index.css" rel="stylesheet">
 </block>
 <block name="header">
 
@@ -10,7 +8,38 @@
 
 <block name="body">
     <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <ul class="menu-list">
+                <li>
+                    <a href="/Wechat/FoodSetmenu/index/t/{$mp.mp_token}">
+                        <i class="fa fa-delicious fa-3x" style="color:pink"></i>
+                        <p>特价套餐</p>
+                    </a>
+                </li>
 
+                <li>
+                    <a href="/Wechat/Index/index/is_promotion/true/t/{$mp.mp_token}">
+                        <i class="fa fa-long-arrow-down fa-3x" style="color:#77cbf0"></i>
+                        <p>促销菜品</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Wechat/Index/index/is_hot/true/t/{$mp.mp_token}">
+                        <i class="fa fa-thumbs-up fa-3x" style="color:#ff8885"></i>
+                        <p>热销菜品</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Wechat/DiningReserve/create/t/{$mp.mp_token}">
+                        <i class="fa fa-calendar fa-3x" style="color:#ffc485"></i>
+                        <p>我要预定</p>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
         <if condition="$food_cates neq ''">
             <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food_cate" ng-app="weiapp_food_cate" id="ng-app"  name="FoodCateForm" ng-controller="FoodCateController" ng-submit="submitForm()">
                 <div class="col-xs-12">

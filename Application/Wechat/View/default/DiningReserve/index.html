@@ -1,5 +1,6 @@
 <extend name="Base/common"/>
 <block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="__CSS__/foodorder_index.css" rel="stylesheet">
 </block>
 <block name="header">
@@ -61,7 +62,7 @@
                             <div class="form-group">
                                 <label for="user_num" class="col-sm-2 control-label" style="padding-top:0px;"><i class="fa fa-sort-numeric-asc"></i> 用餐人数:</label>
                                 <div class="col-sm-10">
-                                    {$reserve.user_name}
+                                    {$reserve.user_num}
                                 </div>
                             </div>
 
@@ -75,9 +76,11 @@
                             <div class="form-group">
                                 <label for="status" class="col-sm-2 control-label" style="padding-top:0px;"><i class="fa fa-hand-o-right"></i> 预定状态:</label>
                                 <div class="col-sm-10">
+                                    <span id="status_{$reserve.id}">
                                     <?php
                                     echo \Admin\Model\DiningReserveModel::getDiningReserveStatus($reserve['status']);
                                     ?>
+                                    </span>
                                 </div>
                             </div>
                             
@@ -87,7 +90,23 @@
                                     {$reserve.remark}
                                 </div>
                             </div>
-
+ 
+                            <div class="form-group" style="text-align: center;">
+                                <?php
+                                if($reserve['status'] == \Admin\Model\DiningReserveModel::$STATUS_CONFIRM){
+                                ?>
+                                <a id="finish_{$reserve.id}" href="javascript:void();" onclick="finish({$reserve.id});" class="btn btn-success" role="button"><i class="fa fa-check"></i> 确认完成</a>
+                                <?php
+                                }
+                                ?>
+                                <?php
+                                if($reserve['status'] == \Admin\Model\DiningReserveModel::$STATUS_COMMITED){
+                                ?>
+                                <a id="cancel_{$reserve.id}" href="javascript:void();" onclick="cancel({$reserve.id});" class="btn btn-danger" role="button"><i class="fa fa-times"></i> 取消预定</a>
+                                <?php
+                                }
+                                ?>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -100,5 +119,50 @@
 </block>
 
 <block name="script">
-
+<script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+         function cancel(id){
+             $('#cancel_'+id).attr('disabled', 'true');
+             $.ajax({
+                type: "POST",
+                url: "/Wechat/DiningReserve/cancel/t/{$mp.mp_token}",
+                data: {'id':id},
+                success: function(data) {
+                    if (data.status) {
+                        $('#cancel_'+id).remove();
+                        $('#status_'+id).html(data.info);
+                    } else {
+                        $('#cancel_'+id).removeAttr("disabled");
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                    }
+                }
+            });
+         }
+         
+         function finish(id){
+             $('#finish_'+id).attr('disabled', 'true');
+             $.ajax({
+                type: "POST",
+                url: "/Wechat/DiningReserve/finish/t/{$mp.mp_token}",
+                data: {'id':id},
+                success: function(data) {
+                    if (data.status) {
+                        $('#finish_'+id).remove();
+                        $('#status_'+id).html(data.info);
+                    } else {
+                        $('#finish_'+id).removeAttr("disabled");
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                    }
+                }
+            });
+         }
+         
+         function result(status) {
+            $("#dialog").dialog("close");
+        }
+    </script>
 </block>

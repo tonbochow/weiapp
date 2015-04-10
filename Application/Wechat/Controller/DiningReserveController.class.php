@@ -22,11 +22,11 @@ class DiningReserveController extends BaseController {
         $Page = new \BootstrapPage($comment_count, $page_num);
         $show = $Page->show();
         $reserves = $diningReserveModel->where($map)->order('create_time desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
-//        if (!empty($reserves)) {
-//            foreach ($comments as $key => $comment) {
-//                $comments[$key]['comment'] = htmlspecialchars_decode(stripslashes($comment['comment']));
-//            }
-//        }
+        if (!empty($reserves)) {
+            foreach ($reserves as $key => $reserve) {
+                $reserves[$key]['remark'] = htmlspecialchars_decode(stripslashes($reserve['remark']));
+            }
+        }
 
         $this->assign('page', $show);
         $this->assign('reserves', $reserves);
@@ -36,54 +36,72 @@ class DiningReserveController extends BaseController {
 
     //创建预定
     public function create() {
-        $food_setmenu_id = I('request.food_setmenu_id', '', 'intval');
-        $type = I('request.type', '', 'intval');
-        $map['food_setmenu_id'] = $food_setmenu_id;
-        $map['type'] = $type;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
-        $map['mp_id'] = MP_ID;
-        $comment = M('FoodComment')->where($map)->find();
-        if (!empty($comment)) {
-            if (IS_POST) {
-                $this->error('您已评论过', '', true);
-            }
-            $this->error('您已评论过');
-        }
         if (IS_POST) {
-            $foodCommentModel = D('FoodComment');
-            $data['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
-            $data['mp_id'] = MP_ID;
-            $data['food_setmenu_id'] = $food_setmenu_id;
-            if ($type == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD) {
-                $data['food_setmenu_name'] = \Admin\Model\FoodModel::getFoodName($food_setmenu_id);
-            } else {
-                $data['food_setmenu_name'] = '';
-            }
-            $data['type'] = $type;
-            $data['comment'] = I('post.comment');
-            $data['status'] = \Admin\Model\FoodCommentModel::$STATUS_ENABLE;
-            $data['create_time'] = time();
-            $data['update_time'] = time();
-            if ($foodCommentModel->create($data, \Admin\Model\FoodCommentModel::MODEL_INSERT)) {
-                $comment_id = $foodCommentModel->add();
-                if ($comment_id) {
-                    $this->success('评论成功,感谢您的评论', '', true);
+            $reserve_data = I('post.');
+            $reserve_data['mp_id'] = MP_ID;
+            $reserve_data['wx_openid'] = $this->weixin_userinfo['wx_openid'] ='wx_abcdef';
+            $reserve_data['meal_time'] = strtotime($reserve_data['meal_time']);
+            $reserveModel = D('Admin/DiningReserve');
+            if ($reserveModel->create($reserve_data, \Admin\Model\DiningReserveModel::MODEL_INSERT)) {
+                $reserve_id = $reserveModel->add();
+                if ($reserve_id) {
+                    $this->success('创建预定成功', '', true);
                 }
             }
-            $this->error('评论失败', '', true);
+            $this->error($reserveModel->getError(), '', true);
+        }
+        $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
+        foreach ($dining_rooms as $val) {
+            $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
         }
 
-        if ($type == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD) {
-            $food = M('Food')->where(array('id' => $food_setmenu_id))->find();
-        } else {
-            $food = M('FoodSetmenu')->where(array('id' => $food_setmenu_id))->find();
-        }
-
-        $this->assign('food', $food);
-        $this->assign('food_setmenu_id', $food_setmenu_id);
-        $this->assign('type', $type);
-        $this->meta_title = $this->mp['mp_name'] . "创建评论";
+        $this->assign('dining_room_arr', json_encode($dining_room_arr));
+        $this->meta_title = $this->mp['mp_name'] . "创建预定";
         $this->display('create');
+    }
+
+    //取消预定
+    public function cancel() {
+        $id = I('post.id', '', 'trim');
+        $map['id'] = $id;
+        $map['mp_id'] = MP_ID;
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $reserve = M('DiningReserve')->where($map)->find();
+        if ($reserve == false) {
+            $this->error('未检索到您要取消的预定', '', true);
+        }
+        if ($reserve['status'] != \Admin\Model\DiningReserveModel::$STATUS_COMMITED) {
+            $this->error('此预定不允许取消', '', true);
+        }
+        $reserve_data['status'] = \Admin\Model\DiningReserveModel::$STATUS_CANCEL;
+        $reserve_data['update_time'] = time();
+        $reserve_save = M('DiningReserve')->where($map)->save($reserve_data);
+        if ($reserve_save) {
+            $this->success('已取消', '', true);
+        }
+        $this->error('取消预定失败', '', true);
+    }
+
+    //完成预定
+    public function finish() {
+        $id = I('post.id', '', 'trim');
+        $map['id'] = $id;
+        $map['mp_id'] = MP_ID;
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $reserve = M('DiningReserve')->where($map)->find();
+        if ($reserve == false) {
+            $this->error('未检索到您要完成的预定', '', true);
+        }
+        if ($reserve['status'] != \Admin\Model\DiningReserveModel::$STATUS_CONFIRM) {
+            $this->error('此预定不允许完成', '', true);
+        }
+        $reserve_data['status'] = \Admin\Model\DiningReserveModel::$STATUS_FINISH;
+        $reserve_data['update_time'] = time();
+        $reserve_save = M('DiningReserve')->where($map)->save($reserve_data);
+        if ($reserve_save) {
+            $this->success('已完成', '', true);
+        }
+        $this->error('完成预定失败', '', true);
     }
 
 }

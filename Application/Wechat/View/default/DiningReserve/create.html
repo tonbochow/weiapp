@@ -8,42 +8,69 @@
 </block>
 
 <block name="body">
-    <div id="dialog" title="评论" style="display:none;">
+    <div id="dialog" title="我的预定" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <div class="row" style="margin-top:10px;">
         <div class="col-xs-12">
             <div class="thumbnail">
-                <if condition="$type eq 1">
-                    <img src="<?php echo \Admin\Model\FoodDetailModel::getFoodPic($food['id']); ?>" alt="" id="dining_img">
-                    <else />
-                    <img src="" alt="" id="dining_img">
-                </if>
-                <div class="caption">
-                    <h3>{$food.food_name}</h3>
-                    <p></p>
-                    <p>
-                    <form  novalidate  class="ng-app:weiapp_comment" ng-app="weiapp_comment" id="ng-app"  name="CommentForm" ng-controller="CommentController" ng-submit="submitForm()">
-                        <div class="form-item" ng-class="{'has-error' : CommentForm.comment.$invalid && !CommentForm.comment.$pristine}">
-                            <label class="item-label"><i class="fa fa-comments"></i>评论:<span class="check-tips">（*必填）</span></label>
-                            <div class="controls">
-                                <div class="ueditor" config="config" ng-model="comment_info.comment" ng-minlength="1" ng-trim="true" required ></div>
-                                <p ng-show="CommentForm.comment.$invalid && !CommentForm.comment.$pristine" class="help-block">菜品描述必填</p>
-                            </div>
+                <form novalidate  class="ng-app:weiapp_reserve" ng-app="weiapp_reserve" id="ng-app"  name="ReserveForm" ng-controller="ReserveController" ng-submit="submitForm()">
+                    <div class="form-item" ng-class="{'has-error' : ReserveForm.dining_room_id.$invalid && !ReserveForm.dining_room_id.$pristine}">
+                        <label class="item-label">所属餐厅<span class="check-tips">（*必填）</span></label>
+                        <div class="controls">
+                            <select class="form-control" name="dining_room_id" required ng-model="reserve.dining_room_id"  ng-options="m.id as m.dining_name for m in reserve.dining_room_arr">
+                                <option value="">请选择</option>
+                            </select>
+                            <p ng-show="ReserveForm.dining_room_id.$invalid && !ReserveForm.dining_room_id.$pristine" class="help-block">请选择预定餐厅</p>
                         </div>
-                        <p>
-                        <div class="form-item">
-                            <button type="submit" class="btn btn-success submit" ng-disabled="CommentForm.$invalid"><i class="fa fa-comments"></i>提交评论</button>
-                        </div>
-                    </form>
-                    </p>
-                </div>
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-error' : ReserveForm.user_name.$invalid && !ReserveForm.user_name.$pristine}">
+                        <label for="user_name">姓名(*必填)</label>
+                        <input type="text" name="user_name" id="user_name" class="form-control" ng-model="reserve.user_name" ng-pattern="/^[\u0391-\uFFE5]|\w{1,20}$/" ng-trim="true" ng-minlength="1" ng-maxlength="16" required id="user_name" placeholder="请输入姓名">
+                        <p ng-show="ReserveForm.user_name.$invalid && !ReserveForm.user_name.$pristine" class="help-block">姓名必填</p>
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-error' : ReserveForm.mobile.$invalid && !ReserveForm.mobile.$pristine}">
+                        <label for="mobile">手机(*必填)</label>
+                        <input type="mobile" name="mobile" id="mobile" class="form-control" ng-model="reserve.mobile" ng-pattern="/^1\d{10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="11" required id="mobile" placeholder="请输入手机">
+                        <p ng-show="ReserveForm.mobile.$invalid && !ReserveForm.mobile.$pristine" class="help-block">手机号码不正确</p>
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-error' : ReserveForm.user_num.$invalid && !ReserveForm.user_num.$pristine}">
+                        <label for="user_num">用餐人数(*必填)</label>
+                        <input type="text" name="user_num" id="user_num" class="form-control" ng-model="reserve.user_num" ng-pattern="/^[1-9]\d*$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required id="user_num" placeholder="请输入用餐人数">
+                        <p ng-show="ReserveForm.user_num.$invalid && !ReserveForm.user_num.$pristine" class="help-block">用餐人数必填</p>
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-error' : ReserveForm.remark.$invalid && !ReserveForm.remark.$pristine}">
+                        <label for="remark">预定描述(*必填)</label>
+                        <div class="ueditor" name="remark" id="remark" config="config" ng-model="reserve.remark" ng-minlength="1" ng-trim="true" required ></div>
+                        <p ng-show="ReserveForm.remark.$invalid && !ReserveForm.remark.$pristine" class="help-block">请填写预定描述</p>
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-error' : ReserveForm.meal_time.$invalid && !ReserveForm.meal_time.$pristine}">
+                        <label for="meal_time">用餐时间(*必填)</label>
+                        <!--<input type="text" name="meal_time" id="meal_time" class="form-control" ng-model="reserve.meal_time"  ng-trim="true" ng-minlength="1" ng-maxlength="10" required id="meal_time" placeholder="请输入用餐时间">-->
+                        <input type="text" name="meal_time" ng-model="reserve.meal_time" required class="form-control text input-large time" id="meal_time"  readonly value="" placeholder="请选择用餐时间" />
+                        <p ng-show="ReserveForm.meal_time.$invalid && !ReserveForm.meal_time.$pristine" class="help-block">用餐时间必填</p>
+                    </div>
+                    
+                    
+                    <button type="submit" class="btn btn-success btn-block submit" ng-disabled="ReserveForm.$invalid">提交预定</button>
+                </form>
             </div>
         </div>
     </div>
 </block>
 
 <block name="script">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
@@ -51,40 +78,46 @@
     <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
     <script type="text/javascript" src="__STATIC__/json2.js"></script>
-    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
     <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.config.comment.js"></script>
     <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.all.min.js"></script>
     <script type="text/javascript" src="__STATIC__/angularjs-ueditor/angular-ueditor.js"></script>
     <script type="text/javascript">
-                var CommentModule = angular.module("weiapp_comment", ['ng.ueditor']);
-                CommentModule.controller("CommentController", function($scope, $http) {                  
-                    $scope.comment_info = {};
-                    $scope.comment_info.type = {$type};
-                    $scope.comment_info.food_setmenu_id = {$food_setmenu_id};
-                    $scope.submitForm = function() {
-                        $('.submit').attr('disabled', 'true');
-                        $http({
-                            method: "POST",
-                            url: "/Wechat/FoodComment/create/t/{$mp.mp_token}",
-                            data: $.param($scope.comment_info),
-                            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-                        }).success(function(data) {
-                            if (data.status) {
-                                $('#dialog_content').text(data.info);
-                                $("#dialog").dialog({modal: true});
-                                setTimeout("result(" + data.status + ")", 1000);
-                                window.location.href="/Wechat/FoodComment/index/t/{$mp.mp_token}";
-                            } else {
-                                $('#dialog_content').text(data.info);
-                                $("#dialog").dialog({modal: true});
-                                setTimeout("result(" + data.status + ")", 1000);
-                            }
-                        });
-                    };
+        $(function(){
+            $('.time').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+        });
+        var ReserveModule = angular.module("weiapp_reserve", ['ng.ueditor']);
+        ReserveModule.controller("ReserveController", function ($scope, $http) {
+            $scope.reserve = {};
+            $scope.reserve.dining_room_arr = {$dining_room_arr};
+            $scope.submitForm = function () {
+                $('.submit').attr('disabled', 'true');
+                $http({
+                    method: "POST",
+                    url: "/Wechat/DiningReserve/create/t/{$mp.mp_token}",
+                    data: $.param($scope.reserve),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                }).success(function (data) {
+                    if (data.status) {
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                        window.location.href = "/Wechat/DiningReserve/index/t/{$mp.mp_token}";
+                    } else {
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                    }
                 });
-                function result(status) {
-                    $("#dialog").dialog("close");
-                    $('.submit').removeAttr("disabled");
-                }
+            };
+        });
+        function result(status) {
+            $("#dialog").dialog("close");
+            $('.submit').removeAttr("disabled");
+        }
     </script>
 </block>
