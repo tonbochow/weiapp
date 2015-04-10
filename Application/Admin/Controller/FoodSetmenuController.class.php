@@ -14,7 +14,7 @@ class FoodSetmenuController extends FoodBaseController {
 
     //餐厅菜品风格列表(后台管理员)
     public function index() {
-        $get_setmenu_name= I('get.setmenu_name');
+        $get_setmenu_name = I('get.setmenu_name');
         if (!empty($get_setmenu_name)) {
             $map['setmenu_name'] = array('like', '%' . (string) I('setmenu_name') . '%');
         }
@@ -50,6 +50,27 @@ class FoodSetmenuController extends FoodBaseController {
         }
         if (IS_POST) {
             $food_setmenu_data = I('post.');
+            if (empty($food_setmenu_data['url'])) {
+                $this->error('请上传一张菜品套餐图片', '', true);
+            }
+//            $setmenu_pic = $food_setmenu_data['url'];
+//            unset($food_setmenu_data['url']);
+            $save_path = C('WEBSITE_URL') . '/Uploads/Mp/' . MP_ID . '/setmenu/';
+            if (!file_exists($save_path)) {
+                $mkdir_res = mkdir($save_path, 0777, true);
+                if (!$mkdir_res) {
+                    $this->error('创建上传图片目录失败', '', true);
+                }
+            }
+            $pic_name = genOrderNo();
+            $pic_url = $save_path . $pic_name . ".jpg";
+            $final_url = '/Uploads/Mp/' . MP_ID . '/setmenu/' . "$pic_name.jpg";
+            $pic_tmp = base64_decode($food_setmenu_data['url']);
+            $create_pic = file_put_contents($pic_url, $pic_tmp);
+            if ($create_pic == false) {
+                $this->error('生成套餐图片失败!', '', true);
+            }
+            $food_setmenu_data['url'] = $final_url;
             $foodSetmenuModel = D('FoodSetmenu');
             //保存餐厅菜品套餐
             $food_setmenu_data['mp_id'] = MP_ID;
@@ -60,6 +81,7 @@ class FoodSetmenuController extends FoodBaseController {
                     $this->success('保存餐厅菜品套餐成功!', '', true);
                 }
             }
+            @unlink(C('WEBSITE_URL') . $final_url);
             $this->error($foodSetmenuModel->getError(), '', true);
         }
         //检索餐厅
@@ -86,8 +108,45 @@ class FoodSetmenuController extends FoodBaseController {
 
     //编辑餐厅菜品套餐(前台面向商家)
     public function edit() {
+
+        $id = intval(I('request.id', '', 'trim'));
+        $foodSetmenuModel = M('FoodSetmenu');
+        $map['id'] = $id;
+        $map['mp_id'] = MP_ID;
+        $food_setmenu = $foodSetmenuModel->where($map)->find();
+        if ($food_setmenu == false) {
+            if (IS_POST) {
+                $this->error('未检索到您要编辑的餐厅菜品套餐!', '', true);
+            } else {
+                $this->error('未检索到您要编辑的餐厅菜品套餐!');
+            }
+        }
         if (IS_POST) {
             $food_setmenu_data = I('post.');
+            if (!empty($food_setmenu_data['url']) && !preg_match('/\/Uploads\w*/', $food_setmenu_data['url'])) {
+                $save_path = C('WEBSITE_URL') . '/Uploads/Mp/' . MP_ID . '/setmenu/';
+                if (!file_exists($save_path)) {
+                    $mkdir_res = mkdir($save_path, 0777, true);
+                    if (!$mkdir_res) {
+                        $this->error('创建上传图片目录失败', '', true);
+                    }
+                }
+                $pic_url_arr = explode('/',$food_setmenu['url']);
+                $pic_name_str = end($pic_url_arr);
+                $pic_str_arr = explode('.',$pic_name_str);
+                $pic_name = $pic_str_arr[0];
+                if(empty($pic_name)){
+                    $pic_name = genOrderNo();
+                }
+                $pic_url = $save_path . $pic_name . ".jpg";
+                $final_url = '/Uploads/Mp/' . MP_ID . '/setmenu/' . "$pic_name.jpg";
+                $pic_tmp = base64_decode($food_setmenu_data['url']);
+                $create_pic = file_put_contents($pic_url, $pic_tmp);
+                if ($create_pic == false) {
+                    $this->error('生成套餐图片失败!', '', true);
+                }
+                $food_setmenu_data['url'] = $final_url;
+            }
             $foodSetmenuModel = D('FoodSetmenu');
             if ($foodSetmenuModel->create($food_setmenu_data, \Admin\Model\FoodSetmenuModel::MODEL_UPDATE)) {
                 $food_setmenu_edit = $foodSetmenuModel->save();
@@ -96,14 +155,6 @@ class FoodSetmenuController extends FoodBaseController {
                 }
             }
             $this->error($foodSetmenuModel->getError(), '', true);
-        }
-        $id = intval(I('get.id', '', 'trim'));
-        $foodSetmenuModel = M('FoodSetmenu');
-        $map['id'] = $id;
-        $map['mp_id'] = MP_ID;
-        $food_setmenu = $foodSetmenuModel->where($map)->find();
-        if ($food_setmenu == false) {
-            $this->error('未检索到您要编辑的餐厅菜品套餐!');
         }
 
         //检索餐厅
@@ -235,10 +286,10 @@ class FoodSetmenuController extends FoodBaseController {
             $save_setmenu_money = $this->updateSetmenuMoney($setmenu_id);
             if ($save_setmenu_money) {
                 $setmenuDetailModel->commit();
-                $this->success('保存菜品明细成功','',true);
+                $this->success('保存菜品明细成功', '', true);
             }
             $setmenuDetailModel->rollback();
-            $this->error('保存菜品明细失败!','',true);
+            $this->error('保存菜品明细失败!', '', true);
         }
         $id = I('get.id', '', 'trim');
         $map['id'] = $id;

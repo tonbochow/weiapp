@@ -56,6 +56,16 @@
                 <p ng-show="FoodSetmenuForm.setmenu_money.$invalid && !FoodSetmenuForm.setmenu_money.$pristine" class="help-block">餐厅菜品套餐优惠价</p>
             </div>
         </div>
+        
+        <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.url.$invalid && !FoodSetmenuForm.url.$pristine}">
+            <label class="item-label">菜品套餐图片<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$food_setmenu.url}" id="pic_img" style="max-width: 300px;"><br>
+                <input type="file" title="选择菜品套餐图片"   multiple="true" class="btn btn-success"  name="file_img" id="file_img" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="url" name="url" value="{$food_setmenu.url}" ng-model="food_setmenu.url">
+                <p ng-show="FoodSetmenuForm.url.$invalid && !FoodSetmenuForm.url.$pristine" class="help-block">菜品套餐图片</p>
+            </div>
+        </div>
 
         <div class="form-item">
             <button type="submit" class="btn btn-success submit" ng-disabled="FoodSetmenuForm.$invalid">保 存</button>
@@ -74,14 +84,29 @@
     <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
     <script type="text/javascript" src="__STATIC__/json2.js"></script>
     <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript" src="__STATIC__/LocalResizeIMG/LocalResizeIMG.js"></script>
+    <script type="text/javascript" src="__STATIC__/LocalResizeIMG/patch/mobileBUGFix.mini.js"></script>
     <script type="text/javascript">
                 var FoodSetmenuModule = angular.module("weiapp_food_setmenu", []);
                 FoodSetmenuModule.controller("FoodSetmenuController", function($scope, $http) {
+                    $(function(){
+                        $('#file_img').localResizeIMG({
+        //                            width: 200,
+                            quality: 0.6,
+                            success: function (result) {
+                                var compress_img = result.clearBase64;
+                                $('#pic_img').attr("src",result.base64);
+                                $('#url').val(compress_img);
+                                console.log(result);
+                            }
+                        });
+                    });
                     $scope.food_setmenu = {$json_food_setmenu};
                     $scope.food_setmenu.dining_room_arr = {$dining_room_arr};
                     $scope.food_setmenu.card_arr = {$card_arr};
                     $scope.submitForm = function() {
                         $('.submit').attr('disabled', 'true');
+                        $scope.food_setmenu.url = $('#url').val();
                         $http({
                             method: "POST",
                             url: "/Admin/FoodSetmenu/edit",

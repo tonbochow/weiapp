@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50617
+Source Server Version : 50612
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2015-04-10 17:28:30
+Date: 2015-04-11 00:09:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,7 +65,7 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
@@ -85,6 +85,7 @@ INSERT INTO `weiapp_action_log` VALUES ('12', '1', '2', '2130706433', 'member', 
 INSERT INTO `weiapp_action_log` VALUES ('13', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-10 13:57登录了后台', '1', '1428645460');
 INSERT INTO `weiapp_action_log` VALUES ('14', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-04-10 15:10登录了后台', '1', '1428649820');
 INSERT INTO `weiapp_action_log` VALUES ('15', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-10 16:20登录了后台', '1', '1428654045');
+INSERT INTO `weiapp_action_log` VALUES ('16', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-10 20:04登录了后台', '1', '1428667471');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -1123,7 +1124,7 @@ CREATE TABLE `weiapp_food_car_detail` (
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='购餐车明细表';
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='购餐车明细表';
 
 -- ----------------------------
 -- Records of weiapp_food_car_detail
@@ -1131,6 +1132,7 @@ CREATE TABLE `weiapp_food_car_detail` (
 INSERT INTO `weiapp_food_car_detail` VALUES ('27', '1', '1', 'wx_abcdef', '2', '1', '1', '宫保鸡丁', '1', '13.99', '13.99', '1428148665', '1428214743');
 INSERT INTO `weiapp_food_car_detail` VALUES ('28', '1', '1', 'wx_abcdef', '1', '1', '3', '拔丝地瓜', '1', '20.00', '20.00', '1428148671', '1428148671');
 INSERT INTO `weiapp_food_car_detail` VALUES ('29', '1', '1', 'wx_abcdef', '1', '1', '2', '鱼香肉丝', '1', '15.00', '15.00', '1428148676', '1428148676');
+INSERT INTO `weiapp_food_car_detail` VALUES ('30', '1', '1', 'wx_abcdef', '1', '2', '2', '湘菜套餐', '1', '50.00', '50.00', '1428680446', '1428680446');
 
 -- ----------------------------
 -- Table structure for `weiapp_food_category`
@@ -1327,18 +1329,20 @@ CREATE TABLE `weiapp_food_setmenu` (
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '套餐应付总价',
   `setmenu_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '套餐优惠价',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '套餐默认图片',
+  `sell_count` int(10) NOT NULL DEFAULT '0' COMMENT '销售数量',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '套餐状态1上架0下架',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='菜品套餐';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='菜品套餐';
 
 -- ----------------------------
 -- Records of weiapp_food_setmenu
 -- ----------------------------
-INSERT INTO `weiapp_food_setmenu` VALUES ('1', '1', '2', '2', '特价套餐', '鱼香肉丝 +宫保鸡丁+家常豆腐', '0', '0.00', '0.00', '', '0', '1426904986', '1426906148');
-INSERT INTO `weiapp_food_setmenu` VALUES ('2', '1', '2', '1', '湘菜套餐', '麻辣烤肉+水煮鱼', '1', '50.00', '50.00', '', '1', '1426906190', '1426942744');
-INSERT INTO `weiapp_food_setmenu` VALUES ('3', '1', '2', '0', '保定特色菜', '火烧+驴肉+小菜', '1', '0.00', '0.00', '', '1', '1426906230', '1426906230');
+INSERT INTO `weiapp_food_setmenu` VALUES ('1', '1', '2', '2', '特价套餐', '鱼香肉丝 +宫保鸡丁+家常豆腐', '0', '0.00', '0.00', '/Uploads/Mp/1/setmenu/2015041010152485.jpg', '0', '0', '1426904986', '1428673438');
+INSERT INTO `weiapp_food_setmenu` VALUES ('2', '1', '2', '1', '湘菜套餐', '麻辣烤肉+水煮鱼', '1', '50.00', '50.00', '/Uploads/Mp/1/setmenu/2015041056504955.jpg', '0', '1', '1426906190', '1428673447');
+INSERT INTO `weiapp_food_setmenu` VALUES ('3', '1', '2', '0', '保定特色菜', '火烧+驴肉+小菜', '1', '0.00', '0.00', '/Uploads/Mp/1/setmenu/2015041052525155.jpg', '0', '1', '1426906230', '1428673460');
+INSERT INTO `weiapp_food_setmenu` VALUES ('4', '1', '2', '1', '东北乱炖', '东北乱炖', '1', '0.00', '45.00', '/Uploads/Mp/1/setmenu/2015041054561015.jpg', '0', '1', '1428671303', '1428673380');
 
 -- ----------------------------
 -- Table structure for `weiapp_food_setmenu_detail`
@@ -1549,7 +1553,7 @@ CREATE TABLE `weiapp_member` (
 -- Records of weiapp_member
 -- ----------------------------
 INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '190', '113', '0', '1423289473', '2130706433', '1428649820', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '200', '136', '0', '0', '2130706433', '1428654045', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '200', '137', '0', '0', '2130706433', '1428667471', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -5382,7 +5386,7 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- Records of weiapp_ucenter_member
 -- ----------------------------
 INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1428649820', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1428654045', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1428667471', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`
