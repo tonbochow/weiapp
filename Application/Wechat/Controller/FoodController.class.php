@@ -47,7 +47,11 @@ class FoodController extends BaseController {
     public function addcar() {
         if (IS_POST) {
             $food_id = I('post.id', '', 'intval');
+            $post_dining_room_id = I('post.dining_room_id', '', 'intval');
             $wx_open_id = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+            if($post_dining_room_id){
+                $map['dining_room_id'] = $post_dining_room_id;
+            }
             $map['wx_openid'] = $wx_open_id;
             $map['mp_id'] = MP_ID;
             $map['food_setmenu_id'] = $food_id;

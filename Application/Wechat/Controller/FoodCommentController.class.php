@@ -54,6 +54,12 @@ class FoodCommentController extends BaseController {
     //创建评论
     public function create() {
         $food_setmenu_id = I('request.food_setmenu_id', '', 'intval');
+        if(!$food_setmenu_id){
+            if (IS_POST) {
+                $this->error('请选择要评论的菜品或套餐', '', true);
+            }
+            $this->error('请选择要评论的菜品或套餐');
+        }
         $type = I('request.type', '', 'intval');
         $map['food_setmenu_id'] = $food_setmenu_id;
         $map['type'] = $type;
@@ -65,6 +71,22 @@ class FoodCommentController extends BaseController {
                 $this->error('您已评论过', '', true);
             }
             $this->error('您已评论过');
+        }
+        //检测微信用户是否有评论的权限
+        unset($map['type']);
+        $food_order_detail = M('FoodOrderDetail')->where($map)->find();
+        if($food_order_detail == false){
+            if (IS_POST) {
+                $this->error('您无权评论', '', true);
+            }
+            $this->error('您无权评论');
+        }
+        $food_order = M('FoodOrder')->where(array('id'=>$food_order_detail['order_id'],'wx_openid'=>$this->weixin_userinfo['wx_openid'],'mp_id'=>MP_ID))->find();
+        if($food_order['status'] != \Admin\Model\FoodOrderModel::$STATUS_FINISHED){
+            if (IS_POST) {
+                $this->error('订单还未完成无法评论', '', true);
+            }
+            $this->error('订单还未完成无法评论');
         }
         if (IS_POST) {
             $foodCommentModel = D('FoodComment');

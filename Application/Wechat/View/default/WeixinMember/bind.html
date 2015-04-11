@@ -1,7 +1,6 @@
 <extend name="Base/common"/>
 <block name="style">
     <link href="__CSS__/weixinmember_index.css" rel="stylesheet">
-    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="/Public/Admin/css/bootstrap_form.css" rel="stylesheet">
 </block>
 <block name="header">
@@ -51,9 +50,7 @@
     <!--[if lt IE 9]>
     <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
     <![endif]-->
-    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
-    <script type="text/javascript" src="__STATIC__/json2.js"></script>
     <script type="text/javascript">
                 var MemberModule = angular.module("weiapp_member", []);
                 MemberModule.controller("MemberController", function($scope, $http) {                  

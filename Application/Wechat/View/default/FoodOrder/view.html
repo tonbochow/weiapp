@@ -1,6 +1,5 @@
 <extend name="Base/common"/>
 <block name="style">
-    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="__CSS__/foodorder_index.css" rel="stylesheet">
 </block>
 <block name="header">
@@ -106,7 +105,6 @@
 </block>
 
 <block name="script">
-    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript">
          function cancel(order_id){
              $('#cancel_'+order_id).attr('disabled', 'true');

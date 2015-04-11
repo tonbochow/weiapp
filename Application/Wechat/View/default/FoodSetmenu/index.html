@@ -7,6 +7,10 @@
 </block>
 
 <block name="body">
+    <div id="dialog" title="加入购餐车" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    
     <div class="row" style="margin-top:10px;">
         <div class="col-xs-12">
             <ul class="menu-list">
@@ -42,12 +46,16 @@
         </div>
         <if condition="$setmenus neq ''">
             <volist name="setmenus" id="setmenu">
-                <div class="col-xs-6" onclick="javascript:window.location.href='/Wechat/FoodSetmenu/view/id/{$setmenu.id}/t/{$mp.mp_token}'">
+                <div class="col-xs-6">
                     <div class="thumbnail" style="height:370px;">
                         <if condition="$setmenu.url eq ''">
+                            <a href="/Wechat/FoodSetmenu/view/id/{$setmenu.id}/t/{$mp.mp_token}">
                             <img src="{$mp.mp_img}" alt="" style="height:200px;">
+                            </a>
                             <else />
+                            <a href="/Wechat/FoodSetmenu/view/id/{$setmenu.id}/t/{$mp.mp_token}">
                             <img src="{$setmenu.url}" alt="" style="height:200px;">
+                            </a>
                         </if>
                         <div class="caption">
                             <h4>{$setmenu.setmenu_name}</h4>
@@ -60,9 +68,35 @@
                             <span style="text-decoration: line-through;color:#999;">原价:￥{$setmenu.amount}</span><br>微信价:<i class="fa fa-cny"></i>{$setmenu.setmenu_money}
                             </p>
                             <p style="text-align:center;">
-                                <a href="/Wechat/FoodSetmenu/view/id/{$setmenu.id}/t/{$mp.mp_token}" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                                <if condition="$setmenu.dining_room_id eq 0">
+                                <a href="#"  data-toggle="modal" data-target="#exampleModal_{$setmenu.id}" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                                <else />
+                                <a href="#"  onclick="javascript:addCar({$setmenu.id})" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                                </if>
                                 <a href="/Wechat/FoodSetmenu/view/id/{$setmenu.id}/t/{$mp.mp_token}" class="btn btn-success btn-sm" role="button"><i class="fa fa-search-plus"></i> 查看</a>
                             </p>
+                            <div class="modal fade" id="exampleModal_{$setmenu.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title_{$setmenu.id}" id="exampleModalLabel"></h4>
+                                        </div>
+                                        <div class="modal-body_{$setmenu.id}">
+                                            <div class="form-group">
+                                                <select class="form-control" name="dining_room_id" id="dining_room_id_{$setmenu.id}" required >
+                                                    <foreach name="dining_room_arr" item="vo" key="k">
+                                                       <option value="{$k}">{$vo}</option>
+                                                    </foreach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"  onclick="javascript:addCar({$setmenu.id})">确认</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -76,12 +110,38 @@
 </block>
 
 <block name="script">
-    <!--    <script type="text/javascript">
-            $(function () {
-                $('.carousel').carousel();
-                $('.carousel').carousel({
-                    interval: 2000
-                })
+    <script type="text/javascript">
+        <?php
+             foreach($setmenus as $key=>$setmenu){
+                 echo "$('#exampleModal_".$setmenu['id']."').on('show.bs.modal', function(event) {var button = $(event.relatedTarget);var recipient = button.data('whatever');var modal = $(this);modal.find('.modal-title_".$setmenu['id']."').text('请选择用餐或配送餐厅');modal.find('.modal-body_".$setmenu['id']." input').val(recipient);});";
+             }
+        ?>
+
+         function addCar(id){
+             var select_dining_room_id = $('#dining_room_id_'+id).val();
+             $.ajax({
+                type: "POST",
+                url: "/Wechat/FoodSetmenu/addcar/t/{$mp.mp_token}",
+                data: {'id':id,'dining_room_id':select_dining_room_id},
+                success: function(data) {
+                    $('#exampleModal_'+id).modal('hide');
+                    if (data.status) {
+                        var total_num = parseInt($('#total_num').html()) + parseInt(1);
+                        $('#total_num').html(total_num);
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                    } else {
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                    }
+                }
             });
-        </script>-->
+         }
+         
+         function result(status) {
+            $("#dialog").dialog("close");
+        }
+    </script>
 </block>

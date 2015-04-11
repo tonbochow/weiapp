@@ -68,19 +68,23 @@
                             <span style="text-decoration: line-through;color:#999;">原价:￥{$food.price}</span><br>微信价:<i class="fa fa-cny"></i>{$food.weixin_price}
                             </p>
                             <p style="text-align:center;">
-                                <a href="#" onclick="javascript:addCar({$food.id});" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                                <if condition="$food.dining_room_id eq 0">
+                                <a href="#"  data-toggle="modal" data-target="#exampleModal_{$food.id}" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                                <else />
+                                <a href="#"  onclick="javascript:addCar({$food.id})" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                                </if>
                                 <a href="/Wechat/food/view/id/{$food.id}/t/{$mp.mp_token}" class="btn btn-success btn-sm" role="button"><i class="fa fa-search-plus"></i> 查看</a>
                             </p>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="exampleModal_{$food.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="exampleModalLabel"></h4>
+                                            <h4 class="modal-title_{$food.id}" id="exampleModalLabel"></h4>
                                         </div>
-                                        <div class="modal-body">
+                                        <div class="modal-body_{$food.id}">
                                             <div class="form-group">
-                                                <select class="form-control" name="dining_room_id" required >
+                                                <select class="form-control" name="dining_room_id" id="dining_room_id_{$food.id}" required >
                                                     <foreach name="dining_room_arr" item="vo" key="k">
                                                        <option value="{$k}">{$vo}</option>
                                                     </foreach>
@@ -88,7 +92,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"  ng-click="addCar({$food.id})">确认</button>
+                                            <button type="button" class="btn btn-primary"  onclick="javascript:addCar({$food.id})">确认</button>
                                         </div>
                                     </div>
                                 </div>
@@ -107,20 +111,26 @@
 
 <block name="script">
     <script type="text/javascript">
-        $('#exampleModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var recipient = button.data('whatever') ;
-            var modal = $(this);
-            modal.find('.modal-title').text('请选择用餐或配送餐厅');
-            modal.find('.modal-body input').val(recipient);
-        });
+        <?php
+             foreach($foods as $key=>$food){
+                 echo "$('#exampleModal_".$food['id']."').on('show.bs.modal', function(event) {var button = $(event.relatedTarget);var recipient = button.data('whatever');var modal = $(this);modal.find('.modal-title_".$food['id']."').text('请选择用餐或配送餐厅');modal.find('.modal-body_".$food['id']." input').val(recipient);});";
+             }
+        ?>
+//        $('#exampleModal').on('show.bs.modal', function(event) {
+//            var button = $(event.relatedTarget);
+//            var recipient = button.data('whatever') ;
+//            var modal = $(this);
+//            modal.find('.modal-title').text('请选择用餐或配送餐厅');
+//            modal.find('.modal-body input').val(recipient);
+//        });
          function addCar(id){
+             var select_dining_room_id = $('#dining_room_id_'+id).val();
              $.ajax({
                 type: "POST",
                 url: "/Wechat/Food/addcar/t/{$mp.mp_token}",
-                data: {'id':id},
+                data: {'id':id,'dining_room_id':select_dining_room_id},
                 success: function(data) {
-                    $('#exampleModal').modal('hide');
+                    $('#exampleModal_'+id).modal('hide');
                     if (data.status) {
                         var total_num = parseInt($('#total_num').html()) + parseInt(1);
                         $('#total_num').html(total_num);

@@ -23,6 +23,12 @@ class FoodSetmenuController extends BaseController {
         $show = $Page->show();
         $setmenus = $foodSetmenuModel->where($map)->order('create_time desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
 
+        $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
+        foreach ($dining_rooms as $val) {
+            $dining_room_arr[$val['id']] = $val['dining_name'];
+        }
+
+        $this->assign('dining_room_arr', $dining_room_arr);
         $this->assign('page', $show);
         $this->assign('setmenus', $setmenus);
         $this->meta_title = $this->mp['mp_name'] . "菜品套餐列表";
@@ -64,7 +70,11 @@ class FoodSetmenuController extends BaseController {
     public function addcar() {
         if (IS_POST) {
             $setmenu_id = I('post.id', '', 'intval');
+            $post_dining_room_id = I('post.dining_room_id', '', 'intval');
             $wx_open_id = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+            if($post_dining_room_id){
+                $map['dining_room_id'] = $post_dining_room_id;
+            }
             $map['wx_openid'] = $wx_open_id;
             $map['mp_id'] = MP_ID;
             $map['food_setmenu_id'] = $setmenu_id;
