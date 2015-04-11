@@ -1,0 +1,147 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/food_view.css" rel="stylesheet">
+    <link href="__STATIC__/lightbox/css/lightbox.css" rel="stylesheet">
+    <link href="__STATIC__/ResponsiveSlides/responsiveslides.css" rel="stylesheet">
+    <link href="__STATIC__/ResponsiveSlides/demo.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div id="dialog" title="餐厅" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <div class="thumbnail">
+                <!--<img src="{$dining_rooms[0].url}" alt="">-->
+                <div class="callbacks_container">
+                  <ul class="rslides" id="slider4">
+                      <volist name="dining_rooms" id="vo" key="i">
+                            <li>
+                                <a href="{$vo.url}" data-lightbox="image-1" data-title="{$dining_rooms[0].dining_name}图片">
+                              <img src="{$vo.url}" alt="">
+                                </a>
+                              <p class="caption">餐厅图片</p>
+                            </li>
+                      </volist>
+                  </ul>
+                </div>
+                <hr>
+                <div class="caption">
+                    <h4>{$dining_rooms[0].dining_name}</h4>
+                    <ul class="list-group"  >
+                        <li class="list-group-item">
+                            <i class="fa fa-male" style="color:green"></i>
+                            负责人:{$dining_rooms[0]['dining_header']}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-tag" style="color:green"></i>
+                            餐厅支持:<?php echo \Admin\Model\DiningRoomModel::getDiningRoomType($dining_rooms[0]['type']); ?>
+                        </li>
+                        <?php
+                            if($dining_rooms[0]['type'] != \Admin\Model\DiningRoomModel::$TYPE_DINING){
+                        ?>
+                        <li class="list-group-item">
+                            <i class="fa fa-truck" style="color:green"></i>
+                            送餐费用:{$dining_rooms[0]['delivery_fee']}
+                        </li>
+                        <?php
+                        }
+                        ?>
+                        <li class="list-group-item">
+                            <i class="fa fa-phone" style="color:green"></i>
+                            电话:{$dining_rooms[0]['phone']}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-mobile" style="color:green"></i>
+                            手机:{$dining_rooms[0]['mobile']}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-map-marker" style="color:green"></i>
+                            地址:<?php  echo \Admin\Model\RegionModel::getRegionName($dining_rooms[0]['province']).\Admin\Model\RegionModel::getRegionName($dining_rooms[0]['city']).\Admin\Model\RegionModel::getRegionName($dining_rooms[0]['town']);?>{$dining_rooms[0]['address']}
+                        </li>
+                    </ul>
+                    <p style="text-align:center;">
+                        
+                    </p>
+                </div>
+            </div>
+
+            <div class="thumbnail">
+                <p><i class="fa fa-star" style="color:red"></i> {$dining_rooms[0].dining_name}介绍</p>
+                <hr>
+                <p>{$dining_rooms[0].description|htmlspecialchars_decode|stripslashes}</p>
+            </div>
+
+            <div class="thumbnail">
+                <div style="min-height: 400px;min-width: 320px;" id="container"></div>
+            </div>
+
+        </div>
+    </div>
+</block>
+
+
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/lightbox/js/lightbox.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/ResponsiveSlides/responsiveslides.min.js"></script>
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+    <script>
+        $(function(){
+            $("#slider4").responsiveSlides({
+                auto: true,
+                pager: false,
+                nav: true,
+                speed: 300,
+                namespace: "callbacks",
+                before: function () {
+                  $('.events').append("<li>before event fired.</li>");
+                },
+                after: function () {
+                  $('.events').append("<li>after event fired.</li>");
+                }
+              });
+        });
+        function init(){
+            var center=new qq.maps.LatLng({$dining_rooms[0].latitude},{$dining_rooms[0].longitude});
+            var map=new qq.maps.Map(document.getElementById("container"),{
+                center:center,
+                zoom:16
+            });
+            //给map绑定mousemove事件
+            var label = new qq.maps.Label({
+                offset:new qq.maps.Size(15,0)
+            });
+            qq.maps.event.addListener(map,"mousemove",function(e){
+                label.setContent(e.latLng.toString());
+                label.setPosition(e.latLng);
+
+            });
+            qq.maps.event.addListener(map,"mouseover",function(e){
+                label.setMap(map);
+            });
+            qq.maps.event.addListener(map,"mouseout",function(e){
+                label.setMap(null);
+            });
+//            qq.maps.event.addListener(map,"click",function(event){
+//                $('#longitude').val(event.latLng.getLng());
+//                $('#latitude').val(event.latLng.getLat());
+//            });
+            var anchor = new soso.maps.Point(6, 6),
+            size = new soso.maps.Size(24, 24),
+            icon = new soso.maps.MarkerImage('/Public/img/qq_map_center.gif', size, anchor);
+            var marker = new soso.maps.Marker({
+                icon: icon,
+                map: map,
+                position:map.getCenter()});
+            }
+        window.onload=init;
+    </script>
+</block>
+

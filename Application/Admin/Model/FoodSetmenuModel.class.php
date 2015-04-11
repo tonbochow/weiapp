@@ -68,4 +68,10 @@ class FoodSetmenuModel extends Model {
         return $food_setmenu['setmenu_name'];
     }
 
+    //获取菜品套餐默认图片
+    public static function getFoodSetmenuUrl($id) {
+        $food_setmenu =  M('FoodSetmenu')->where(array('id' => $id))->field('url')->find();
+        return $food_setmenu['url'];
+    }
+
 }

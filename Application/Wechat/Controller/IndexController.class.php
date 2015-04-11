@@ -23,10 +23,10 @@ class IndexController extends BaseController {
         if (!empty($cate_id)) {
             $cond = " and weiapp_food.cate_id=$cate_id ";
         }
-        if($is_promotion){
+        if ($is_promotion) {
             $cond .= " and weiapp_food.is_promotion =1 ";
         }
-        if($is_hot){
+        if ($is_hot) {
             $cond .= " and weiapp_food.is_hot =1 ";
         }
         $page_num = 10; //每页商品检索数量
@@ -92,7 +92,12 @@ class IndexController extends BaseController {
                 ->limit($Page->firstRow . ',' . $Page->listRows)
                 ->select();
 
+        $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
+        foreach ($dining_rooms as $val) {
+            $dining_room_arr[$val['id']] = $val['dining_name'];
+        }
 
+        $this->assign('dining_room_arr', $dining_room_arr);
         $this->assign('page', $show);
         $this->assign('foods', $foods);
         $this->meta_title = $this->mp['mp_name'] . "菜品首页";

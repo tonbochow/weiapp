@@ -42,7 +42,7 @@
         </div>
         <if condition="$setmenus neq ''">
             <volist name="setmenus" id="setmenu">
-                <div class="col-xs-6">
+                <div class="col-xs-6" onclick="javascript:window.location.href='/Wechat/FoodSetmenu/view/id/{$setmenu.id}/t/{$mp.mp_token}'">
                     <div class="thumbnail" style="height:370px;">
                         <if condition="$setmenu.url eq ''">
                             <img src="{$mp.mp_img}" alt="" style="height:200px;">

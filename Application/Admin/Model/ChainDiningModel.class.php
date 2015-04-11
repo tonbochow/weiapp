@@ -16,8 +16,8 @@ use Think\Model;
  */
 class ChainDiningModel extends Model {
 
-    public static $STATUS_ENABLE = 0; //状态 禁用
-    public static $STATUS_DISABLE = 1; //状态 启用
+    public static $STATUS_ENABLE = 1; //状态 禁用
+    public static $STATUS_DISABLE = 0; //状态 启用
 
     /* 自动验证规则 */
     protected $_validate = array(

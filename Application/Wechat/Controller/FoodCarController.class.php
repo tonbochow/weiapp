@@ -13,19 +13,25 @@ class FoodCarController extends BaseController {
 
     //购餐车
     public function index() {
-//        $map['mp_id'] = MP_ID;
-////        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
-//        $map['wx_openid'] = 'wx_abcdef';
-//        $carDetails = M('FoodCarDetail')->where($map)->select();
-        $map['weiapp_food_car_detail.mp_id'] = MP_ID;
-        $map['weiapp_food_car_detail.wx_openid'] = 'wx_abcdef';
-        $carDetails = M('FoodCarDetail')
-                ->join('left  join weiapp_food_detail ON weiapp_food_car_detail.food_setmenu_id = weiapp_food_detail.food_id')
-                ->where($map)
-                ->group('weiapp_food_car_detail.food_setmenu_id')
-                ->order('weiapp_food_detail.default_share')
-                ->field('weiapp_food_car_detail.*,weiapp_food_detail.url')
-                ->select();
+        $map['mp_id'] = MP_ID;
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';;
+        $carDetails = M('FoodCarDetail')->where($map)->select();
+        foreach ($carDetails as $key=>$detail){
+            if($detail['type'] == \Wechat\Model\FoodCarDetailModel::$TYPE_FOOD){
+                $carDetails[$key]['url'] = \Admin\Model\FoodDetailModel::getFoodPic($detail['food_setmenu_id']);
+            }else{
+                $carDetails[$key]['url'] = \Admin\Model\FoodSetmenuModel::getFoodSetmenuUrl($detail['food_setmenu_id']);
+            }
+        }
+//        $map['weiapp_food_car_detail.mp_id'] = MP_ID;
+//        $map['weiapp_food_car_detail.wx_openid'] = 'wx_abcdef';
+//        $carDetails = M('FoodCarDetail')
+//                ->join('left  join weiapp_food_detail ON weiapp_food_car_detail.food_setmenu_id = weiapp_food_detail.food_id')
+//                ->where($map)
+//                ->group('weiapp_food_car_detail.food_setmenu_id')
+//                ->order('weiapp_food_detail.default_share')
+//                ->field('weiapp_food_car_detail.*,weiapp_food_detail.url')
+//                ->select();
 //        dump($carDetails);
         $total_amount = M('FoodCarDetail')->where(array('mp_id' => MP_ID, 'wx_openid' => 'wx_abcdef'))->sum('amount');
 
@@ -114,17 +120,28 @@ class FoodCarController extends BaseController {
         );
         $address_sign_info = json_encode($info_array);
         $this->assign('address_sign_info', $address_sign_info);
-        $map['weiapp_food_car_detail.mp_id'] = MP_ID;
-//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
-        $map['weiapp_food_car_detail.wx_openid'] = 'wx_abcdef';
-//        $car_details = M('FoodCarDetail')->where($map)->select();
-        $car_details = M('FoodCarDetail')
-                ->join('left  join weiapp_food_detail ON weiapp_food_car_detail.food_setmenu_id = weiapp_food_detail.food_id')
-                ->where($map)
-                ->group('weiapp_food_car_detail.food_setmenu_id')
-                ->order('weiapp_food_detail.default_share')
-                ->field('weiapp_food_car_detail.*,weiapp_food_detail.url')
-                ->select();
+//        $map['weiapp_food_car_detail.mp_id'] = MP_ID;
+////        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+//        $map['weiapp_food_car_detail.wx_openid'] = 'wx_abcdef';
+////        $car_details = M('FoodCarDetail')->where($map)->select();
+//        $car_details = M('FoodCarDetail')
+//                ->join('left  join weiapp_food_detail ON weiapp_food_car_detail.food_setmenu_id = weiapp_food_detail.food_id')
+//                ->where($map)
+//                ->group('weiapp_food_car_detail.food_setmenu_id')
+//                ->order('weiapp_food_detail.default_share')
+//                ->field('weiapp_food_car_detail.*,weiapp_food_detail.url')
+//                ->select();
+        $map['mp_id'] = MP_ID;
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';;
+        $car_details = M('FoodCarDetail')->where($map)->select();
+        foreach ($car_details as $key=>$detail){
+            if($detail['type'] == \Wechat\Model\FoodCarDetailModel::$TYPE_FOOD){
+                $car_details[$key]['url'] = \Admin\Model\FoodDetailModel::getFoodPic($detail['food_setmenu_id']);
+            }else{
+                $car_details[$key]['url'] = \Admin\Model\FoodSetmenuModel::getFoodSetmenuUrl($detail['food_setmenu_id']);
+            }
+        }
+        
         if ($car_details == false) {
             $this->error('购餐车无菜品或套餐');
         }
