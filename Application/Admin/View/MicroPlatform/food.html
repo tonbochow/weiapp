@@ -51,8 +51,23 @@
                 <p ng-show="MpForm.appsecret.$invalid && !MpForm.appsecret.$pristine" class="help-block">appsecret(长度1-256)</p>
             </div>
         </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信支付key:<span class="check-tips">(登录商户平台填写)</span></label>
+            <div class="controls">
+                {$micro_platform.key}
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.mchid.$invalid && !MpForm.mchid.$pristine}">
+            <label class="item-label">微信支付商户号mchid<span class="check-tips">（微信支付参数|非必填项）</span></label>
+            <div class="controls">
+                <input name="mchid" type="text" value="{$micro_platform.mchid}" ng-model="platform.mchid"   ng-trim="true" ng-minlength="1" ng-maxlength="128" class="form-control text input-large" id="mchid" placeholder="微信支付商户号mchid">
+                <p ng-show="MpForm.mchid.$invalid && !MpForm.mchid.$pristine" class="help-block">mchid(长度1-128)</p>
+            </div>
+        </div>
 
-        <div class="form-item" ng-class="{'has-error' : MpForm.partnerid.$invalid && !MpForm.partnerid.$pristine}">
+<!--        <div class="form-item" ng-class="{'has-error' : MpForm.partnerid.$invalid && !MpForm.partnerid.$pristine}">
             <label class="item-label">微信公众平台partnerid<span class="check-tips">（微信支付参数|非必填项）</span></label>
             <div class="controls">
                 <input name="partnerid" type="text" value="{$micro_platform.partnerid}" ng-model="platform.partnerid"  ng-pattern="/^\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" class="form-control text input-large" id="partnerid" placeholder="微信支付partnerid">
@@ -74,7 +89,7 @@
                 <input name="paysignkey" type="text" value="{$micro_platform.paysignkey}" ng-model="platform.paysignkey"  ng-pattern="/^\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" class="form-control text input-large" id="paysignkey" placeholder="微信支付paysignkey">
                 <p ng-show="MpForm.paysignkey.$invalid && !MpForm.paysignkey.$pristine" class="help-block">paysignkey(长度1-256)</p>
             </div>
-        </div>
+        </div>-->
 
         <div class="form-item" ng-class="{'has-error' : MpForm.support_wxpay.$invalid && !MpForm.support_wxpay.$pristine}">
             <label class="item-label">微信支付<span class="check-tips">（是否支持）</span></label>
@@ -86,7 +101,7 @@
             </div>
         </div>
         
-        <div class="form-item" ng-class="{'has-error' : MpForm.is_chain.$invalid && !MpForm.is_chain.$pristine}">
+<!--        <div class="form-item" ng-class="{'has-error' : MpForm.is_chain.$invalid && !MpForm.is_chain.$pristine}">
             <label class="item-label">连锁餐厅<span class="check-tips">（是否连锁）</span></label>
             <div class="controls">
                 <select class="form-control" name="is_chain" required ng-model="platform.is_chain" ng-options="m.id as m.is_chain for m in platform.is_chain_arr">
@@ -94,7 +109,7 @@
                 </select>
                 <p ng-show="MpForm.is_chain.$invalid && !MpForm.is_chain.$pristine" class="help-block">请选择是否连锁餐厅</p>
             </div>
-        </div>
+        </div>-->
         
         <div class="form-item" ng-class="{'has-error' : MpForm.chain_num.$invalid && !MpForm.chain_num.$pristine}">
             <label class="item-label">连锁餐厅个数<span class="check-tips">（非连锁餐厅不用填写|非必填项）</span></label>
@@ -124,6 +139,16 @@
             </div>
         </div>
         
+        <div class="form-item" ng-class="{'has-error' : MpForm.back_img.$invalid && !MpForm.back_img.$pristine}">
+            <label class="item-label">微信公众平台手机端背景图片<span class="check-tips"></span></label>
+            <div class="controls">
+                <img src="{$micro_platform.back_img}" id="pic_back_img" style="max-width: 300px;"><br>
+                <input type="file" title="选择背景图片"   multiple="true" class="btn btn-success"  name="file_back_img" id="file_back_img" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="hidden" id="back_img" name="back_img" value="{$micro_platform.back_img}" ng-model="platform.back_img">
+                <p ng-show="MpForm.back_img.$invalid && !MpForm.back_img.$pristine" class="help-block">微信公众平台手机端背景图片</p>
+            </div>
+        </div>
+
         <div class="form-item">
             <label class="item-label">微信公众平台接入URL:<span class="check-tips">(登录微信工作平台填写后绑定)</span></label>
             <div class="controls">
@@ -182,6 +207,16 @@
                         console.log(result);
                     }
                 });
+                $('#file_back_img').localResizeIMG({
+//                            width: 200,
+                    quality: 0.6,
+                    success: function (result) {
+                        var compress_back_img = result.clearBase64;
+                        $('#pic_back_img').attr("src",result.base64);
+                        $('#back_img').val(compress_back_img);
+                        console.log(result);
+                    }
+                });
             });
             $scope.platform = {$json_micro_platform};
             $scope.platform.wx_pay_arr = {$mp_wxpay_arr};
@@ -192,6 +227,7 @@
                 $('.submit').attr('disabled', 'true');
                 $scope.platform.mp_qrcode = $('#mp_qrcode').val();
                 $scope.platform.mp_img = $('#mp_img').val();
+                $scope.platform.back_img = $('#back_img').val();
                 $http({
                     method: "POST",
                     url: "/Admin/MicroPlatform/food",

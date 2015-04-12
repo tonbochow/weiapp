@@ -76,7 +76,7 @@
                         <td>
                             <a title="编辑" href="{:U('edit?id='.$member_info['id'])}">编辑</a>
                             <if condition="$member_info.token_created eq 0">
-                            <a class="confirm ajax-get" title="编辑" href="{:U('token?member_id='.$member_info['member_id'])}">创建Token</a>
+                            <a class="confirm ajax-get" title="编辑" href="{:U('token?member_id='.$member_info['member_id'])}">创建Token和key</a>
                             </if>
                             <a class="confirm ajax-get" title="删除" href="{:U('delete?member_id='.$member_info['member_id'])}">删除</a>
                         </td>

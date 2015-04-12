@@ -96,7 +96,15 @@ class IndexController extends BaseController {
         foreach ($dining_rooms as $val) {
             $dining_room_arr[$val['id']] = $val['dining_name'];
         }
+        //首页微信分享设置
+        $share_info = array(
+            'title' => MP_NAME,
+            'desc' => '微信超值享受,尽在' . MP_NAME,
+            'link' => get_current_url(),
+            'imgUrl' => C('WEBSITE_URL') . $this->mp['mp_img'],
+        );
 
+        $this->assign('share_info', $share_info);
         $this->assign('dining_room_arr', $dining_room_arr);
         $this->assign('page', $show);
         $this->assign('foods', $foods);

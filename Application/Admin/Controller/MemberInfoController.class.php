@@ -244,8 +244,10 @@ class MemberInfoController extends AdminController {
         }
         //2生成微信公众平台token及mp_url等
         $token = gen_uuid();
+        $key = gen_uuid();//支付参数key 让商户去平台设置
         $platform_data['mp_url'] = $_SERVER['HTTP_HOST'].'/Mobile/Base/weixin/token/'.$token;
         $platform_data['mp_token'] = $token;//token
+        $platform_data['key'] = $key;
         $platform_data['create_time'] = time();
         $micro_platform_add = $microPlatformModel->add($platform_data);
         if($micro_platform_add == false){

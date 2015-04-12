@@ -37,6 +37,16 @@ class FoodController extends BaseController {
             $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
         }
 
+        $default_pic = \Admin\Model\FoodDetailModel::getFoodPic($food[0]['id']);
+        //菜品详细页面微信分享设置
+        $share_info = array(
+            'title' => $food[0]['share_title'],
+            'desc' => $food[0]['share_desc'],
+            'link' => get_current_url(),
+            'imgUrl' => $default_pic,
+        );
+
+        $this->assign('share_info', $share_info);
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
         $this->assign('food', $food);
         $this->meta_title = $food['food_name'] . '详细页面';

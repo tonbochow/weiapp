@@ -156,6 +156,16 @@ class MicroPlatformController extends FoodBaseController {
                 }
                 $micro_platform_data['mp_img'] = '/Uploads/Mp/' . $micro_platform_data['id'] . '/info/' . C('MP_IMG_UPLOAD')['saveName'] . '.jpg';
             }
+            if (!empty($micro_platform_data['back_img']) && !preg_match('/\/Uploads\w*/', $micro_platform_data['back_img'])) {//生成微信背景图片
+                $back_img_path = $save_path  . 'back_img.jpg';
+                $back_img_tmp = base64_decode($micro_platform_data['back_img']);
+                $create_back_img = file_put_contents($back_img_path, $back_img_tmp);
+                if ($create_back_img == false) {
+//                    @unlink($mp_qrcode_path);
+                    $this->error('生成微信公众平台背景图片失败!', '', true);
+                }
+                $micro_platform_data['back_img'] = '/Uploads/Mp/' . $micro_platform_data['id'] . '/info/' .  'back_img.jpg';
+            }
             $microPlatformModel = D('MicroPlatform');
             $micro_platform_data['update_time'] = NOW_TIME;
             if ($microPlatformModel->create($micro_platform_data)) {
