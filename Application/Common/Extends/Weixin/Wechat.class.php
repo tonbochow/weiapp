@@ -6,7 +6,7 @@
 class Wechat {
 
     protected $mp = ''; //微信公众平台信息
-    protected $token = '';//全局设置token
+    protected $token = ''; //全局设置token
     /**
      * 调试模式，将错误通过文本消息回复显示
      *
@@ -52,17 +52,17 @@ class Wechat {
         /*
          * 全局初始化微信公众平台信息
          */
-        $mp_wechat_name = $this->request('tousername');//微信公众平台微信号 也是唯一
+        $mp_wechat_name = $this->request('tousername'); //微信公众平台微信号 也是唯一
         $microPlatformModel = M('MicroPlatform');
         $map['mp_original_id'] = $mp_wechat_name;
         $map['mp_wxcode'] = $mp_wechat_name;
         $map['_logic'] = 'OR';
         $micro_platform = $microPlatformModel->where($map)->find();
-        if($micro_platform == false){//未检索到公众平台信息
-            return false;
-        }
+//        if ($micro_platform == false) {//未检索到公众平台信息
+//            return false;
+//        }
         $this->token = $token;
-        $this->mp = $micro_platform;//全局初始化微信公众平台信息
+        $this->mp = $micro_platform; //全局初始化微信公众平台信息
     }
 
     /**
@@ -94,18 +94,34 @@ class Wechat {
          */
         $map['mp_token'] = $token;
         $micro_platform = M('MicroPlatform')->where($map)->find();
-        if($micro_platform == false){//token不正确直接返回false
-            return false;
-        }
-        if($micro_platform['status'] == \Admin\Model\MicroPlatformModel::$STATUS_DENY){//微信公众平台禁用状态
-            return false;
-        }
-        if($micro_platform['start_time'] > time()){//微信公众平台开始使用时间未到
-            return false;
-        }
-        if($micro_platform['end_time'] < time()){//微信公众平台使用期限已到
-            return false;
-        }
+//        if($micro_platform == false){//token不正确直接返回false
+//            return false;
+//        }
+//        if($micro_platform['status'] == \Admin\Model\MicroPlatformModel::$STATUS_DENY){//微信公众平台禁用状态
+//            return false;
+//        }
+//        if($micro_platform['start_time'] > time()){//微信公众平台开始使用时间未到
+//            return false;
+//        }
+//        if($micro_platform['end_time'] < time()){//微信公众平台使用期限已到
+//            return false;
+//        }
+//        $map['status'] = \Admin\Model\MicroPlatformModel::$STATUS_ALLOW;
+//        $map['start_time'] = array("elt", time());
+//        $map['end_time'] = array("egt", time());
+//        $micro_platforms = M('MicroPlatform')->where($map)->select();
+//        file_put_contents($_SERVER['DOCUMENT_ROOT'].'/Runtime/log.txt','test'.'<BR>',FILE_APPEND);
+//        foreach ($micro_platforms as $mp) {
+//            file_put_contents($_SERVER['DOCUMENT_ROOT'].'/Runtime/log.txt',$mp['mp_token'].'<BR>',FILE_APPEND);
+//            $signatureArray = array($mp['mp_token'], $timestamp, $nonce);
+//            sort($signatureArray, SORT_STRING);
+//            $res  = (sha1(implode($signatureArray)) == $signature);
+//            if($res){
+//                return true;
+//            }
+//        }
+//        file_put_contents($_SERVER['DOCUMENT_ROOT'].'/Runtime/log.txt','0000'.'<BR>',FILE_APPEND);
+//        return false;
         /**
          * 添加验证token是否正确
          */
@@ -254,7 +270,7 @@ class Wechat {
     protected function responseVoice($media_id, $funcFlag = 0) {
         exit(new VoiceResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $media_id, $funcFlag));
     }
-    
+
     /**
      * 回复视频消息
      * @param  string  $media_id  视频上传到微信服务器后返回的mediaId
@@ -262,7 +278,7 @@ class Wechat {
      * @param string  $desc 视频描述
      * @param  integer $funcFlag 默认为0，设为1时星标刚才收到的消息
      */
-    protected function responseVideo($media_id,$title,$desc,$funcFlag = 0){
+    protected function responseVideo($media_id, $title, $desc, $funcFlag = 0) {
         exit(new VideoResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $media_id, $title, $desc, $funcFlag));
     }
 
@@ -289,12 +305,12 @@ class Wechat {
     protected function responseNews($items, $funcFlag = 0) {
         exit(new NewsResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $items, $funcFlag));
     }
-    
+
     /**
      * 将用户消息转移到多客服
      */
-    protected function responseCustomerService($funcFlag = 0){
-         exit(new CustomerServiceResponse($this->getRequest('fromusername'), $this->getRequest('tousername'),  $funcFlag));
+    protected function responseCustomerService($funcFlag = 0) {
+        exit(new CustomerServiceResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $funcFlag));
     }
 
     /**
@@ -500,7 +516,7 @@ class VoiceResponse extends WechatResponse {
 
     protected $media_id; //语音上传到微信服务器后的得到到MediaId
 
-    public function __construct($toUserName, $fromUserName,$media_id, $funcFlag) {
+    public function __construct($toUserName, $fromUserName, $media_id, $funcFlag) {
         parent::__construct($toUserName, $fromUserName, $funcFlag);
         $this->media_id = $media_id;
         $this->template = <<<XML
@@ -666,12 +682,10 @@ XML;
 
 }
 
-
 /**
  * 用于回复微信服务器将消息转移到多客服
  */
 class CustomerServiceResponse extends WechatResponse {
-
 
     public function __construct($toUserName, $fromUserName, $funcFlag = 0) {
         parent::__construct($toUserName, $fromUserName, $funcFlag);

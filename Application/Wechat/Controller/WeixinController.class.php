@@ -19,7 +19,7 @@ class WeixinController extends Controller {
         import('Common.Extends.Weixin.Weixin');
         ob_clean();
         
-        $weixin = new \WeiXin($mp_token);
+        $weixin = new \WeiXin('C8CA96B1A090828B6BEB75D53522BDF8');
         $weixin->run();
     }
 

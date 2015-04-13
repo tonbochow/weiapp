@@ -14,7 +14,8 @@ class FoodCommentController extends BaseController {
     //评论列表
     public function index() {
         $foodCommentModel = M('FoodComment');
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $map['mp_id'] = MP_ID;
         $comment_count = $foodCommentModel->where($map)->count();
         $page_num = 10;
@@ -38,7 +39,8 @@ class FoodCommentController extends BaseController {
     public function view() {
         $id = I('get.id', '', 'intval');
         $map['id'] = $id;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $map['mp_id'] = MP_ID;
         $comment = M('FoodComment')->where($map)->find();
         if ($comment == false) {
@@ -63,7 +65,8 @@ class FoodCommentController extends BaseController {
         $type = I('request.type', '', 'intval');
         $map['food_setmenu_id'] = $food_setmenu_id;
         $map['type'] = $type;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $map['mp_id'] = MP_ID;
         $comment = M('FoodComment')->where($map)->find();
         if (!empty($comment)) {
@@ -90,7 +93,8 @@ class FoodCommentController extends BaseController {
         }
         if (IS_POST) {
             $foodCommentModel = D('FoodComment');
-            $data['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//            $data['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+            $data['wx_openid'] = $this->weixin_userinfo['wx_openid'];
             $data['mp_id'] = MP_ID;
             $data['food_setmenu_id'] = $food_setmenu_id;
             if ($type == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD) {

@@ -14,7 +14,8 @@ class MemberAddressController extends BaseController {
     //用户地址
     public function index() {
         $memberAddressModel = M('MemberAddress');
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $address_count = $memberAddressModel->where($map)->count();
         $page_num = 10; 
         import('Common.Extends.Page.BootstrapPage');

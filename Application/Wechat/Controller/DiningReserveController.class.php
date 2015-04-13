@@ -14,7 +14,8 @@ class DiningReserveController extends BaseController {
     //预定列表
     public function index() {
         $diningReserveModel = M('DiningReserve');
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
         $map['mp_id'] = MP_ID;
         $comment_count = $diningReserveModel->where($map)->count();
         $page_num = 10;
@@ -39,7 +40,8 @@ class DiningReserveController extends BaseController {
         if (IS_POST) {
             $reserve_data = I('post.');
             $reserve_data['mp_id'] = MP_ID;
-            $reserve_data['wx_openid'] = $this->weixin_userinfo['wx_openid'] ='wx_abcdef';
+            $reserve_data['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+//            $reserve_data['wx_openid'] = $this->weixin_userinfo['wx_openid'] ='wx_abcdef';
             $reserve_data['meal_time'] = strtotime($reserve_data['meal_time']);
             $reserveModel = D('Admin/DiningReserve');
             if ($reserveModel->create($reserve_data, \Admin\Model\DiningReserveModel::MODEL_INSERT)) {
@@ -65,7 +67,8 @@ class DiningReserveController extends BaseController {
         $id = I('post.id', '', 'trim');
         $map['id'] = $id;
         $map['mp_id'] = MP_ID;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
         $reserve = M('DiningReserve')->where($map)->find();
         if ($reserve == false) {
             $this->error('未检索到您要取消的预定', '', true);
@@ -87,7 +90,8 @@ class DiningReserveController extends BaseController {
         $id = I('post.id', '', 'trim');
         $map['id'] = $id;
         $map['mp_id'] = MP_ID;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
         $reserve = M('DiningReserve')->where($map)->find();
         if ($reserve == false) {
             $this->error('未检索到您要完成的预定', '', true);

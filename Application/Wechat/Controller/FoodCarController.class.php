@@ -14,7 +14,8 @@ class FoodCarController extends BaseController {
     //购餐车
     public function index() {
         $map['mp_id'] = MP_ID;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';;
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $carDetails = M('FoodCarDetail')->where($map)->select();
         foreach ($carDetails as $key=>$detail){
             if($detail['type'] == \Wechat\Model\FoodCarDetailModel::$TYPE_FOOD){
@@ -33,7 +34,8 @@ class FoodCarController extends BaseController {
 //                ->field('weiapp_food_car_detail.*,weiapp_food_detail.url')
 //                ->select();
 //        dump($carDetails);
-        $total_amount = M('FoodCarDetail')->where(array('mp_id' => MP_ID, 'wx_openid' => 'wx_abcdef'))->sum('amount');
+        $total_amount = M('FoodCarDetail')->where(array('mp_id' => MP_ID, 'wx_openid' => $this->weixin_userinfo['wx_openid']))->sum('amount');
+//        $total_amount = M('FoodCarDetail')->where(array('mp_id' => MP_ID, 'wx_openid' => 'wx_abcdef'))->sum('amount');
 
         $this->assign('total_amount', $total_amount);
         $this->assign('car_details', $carDetails);
@@ -132,7 +134,8 @@ class FoodCarController extends BaseController {
 //                ->field('weiapp_food_car_detail.*,weiapp_food_detail.url')
 //                ->select();
         $map['mp_id'] = MP_ID;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';;
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $car_details = M('FoodCarDetail')->where($map)->select();
         foreach ($car_details as $key=>$detail){
             if($detail['type'] == \Wechat\Model\FoodCarDetailModel::$TYPE_FOOD){

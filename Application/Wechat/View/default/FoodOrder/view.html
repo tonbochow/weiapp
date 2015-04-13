@@ -62,11 +62,11 @@
                                 <p id="amount">单价:￥{$food_order.food_weixin_price}  数量:{$food_order.food_count}</p>
                                 <p id="order-date">{$food_order.food_amount}</p>
                                 <?php
-                                    if(($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD && $food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) &&(\Admin\Model\FoodCommentModel::getCommentByWxopenidFoodid($this->weixin_userinfo['wx_openid']='wx_abcdef',$food_order['food_id']) == false)){
+                                    if(($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD && $food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) &&(\Admin\Model\FoodCommentModel::getCommentByWxopenidFoodid($this->weixin_userinfo['wx_openid']=$weixin_userinfo['wx_openid'],$food_order['food_id']) == false)){
                                 ?>
                                 <a id="pay_{$food_orders.0.id}" href="/Wechat/FoodComment/create/food_setmenu_id/{$food_order.food_id}/type/{$food_order.detail_type}/t/{$mp.mp_token}" class="btn btn-warning btn-small" role="button"><i class="fa fa-comment"></i> 我要评论</a>
                                 <?php
-                                   }else if(($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_SETMENU && $food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) && ($food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) &&(\Admin\Model\FoodCommentModel::getCommentByWxopenidFoodid($this->weixin_userinfo['wx_openid']='wx_abcdef',$food_order['food_id']) == false)){
+                                   }else if(($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_SETMENU && $food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) && ($food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) &&(\Admin\Model\FoodCommentModel::getCommentByWxopenidFoodid($this->weixin_userinfo['wx_openid']=$weixin_userinfo['wx_openid'],$food_order['food_id']) == false)){
                                 ?>
                                 <a id="pay_{$food_orders.0.id}" href="/Wechat/FoodComment/create/food_setmenu_id/{$food_order.food_id}/t/{$mp.mp_token}" class="btn btn-warning btn-small" role="button"><i class="fa fa-comment"></i> 我要评论</a>
                                 <?php

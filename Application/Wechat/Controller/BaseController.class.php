@@ -28,12 +28,12 @@ class BaseController extends Controller {
         //1 验证是否为微信浏览器内打开
         $is_weixin_browser = is_weixin_browser();
         if ($is_weixin_browser == false) {//请从微信浏览器内打开
-//            $this->redirect('Exception/index');
+            $this->redirect('Exception/index');
         }
         //2 验证微信版本是否6.0及以上(领取卡劵必须)
         $weixin_browser = intval(get_weixin_browser_version());
         if ($weixin_browser < 6) {//为获得更好体验请将微信版本升级到6.0及以上
-//            $this->redirect('Exception/version');
+            $this->redirect('Exception/version');
         }
         //3 获取get|post参数token检索是否存在 设置微信支付参数为常量 公众平台信息为对象
         $mp_token = I('request.t', '', 'trim'); //获取get或post的t即mp_token值
@@ -50,20 +50,20 @@ class BaseController extends Controller {
         define("KEY",trim($mp['key']));
         define("MCHID",trim($mp['mchid']));
         //4 检测是否登录(获取到openid即可)
-//        $weixin_userinfo = $this->getWeixinUserInfo();
-//        $this->weixin_userinfo = $weixin_userinfo;
+        $weixin_userinfo = $this->getWeixinUserInfo();
+        $this->weixin_userinfo = $weixin_userinfo;
         $this->assign('mp', $this->mp);
-//        $this->assign('weixin_userinfo',$this->weixin_userinfo);
+        $this->assign('weixin_userinfo',$this->weixin_userinfo);
         //5 设置微信分享基本参数
-//        $signPackage = \Admin\Model\MicroPlatformModel::getJsApiPrams(APPID);
-//        $this->assign('signPackage', $signPackage);
+        $signPackage = \Admin\Model\MicroPlatformModel::getJsApiPrams(APPID);
+        $this->assign('signPackage', $signPackage);
         $cate_id = I('request.cate_id', '', 'trim');
         $key = I('request.key', '', 'trim');
         $this->assign('cate_id', $cate_id);
         $this->assign('key', $key);
         //检索购餐车菜品或套餐数量
-//        $car_num = M('FoodCarDetail')->where(array('mp_id'=>MP_ID,'wx_openid'=>$this->weixin_userinfo['wx_openid']))->count();
-        $car_num = M('FoodCarDetail')->where(array('mp_id'=>MP_ID,'wx_openid'=>'wx_abcdef'))->count();
+        $car_num = M('FoodCarDetail')->where(array('mp_id'=>MP_ID,'wx_openid'=>$this->weixin_userinfo['wx_openid']))->count();
+//        $car_num = M('FoodCarDetail')->where(array('mp_id'=>MP_ID,'wx_openid'=>'wx_abcdef'))->count();
         $this->assign('car_num',$car_num);
     }
 

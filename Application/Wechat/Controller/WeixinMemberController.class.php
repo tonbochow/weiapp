@@ -15,7 +15,8 @@ class WeixinMemberController extends BaseController {
     public function index() {
         $foodOrderModel = M('FoodOrder');
         $map['mp_id'] = MP_ID;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         //检索待付款订单数量
         $map['status'] = \Admin\Model\FoodOrderModel::$STATUS_COMMITED;
         $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
@@ -58,7 +59,8 @@ class WeixinMemberController extends BaseController {
             }
             $this->error($weixinModel->getError(), '', true);
         }
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $map['mp_id'] = MP_ID;
         $member_weixin = M('MemberWeixin')->where($map)->find();
 

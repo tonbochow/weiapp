@@ -14,7 +14,8 @@ class FoodOrderController extends BaseController {
     //订单列表
     public function index() {
         $foodOrderModel = M('FoodOrder');
-        $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $this->weixin_userinfo['wx_openid'];
         $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $map['mp_id'] = MP_ID;
         $order_no = I('request.order_no', '', 'trim');
@@ -60,7 +61,8 @@ class FoodOrderController extends BaseController {
         $foodOrderModel = M('FoodOrder');
         $map['id'] = $order_id;
         $map['mp_id'] = MP_ID;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $food_order_info = $foodOrderModel->where($map)->find();
         if ($food_order_info == false) {
             $this->error('未检索您要查看的订单', '/Wechat/FoodOrder/index/t/' . MP_TOKEN);
@@ -89,7 +91,8 @@ class FoodOrderController extends BaseController {
         $order_id = I('post.order_id', '', 'trim');
         $map['id'] = $order_id;
         $map['mp_id'] = MP_ID;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $food_order = M('FoodOrder')->where($map)->find();
         if ($food_order == false) {
             $this->error('未检索到您要取消的订单', '', true);
@@ -111,7 +114,8 @@ class FoodOrderController extends BaseController {
         $order_id = I('post.order_id', '', 'trim');
         $map['id'] = $order_id;
         $map['mp_id'] = MP_ID;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $food_order = M('FoodOrder')->where($map)->find();
         if ($food_order == false) {
             $this->error('未检索到您要完成的订单', '', true);
@@ -165,7 +169,8 @@ class FoodOrderController extends BaseController {
         }
         $dining_pay_type_arr = I('post.dining_pay_type'); //支付方式 1微信支付 3线下付款
         $map['mp_id'] = MP_ID;
-        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
         $map['car_id'] = $car_id;
         $car_details = M('FoodCarDetail')->where($map)->select();
         if ($car_details == false) {

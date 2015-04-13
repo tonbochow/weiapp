@@ -58,7 +58,8 @@ class FoodController extends BaseController {
         if (IS_POST) {
             $food_id = I('post.id', '', 'intval');
             $post_dining_room_id = I('post.dining_room_id', '', 'intval');
-            $wx_open_id = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+//            $wx_open_id = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+            $wx_open_id = $this->weixin_userinfo['wx_openid'];
             if($post_dining_room_id){
                 $map['dining_room_id'] = $post_dining_room_id;
             }

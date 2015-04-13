@@ -136,7 +136,7 @@ class MemberInfoController extends AdminController {
         //2去除用户权限
         $authGroupAccessModel = M('AuthGroupAccess');
         $group_access = $authGroupAccessModel->where(array('uid' => $member_id))->find();
-        if($group_access != false) {
+        if ($group_access != false) {
             $access_del = $authGroupAccessModel->where(array('uid' => $member_id))->delete();
             if ($access_del == false) {
                 $memberInfoModel->rollback();
@@ -180,6 +180,20 @@ class MemberInfoController extends AdminController {
             $memberInfoModel->rollback();
             $this->error('审核用户通过失败');
         }
+        //3 更新公众平台期限
+        $microPlatformModel = M('MicroPlatform');
+        $mp_map['member_id'] = array('in', $member_ids);
+        $mps = $microPlatformModel->where($mp_map)->select();
+        foreach ($mps as $mp) {
+            $mp_data['start_time'] = time();
+            $mp_data['end_time'] = strtotime("+15 days");
+            $mp_data['update_time'] = time();
+            $mp_save = $microPlatformModel->where(array('id' => $mp['id']))->save($mp_data);
+            if ($mp_save == false) {
+                $memberInfoModel->rollback();
+                $this->error('更新公众平台应用试用时间失败');
+            }
+        }
         $memberInfoModel->commit();
         $this->success('审核用户通过成功');
     }
@@ -219,17 +233,17 @@ class MemberInfoController extends AdminController {
         $memberInfoModel->commit();
         $this->success('审核用户未通过成功');
     }
-    
+
     /**
      * 审核通过创建微信公众平台token
      */
-    public function token(){
+    public function token() {
         $member_id = intval(I('get.member_id', '', trim));
         $microPlatformModel = M('MicroPlatform');
         $platform_data['member_id'] = $member_id;
         $platform_data['app_type'] = \Admin\Model\MicroPlatformModel::$APP_TYPE_FOOD;
         $micro_platform = $microPlatformModel->where($platform_data)->find();
-        if($micro_platform != false){
+        if ($micro_platform != false) {
             $this->error('已创建过token!');
         }
         $memberInfoModel = M('MemberInfo');
@@ -237,24 +251,25 @@ class MemberInfoController extends AdminController {
         //1更新member_info表token_created
         $member_info_data['token_created'] = \Home\Model\MemberInfoModel::$TOKEN_CREATED;
         $member_info_data['update_time'] = time();
-        $member_info_save = $memberInfoModel->where(array('member_id'=>$member_id))->save($member_info_data);
-        if($member_info_save == false){
+        $member_info_save = $memberInfoModel->where(array('member_id' => $member_id))->save($member_info_data);
+        if ($member_info_save == false) {
             $memberInfoModel->rollback();
             $this->error('更新创建token状态失败!');
         }
         //2生成微信公众平台token及mp_url等
         $token = gen_uuid();
-        $key = gen_uuid();//支付参数key 让商户去平台设置
-        $platform_data['mp_url'] = $_SERVER['HTTP_HOST'].'/Mobile/Base/weixin/token/'.$token;
-        $platform_data['mp_token'] = $token;//token
+        $key = gen_uuid(); //支付参数key 让商户去平台设置
+        $platform_data['mp_url'] = $_SERVER['HTTP_HOST'] . '/Wechat/weixin/index/t/' . $token;
+        $platform_data['mp_token'] = $token; //token
         $platform_data['key'] = $key;
         $platform_data['create_time'] = time();
         $micro_platform_add = $microPlatformModel->add($platform_data);
-        if($micro_platform_add == false){
+        if ($micro_platform_add == false) {
             $memberInfoModel->rollback();
             $this->error('创建微信公众平台token失败!');
         }
         $memberInfoModel->commit();
         $this->success('创建token成功!');
     }
+
 }

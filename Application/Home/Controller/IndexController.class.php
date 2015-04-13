@@ -27,7 +27,7 @@ class IndexController extends HomeController {
         $this->assign('page',D('Document')->page);//分页
 
                  
-        $this->display();
+        $this->display('index');
     }
 
 }
