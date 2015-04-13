@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50612
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50612
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-04-12 22:11:53
+Date: 2015-04-13 17:27:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,7 +65,7 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
@@ -90,6 +90,7 @@ INSERT INTO `weiapp_action_log` VALUES ('17', '1', '2', '2130706433', 'member', 
 INSERT INTO `weiapp_action_log` VALUES ('18', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-11 22:28登录了后台', '1', '1428762527');
 INSERT INTO `weiapp_action_log` VALUES ('19', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-04-11 23:16登录了后台', '1', '1428765410');
 INSERT INTO `weiapp_action_log` VALUES ('20', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-12 16:32登录了后台', '1', '1428827546');
+INSERT INTO `weiapp_action_log` VALUES ('21', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-13 09:59登录了后台', '1', '1428890368');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -903,6 +904,8 @@ CREATE TABLE `weiapp_dining_room` (
   `longitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '经度',
   `latitude` decimal(17,14) NOT NULL DEFAULT '0.00000000000000' COMMENT '纬度',
   `description` text NOT NULL COMMENT '连锁餐厅描述',
+  `wechat_name` varchar(32) NOT NULL DEFAULT '' COMMENT '餐厅服务微信号',
+  `service_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '餐厅服务微信号对应的opendi对应member_weixin.wx_openid',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态1启用0禁用',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
@@ -912,8 +915,8 @@ CREATE TABLE `weiapp_dining_room` (
 -- ----------------------------
 -- Records of weiapp_dining_room
 -- ----------------------------
-INSERT INTO `weiapp_dining_room` VALUES ('1', '1', '2', '1', '1', '百花北斗星', '李经理', '3', '4', '0.00', '0312-1234567', '13112344321', '130000', '130600', '130602', '百花路北斗星', '115.48135042190552', '38.86861601842594', '&lt;p&gt;百花北斗星&lt;img src=&quot;http://img.baidu.com/hi/jx2/j_0011.gif&quot;/&gt;&lt;/p&gt;', '1', '1426253692', '1428722996');
-INSERT INTO `weiapp_dining_room` VALUES ('2', '1', '2', '1', '1', '裕华路北斗星', '周经理', '3', '4', '0.00', '', '', '130000', '130200', '130204', '', '115.51039338111877', '38.85671152332370', '&lt;p&gt;裕华路北斗星&lt;/p&gt;', '1', '1426260997', '1428239060');
+INSERT INTO `weiapp_dining_room` VALUES ('1', '1', '2', '1', '1', '百花北斗星', '李经理', '3', '4', '0.00', '0312-1234567', '13112344321', '130000', '130600', '130602', '百花路北斗星', '115.48135042190552', '38.86861601842594', '&lt;p&gt;百花北斗星&lt;img src=&quot;http://img.baidu.com/hi/jx2/j_0011.gif&quot;/&gt;&lt;/p&gt;', '', '', '1', '1426253692', '1428722996');
+INSERT INTO `weiapp_dining_room` VALUES ('2', '1', '2', '1', '1', '裕华路北斗星', '周经理', '3', '4', '0.00', '', '', '130000', '130200', '130204', '', '115.51039338111877', '38.85671152332370', '&lt;p&gt;裕华路北斗星&lt;/p&gt;', '', '', '1', '1426260997', '1428239060');
 
 -- ----------------------------
 -- Table structure for `weiapp_dining_room_detail`
@@ -1553,7 +1556,7 @@ CREATE TABLE `weiapp_member` (
 -- Records of weiapp_member
 -- ----------------------------
 INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '200', '114', '0', '1423289473', '2130706433', '1428765410', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '200', '140', '0', '0', '2130706433', '1428827546', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '200', '141', '0', '0', '2130706433', '1428890368', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_address`
@@ -1644,15 +1647,18 @@ CREATE TABLE `weiapp_member_weixin` (
   `is_subscribe` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否关注用户',
   `subscribe_time` int(11) NOT NULL DEFAULT '0' COMMENT '关注时间',
   `unsubscribe_time` int(11) NOT NULL DEFAULT '0' COMMENT '取消关注时间',
+  `wechat_name` varchar(32) NOT NULL DEFAULT '' COMMENT '微信用户微信号唯一',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态1可用0不可用',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户列表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='微信用户列表';
 
 -- ----------------------------
 -- Records of weiapp_member_weixin
 -- ----------------------------
+INSERT INTO `weiapp_member_weixin` VALUES ('1', '2', '1', 'wx_abcdef', '周', '0', '', '', '', '', '', '0', '1', '0', '0', 'chow', '1', '0', '1428894917');
+INSERT INTO `weiapp_member_weixin` VALUES ('2', '3', '1', 'wx_cdef', '', '0', '', '', '', '', null, '0', '1', '0', '0', 'chows', '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for `weiapp_member_weixin_group`
@@ -1956,7 +1962,7 @@ CREATE TABLE `weiapp_micro_platform` (
 -- ----------------------------
 -- Records of weiapp_micro_platform
 -- ----------------------------
-INSERT INTO `weiapp_micro_platform` VALUES ('1', 'wx571d493fc32f0ba4', '6677a350c853729910c9481dab475570', '', '', '', '', '', 'local.weiapp.com/Mobile/Base/weixin/token/91692FB7569443A68D7C357488CB54C2', '91692FB7569443A68D7C357488CB54C2', '1', 'gh_dde71cd2712f', '邻购网', 'LINGOU5106', '/Uploads/Mp/1/info/mp_qrcode.jpg', '/Uploads/Mp/1/info/mp_img.jpg', '/Uploads/Mp/1/info/back_img.jpg', '', '1', '', '1427336730', '2', '', '0', '0', '1', '1', '1', '1', '1', '0.00', '1425285691', '1534543454', '0', '1428769821');
+INSERT INTO `weiapp_micro_platform` VALUES ('1', 'wx571d493fc32f0ba4', '6677a350c853729910c9481dab475570', '', '', '', '', '', 'local.weiapp.com/Mobile/Base/weixin/token/91692FB7569443A68D7C357488CB54C2', '91692FB7569443A68D7C357488CB54C2', '1', 'gh_dde71cd2712f', '邻购网', 'LINGOU5106', '/Uploads/Mp/1/info/mp_qrcode.jpg', '/Uploads/Mp/1/info/mp_img.jpg', '/Uploads/Mp/1/info/back_img.jpg', '', '1', '', '1427336730', '2', '', '0', '0', '1', '1', '1', '1', '1', '0.00', '1425285691', '1534543454', '0', '1428890386');
 
 -- ----------------------------
 -- Table structure for `weiapp_model`
@@ -5389,7 +5395,7 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- Records of weiapp_ucenter_member
 -- ----------------------------
 INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@qq.com', '', '1423289473', '2130706433', '1428765410', '2130706433', '1423289473', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1428827546', '2130706433', '1424704411', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', 'e02aee9ace52823b94166d3980c70d4b', 'tonbochow@163.com', '', '1424704411', '2130706433', '1428890368', '2130706433', '1424704411', '1');
 
 -- ----------------------------
 -- Table structure for `weiapp_ucenter_setting`

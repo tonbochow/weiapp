@@ -304,8 +304,8 @@ class MicroPlatformModel extends Model {
                             "news": {
                                 "articles": [
                                     {
-                                        "title": "'.$info_data['title'].'", 
-                                        "description": "'.$info_data['description'].'", 
+                                        "title": "' . $info_data['title'] . '", 
+                                        "description": "' . $info_data['description'] . '", 
                                         "url": "' . $info_data['url'] . '", 
                                         "picurl": "' . $info_data['image_url'] . '"
                                     }
@@ -336,6 +336,68 @@ class MicroPlatformModel extends Model {
         $user_info_url = "https://api.weixin.qq.com/sns/userinfo?access_token=$oauth_access_token&openid=$openid&lang=zh_CN";
         $user_info = self::curl($user_info_url);
         return $user_info;
+    }
+
+    /**
+     * 用户关注微信公众平台后通过微信openid获取用户信息
+     * $appid $appsecret 微信公众平台基本参数
+     * $openid 微信用openid
+     */
+    public static function getWeixinUserInfoByOpenid($appid, $appsecret, $openid) {
+        $access_token = self::getAccessToken($appid, $appsecret);
+        $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=$access_token&openid=$openid&lang=zh_CN";
+        $user_info = self::curl($url);
+        return $user_info;
+    }
+
+    /**
+     * 获取行业模版template_id
+     * $appid $appsecret
+     */
+    public static function getTemplateId($appid, $appsecret) {
+        $access_token = self::getAccessToken($appid, $appsecret);
+        $url = "https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token=$access_token";
+        $template_info = self::curl($url);
+        return $template_info;
+    }
+
+    /**
+     * 微信用户支付成功发送模版消息
+     * $appid $appsecret $opeind $order_info
+     */
+    public static function sendTemplateMessage($appid, $appsecret, $openid, $order_info) {
+        $access_token = self::getAccessToken($appid, $appsecret);
+        $template_id = self::getTemplateId($appid, $appsecret);
+        $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=$access_token";
+        $post_data = '{
+                            "touser":"' . $openid . '",
+                            "template_id":"' . $template_id . '",
+                            "url":"' . $order_info['url'] . '",
+                            "topcolor":"#FF0000",
+                            "data": {
+                                "first": {
+                                        "value":"恭喜你支付成功！",
+                                        "color":"#173177"
+                                },
+                                "keynote1": {
+                                        "value":"'.$order_info['food_name'].'",
+                                        "color":"#173177"
+                                },
+                                "keynote2": {
+                                        "value":"'.$order_info['amount'].'",
+                                        "color":"#173177"
+                                },
+                                "keynote3": {
+                                        "value":"'.$order_info['pay_time'].'",
+                                        "color":"#173177"
+                                },
+                                "remark": {
+                                        "value":"感谢您的支持!本店会继续推出更多优惠,请多关注我们!",
+                                        "color":"#173177"
+                                }
+                            }
+                        }';
+        sel::curl($url, $post_data);
     }
 
     /**

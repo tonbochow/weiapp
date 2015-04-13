@@ -5,6 +5,8 @@
  */
 class Wechat {
 
+    protected $mp = ''; //微信公众平台信息
+    protected $token = '';//全局设置token
     /**
      * 调试模式，将错误通过文本消息回复显示
      *
@@ -47,6 +49,20 @@ class Wechat {
 
         $this->request = array_change_key_case($xml, CASE_LOWER);
         // 将数组键名转换为小写，提高健壮性，减少因大小写不同而出现的问题
+        /*
+         * 全局初始化微信公众平台信息
+         */
+        $mp_wechat_name = $this->request('tousername');//微信公众平台微信号 也是唯一
+        $microPlatformModel = M('MicroPlatform');
+        $map['mp_original_id'] = $mp_wechat_name;
+        $map['mp_wxcode'] = $mp_wechat_name;
+        $map['_logic'] = 'OR';
+        $micro_platform = $microPlatformModel->where($map)->find();
+        if($micro_platform == false){//未检索到公众平台信息
+            return false;
+        }
+        $this->token = $token;
+        $this->mp = $micro_platform;//全局初始化微信公众平台信息
     }
 
     /**
@@ -73,6 +89,26 @@ class Wechat {
         $timestamp = $_GET['timestamp'];
         $nonce = $_GET['nonce'];
 
+        /**
+         * 添加验证token是否正确
+         */
+        $map['mp_token'] = $token;
+        $micro_platform = M('MicroPlatform')->where($map)->find();
+        if($micro_platform == false){//token不正确直接返回false
+            return false;
+        }
+        if($micro_platform['status'] == \Admin\Model\MicroPlatformModel::$STATUS_DENY){//微信公众平台禁用状态
+            return false;
+        }
+        if($micro_platform['start_time'] > time()){//微信公众平台开始使用时间未到
+            return false;
+        }
+        if($micro_platform['end_time'] < time()){//微信公众平台使用期限已到
+            return false;
+        }
+        /**
+         * 添加验证token是否正确
+         */
         $signatureArray = array($token, $timestamp, $nonce);
         sort($signatureArray, SORT_STRING);
 

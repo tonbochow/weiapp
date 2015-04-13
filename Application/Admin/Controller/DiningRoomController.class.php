@@ -104,6 +104,15 @@ class DiningRoomController extends FoodBaseController {
 //            unset($dining_room_data['username']);
 //            unset($dining_room_data['password']);
 //            unset($dining_room_data['email']);
+            $wechat_name = $dining_room_data['wechat_name'];
+            if(!empty($wechat_name)){
+                $memberWeixinModel = M('MemberWeixin');
+                $weixin_map['wechat_name'] = $wechat_name;
+                $member_weixin = $memberWeixinModel->where($weixin_map)->find();
+                if($member_weixin != false){
+                    $dining_room_data['service_openid'] = $member_weixin['wx_openid'];//接收订单等推送消息的客服服务号
+                }
+            }
             $dining_room_data['mp_id'] = MP_ID;
             $dining_room_data['member_id'] = UID;
 //            $dining_room_data['dining_staff_id'] = $dining_uid;
@@ -154,6 +163,15 @@ class DiningRoomController extends FoodBaseController {
             if(!SUPPORT_WXPAY){
                 if($dining_room_data['pay_type'] == \Admin\Model\DiningRoomModel::$PAY_TYPE_WEIXIN || $dining_room_data['pay_type'] == \Admin\Model\DiningRoomModel::$PAY_TYPE_WEIXIN_OFFLINE){
                     $this->error("当前平台不支持微信支付",'',true);
+                }
+            }
+            $wechat_name = $dining_room_data['wechat_name'];
+            if(!empty($wechat_name)){
+                $memberWeixinModel = M('MemberWeixin');
+                $weixin_map['wechat_name'] = $wechat_name;
+                $member_weixin = $memberWeixinModel->where($weixin_map)->find();
+                if($member_weixin != false){
+                    $dining_room_data['service_openid'] = $member_weixin['wx_openid'];//接收订单等推送消息的客服服务号
                 }
             }
             $diningRoomModel = D('DiningRoom');

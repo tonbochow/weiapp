@@ -244,7 +244,7 @@ class WeixinMenuController extends FoodBaseController {
                         'member_id' => UID,
                         'menu_name' => '全部菜品',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/food/list/token/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/index/index/t/" . MP_TOKEN,
                         'pid' => $left_topmenu_id,
                         'c_order' => 1,
                         'p_order' => 1,
@@ -256,19 +256,31 @@ class WeixinMenuController extends FoodBaseController {
                         'member_id' => UID,
                         'menu_name' => '热销菜品',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/food/hot/token/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/index/index/t/" . MP_TOKEN.'/is_hot/1',
                         'pid' => $left_topmenu_id,
                         'c_order' => 2,
                         'p_order' => 1,
                         'create_time' => time(),
                         'update_time' => time()
                     ),
+//                    array(
+//                        'mp_id' => MP_ID,
+//                        'member_id' => UID,
+//                        'menu_name' => '特色菜品',
+//                        'menu_type' => 'view',
+//                        'menu_url' => "http://www.52gdp.com/Wechat/index/index/t/" . MP_TOKEN.'/',
+//                        'pid' => $left_topmenu_id,
+//                        'c_order' => 3,
+//                        'p_order' => 1,
+//                        'create_time' => time(),
+//                        'update_time' => time()
+//                    ),
                     array(
                         'mp_id' => MP_ID,
                         'member_id' => UID,
-                        'menu_name' => '特色菜品',
+                        'menu_name' => '优惠套餐',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/food/features/token/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/FoodSetmenu/index/t/" . MP_TOKEN,
                         'pid' => $left_topmenu_id,
                         'c_order' => 3,
                         'p_order' => 1,
@@ -278,23 +290,11 @@ class WeixinMenuController extends FoodBaseController {
                     array(
                         'mp_id' => MP_ID,
                         'member_id' => UID,
-                        'menu_name' => '优惠套餐',
-                        'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/food/cheap/token/" . MP_TOKEN,
-                        'pid' => $left_topmenu_id,
-                        'c_order' => 4,
-                        'p_order' => 1,
-                        'create_time' => time(),
-                        'update_time' => time()
-                    ),
-                    array(
-                        'mp_id' => MP_ID,
-                        'member_id' => UID,
                         'menu_name' => '我要预定',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/reserve/index/token/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/DiningReserve/create/t/" . MP_TOKEN,
                         'pid' => $left_topmenu_id,
-                        'c_order' => 5,
+                        'c_order' => 4,
                         'p_order' => 1,
                         'create_time' => time(),
                         'update_time' => time()
@@ -349,38 +349,38 @@ class WeixinMenuController extends FoodBaseController {
                         'mp_id' => MP_ID,
                         'member_id' => UID,
                         'menu_name' => '餐厅浏览',
-                        'menu_type' => 'click',
-                        'menu_key' => "dining",
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Wechat/ChainDining/view/t/" . MP_TOKEN,
                         'pid' => $mid_topmenu_id,
                         'c_order' => 3,
                         'p_order' => 2,
                         'create_time' => time(),
                         'update_time' => time()
                     ),
-                    array(
-                        'mp_id' => MP_ID,
-                        'member_id' => UID,
-                        'menu_name' => '热门活动',
-                        'menu_type' => 'click',
-                        'menu_key' => "active",
-                        'pid' => $mid_topmenu_id,
-                        'c_order' => 4,
-                        'p_order' => 2,
-                        'create_time' => time(),
-                        'update_time' => time()
-                    ),
-                    array(
-                        'mp_id' => MP_ID,
-                        'member_id' => UID,
-                        'menu_name' => '领取优惠券',
-                        'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/card/index/token/" . MP_TOKEN,
-                        'pid' => $mid_topmenu_id,
-                        'c_order' => 5,
-                        'p_order' => 2,
-                        'create_time' => time(),
-                        'update_time' => time()
-                    ),
+//                    array(
+//                        'mp_id' => MP_ID,
+//                        'member_id' => UID,
+//                        'menu_name' => '热门活动',
+//                        'menu_type' => 'click',
+//                        'menu_key' => "active",
+//                        'pid' => $mid_topmenu_id,
+//                        'c_order' => 4,
+//                        'p_order' => 2,
+//                        'create_time' => time(),
+//                        'update_time' => time()
+//                    ),
+//                    array(
+//                        'mp_id' => MP_ID,
+//                        'member_id' => UID,
+//                        'menu_name' => '领取优惠券',
+//                        'menu_type' => 'view',
+//                        'menu_url' => "http://www.52gdp.com/Wechat/card/index/t/" . MP_TOKEN,
+//                        'pid' => $mid_topmenu_id,
+//                        'c_order' => 5,
+//                        'p_order' => 2,
+//                        'create_time' => time(),
+//                        'update_time' => time()
+//                    ),
                 );
                 $mid_submenu_create = $weixinMenuModel->addAll($mid_submenu);
                 if ($mid_submenu_create == false) {
@@ -408,7 +408,7 @@ class WeixinMenuController extends FoodBaseController {
                         'member_id' => UID,
                         'menu_name' => '已领取的卡劵',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/card/list/token/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/card/list/t/" . MP_TOKEN,
                         'pid' => $right_topmenu_id,
                         'c_order' => 1,
                         'p_order' => 3,
@@ -420,7 +420,7 @@ class WeixinMenuController extends FoodBaseController {
                         'member_id' => UID,
                         'menu_name' => '我的预定',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/reserve/list/token/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/DiningReserve/index/t/" . MP_TOKEN,
                         'pid' => $right_topmenu_id,
                         'c_order' => 2,
                         'p_order' => 3,
@@ -432,7 +432,7 @@ class WeixinMenuController extends FoodBaseController {
                         'member_id' => UID,
                         'menu_name' => '我的订单',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/order/list/token/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/FoodOrder/index/t/" . MP_TOKEN,
                         'pid' => $right_topmenu_id,
                         'c_order' => 3,
                         'p_order' => 3,
@@ -444,7 +444,7 @@ class WeixinMenuController extends FoodBaseController {
                         'member_id' => UID,
                         'menu_name' => '我的会员卡',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/card/list/token/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/card/list/t/" . MP_TOKEN,
                         'pid' => $right_topmenu_id,
                         'c_order' => 4,
                         'p_order' => 3,
@@ -454,9 +454,9 @@ class WeixinMenuController extends FoodBaseController {
                     array(
                         'mp_id' => MP_ID,
                         'member_id' => UID,
-                        'menu_name' => '我要说说',
+                        'menu_name' => '我的评论',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Mobile/comment/index/token/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/FoodComment/index/t/" . MP_TOKEN,
                         'pid' => $right_topmenu_id,
                         'c_order' => 5,
                         'p_order' => 3,
@@ -469,6 +469,100 @@ class WeixinMenuController extends FoodBaseController {
                     $weixinMenuModel->rollback();
                     $this->error('创建右边一级菜单的子菜单失败!', '', true);
                 }
+//                $menu = '{
+//                    "button":[
+//                        {
+//                            "name":"点菜*预定",
+//                            "sub_button":[
+//                                {	
+//                                    "type":"view",
+//                                    "name":"全部菜品",
+//                                    "url":"' . $left_submenu[0]['menu_url'] . '"
+//                                 },
+//                                 {	
+//                                    "type":"view",
+//                                    "name":"热销菜品",
+//                                    "url":"' . $left_submenu[1]['menu_url'] . '"
+//                                 },
+//                                 {	
+//                                    "type":"view",
+//                                    "name":"特色菜品",
+//                                    "url":"' . $left_submenu[2]['menu_url'] . '"
+//                                 },
+//                                 {
+//                                    "type":"view",
+//                                    "name":"优惠套餐",
+//                                    "url":"' . $left_submenu[3]['menu_url'] . '"
+//                                 },
+//                                 {
+//                                    "type":"view",
+//                                    "name":"我要预定",
+//                                    "url":"' . $left_submenu[4]['menu_url'] . '"
+//                                 }
+//                            ]
+//                        },
+//                        {
+//                            "name":"品牌|优惠券",
+//                            "sub_button":[
+//                                {	
+//                                    "type":"click",
+//                                    "name":"关于我们",
+//                                    "key":"abouts"
+//                                 },
+//                                 {	
+//                                    "type":"click",
+//                                    "name":"联系我们",
+//                                    "key":"contact"
+//                                 },
+//                                 {	
+//                                    "type":"click",
+//                                    "name":"餐厅浏览",
+//                                    "key":"dining"
+//                                 },
+//                                 {
+//                                    "type":"click",
+//                                    "name":"热门活动",
+//                                    "key":"active"
+//                                 },
+//                                 {
+//                                    "type":"view",
+//                                    "name":"领取优惠券",
+//                                    "url":"' . $mid_submenu[4]['menu_url'] . '"
+//                                 }
+//                            ]
+//                        },
+//                        {
+//                            "name":"个人中心",
+//                            "sub_button":[
+//                                {	
+//                                    "type":"view",
+//                                    "name":"已领取的卡劵",
+//                                    "url":"' . $right_submenu[0]['menu_url'] . '"
+//                                 },
+//                                 {	
+//                                    "type":"view",
+//                                    "name":"我的预定",
+//                                    "url":"' . $right_submenu[1]['menu_url'] . '"
+//                                 },
+//                                 {	
+//                                    "type":"view",
+//                                    "name":"我的订单",
+//                                    "url":"' . $right_submenu[2]['menu_url'] . '"
+//                                 },
+//                                 {
+//                                    "type":"view",
+//                                    "name":"我的会员卡",
+//                                    "url":"' . $right_submenu[3]['menu_url'] . '"
+//                                 },
+//                                 {
+//                                    "type":"view",
+//                                    "name":"我要说说[",
+//                                    "url":"' . $right_submenu[4]['menu_url'] . '"
+//                                 }
+//                            ]
+//                        }
+//                    ]
+//                }';
 
                 $menu = '{
                     "button":[
@@ -485,20 +579,15 @@ class WeixinMenuController extends FoodBaseController {
                                     "name":"热销菜品",
                                     "url":"' . $left_submenu[1]['menu_url'] . '"
                                  },
-                                 {	
+                                 {
                                     "type":"view",
-                                    "name":"特色菜品",
+                                    "name":"优惠套餐",
                                     "url":"' . $left_submenu[2]['menu_url'] . '"
                                  },
                                  {
                                     "type":"view",
-                                    "name":"优惠套餐",
-                                    "url":"' . $left_submenu[3]['menu_url'] . '"
-                                 },
-                                 {
-                                    "type":"view",
                                     "name":"我要预定",
-                                    "url":"' . $left_submenu[4]['menu_url'] . '"
+                                    "url":"' . $left_submenu[3]['menu_url'] . '"
                                  }
                             ]
                         },
@@ -518,17 +607,7 @@ class WeixinMenuController extends FoodBaseController {
                                  {	
                                     "type":"click",
                                     "name":"餐厅浏览",
-                                    "key":"dining"
-                                 },
-                                 {
-                                    "type":"click",
-                                    "name":"热门活动",
-                                    "key":"active"
-                                 },
-                                 {
-                                    "type":"view",
-                                    "name":"领取优惠券",
-                                    "url":"' . $mid_submenu[4]['menu_url'] . '"
+                                    "url":'.$mid_submenu[2]['menu_url'].'
                                  }
                             ]
                         },

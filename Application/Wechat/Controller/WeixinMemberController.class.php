@@ -47,6 +47,22 @@ class WeixinMemberController extends BaseController {
 
     //微信用户查看个人信息
     public function info() {
+        if (IS_POST) {
+            $data = I('post.','','trim');
+            $weixinModel = D('Admin/MemberWeixin');
+            if ($weixinModel->create($data, \Admin\Model\MemberWeixinModel::MODEL_UPDATE)) {
+                $save_res = $weixinModel->save();
+                if ($save_res) {
+                    $this->success('微信号保存成功', '', true);
+                }
+            }
+            $this->error($weixinModel->getError(), '', true);
+        }
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['mp_id'] = MP_ID;
+        $member_weixin = M('MemberWeixin')->where($map)->find();
+
+        $this->assign('member_weixin', empty($member_weixin) ? array() : json_encode($member_weixin));
         $this->meta_title = $this->mp['mp_name'] . "微信用户个人信息";
         $this->display('info');
     }
@@ -54,6 +70,9 @@ class WeixinMemberController extends BaseController {
     //微信用户账户绑定
     public function bind() {
         if (IS_POST) {
+            if ($this->weixin_userinfo['member_id']) {
+                $this->error('已绑定过', '', true);
+            }
             $username = I('post.username', '', 'trim');
             $map['username'] = $username;
             $password = I('post.password', '', 'trim');

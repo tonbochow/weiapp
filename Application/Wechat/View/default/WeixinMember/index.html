@@ -10,8 +10,12 @@
     <div class="row" style="margin-top:10px;">
         <div class="col-xs-12">
             <div class="user_info">
-                <img src="{$mp.mp_img}" alt=""  width="80px" height="80px" class="img-circle">
-                <p>{$mp.mp_name}</p>
+                <if condition="$weixin_userinfo.headimgurl  neq ''">
+                    <img src="{$weixin_userinfo.headimgurl}" alt=""  width="80px" height="80px" class="img-circle">
+                    <else />
+                    <img src="/Public/default_headimg.jpg" alt=""  width="80px" height="80px" class="img-circle">
+                </if>
+                <p>{$weixin_userinfo.nickname}</p>
             </div>
             <ul class="padding-list">
                 <li>

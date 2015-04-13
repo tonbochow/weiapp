@@ -47,6 +47,8 @@ class BaseController extends Controller {
         define("APPKEY", trim($mp['paysignkey']));
         define("PARTNERKEY", trim($mp['partnerkey']));
         define("PARTNERID", trim($mp['partnerid']));
+        define("KEY",trim($mp['key']));
+        define("MCHID",trim($mp['mchid']));
         //4 检测是否登录(获取到openid即可)
 //        $weixin_userinfo = $this->getWeixinUserInfo();
 //        $this->weixin_userinfo = $weixin_userinfo;

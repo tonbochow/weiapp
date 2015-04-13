@@ -45,6 +45,14 @@
             </div>
         </div>
         
+        <div class="form-item" ng-class="{'has-error' : DiningForm.wechat_name.$invalid && !DiningForm.wechat_name.$pristine}">
+            <label class="item-label">前台客服微信号<span class="check-tips">（请先用该微信号关注公众平台服务号=>个人中心=>账户管理=>个人信息保存微信号  客户下订单会发送到该微信号）</span></label>
+            <div class="controls">
+                <input name="wechat_name" type="text" value="" ng-model="dining.wechat_name"  ng-pattern="/^\w{1,32}$/" ng-trim="true" ng-minlength="1" ng-maxlength="32" class="form-control text input-large" id="wechat_name" placeholder="前台客服微信号">
+                <p ng-show="DiningForm.wechat_name.$invalid && !DiningForm.wechat_name.$pristine" class="help-block">餐厅负责人(长度1-20)</p>
+            </div>
+        </div>
+
         <div class="form-item" ng-class="{'has-error' : DiningForm.dining_header.$invalid && !DiningForm.dining_header.$pristine}">
             <label class="item-label">餐厅负责人<span class="check-tips">（*必填:最大长度20）</span></label>
             <div class="controls">

@@ -18,6 +18,9 @@ class MemberWeixinModel extends Model {
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('wx_openid', 'require', '微信用户openid不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('wx_openid', '', '此微信openid已经存在！', 0, 'unique',1),
+        array('wechat_name', '/^\w{1,32}$/', '微信号不正确', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('wechat_name', '', '此微信号已经存在！', 0, 'unique'),
     );
 
     /* 自动完成规则 */
