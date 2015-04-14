@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50617
+Source Server Version : 50612
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2015-04-14 17:24:45
+Date: 2015-04-14 23:05:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1286,6 +1286,8 @@ CREATE TABLE `weiapp_food_setmenu` (
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '套餐默认图片',
   `sell_count` int(10) NOT NULL DEFAULT '0' COMMENT '销售数量',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '套餐状态1上架0下架',
+  `share_title` varchar(60) NOT NULL DEFAULT '' COMMENT '微信内分享显示标题',
+  `share_desc` varchar(128) NOT NULL DEFAULT '' COMMENT '微信内分享显示标题',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
