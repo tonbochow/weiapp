@@ -403,18 +403,18 @@ class WeixinMenuController extends FoodBaseController {
                     $this->error('创建右边一级菜单失败!', '', true);
                 }
                 $right_submenu = array(
-                    array(
-                        'mp_id' => MP_ID,
-                        'member_id' => UID,
-                        'menu_name' => '已领取的卡劵',
-                        'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Wechat/card/list/t/" . MP_TOKEN,
-                        'pid' => $right_topmenu_id,
-                        'c_order' => 1,
-                        'p_order' => 3,
-                        'create_time' => time(),
-                        'update_time' => time()
-                    ),
+//                    array(
+//                        'mp_id' => MP_ID,
+//                        'member_id' => UID,
+//                        'menu_name' => '已领取的卡劵',
+//                        'menu_type' => 'view',
+//                        'menu_url' => "http://www.52gdp.com/Wechat/card/list/t/" . MP_TOKEN,
+//                        'pid' => $right_topmenu_id,
+//                        'c_order' => 1,
+//                        'p_order' => 3,
+//                        'create_time' => time(),
+//                        'update_time' => time()
+//                    ),
                     array(
                         'mp_id' => MP_ID,
                         'member_id' => UID,
@@ -422,7 +422,7 @@ class WeixinMenuController extends FoodBaseController {
                         'menu_type' => 'view',
                         'menu_url' => "http://www.52gdp.com/Wechat/DiningReserve/index/t/" . MP_TOKEN,
                         'pid' => $right_topmenu_id,
-                        'c_order' => 2,
+                        'c_order' => 1,
                         'p_order' => 3,
                         'create_time' => time(),
                         'update_time' => time()
@@ -434,23 +434,23 @@ class WeixinMenuController extends FoodBaseController {
                         'menu_type' => 'view',
                         'menu_url' => "http://www.52gdp.com/Wechat/FoodOrder/index/t/" . MP_TOKEN,
                         'pid' => $right_topmenu_id,
-                        'c_order' => 3,
+                        'c_order' => 2,
                         'p_order' => 3,
                         'create_time' => time(),
                         'update_time' => time()
                     ),
-                    array(
-                        'mp_id' => MP_ID,
-                        'member_id' => UID,
-                        'menu_name' => '我的会员卡',
-                        'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Wechat/card/list/t/" . MP_TOKEN,
-                        'pid' => $right_topmenu_id,
-                        'c_order' => 4,
-                        'p_order' => 3,
-                        'create_time' => time(),
-                        'update_time' => time()
-                    ),
+//                    array(
+//                        'mp_id' => MP_ID,
+//                        'member_id' => UID,
+//                        'menu_name' => '我的会员卡',
+//                        'menu_type' => 'view',
+//                        'menu_url' => "http://www.52gdp.com/Wechat/card/list/t/" . MP_TOKEN,
+//                        'pid' => $right_topmenu_id,
+//                        'c_order' => 4,
+//                        'p_order' => 3,
+//                        'create_time' => time(),
+//                        'update_time' => time()
+//                    ),
                     array(
                         'mp_id' => MP_ID,
                         'member_id' => UID,
@@ -458,7 +458,7 @@ class WeixinMenuController extends FoodBaseController {
                         'menu_type' => 'view',
                         'menu_url' => "http://www.52gdp.com/Wechat/FoodComment/index/t/" . MP_TOKEN,
                         'pid' => $right_topmenu_id,
-                        'c_order' => 5,
+                        'c_order' => 3,
                         'p_order' => 3,
                         'create_time' => time(),
                         'update_time' => time()
@@ -605,39 +605,29 @@ class WeixinMenuController extends FoodBaseController {
                                     "key":"contact"
                                  },
                                  {	
-                                    "type":"click",
+                                    "type":"view",
                                     "name":"餐厅浏览",
-                                    "url":'.$mid_submenu[2]['menu_url'].'
+                                    "url":"'.$mid_submenu[2]['menu_url'].'"
                                  }
                             ]
                         },
                         {
                             "name":"个人中心",
                             "sub_button":[
-                                {	
+                                 {	
                                     "type":"view",
-                                    "name":"已领取的卡劵",
+                                    "name":"我的预定",
                                     "url":"' . $right_submenu[0]['menu_url'] . '"
                                  },
                                  {	
                                     "type":"view",
-                                    "name":"我的预定",
+                                    "name":"我的订单",
                                     "url":"' . $right_submenu[1]['menu_url'] . '"
                                  },
-                                 {	
+                                 {
                                     "type":"view",
-                                    "name":"我的订单",
+                                    "name":"我的评论",
                                     "url":"' . $right_submenu[2]['menu_url'] . '"
-                                 },
-                                 {
-                                    "type":"view",
-                                    "name":"我的会员卡",
-                                    "url":"' . $right_submenu[3]['menu_url'] . '"
-                                 },
-                                 {
-                                    "type":"view",
-                                    "name":"我要说说[",
-                                    "url":"' . $right_submenu[4]['menu_url'] . '"
                                  }
                             ]
                         }
@@ -647,6 +637,9 @@ class WeixinMenuController extends FoodBaseController {
                     $this->error('微信公众平台appid或appsercert参数为空!', '', true);
                 }
                 $create_menu_res = \Admin\Model\MicroPlatformModel::createWeixinMenu(APPID, APPSERCERT, $menu);
+//                $weixinMenuModel->rollback();
+//                dump($menu);exit;
+//                $this->error($create_menu_res, '', true);
                 if ($create_menu_res) {
                     $weixinMenuModel->commit();
                     $this->success('微信公众平台菜单创建成功!', '', true);

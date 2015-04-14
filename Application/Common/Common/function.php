@@ -1018,8 +1018,14 @@ function is_weixin_browser() {
 function get_weixin_browser_version() {
     $weixin_browser = $_SERVER['HTTP_USER_AGENT'];
     $browser_arr = explode('/', $weixin_browser);
-    $browser_version = array_pop($browser_arr);
-    return $browser_version;
+    $apple_browser_version = array_pop($browser_arr); //数组最后一位(苹果手机)
+    $android_browser_version = array_pop($browser_arr); //数组倒数第二位(安卓手机)
+    $apple_version = intval($apple_browser_version);
+    $android_version = intval($android_browser_version);
+    if($apple_version <5 && $android_version <5){
+        return false;
+    }
+    return true;
 }
 
 /**

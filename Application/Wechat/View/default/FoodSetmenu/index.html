@@ -46,15 +46,15 @@
         </div>
         <if condition="$setmenus neq ''">
             <volist name="setmenus" id="setmenu">
-                <div class="col-xs-6">
-                    <div class="thumbnail" style="height:370px;">
+                <div class="col-xs-12">
+                    <div class="thumbnail" style="height:330px;">
                         <if condition="$setmenu.url eq ''">
                             <a href="/Wechat/FoodSetmenu/view/id/{$setmenu.id}/t/{$mp.mp_token}">
-                            <img src="{$mp.mp_img}" alt="" style="height:200px;">
+                            <img src="{$mp.mp_img}" alt="" style="height:170px;">
                             </a>
                             <else />
                             <a href="/Wechat/FoodSetmenu/view/id/{$setmenu.id}/t/{$mp.mp_token}">
-                            <img src="{$setmenu.url}" alt="" style="height:200px;">
+                            <img src="{$setmenu.url}" alt="" style="height:170px;">
                             </a>
                         </if>
                         <div class="caption">

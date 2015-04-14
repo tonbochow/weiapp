@@ -11,7 +11,7 @@
         <p id="dialog_content"></p>
     </div>
     
-    <div class="row" style="margin-top:10px;">
+    <div class="row" style="margin-top:5px;">
         <div class="col-xs-12">
             <ul class="menu-list">
                 <li>
@@ -46,15 +46,16 @@
         </div>
         <if condition="$foods neq ''">
             <volist name="foods" id="food">
-                <div class="col-xs-6">
-                    <div class="thumbnail" style="height:370px;">
+                <!--<div class="col-xs-1"></div>-->
+                <div class="col-xs-12">
+                    <div class="thumbnail" style="height:330px;">
                         <if condition="$food.url eq ''">
                             <a href="/Wechat/food/view/id/{$food.id}/t/{$mp.mp_token}">
-                            <img src="{$mp.mp_img}" alt="" style="height:200px;">
+                            <img src="{$mp.mp_img}" alt="" style="height:170px;">
                             </a>
                             <else />
                             <a href="/Wechat/food/view/id/{$food.id}/t/{$mp.mp_token}">
-                            <img src="{$food.url}" alt="" style="height:200px;">
+                            <img src="{$food.url}" alt="" style="height:170px;">
                             </a>
                         </if>
                         <div class="caption">
@@ -100,6 +101,7 @@
                         </div>
                     </div>
                 </div>
+                <!--<div class="col-xs-1"></div>-->
             </volist>
             <else />
             <div class="col-xs-12" style="text-align: center;">本店即将上线菜品,请稍等待...</div>

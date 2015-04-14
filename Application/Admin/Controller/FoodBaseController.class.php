@@ -66,6 +66,7 @@ class FoodBaseController extends AdminController {
             define("APPKEY", $paysignkey); //微信公众平台APPKEY 微信支付必需参数
             define("MP_TOKEN", $mp_token); //微信公众平台接入token  唯一  非常重要参数
             define("SUPPORT_WXPAY", $support_wxpay);
+            $this->assign('mp',$micro_platform);
         }
     }
 

@@ -32,7 +32,7 @@ class MemberWeixinModel extends Model {
 
     //获取微信用户信息
     public static function getWeixinUserinfo($wx_openid) {
-        return $this->where(array('wx_openid' => $wx_openid, 'mp_id' => MP_ID))->find();
+        return M('MemberWeixin')->where(array('wx_openid' => $wx_openid, 'mp_id' => MP_ID))->find();
     }
 
     //获取微信用户状态

@@ -3,7 +3,7 @@
 /**
  * 微信公众平台 PHP SDK 示例文件
  */
-//require('./Wechat.class.php');
+require('Wechat.class.php');
 
 /**
  * 微信公众平台演示类
@@ -81,7 +81,7 @@ class WeiXin extends Wechat {
 
         $foods = $foodModel
                 ->join('left  join weiapp_food_detail ON weiapp_food.id = weiapp_food_detail.food_id')
-                ->where('weiapp_food.status=1' . " $cond")
+                ->where('weiapp_food.mp_id ='.$this->mp['id'].' and weiapp_food.status=1' . " $cond")
                 ->group('weiapp_food_detail.food_id')
                 ->order('rand()')
                 ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
@@ -142,7 +142,7 @@ class WeiXin extends Wechat {
 
         $foods = $foodModel
                 ->join('left  join weiapp_food_detail ON weiapp_food.id = weiapp_food_detail.food_id')
-                ->where('weiapp_food.status=1' . " $cond")
+                ->where('weiapp_food.mp_id='.$this->mp['id'].' and weiapp_food.status=1' . " $cond")
                 ->group('weiapp_food_detail.food_id')
                 ->order('rand()')
                 ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
@@ -192,7 +192,7 @@ class WeiXin extends Wechat {
         $foodModel = M('Food');
         $foods = $foodModel
                 ->join('left  join weiapp_food_detail ON weiapp_food.id = weiapp_food_detail.food_id')
-                ->where('weiapp_food.status=1')
+                ->where('weiapp_food.mp_id='.$this->mp['id'].' and weiapp_food.status=1')
                 ->group('weiapp_food_detail.food_id')
                 ->order('rand()')
                 ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
@@ -223,14 +223,38 @@ class WeiXin extends Wechat {
             foreach ($dining_rooms as $val) {
                 $address_info = \Admin\Model\RegionModel::getRegionName($val['city']) . \Admin\Model\RegionModel::getRegionName($val['town']) . $val['address'];
                 $dining_pic = \Admin\Model\DiningRoomDetailModel::getDiningRoomPic($val['id']);
-                $items[] = new NewsResponseItem($val['dining_name'] . ' 电话:' . $val['phone'] . ' ' . $val['mobile'] . ' 地址:' . $address_info, $val['description'], 'http://www.52gdp.com' . $dining_pic, 'http://www.52gdp.com/Wechat/DiningRoom/view/id/' . $val['id'] . '/t/' . $this->token);
+                $items[] = new NewsResponseItem($val['dining_name'], "电话:" . $dining_room['phone'] . "\n手机:" . $dining_room['mobile'] . " \n地址:" . $address_info, 'http://www.52gdp.com' . $dining_pic, 'http://www.52gdp.com/Wechat/DiningRoom/view/id/' . $val['id'] . '/t/' . $this->token);
             }
             $this->responseNews($items);
         } else {
             $dining_room = M('DiningRoom')->where($map)->find();
             $address_info = \Admin\Model\RegionModel::getRegionName($dining_room['city']) . \Admin\Model\RegionModel::getRegionName($dining_room['town']) . $dining_room['address'];
             $dining_pic = \Admin\Model\DiningRoomDetailModel::getDiningRoomPic($dining_room['id']);
-            $items[] = new NewsResponseItem($dining_room['dining_name'] . ' 电话:' . $dining_room['phone'] . ' ' . $dining_room['mobile'] . ' 地址:' . $address_info, $dining_room['description'], 'http://www.52gdp.com' . $dining_pic, 'http://www.52gdp.com/Wechat/DiningRoom/view/id/' . $val['id'] . '/t/' . $this->token);
+            $items[] = new NewsResponseItem($dining_room['dining_name'], "电话:" . $dining_room['phone'] . "\n手机:" . $dining_room['mobile'] . " \n地址:" . $address_info, 'http://www.52gdp.com' . $dining_pic, 'http://www.52gdp.com/Wechat/DiningRoom/view/id/' . $dining_room['id'] . '/t/' . $this->token);
+            $this->responseNews($items);
+        }
+    }
+    
+    /**
+     * 关于餐厅
+     */
+    protected function abouts() {
+        $map['mp_id'] = $this->mp['id'];
+        $map['status'] = Admin\Model\DiningRoomModel::$STATUS_ENABLED;
+        if ($this->mp['is_chain']) {//连锁餐厅
+            $dining_rooms = M('DiningRoom')->where($map)->select();
+            $items = array();
+            foreach ($dining_rooms as $val) {
+                $address_info = \Admin\Model\RegionModel::getRegionName($val['city']) . \Admin\Model\RegionModel::getRegionName($val['town']) . $val['address'];
+                $dining_pic = \Admin\Model\DiningRoomDetailModel::getDiningRoomPic($val['id']);
+                $items[] = new NewsResponseItem($val['dining_name'], htmlspecialchars_decode(stripslashes($val['description'])), 'http://www.52gdp.com' . $dining_pic, 'http://www.52gdp.com/Wechat/DiningRoom/view/id/' . $val['id'] . '/t/' . $this->token);
+            }
+            $this->responseNews($items);
+        } else {
+            $dining_room = M('DiningRoom')->where($map)->find();
+            $address_info = \Admin\Model\RegionModel::getRegionName($dining_room['city']) . \Admin\Model\RegionModel::getRegionName($dining_room['town']) . $dining_room['address'];
+            $dining_pic = \Admin\Model\DiningRoomDetailModel::getDiningRoomPic($dining_room['id']);
+            $items[] = new NewsResponseItem($dining_room['dining_name'], htmlspecialchars_decode(stripslashes($dining_room['description'])), 'http://www.52gdp.com' . $dining_pic, 'http://www.52gdp.com/Wechat/DiningRoom/view/id/' . $dining_room['id'] . '/t/' . $this->token);
             $this->responseNews($items);
         }
     }

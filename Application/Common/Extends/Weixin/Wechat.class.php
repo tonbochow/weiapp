@@ -52,15 +52,17 @@ class Wechat {
         /*
          * 全局初始化微信公众平台信息
          */
-        $mp_wechat_name = $this->request('tousername'); //微信公众平台微信号 也是唯一
+//        $mp_wechat_name = $this->request('tousername'); //微信公众平台微信号 也是唯一
         $microPlatformModel = M('MicroPlatform');
-        $map['mp_original_id'] = $mp_wechat_name;
-        $map['mp_wxcode'] = $mp_wechat_name;
-        $map['_logic'] = 'OR';
-        $micro_platform = $microPlatformModel->where($map)->find();
+//        $map['mp_original_id'] = $mp_wechat_name;
+//        $map['mp_wxcode'] = $mp_wechat_name;
+//        $map['_logic'] = 'OR';
+//        $micro_platform = $microPlatformModel->where($map)->find();
 //        if ($micro_platform == false) {//未检索到公众平台信息
 //            return false;
 //        }
+        $map['mp_token'] = $token;
+        $micro_platform = $microPlatformModel->where($map)->find();
         $this->token = $token;
         $this->mp = $micro_platform; //全局初始化微信公众平台信息
     }
@@ -94,23 +96,22 @@ class Wechat {
          */
         $map['mp_token'] = $token;
         $micro_platform = M('MicroPlatform')->where($map)->find();
-//        if($micro_platform == false){//token不正确直接返回false
-//            return false;
-//        }
-//        if($micro_platform['status'] == \Admin\Model\MicroPlatformModel::$STATUS_DENY){//微信公众平台禁用状态
-//            return false;
-//        }
-//        if($micro_platform['start_time'] > time()){//微信公众平台开始使用时间未到
-//            return false;
-//        }
-//        if($micro_platform['end_time'] < time()){//微信公众平台使用期限已到
-//            return false;
-//        }
+        if($micro_platform == false){//token不正确直接返回false
+            return false;
+        }
+        if($micro_platform['status'] == \Admin\Model\MicroPlatformModel::$STATUS_DENY){//微信公众平台禁用状态
+            return false;
+        }
+        if($micro_platform['start_time'] > time()){//微信公众平台开始使用时间未到
+            return false;
+        }
+        if($micro_platform['end_time'] < time()){//微信公众平台使用期限已到
+            return false;
+        }
 //        $map['status'] = \Admin\Model\MicroPlatformModel::$STATUS_ALLOW;
 //        $map['start_time'] = array("elt", time());
 //        $map['end_time'] = array("egt", time());
 //        $micro_platforms = M('MicroPlatform')->where($map)->select();
-//        file_put_contents($_SERVER['DOCUMENT_ROOT'].'/Runtime/log.txt','test'.'<BR>',FILE_APPEND);
 //        foreach ($micro_platforms as $mp) {
 //            file_put_contents($_SERVER['DOCUMENT_ROOT'].'/Runtime/log.txt',$mp['mp_token'].'<BR>',FILE_APPEND);
 //            $signatureArray = array($mp['mp_token'], $timestamp, $nonce);
@@ -120,7 +121,6 @@ class Wechat {
 //                return true;
 //            }
 //        }
-//        file_put_contents($_SERVER['DOCUMENT_ROOT'].'/Runtime/log.txt','0000'.'<BR>',FILE_APPEND);
 //        return false;
         /**
          * 添加验证token是否正确
@@ -128,7 +128,16 @@ class Wechat {
         $signatureArray = array($token, $timestamp, $nonce);
         sort($signatureArray, SORT_STRING);
 
-        return sha1(implode($signatureArray)) == $signature;
+        $signature_res = (sha1(implode($signatureArray)) == $signature);
+        if($signature_res){
+            $mp_map['token'] = $token;
+            $mp_data['is_bind'] = \Admin\Model\MicroPlatformModel::$IS_BIND;
+            $mp_data['update_time'] = time();
+            M('MicroPlatform')->where($mp_map)->save($mp_data);
+            return true;
+        }
+        return false;
+//        return sha1(implode($signatureArray)) == $signature;
     }
 
     /**

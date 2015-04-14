@@ -260,6 +260,7 @@ class MicroPlatformModel extends Model {
         if ($create_menu_res['errcode'] == 0 && $create_menu_res['errmsg'] == 'ok') {
             return true;
         }
+        return $create_menu_res['errcode'].$create_menu_res['errmsg'];
         return false;
     }
 

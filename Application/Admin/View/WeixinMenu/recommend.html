@@ -24,7 +24,6 @@
                         <table>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">全部菜品</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">热销菜品</a></td></tr>
-                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">特色菜品</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">优惠套餐</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我要预定</a></td></tr>               
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn submit-btn" href="#">点菜*预定</a></td></tr>
@@ -35,18 +34,18 @@
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">关于我们</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">联系我们</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">餐厅浏览</a></td></tr>
-                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">热门活动</a></td></tr>
-                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">领取优惠券</a></td></tr>
+<!--                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">热门活动</a></td></tr>
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">领取优惠券</a></td></tr>-->
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn submit-btn" href="#">品牌|优惠券</a></td></tr>
                         </table>
                     </td>
                     <td valign='bottom' align='center'>
                         <table>
-                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">已领取的卡券</a></td></tr>
+                        <!--<tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">已领取的卡券</a></td></tr>-->
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的预定</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的订单</a></td></tr>
-                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的会员卡</a></td></tr>
-                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我要说说</a></td></tr>
+                        <!--<tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的会员卡</a></td></tr>-->
+                        <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn" href="#">我的评论</a></td></tr>
                         <tr><td valign='bottom' align='center' style='background-color:#fff;padding:1px;'><a class="btn submit-btn" href="#">个人中心</a></td><tr>
                         </table>
                     </td>
@@ -64,11 +63,11 @@
         <div class="form-item">
             <label class="item-label">点菜*预定[一级菜单]<span class="check-tips">(位置:最左边)</span></label>
             <div class="controls">
-                <p>1 菜单名:全部菜品[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/food/list/token/91692FB7569443A68D7C357488CB54C2</p>
-                <p>2 菜单名:热销菜品[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/food/hot/token/91692FB7569443A68D7C357488CB54C2</p>
-                <p>3 菜单名:特色菜品[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/food/features/token/91692FB7569443A68D7C357488CB54C2</p>
-                <p>4 菜单名:优惠套餐[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/food/cheap/token/91692FB7569443A68D7C357488CB54C2</p>
-                <p>5 菜单名:我要预定[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/reserve/index/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>1 菜单名:全部菜品[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Wechat/index/index/t/{$mp.mp_token}</p>
+                <p>2 菜单名:热销菜品[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Wechat/index/index/is_hot/1/t/{$mp.mp_token}</p>
+                <!--<p>3 菜单名:特色菜品[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/food/features/token/91692FB7569443A68D7C357488CB54C2</p>-->
+                <p>4 菜单名:优惠套餐[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Wechat/FoodSetmenu/index/t/{$mp.mp_token}</p>
+                <p>5 菜单名:我要预定[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Wechat/DiningReserve/create/t/{$mp.mp_token}</p>
             </div>
         </div>
         
@@ -77,20 +76,20 @@
             <div class="controls">
                 <p>1 菜单名:关于我们[二级子菜单]  类型：click  KEY:(例)abouts</p>
                 <p>2 菜单名:联系我们[二级子菜单]  类型：click  KEY:(例)contact</p>
-                <p>3 菜单名:餐厅浏览[二级子菜单]  类型：click  KEY:(例)dining</p>
-                <p>4 菜单名:热门活动[二级子菜单]  类型：click  KEY:(例)active</p>
-                <p>5 菜单名:领取优惠券[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/index/token/91692FB7569443A68D7C357488CB54C2</p>
+                <p>3 菜单名:餐厅浏览[二级子菜单]  类型：view   URL：(例)http://www.52gdp.com/Wechat/ChainDining/view/t/{$mp.mp_token}</p>
+                <!--<p>4 菜单名:热门活动[二级子菜单]  类型：click  KEY:(例)active</p>-->
+                <!--<p>5 菜单名:领取优惠券[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/index/token/91692FB7569443A68D7C357488CB54C2</p>-->
             </div>
         </div>
         
         <div class="form-item">
             <label class="item-label">个人中心[一级菜单]<span class="check-tips">(位置:最右边)</span></label>
             <div class="controls">
-                <p>1 菜单名:已领取的卡劵[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2</p>
-                <p>2 菜单名:我的预定[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/reserve/list/token/91692FB7569443A68D7C357488CB54C2</p>
-                <p>3 菜单名:我的订单[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/order/list/token/91692FB7569443A68D7C357488CB54C2</p>
-                <p>4 菜单名:我的会员卡[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2</p>
-                <p>4 菜单名:我要说说[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/comment/list/token/91692FB7569443A68D7C357488CB54C2</p>
+                <!--<p>1 菜单名:已领取的卡劵[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2</p>-->
+                <p>2 菜单名:我的预定[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Wechat/DiningReserve/index/t/{$mp.mp_token}</p>
+                <p>3 菜单名:我的订单[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Wechat/FoodOrder/index/t/{$mp.mp_token}</p>
+                <!--<p>4 菜单名:我的会员卡[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Mobile/card/list/token/91692FB7569443A68D7C357488CB54C2</p>-->
+                <p>4 菜单名:我要评论[二级子菜单]  类型：view  URL:(例)http://www.52gdp.com/Wechat/FoodComment/index/t/{$mp.mp_token}</p>
             </div>
         </div>
         
