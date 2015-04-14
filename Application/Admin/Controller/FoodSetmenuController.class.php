@@ -75,6 +75,8 @@ class FoodSetmenuController extends FoodBaseController {
             //保存餐厅菜品套餐
             $food_setmenu_data['mp_id'] = MP_ID;
             $food_setmenu_data['member_id'] = UID;
+            $food_setmenu_data['share_title'] = !empty($food_setmenu_data['share_title']) ? $food_setmenu_data['share_title'] : $food_setmenu_data['setmenu_name`'];
+            $food_setmenu_data['share_desc'] = !empty($food_setmenu_data['share_desc']) ? $food_setmenu_data['share_desc'] : $food_setmenu_data['setmenu_name`'];
             if ($foodSetmenuModel->create($food_setmenu_data, \Admin\Model\FoodSetmenuModel::MODEL_INSERT)) {
                 $food_setmenu_add = $foodSetmenuModel->add();
                 if ($food_setmenu_add) {
@@ -172,6 +174,7 @@ class FoodSetmenuController extends FoodBaseController {
                 'card_name' => $card,
             );
         }
+        $food_setmenu['description'] = htmlspecialchars_decode(stripslashes($food_setmenu['description']));
 
         $this->assign('card_arr', json_encode($arr_card));
         $this->assign('dining_room_arr', json_encode($dining_room_arr));

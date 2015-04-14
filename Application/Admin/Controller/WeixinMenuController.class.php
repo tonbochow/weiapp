@@ -357,6 +357,18 @@ class WeixinMenuController extends FoodBaseController {
                         'create_time' => time(),
                         'update_time' => time()
                     ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '客服',
+                        'menu_type' => 'click',
+                        'menu_key' => "customer",
+                        'pid' => $mid_topmenu_id,
+                        'c_order' => 4,
+                        'p_order' => 2,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
 //                    array(
 //                        'mp_id' => MP_ID,
 //                        'member_id' => UID,
@@ -608,6 +620,11 @@ class WeixinMenuController extends FoodBaseController {
                                     "type":"view",
                                     "name":"餐厅浏览",
                                     "url":"'.$mid_submenu[2]['menu_url'].'"
+                                 },
+                                 {	
+                                    "type":"click",
+                                    "name":"客服",
+                                    "key":"customer"
                                  }
                             ]
                         },

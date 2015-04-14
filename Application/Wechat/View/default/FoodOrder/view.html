@@ -60,7 +60,7 @@
                                         <?php echo \Admin\Model\FoodModel::getFoodName($food_order['food_id']); ?>
                                 </h4>
                                 <p id="amount">单价:￥{$food_order.food_weixin_price}  数量:{$food_order.food_count}</p>
-                                <p id="order-date">{$food_order.food_amount}</p>
+                                <p id="order-date">{$food_order.food_real_pay_amount}</p>
                                 <?php
                                     if(($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD && $food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) &&(\Admin\Model\FoodCommentModel::getCommentByWxopenidFoodid($this->weixin_userinfo['wx_openid']=$weixin_userinfo['wx_openid'],$food_order['food_id']) == false)){
                                 ?>

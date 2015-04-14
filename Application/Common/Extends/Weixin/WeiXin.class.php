@@ -38,7 +38,7 @@ class WeiXin extends Wechat {
         }
 
         $items = array(
-            new NewsResponseItem('欢迎关注' . $this->mp['mp_name'] . ',发送语音搜索试试!如需咨询在线客服请输入 客服 ！', '发送语音搜索试试!如需咨询在线客服请输入 客服 ', 'http://www.52gdp.com' . $this->mp['mp_img'], 'http://www.52gdp.com/wechat/t/' . $this->token),
+            new NewsResponseItem('欢迎关注' . $this->mp['mp_name'] . ',发送语音搜索试试!如需咨询在线客服请输入 客服 ！', '发送语音搜索试试!如需咨询在线客服请输入 客服 ', 'http://www.52gdp.com' . $this->mp['back_img'], 'http://www.52gdp.com/wechat/t/' . $this->token),
 //            new NewsResponseItem('福利第二波！首次参与完成问卷调查即可再送百元红包！', '首次参与完成问卷调查即可再送百元红包！', 'http://www.lingou.com/Public/Mobile/images/red_envelope.jpg', 'http://www.lingou.com/mobile/Member/question'),
         );
         $this->responseNews($items);
@@ -81,7 +81,7 @@ class WeiXin extends Wechat {
 
         $foods = $foodModel
                 ->join('left  join weiapp_food_detail ON weiapp_food.id = weiapp_food_detail.food_id')
-                ->where('weiapp_food.mp_id ='.$this->mp['id'].' and weiapp_food.status=1' . " $cond")
+                ->where('weiapp_food.mp_id =' . $this->mp['id'] . ' and weiapp_food.status=1' . " $cond")
                 ->group('weiapp_food_detail.food_id')
                 ->order('rand()')
                 ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
@@ -142,7 +142,7 @@ class WeiXin extends Wechat {
 
         $foods = $foodModel
                 ->join('left  join weiapp_food_detail ON weiapp_food.id = weiapp_food_detail.food_id')
-                ->where('weiapp_food.mp_id='.$this->mp['id'].' and weiapp_food.status=1' . " $cond")
+                ->where('weiapp_food.mp_id=' . $this->mp['id'] . ' and weiapp_food.status=1' . " $cond")
                 ->group('weiapp_food_detail.food_id')
                 ->order('rand()')
                 ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
@@ -192,7 +192,7 @@ class WeiXin extends Wechat {
         $foodModel = M('Food');
         $foods = $foodModel
                 ->join('left  join weiapp_food_detail ON weiapp_food.id = weiapp_food_detail.food_id')
-                ->where('weiapp_food.mp_id='.$this->mp['id'].' and weiapp_food.status=1')
+                ->where('weiapp_food.mp_id=' . $this->mp['id'] . ' and weiapp_food.status=1')
                 ->group('weiapp_food_detail.food_id')
                 ->order('rand()')
                 ->field('weiapp_food.id,weiapp_food.food_name,weiapp_food.price,weiapp_food.weixin_price,weiapp_food.dining_room_id,weiapp_food_detail.url')
@@ -232,9 +232,11 @@ class WeiXin extends Wechat {
             $dining_pic = \Admin\Model\DiningRoomDetailModel::getDiningRoomPic($dining_room['id']);
             $items[] = new NewsResponseItem($dining_room['dining_name'], "电话:" . $dining_room['phone'] . "\n手机:" . $dining_room['mobile'] . " \n地址:" . $address_info, 'http://www.52gdp.com' . $dining_pic, 'http://www.52gdp.com/Wechat/DiningRoom/view/id/' . $dining_room['id'] . '/t/' . $this->token);
             $this->responseNews($items);
+//            $contact = "<<".$dining_room['dining_name'].">>\n 电话: ".$dining_room['phone']." \n 手机: ".$dining_room['mobile']." \n 地址:".$address_info;
+//            $this->responseText($contact);
         }
     }
-    
+
     /**
      * 关于餐厅
      */

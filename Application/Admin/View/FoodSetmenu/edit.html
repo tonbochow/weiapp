@@ -34,7 +34,8 @@
         <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.description.$invalid && !FoodSetmenuForm.description.$pristine}">
             <label class="item-label">菜品套餐描述<span class="check-tips">（*必填:最大长度256）</span></label>
             <div class="controls">
-                <input name="description" type="text" value="" ng-model="food_setmenu.description"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="description" placeholder="餐厅菜品套餐描述">
+                <!--<input name="description" type="text" value="" ng-model="food_setmenu.description"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="description" placeholder="餐厅菜品套餐描述">-->
+                <div class="ueditor" config="config" ng-model="food_setmenu.description" ng-minlength="1" ng-trim="true" required ></div>
                 <p ng-show="FoodSetmenuForm.description.$invalid && !FoodSetmenuForm.description.$pristine" class="help-block">餐厅菜品套餐描述(长度1-256)</p>
             </div>
         </div>
@@ -66,6 +67,23 @@
                 <p ng-show="FoodSetmenuForm.url.$invalid && !FoodSetmenuForm.url.$pristine" class="help-block">菜品套餐图片</p>
             </div>
         </div>
+        
+        <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.share_title.$invalid && !FoodSetmenuForm.share_title.$pristine}">
+            <label class="item-label">微信朋友圈分享显示标题<span class="check-tips">（默认分享标题为菜品名称）</span></label>
+            <div class="controls">
+                <input name="share_title" type="text" value="" ng-model="food_setmenu.share_title"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,60}$/" ng-trim="true" ng-minlength="1" ng-maxlength="60" class="form-control text input-large" id="share_title" placeholder="微信朋友圈分享显示标题">
+                <p ng-show="FoodSetmenuForm.share_title.$invalid && !FoodSetmenuForm.share_title.$pristine" class="help-block">微信朋友圈分享显示标题(长度1-60)</p>
+            </div>
+        </div>
+        
+        
+        <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.share_desc.$invalid && !FoodSetmenuForm.share_desc.$pristine}">
+            <label class="item-label">微信朋友圈分享显示描述<span class="check-tips">（默认分享标题为菜品名称）</span></label>
+            <div class="controls">
+                <input name="share_desc" type="text" value="" ng-model="food_setmenu.share_desc"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,128}$/" ng-trim="true" ng-minlength="1" ng-maxlength="128" class="form-control text input-large" id="share_desc" placeholder="微信朋友圈分享显示描述">
+                <p ng-show="FoodSetmenuForm.share_desc.$invalid && !FoodSetmenuForm.share_desc.$pristine" class="help-block">微信朋友圈分享显示描述(长度1-128)</p>
+            </div>
+        </div>
 
         <div class="form-item">
             <button type="submit" class="btn btn-success submit" ng-disabled="FoodSetmenuForm.$invalid">保 存</button>
@@ -84,10 +102,13 @@
     <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
     <script type="text/javascript" src="__STATIC__/json2.js"></script>
     <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.config.food.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs-ueditor/angular-ueditor.js"></script>
     <script type="text/javascript" src="__STATIC__/LocalResizeIMG/LocalResizeIMG.js"></script>
     <script type="text/javascript" src="__STATIC__/LocalResizeIMG/patch/mobileBUGFix.mini.js"></script>
     <script type="text/javascript">
-                var FoodSetmenuModule = angular.module("weiapp_food_setmenu", []);
+                var FoodSetmenuModule = angular.module("weiapp_food_setmenu", ['ng.ueditor']);
                 FoodSetmenuModule.controller("FoodSetmenuController", function($scope, $http) {
                     $(function(){
                         $('#file_img').localResizeIMG({

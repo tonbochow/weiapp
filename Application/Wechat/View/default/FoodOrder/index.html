@@ -27,7 +27,7 @@
                                     <?php echo \Admin\Model\DiningRoomModel::getDiningRoomName($food_order['dining_room_id']); ?>
                                 </a>
                             </h4>
-                            <p id="amount">订单号:{$food_order.order_no} ￥:{$food_order.real_pay_amount}</p>
+                            <p id="amount">订单号:<br>{$food_order.order_no} <br>￥:{$food_order.real_pay_amount}</p>
                             <p id="amount"><?php echo \Admin\Model\FoodOrderModel::getFoodPayType($food_order['pay_type']); ?> <span id="status_{$food_order.id}"><?php echo \Admin\Model\FoodOrderModel::getFoodOrderStatus($food_order['status']); ?></span></p>
                             <p id="order-date">{$food_order.create_time|date="Y-m-d H:i:s",###}</p>
                         </div>
@@ -37,25 +37,25 @@
                     </div>
                     <div class="caption">
                         <p>
-                            <a href="/Wechat/FoodOrder/view/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-primary" role="button"><i class="fa fa-list-alt"></i> 查看订单</a>
+                            <a href="/Wechat/FoodOrder/view/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-primary btn-small" role="button"><i class="fa fa-list-alt"></i> 查看订单</a>
                             <?php
                             if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_DELIVERY){
                             ?>
-                            <a id="finish_{$food_order.id}" href="javascript:void();" onclick="finish({$food_order.id});" class="btn btn-success" role="button"><i class="fa fa-check"></i> 确认完成</a>
+                            <a id="finish_{$food_order.id}" href="javascript:void();" onclick="finish({$food_order.id});" class="btn btn-success btn-small" role="button"><i class="fa fa-check"></i> 确认完成</a>
                             <?php
                             }
                             ?>
                             <?php
                             if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_COMMITED  && $food_order['pay_type'] == \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN){
                             ?>
-                            <a id="pay_{$food_order.id}" href="/Wechat/FoodOrder/pay/out_trade_no/{$food_order.out_trade_no}/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-success" role="button"><i class="fa fa-weixin"></i> 微信支付</a>
+                            <a id="pay_{$food_order.id}" href="/Wechat/FoodOrder/pay/out_trade_no/{$food_order.out_trade_no}/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-success btn-small" role="button"><i class="fa fa-weixin"></i> 微信支付</a>
                             <?php
                             }
                             ?>
                             <?php
                             if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_COMMITED){
                             ?>
-                            <a id="cancel_{$food_order.id}" href="javascript:void();" onclick="cancel({$food_order.id});" class="btn btn-default" role="button"><i class="fa fa-times"></i> 取消订单</a>
+                            <a id="cancel_{$food_order.id}" href="javascript:void();" onclick="cancel({$food_order.id});" class="btn btn-default btn-small" role="button"><i class="fa fa-times"></i> 取消订单</a>
                             <?php
                             }
                             ?>
