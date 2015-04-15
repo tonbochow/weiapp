@@ -33,13 +33,13 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="/Wechat/food/view/id/{{detail.food_setmenu_id}}/t/{$mp.mp_token}">
-                                <img class="media-object" src="{{detail.url}}" style="max-height:120px;max-width: 120px;" alt="">
+                                <img class="media-object" src="{{detail.url}}" style="max-height:120px;max-width: 110px;" alt="">
                             </a>
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading"><a href="/Wechat/food/view/id/{{detail.food_setmenu_id}}/t/{$mp.mp_token}">{{detail.name}}</a></h4>
                             微信价:{{detail.price}}<p>
-                            <div class="input-group" style="width:130px;">
+                            <div class="input-group" style="width:120px;">
                                 <a href class="input-group-addon" ng-click="reduce(this)"><i class="fa fa-minus"></i></a>
                                 <input type="text" readonly class="form-control" aria-label=""  ng-pattern="/^\d+(\.\d+)?$/"  ng-trim="true" ng-minlength="1" ng-maxlength="10" value="{{detail.count}}">
                                 <a href class="input-group-addon" ng-click="add(this)"><i class="fa fa-plus"></i></a>

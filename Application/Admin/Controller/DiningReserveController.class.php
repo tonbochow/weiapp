@@ -35,6 +35,11 @@ class DiningReserveController extends FoodBaseController {
             $map['user_name'] = array('like', '%' . (string) I('user_name') . '%');
         }
         $list = $this->lists('DiningReserve', $map, 'status,id', array('status' => array('egt', \Admin\Model\DiningReserveModel::$STATUS_DROP)));
+        if(!empty($list)){
+            foreach($list as $key=>$val){
+                $list[$key]['remark'] = htmlspecialchars_decode(stripslashes($val['remark']));
+            }
+        }
         $this->assign('list', $list);
         $this->meta_title = '客户预定';
         $this->display('show');
@@ -91,7 +96,7 @@ class DiningReserveController extends FoodBaseController {
             $reserve_confirm = $reserveModel->where($map)->save($reserve_data);
             if ($reserve_confirm) {
                 //给微信客户发送消息通知用户
-                $info_content = '恭喜您预定成功!期待您的光临！';
+                $info_content = '恭喜您预定成功!期待您的光临！如需更多咨询可通过我们微信工作平台点击客服菜单联系客服直接对话沟通';
                 $reserves = $reserveModel->where($map)->select();
                 foreach ($reserves as $reserve) {//发送微信消息通知客户预定成功
                     \Admin\Model\MicroPlatformModel::sendCustomerMessage(APPID, APPSERCERT, $reserve['wx_openid'], $info_content);

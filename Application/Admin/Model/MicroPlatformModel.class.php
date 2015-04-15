@@ -272,8 +272,8 @@ class MicroPlatformModel extends Model {
      * $info_content 发送消息内容
      */
     public static function sendCustomerMessage($appid, $appsecret, $wx_openid, $info_content) {
-        import('Common.Extends.Weixin.Wechat');
-        ob_clean();
+//        import('Common.Extends.Weixin.Wechat');
+//        ob_clean();
         $access_token = self::getAccessToken($appid, $appsecret);
         $info_url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . $access_token;
         $post_data = '{
@@ -284,7 +284,7 @@ class MicroPlatformModel extends Model {
                                 "content":"' . $info_content . '"
                             }
                         }';
-        sel::curl($info_url, $post_data);
+        self::curl($info_url, $post_data);
     }
 
     /**
@@ -313,7 +313,7 @@ class MicroPlatformModel extends Model {
                                 ]
                             }
                         }';
-        sel::curl($info_url, $post_data);
+        self::curl($info_url, $post_data);
     }
 
     /**
@@ -398,7 +398,7 @@ class MicroPlatformModel extends Model {
                                 }
                             }
                         }';
-        sel::curl($url, $post_data);
+        self::curl($url, $post_data);
     }
 
     /**

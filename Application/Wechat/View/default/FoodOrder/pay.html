@@ -11,21 +11,34 @@
         <p id="dialog_content"></p>
     </div>
 
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <div class="thumbnail"> 
+                <volist name="food_order_info" id="food_order">
+                    <div class="caption">
+                            <h4>订单:{$food_order.order_no}</h4>
+                            <p>{$food_order.goods_desc}</p>
+                    </div>
+                </volist>
+            </div>
+        </div>
+    </div>
+    
     <div class="row" id="content" style="margin-right: 0px;margin-left: 0px;">
-        <ul class="list-group">
+<!--        <ul class="list-group">
             <volist name="food_order_info" id="food_order">
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-xs-6 col-md-3">
-                            订单:<br>{food_order.order_no}
+                            订单:<br>{$food_order.order_no}
                         </div>
                         <div class="col-xs-6 col-md-3">
-                            {food_order.goods_desc}
+                            {$food_order.goods_desc}
                         </div>
                     </div>
                 </li>
             </volist>
-        </ul>
+        </ul>-->
 
 
         <div class="form-group has-error has-feedback" style="text-align: center;">
@@ -36,12 +49,12 @@
 
             <input type="hidden" name="out_trade_no"  value="{$out_trade_no}">   
             <input type="hidden" name="food_order_ids" value="{$food_order_ids}">
-            <input type="hidden" name="wxpay_amount" value="{$wx_pay_amount}">
+            <input type="hidden" name="wxp_ay_amount" value="{$wx_pay_amount}">
 
-            <div class="alert alert-danger" style="display:none;" id="alert_div">
+<!--            <div class="alert alert-danger" style="display:none;" id="alert_div">
                 <button type="button" class="close" onclick="javascript:hiddenAlert();">&times;</button>
                 <span id="alert_info"></span>
-            </div>
+            </div>-->
         </form>
 
 
@@ -57,29 +70,27 @@
             function jsApiCall() {
                 WeixinJSBridge.invoke(
                     'getBrandWCPayRequest',
-                    <?php echo $jsApiParameters; ?> ,
+                    <?php echo $jsApiParameters;?>,
                     function (res) {
                         WeixinJSBridge.log(res.err_msg);
-//                        alert(res.err_code + res.err_desc + res.err_msg);
                         if (res.err_msg == "get_brand_wcpay_request:ok") {
-                            //2支付成功：更改订单为待送餐 更新平台资金流水
                             $.ajax({
                                 type: "POST",
-                                url: "/Wechat/FoodOrder/completepay",
+                                url: "/Wechat/FoodOrder/completepay/t/{$mp.mp_token}",
                                 async: false,
                                 data: $("#order_form").serialize(),
                                 dataType: "json",
                                 success: function (data) {
                                     if (data.status) {
-                                        window.location.href = '/Wechat/FoodOrder/index/t/{$mp.mp_token}';
+                                        window.location.href = "/Wechat/FoodOrder/index/t/{$mp.mp_token}";
                                     } else {
                                         $('#dialog_content').text(data.info);
                                         $("#dialog").dialog({modal: true});
-                                        setTimeout("closeDialog()", 1000);
+                                        setTimeout("result(" + false + ")", 1000);
                                     }
                                 }
                             });
-                        }else {//跳转到微信支付失败页面 
+                        }else {
                             $('#wx_btn').attr('disabled', false);
                             $('#dialog_content').text('支付失败');
                             $("#dialog").dialog({modal: true});
@@ -91,7 +102,7 @@
 
             function callpay() {
                 $('#wx_btn').attr('disabled', "disabled");
-                if (typeof WeixinJSBridge == "undefined") {
+                if (typeof(WeixinJSBridge) == "undefined") {
                     if (document.addEventListener) {
                         document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
                     } else if (document.attachEvent) {

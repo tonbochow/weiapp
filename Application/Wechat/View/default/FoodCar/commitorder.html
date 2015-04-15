@@ -222,18 +222,31 @@
                 url: "/Wechat/FoodOrder/create/t/{$mp.mp_token}",
                 data: $('#car_form').serialize(),
                 success: function(data) {
-                    var obj = eval(data);
-                    if (obj.status) {
-                        if(obj.out_trade_no != false){
-                            window.location.href="/Wechat/FoodOrder/pay/t/{$mp.mp_token}/out_trade_no/"+obj.out_trade_no;
+                    if (data.status) {
+                        if(parseInt(data.info) == 0){
+                            window.location.href="/Wechat/FoodOrder/index/t/{$mp.mp_token}";
+//                            window.location.href="/Wechat/FoodOrder/pay?t={$mp.mp_token}&out_trade_no="+data.info+"&showwxpaytitle=1";
                         }
-                        window.location.href="/Wechat/FoodOrder/index";
+                        window.location.href="/Wechat/FoodOrder/pay?t={$mp.mp_token}&out_trade_no="+data.info+"&showwxpaytitle=1";
+//                        window.location.href="/Wechat/FoodOrder/index/t/{$mp.mp_token}";
                     } else {
                         $('#commit').removeAttr("disabled");
                         $('#dialog_content').text(obj.info);
                         $("#dialog").dialog({modal: true});
                         setTimeout("result(" + obj.status + ")", 1000);
                     }
+//                    var obj = eval(data);
+//                    if (obj.status) {
+//                        if(obj.out_trade_no != false){
+//                            window.location.href="/Wechat/FoodOrder/pay/t/{$mp.mp_token}/out_trade_no/"+obj.out_trade_no;
+//                        }
+//                        window.location.href="/Wechat/FoodOrder/index/t/{$mp.mp_token}";
+//                    } else {
+//                        $('#commit').removeAttr("disabled");
+//                        $('#dialog_content').text(obj.info);
+//                        $("#dialog").dialog({modal: true});
+//                        setTimeout("result(" + obj.status + ")", 1000);
+//                    }
                 }
             });
         }

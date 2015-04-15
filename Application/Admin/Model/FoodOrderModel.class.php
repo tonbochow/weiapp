@@ -69,7 +69,7 @@ class FoodOrderModel extends Model {
         }
         $status_arr[self::$STATUS_CANCEL] = '已取消';
         $status_arr[self::$STATUS_COMMITED] = '已提交';
-        $status_arr[self::$STATUS_WXPAYED] = '已支付待送餐';
+        $status_arr[self::$STATUS_WXPAYED] = '已支付';
         $status_arr[self::$STATUS_DELIVERY] = '送餐中';
         $status_arr[self::$STATUS_FINISHED] = '已完成';
         if ($status !== null) {

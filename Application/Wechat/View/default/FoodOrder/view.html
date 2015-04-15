@@ -33,7 +33,7 @@
                             <?php
                             if($food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_COMMITED  && $food_orders[0]['pay_type'] == \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN){
                             ?>
-                            <a id="pay_{$food_orders.0.id}" href="/Wechat/FoodOrder/pay/out_trade_no/{$food_orders.0.out_trade_no}/id/{$food_orders.0.id}/t/{$mp.mp_token}" class="btn btn-success" role="button"><i class="fa fa-weixin"></i> 微信支付</a>
+                            <a id="pay_{$food_orders.0.id}" href="/Wechat/FoodOrder/pay?out_trade_no={$food_orders.0.out_trade_no}&id={$food_orders.0.id}&t={$mp.mp_token}&showwxpaytitle=1" class="btn btn-success" role="button"><i class="fa fa-weixin"></i> 微信支付</a>
                             <?php
                             }
                             ?>

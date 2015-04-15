@@ -37,7 +37,7 @@
                     </div>
                     <div class="caption">
                         <p>
-                            <a href="/Wechat/FoodOrder/view/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-primary btn-small" role="button"><i class="fa fa-list-alt"></i> 查看订单</a>
+                            <a href="/Wechat/FoodOrder/view/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-primary btn-small" role="button"><i class="fa fa-list-alt"></i> 查看</a>
                             <?php
                             if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_DELIVERY){
                             ?>
@@ -48,14 +48,14 @@
                             <?php
                             if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_COMMITED  && $food_order['pay_type'] == \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN){
                             ?>
-                            <a id="pay_{$food_order.id}" href="/Wechat/FoodOrder/pay/out_trade_no/{$food_order.out_trade_no}/id/{$food_order.id}/t/{$mp.mp_token}" class="btn btn-success btn-small" role="button"><i class="fa fa-weixin"></i> 微信支付</a>
+                            <a id="pay_{$food_order.id}" href="/Wechat/FoodOrder/pay?out_trade_no={$food_order.out_trade_no}&id={$food_order.id}&t={$mp.mp_token}&showwxpaytitle=1" class="btn btn-success btn-small" role="button"><i class="fa fa-weixin"></i> 微信支付</a>
                             <?php
                             }
                             ?>
                             <?php
                             if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_COMMITED){
                             ?>
-                            <a id="cancel_{$food_order.id}" href="javascript:void();" onclick="cancel({$food_order.id});" class="btn btn-default btn-small" role="button"><i class="fa fa-times"></i> 取消订单</a>
+                            <a id="cancel_{$food_order.id}" href="javascript:void();" onclick="cancel({$food_order.id});" class="btn btn-default btn-small" role="button"><i class="fa fa-times"></i> 取消</a>
                             <?php
                             }
                             ?>
