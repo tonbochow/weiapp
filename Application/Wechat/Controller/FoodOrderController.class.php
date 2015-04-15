@@ -493,6 +493,13 @@ class FoodOrderController extends BaseController {
             $mp_data['account'] = bcadd($this->mp['account'], $wx_pay_amount, 2);
             $mp_data['update_time'] = time();
             M('MicroPlatform')->where(array('id' => MP_ID))->save($mp_data);
+            //5发送微信消息通知餐厅的微信号 需要绑定餐厅 每日进行签到
+            $dining_room = M('DiningRoom')->where(array('id'=>$food_order['dining_room_id']))->find();
+            $dining_wx_openid = $dining_room['service_openid'];//餐厅前台服务号
+            if(!empty($dining_wx_openid)){
+                $info_data = '订单:'.$food_order['order_no'].' 微信支付成功!请查看';
+                \Admin\Model\MicroPlatformModel::sendCustomerMessage(APPID, APPSERCERT, $dining_wx_openid, $info_data);
+            } 
             //4微信发送模版消息通知用户支付成功
             $order_detail = M('FoodOrderDetail')->where(array('order_id'=>$order_id,'mp_id'=>MP_ID,'wx_openid'=>$this->weixin_userinfo['wx_openid']))->find();
             if($order_detail['type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD){
@@ -506,13 +513,7 @@ class FoodOrderController extends BaseController {
             $order_info['amount'] = $wx_pay_amount;
             $order_info['pay_time'] = date('Y-m-d H:i:s',time());
 //            \Admin\Model\MicroPlatformModel::sendTemplateMessage(APPID, APPSERCERT, $this->weixin_userinfo['wx_openid'], $order_info);   
-            //5发送微信消息通知餐厅的微信号 需要绑定餐厅 每日进行签到
-            $dining_room = M('DiningRoom')->where(array('id'=>$food_order['dining_room_id']))->find();
-            $dining_wx_openid = $dining_room['service_openid'];//餐厅前台服务号
-            if(!empty($dining_wx_openid)){
-                $info_data = '订单:'.$food_order['order_no'].' 微信支付成功!请查看';
-                \Admin\Model\MicroPlatformModel::sendCustomerMessage(APPID, APPSERCERT, $dining_wx_openid, $info_data);
-            } 
+            
         }
 //        $foodOrderModel->commit();
         $this->success('恭喜您支付成功','',true);

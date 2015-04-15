@@ -67,11 +67,17 @@ class FoodOrderController extends FoodBaseController {
         if ($food_order == false) {
             $this->error('未检索到订单!', '', true);
         }
-        $foodOrderViewModel = D('FoodOrderView');
-        $map['mp_id'] = MP_ID;
-        $map['id'] = $id;
+//        $foodOrderViewModel = D('FoodOrderView');
+        $map['weiapp_food_order.mp_id'] = MP_ID;
+        $map['weiapp_food_order.id'] = $id;
 //        $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
-        $food_order_info = $foodOrderViewModel->where($map)->select();
+//        $food_order_info = $foodOrderViewModel->where($map)->select();
+        $foodOrderModel = M('FoodOrder');
+        $food_order_info = $foodOrderModel
+                ->join('left  join weiapp_food_order_detail ON weiapp_food_order.id = weiapp_food_order_detail.order_id')
+                ->where($map)
+                ->field('weiapp_food_order.*,weiapp_food_order_detail.food_id,weiapp_food_order_detail.unit,weiapp_food_order_detail.weixin_price,weiapp_food_order_detail.count as d_count,weiapp_food_order_detail.amount as d_amount,weiapp_food_order_detail.real_pay_amount as d_real_pay_amount')
+                ->select();
 
         $this->assign('food_order', $food_order);
         $this->assign('food_order_info', $food_order_info);
@@ -158,14 +164,15 @@ class FoodOrderController extends FoodBaseController {
             $this->error('更新订单打印状态失败!', '', true);
         }
         $id = I('post.id');
-        $foodOrderModel = D('FoodOrderView');
-        $map['id'] = $id;
-        $map['mp_id'] = MP_ID;
-//        $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
-        $food_order = $foodOrderModel->where($map)->select();
-        if (empty($food_order)) {
-            $this->error('未检索到打印的订单!');
-        }
+        $map['weiapp_food_order.id'] = $id;
+        $map['weiapp_food_order.mp_id'] = MP_ID;
+        
+        $foodOrderModel = M('FoodOrder');
+        $food_order = $foodOrderModel
+                ->join('left  join weiapp_food_order_detail ON weiapp_food_order.id = weiapp_food_order_detail.order_id')
+                ->where($map)
+                ->field('weiapp_food_order.*,weiapp_food_order_detail.food_id,weiapp_food_order_detail.unit,weiapp_food_order_detail.weixin_price,weiapp_food_order_detail.count as d_count,weiapp_food_order_detail.amount as d_amount,weiapp_food_order_detail.real_pay_amount as d_real_pay_amount')
+                ->select();
 
         $this->assign('food_order', $food_order);
         $this->meta_title = '订单打印页面';

@@ -123,7 +123,14 @@
             </tr>
         <volist name="food_order_info" id="detail">
             <tr>
-                <td><?php echo $detail['food_id'];?></td>
+                <td><?php
+                    if($detail['type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD){
+                    echo \Admin\Model\FoodModel::getFoodName($detail['food_id']);
+                    }else{
+                    echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuName($detail['food_id']);
+                    }
+                    ?>
+                </td>
                 <td>{$detail.unit}</td>
                 <td>{$detail.weixin_price}</td>
                 <td>{$detail.d_count}</td>

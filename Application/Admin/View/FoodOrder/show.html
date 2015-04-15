@@ -91,7 +91,7 @@
                         <td>
                             <a title="查看明细" href="{:U('view?id='.$food_order['id'])}">查看明细</a>
                             <?php
-                               if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED) || ($food_order['status']==\Admin\Model\FoodOrderModel::$STATUS_COMMITED && $food_order['pay_type'] == Admin\Model\FoodOrderModel::$PAY_TYPE_OFFLINE)){
+                               if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED && $food_order['type'] == \Admin\Model\FoodOrderModel::$TYPE_DELIVERY_HOME) || ($food_order['status']==\Admin\Model\FoodOrderModel::$STATUS_COMMITED && $food_order['pay_type'] == Admin\Model\FoodOrderModel::$PAY_TYPE_OFFLINE)){
                                //if(($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED)){
                             ?>
                             <!--<a title="确认送餐" class="btn ajax-post" href="{:U('confirm?id='.$food_order['id'])}">确认送餐</a>-->
@@ -100,7 +100,7 @@
                             }
                             ?>
                             <?php
-                               if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_DELIVERY){
+                               if($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_DELIVERY || ($food_order['status'] == \Admin\Model\FoodOrderModel::$STATUS_WXPAYED && $food_order['type'] == Admin\Model\FoodOrderModel::$TYPE_DINING_ROOM)){
                             ?>
                             <!--<a title="订单完成" href="{:U('finish?id='.$food_order['id'])}">订单完成</a>-->
                             <button class="btn" onclick="javascript:order_finish({$food_order['id']})" id="finish_{$food_order['id']}" target-form="ids">订单完成</button>

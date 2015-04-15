@@ -203,7 +203,7 @@
         }
 
         function get_address(dining_room_id) {
-            if (typeof WeixinJSBridge == "undefined") {
+            if (typeof(WeixinJSBridge) == "undefined") {
                 if (document.addEventListener) {
                     document.addEventListener('WeixinJSBridgeReady', get_addresinfo(dining_room_id), false);
                 } else if (document.attachEvent) {
@@ -231,9 +231,9 @@
 //                        window.location.href="/Wechat/FoodOrder/index/t/{$mp.mp_token}";
                     } else {
                         $('#commit').removeAttr("disabled");
-                        $('#dialog_content').text(obj.info);
+                        $('#dialog_content').text(data.info);
                         $("#dialog").dialog({modal: true});
-                        setTimeout("result(" + obj.status + ")", 1000);
+                        setTimeout("result(" + data.status + ")", 1000);
                     }
 //                    var obj = eval(data);
 //                    if (obj.status) {
@@ -252,9 +252,9 @@
         }
 
         function select_type(type, dining_room_id) {/*type:2餐厅用餐 3配送到家*/
-            if (type == 2) {
+            if (type == 1) {
                 $('#address_' + dining_room_id).css('display', 'none');
-            } else if (type == 3) {
+            } else if (type == 2) {
                 $('#address_' + dining_room_id).css('display', 'block');
             }
         }

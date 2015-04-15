@@ -260,7 +260,7 @@ class MicroPlatformModel extends Model {
         if ($create_menu_res['errcode'] == 0 && $create_menu_res['errmsg'] == 'ok') {
             return true;
         }
-        return $create_menu_res['errcode'].$create_menu_res['errmsg'];
+        return $create_menu_res['errcode'] . $create_menu_res['errmsg'];
         return false;
     }
 
@@ -329,6 +329,23 @@ class MicroPlatformModel extends Model {
     }
 
     /**
+     * 获取oauth2.0 access_token  和公众平台access_token不同
+     */
+    public static function getOauthAccessToken($appid, $appsecret) {
+        $get_code = I('get.code');
+        $get_state = I('get.state');
+        $current_url = get_current_url();
+        if (empty($get_code) && empty($get_state)) {//state =1 为snsapi_base模式
+            $get_code_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . $appid . '&redirect_uri=' . $current_url . '&response_type=code&scope=snsapi_base&state=1#wechat_redirect';
+            header("Location:$get_code_url");
+        } else if (!empty($get_code) && ($get_state == 1)) {//微信服务器返回code和state  获取access_token凭证
+            $base_access_token_info = \Admin\Model\MicroPlatformModel::getSnsAccessTokenByCode($appid, $appsecret, $get_code); //同时获取到微信用户openid
+            $oauth_access_token = $base_access_token_info['access_token'];
+            return $oauth_access_token;
+        }
+    }
+
+    /**
      * 通过openid 获取微信用户详细信息(snsapi_useinfo模式)
      * $oauth_access_token oauth的access_token
      * $openid
@@ -381,15 +398,15 @@ class MicroPlatformModel extends Model {
                                         "color":"#173177"
                                 },
                                 "keynote1": {
-                                        "value":"'.$order_info['food_name'].'",
+                                        "value":"' . $order_info['food_name'] . '",
                                         "color":"#173177"
                                 },
                                 "keynote2": {
-                                        "value":"'.$order_info['amount'].'",
+                                        "value":"' . $order_info['amount'] . '",
                                         "color":"#173177"
                                 },
                                 "keynote3": {
-                                        "value":"'.$order_info['pay_time'].'",
+                                        "value":"' . $order_info['pay_time'] . '",
                                         "color":"#173177"
                                 },
                                 "remark": {
