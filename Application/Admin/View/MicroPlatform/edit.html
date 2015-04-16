@@ -1,0 +1,198 @@
+<extend name="Public/base"/>
+<block name="style">
+    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+</block>
+
+<block name="body">
+    <div class="main-title">
+        <h2>微餐饮公众平台信息编辑</h2>
+    </div>
+    <div id="dialog" title="微餐饮公众平台信息编辑" style="display:none;">
+        <p id="dialog_content"></p>
+    </div>
+    <form  novalidate  class="form-horizontal" enctype="multipart/form-data" class="ng-app:weiapp_mp" ng-app="weiapp_mp" id="ng-app" name="MpForm" ng-controller="MpController" ng-submit="submitForm()">
+        <div class="form-item">
+            <label class="item-label">公众平台绑定状态</label>
+            <div class="controls">
+                <?php
+                echo \Admin\Model\MicroPlatformModel::getMpBind($micro_platform['is_bind']);
+                ?>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台名称</label>
+            <div class="controls">
+                {$micro_platform.mp_name}
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台原始ID</label>
+            <div class="controls">
+                {$micro_platform.mp_original_id}
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台微信号</label>
+            <div class="controls">
+                {$micro_platform.mp_wxcode}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台appid</label>
+            <div class="controls">
+                {$micro_platform.appid}
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台appsecret</label>
+            <div class="controls">
+                {$micro_platform.appsecret}
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信支付key</label>
+            <div class="controls">
+                {$micro_platform.key}
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信支付商户号mchid</label>
+            <div class="controls">
+                {$micro_platform.mchid}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信支付</label>
+            <div class="controls">
+                <?php
+                echo \Admin\Model\MicroPlatformModel::getMpWxPay($micro_platform['support_wxpay']);
+                ?>
+            </div>
+        </div>
+        
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台二维码</label>
+            <div class="controls">
+                <img src="{$micro_platform.mp_qrcode}" id="pic_mp_qrcode" style="max-width: 300px;"><br>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台图标</label>
+            <div class="controls">
+                <img src="{$micro_platform.mp_img}" id="pic_mp_img" style="max-width: 300px;"><br>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台手机端背景图片</label>
+            <div class="controls">
+                <img src="{$micro_platform.back_img}" id="pic_back_img" style="max-width: 300px;"><br>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">微信公众平台接入URL</label>
+            <div class="controls">
+                {$micro_platform.mp_url}
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <label class="item-label">微信公众平台接入token</label>
+            <div class="controls">
+                {$micro_platform.mp_token}
+            </div>
+        </div>
+        
+         <div class="form-item" ng-class="{'has-error' : MpForm.start_time.$invalid && !MpForm.start_time.$pristine}">
+            <label class="item-label">微应用开始时间</label>
+            <div class="controls">
+                <input type="text" name="start_time" ng-model="platform.start_time"  class="form-control text input-large time" id="start_time"  value="{$micro_platform.start_time|date='y-m-d',###}" placeholder="请选择开始时间" />
+                <p ng-show="MpForm.start_time.$invalid && !MpForm.start_time.$pristine" class="help-block">微应用开始时间必选</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : MpForm.end_time.$invalid && !MpForm.end_time.$pristine}">
+            <label class="item-label">微应用截至时间</label>
+            <div class="controls">
+               <input type="text" name="end_time" ng-model="platform.end_time"   class="form-control text input-large time" id="end_time"  value="{$micro_platform.end_time|date='y-m-d',###}" placeholder="请选择开始时间" />
+               <p ng-show="MpForm.end_time.$invalid && !MpForm.end_time.$pristine" class="help-block">微应用结束时间必选</p>
+            </div>
+        </div>
+        
+        <div class="form-item">
+            <!--<button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>-->
+            <button type="submit" class="btn btn-success submit" ng-disabled="MpForm.$invalid">设置使用期限</button>
+            <button class="btn btn-primary" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__STATIC__/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+    <script type="text/javascript" src="__STATIC__/json2.js"></script>
+    <script type="text/javascript" src="__STATIC__/angularjs/angular.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('.time').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+        });
+        var MpModule = angular.module("weiapp_mp", []);
+        MpModule.controller("MpController", function ($scope, $http) {
+            $scope.platform = {$json_micro_platform};
+            $scope.submitForm = function () {
+                $('.submit').attr('disabled', 'true');
+                $http({
+                    method: "POST",
+                    url: "/Admin/MicroPlatform/edit",
+                    data: $.param($scope.platform),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+                }).success(function (data) {
+                    if (data.status) {
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                    } else {
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + data.status + ")", 1000);
+                    }
+                });
+            };
+        });
+
+        function result(status) {
+            $("#dialog").dialog("close");
+            if (status) {
+                $('.submit').removeAttr("disabled");
+            } else {
+                window.location.reload();
+            }
+        }
+    </script>
+</block>

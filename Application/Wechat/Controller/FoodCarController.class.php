@@ -104,10 +104,12 @@ class FoodCarController extends BaseController {
         import('Common.Extends.Weixin.WeixinAddress');
         $url = get_current_url();
         $weixinAddress = new \WeixinAddress();
-        $access_token = \Admin\Model\MicroPlatformModel::getOauthAccessToken(APPID, APPSERCERT);
+        $access_token_arr = \Admin\Model\MicroPlatformModel::getOauthAccessToken(APPID, APPSERCERT);
+        $access_token = $access_token_arr['access_token'];
+        $sign_url = $url.'&code='.$access_token_arr['code'].'&state='.$access_token_arr['state'];
         $sign_info = array(
             'accessToken' => $access_token,
-            'url' => $url,
+            'url' => $sign_url,
             'timeStamp' => time(),
             'nonceStr' => $weixinAddress->create_noncestr(),
             'appId' => $this->mp['appid']
@@ -118,8 +120,8 @@ class FoodCarController extends BaseController {
             'scope' => 'jsapi_address',
             'signType' => "sha1",
             "addrSign" => $address_sign,
-            'timeStamp' => $sign_info['timeStamp'],
-            'nonceStr' => $sign_info['nonceStr']
+            'timeStamp' => '"'.$sign_info['timeStamp'].'"',
+            'nonceStr' => '"'.$sign_info['nonceStr'].'"'
         );
         $address_sign_info = json_encode($info_array);
         $this->assign('address_sign_info', $address_sign_info);

@@ -34,7 +34,7 @@ class WeixinAddress {
             }
             $buff .= strtolower($k) . "=" . $v . "&";
         }
-        $reqPar;
+        $reqPar = '';
         if (strlen($buff) > 0) {
             $reqPar = substr($buff, 0, strlen($buff) - 1);
         }
@@ -44,14 +44,14 @@ class WeixinAddress {
     /**
      * 	作用：生成签名 address
      */
-    public function getSign_address($Obj) {
-        foreach ($Obj as $k => $v) {
-            $Parameters[strtolower($k)] = $v;
+    public function getSign_address($obj) {
+        foreach ($obj as $k => $v) {
+            $parameters[strtolower($k)] = $v;
         }
         //签名步骤一：按字典序排序参数
-        ksort($Parameters);
-        $String = $this->formatBizQueryParaMap($Parameters, false);
-        $result = sha1($String);
+        ksort($parameters);
+        $string = $this->formatBizQueryParaMap($parameters, false);
+        $result = SHA1($string);
         return $result;
     }
 
@@ -61,9 +61,9 @@ class WeixinAddress {
 
     public function get_address_sign($infolist) {
         $jsApiObj["accesstoken"] = $infolist['accesstoken'];
-        $jsApiObj["appId"] = $infolist['appid'];
-        $jsApiObj["nonceStr"] = $infolist['nonceStr'];
-        $jsApiObj["timeStamp"] = $infolist['timeStamp'];
+        $jsApiObj["appid"] = $infolist['appid'];
+        $jsApiObj["noncestr"] = $infolist['noncestr'];
+        $jsApiObj["timestamp"] = $infolist['timestamp'];
         $jsApiObj["url"] = $infolist['url'];
         $addresssign = $this->getSign_address($jsApiObj);
         return $addresssign;

@@ -237,6 +237,7 @@
                     if (data.status) {
                         if(parseInt(data.info) == 0){
                             window.location.href="/Wechat/FoodOrder/index/t/{$mp.mp_token}";
+                            return false;
 //                            window.location.href="/Wechat/FoodOrder/pay?t={$mp.mp_token}&out_trade_no="+data.info+"&showwxpaytitle=1";
                         }
                         window.location.href="/Wechat/FoodOrder/pay?t={$mp.mp_token}&out_trade_no="+data.info+"&showwxpaytitle=1";

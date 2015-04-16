@@ -131,6 +131,79 @@ class FoodOrderController extends BaseController {
         }
         $this->error('完成订单失败', '', true);
     }
+    
+    
+    //预生成订单
+    public function commitorder() {
+        //微信收货地址共享
+        import('Common.Extends.Weixin.WeixinAddress');
+        $url = get_current_url();
+        $weixinAddress = new \WeixinAddress();
+        $access_token = \Admin\Model\MicroPlatformModel::getOauthAccessToken(APPID, APPSERCERT);
+        $sign_info = array(
+            'accesstoken' => $access_token,
+            'url' => $url,
+            'timestamp' => strval(time()),
+            'noncestr' => $weixinAddress->create_noncestr(),
+            'appid' => $this->mp['appid']
+        );
+        $address_sign = $weixinAddress->get_address_sign($sign_info);
+        $info_array = array(
+            'appId' => $this->mp['appid'],
+            'scope' => 'jsapi_address',
+            'signType' => "sha1",
+            "addrSign" => $address_sign,
+            'timeStamp' =>strval($sign_info['timestamp']),
+            'nonceStr' => strval($sign_info['noncestr'])
+        );
+        $address_sign_info = json_encode($info_array);
+        $this->assign('address_sign_info', $address_sign_info);
+//        $map['weiapp_food_car_detail.mp_id'] = MP_ID;
+////        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+//        $map['weiapp_food_car_detail.wx_openid'] = 'wx_abcdef';
+////        $car_details = M('FoodCarDetail')->where($map)->select();
+//        $car_details = M('FoodCarDetail')
+//                ->join('left  join weiapp_food_detail ON weiapp_food_car_detail.food_setmenu_id = weiapp_food_detail.food_id')
+//                ->where($map)
+//                ->group('weiapp_food_car_detail.food_setmenu_id')
+//                ->order('weiapp_food_detail.default_share')
+//                ->field('weiapp_food_car_detail.*,weiapp_food_detail.url')
+//                ->select();
+        $map['mp_id'] = MP_ID;
+//        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
+        $map['wx_openid'] = $this->weixin_userinfo['wx_openid'];
+        $car_details = M('FoodCarDetail')->where($map)->select();
+        foreach ($car_details as $key=>$detail){
+            if($detail['type'] == \Wechat\Model\FoodCarDetailModel::$TYPE_FOOD){
+                $car_details[$key]['url'] = \Admin\Model\FoodDetailModel::getFoodPic($detail['food_setmenu_id']);
+            }else{
+                $car_details[$key]['url'] = \Admin\Model\FoodSetmenuModel::getFoodSetmenuUrl($detail['food_setmenu_id']);
+            }
+        }
+        
+        if ($car_details == false) {
+            $this->error('购餐车无菜品或套餐');
+        }
+        $total_amount = 0;
+        foreach ($car_details as $key => $detail) {
+//            $detail['dining_name'] = \Admin\Model\DiningRoomModel::getDiningRoomName($detail['dining_room_id']);
+            $detail['dining_info'] = \Admin\Model\DiningRoomModel::getDiningRoom($detail['dining_room_id']);
+            $car_detail_arr[$detail['dining_room_id']][] = $detail;
+            $total_amount = bcadd($detail['amount'], $total_amount, 2);
+        }
+
+        $dining_types = \Admin\Model\DiningRoomModel::getWeixinDiningRoomType(null, false);
+        $this->assign('dining_types', $dining_types);
+        $dining_pay_types = \Admin\Model\DiningRoomModel::getWeixinDiningRoomPayType(null, false);
+        $this->assign('dining_pay_types', $dining_pay_types);
+
+        $this->assign('car_id', $car_details[0]['car_id']);
+        $this->assign('total_amount', $total_amount);
+        $this->assign('car_details', $car_detail_arr);
+        $this->assign('json_car_detail_arr', json_encode($car_detail_arr));
+        $this->meta_title = "购餐车预生成订单";
+        $this->display('commitorder');
+    }
 
     //创建订单(微信支付订单 | 线下付款订单)
     public function create() {
@@ -178,14 +251,14 @@ class FoodOrderController extends BaseController {
         }
         import('Common.Extends.WxPay.lib.WxPayApi');
         $out_trade_no = \WxPayConfig::MCHID . date("YmdHis"); //微信支付out_trade_no
-        $wxpay_flag = false;
+        $wxpay_flag = 0;
         $foodOrderModel = D('Admin/FoodOrder'); //开启事务 
         $foodOrderModel->startTrans();
         //1生成订单(中间有可能保存微信用户送餐地址)
         foreach ($dining_pay_type_arr as $dining_room_id => $dining_pay_type) {
             $order_no = genOrderNo(); //订单order_no
             if ($dining_pay_type == \Admin\Model\DiningRoomModel::$PAY_TYPE_WEIXIN) {
-                $wxpay_flag = true; //标识是否有微信支付的订单
+                $wxpay_flag = 1; //标识是否有微信支付的订单
             }
             $dining_room_info = \Admin\Model\DiningRoomModel::getDiningRoom($dining_room_id);
             if ($dining_type_arr[$dining_room_id] == \Admin\Model\DiningRoomModel::$TYPE_DINING) {//餐厅用餐无送餐费用

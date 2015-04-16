@@ -339,9 +339,13 @@ class MicroPlatformModel extends Model {
             $get_code_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . $appid . '&redirect_uri=' . $current_url . '&response_type=code&scope=snsapi_base&state=1#wechat_redirect';
             header("Location:$get_code_url");
         } else if (!empty($get_code) && ($get_state == 1)) {//微信服务器返回code和state  获取access_token凭证
-            $base_access_token_info = \Admin\Model\MicroPlatformModel::getSnsAccessTokenByCode($appid, $appsecret, $get_code); //同时获取到微信用户openid
+            $base_access_token_info = self::getSnsAccessTokenByCode($appid, $appsecret, $get_code); //同时获取到微信用户openid
             $oauth_access_token = $base_access_token_info['access_token'];
             return $oauth_access_token;
+//            $oauth_access_token_arr['access_token'] = $base_access_token_info['access_token'];
+//            $oauth_access_token_arr['code'] = $get_code;
+//            $oauth_access_token_arr['state'] = $get_state;
+//            return $oauth_access_token_arr;
         }
     }
 

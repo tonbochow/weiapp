@@ -41,6 +41,33 @@ class MicroPlatformController extends FoodBaseController {
     }
 
     /**
+     * 微餐饮公众平台编辑页面(后台)
+     */
+    public function edit() {
+        if (IS_POST) {
+            $post_data = I('post.');
+            $mp_data['start_time'] = strtotime($post_data['start_time']);
+            $mp_data['end_time'] = strtotime($post_data['end_time']);
+            $mp_data['update_time'] = time();
+            $mpModel = M('MicroPlatform');
+            $mp_save = $mpModel->where(array('id' => $post_data['id']))->save($mp_data);
+            if ($mp_save) {
+                $this->success('设置微应用有效期限成功', '', true);
+            }
+            $this->error($mpModel->getError(), '', true);
+        }
+        $id = I('get.id', '', 'intval');
+        $micro_platform = M('MicroPlatform')->where(array('id' => $id))->find();
+        $micro_platform['start_time'] = date('Y-m-d H:i:s', $micro_platform['start_time']);
+        $micro_platform['end_time'] = date('Y-m-d H:i:s', $micro_platform['end_time']);
+
+        $this->assign('micro_platform', $micro_platform);
+        $this->assign('json_micro_platform', json_encode($micro_platform));
+        $this->meta_title = '微信公众平台编辑页面';
+        $this->display('edit');
+    }
+
+    /**
      * 微餐饮公众平台启用公众平台(后台)
      */
     public function enable() {
@@ -157,14 +184,14 @@ class MicroPlatformController extends FoodBaseController {
                 $micro_platform_data['mp_img'] = '/Uploads/Mp/' . $micro_platform_data['id'] . '/info/' . C('MP_IMG_UPLOAD')['saveName'] . '.jpg';
             }
             if (!empty($micro_platform_data['back_img']) && !preg_match('/\/Uploads\w*/', $micro_platform_data['back_img'])) {//生成微信背景图片
-                $back_img_path = $save_path  . 'back_img.jpg';
+                $back_img_path = $save_path . 'back_img.jpg';
                 $back_img_tmp = base64_decode($micro_platform_data['back_img']);
                 $create_back_img = file_put_contents($back_img_path, $back_img_tmp);
                 if ($create_back_img == false) {
 //                    @unlink($mp_qrcode_path);
                     $this->error('生成微信公众平台背景图片失败!', '', true);
                 }
-                $micro_platform_data['back_img'] = '/Uploads/Mp/' . $micro_platform_data['id'] . '/info/' .  'back_img.jpg';
+                $micro_platform_data['back_img'] = '/Uploads/Mp/' . $micro_platform_data['id'] . '/info/' . 'back_img.jpg';
             }
             $microPlatformModel = D('MicroPlatform');
             $micro_platform_data['update_time'] = NOW_TIME;
