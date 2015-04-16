@@ -49,15 +49,23 @@ class BaseController extends Controller {
         define("PARTNERID", trim($mp['partnerid']));
         define("KEY", trim($mp['key']));
         define("MCHID", trim($mp['mchid']));
-        define("IS_CHAIN",$mp['is_chain']);
+        define("IS_CHAIN", $mp['is_chain']);
         //4 检测是否登录(获取到openid即可)
         $weixin_userinfo = $this->getWeixinUserInfo();
         $this->weixin_userinfo = $weixin_userinfo;
         $this->assign('mp', $this->mp);
         $this->assign('weixin_userinfo', $this->weixin_userinfo);
         //5 设置微信分享基本参数
-        $signPackage = \Admin\Model\MicroPlatformModel::getJsApiPrams(APPID);
+        $signPackage = \Admin\Model\MicroPlatformModel::getJsApiPrams(APPID, APPSECRET);
         $this->assign('signPackage', $signPackage);
+        //设置微信默认分享设置
+        $share_info = array(
+            'title' => MP_NAME,
+            'desc' => '微信精彩体验！超值享受,尽在' . MP_NAME . '! 走进' . MP_NAME . '就像到家!',
+            'link' => get_current_url(),
+            'imgUrl' => 'http://' . $_SERVER['HTTP_HOST'] . $this->mp['mp_img'],
+        );
+        $this->assign('share_info', $share_info);
         $cate_id = I('request.cate_id', '', 'trim');
         $key = I('request.key', '', 'trim');
         $this->assign('cate_id', $cate_id);
@@ -112,7 +120,7 @@ class BaseController extends Controller {
                 if ($member_weixin == false) {
                     //尝试通过openid直接拉取微信用户信息(只有关注者才能拉取到)
                     $subscribe_weixin_user = \Admin\Model\MicroPlatformModel::getWeixinUserInfoByOpenid(APPID, APPSERCERT, $wx_openid);
-                    if (!empty($subscribe_weixin_user['openid'])) {
+                    if (!empty($subscribe_weixin_user['openid'])&& $subscribe_weixin_user['subscribe']) {
                         $memberWeixinModel = D('Admin/MemberWeixin');
                         $member_weixin_data['mp_id'] = MP_ID;
                         $member_weixin_data['wx_openid'] = $wx_openid;

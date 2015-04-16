@@ -101,7 +101,7 @@ class IndexController extends BaseController {
             'title' => MP_NAME,
             'desc' => '微信超值享受,尽在' . MP_NAME,
             'link' => get_current_url(),
-            'imgUrl' => C('WEBSITE_URL') . $this->mp['mp_img'],
+            'imgUrl' =>  'http://'.$_SERVER['HTTP_HOST'].$this->mp['mp_img'],
         );
 
         $this->assign('share_info', $share_info);

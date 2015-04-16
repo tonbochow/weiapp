@@ -43,7 +43,7 @@ class FoodController extends BaseController {
             'title' => $food[0]['share_title'],
             'desc' => $food[0]['share_desc'],
             'link' => get_current_url(),
-            'imgUrl' => $default_pic,
+            'imgUrl' => 'http://'.$_SERVER['HTTP_HOST'].$default_pic,
         );
 
         $this->assign('share_info', $share_info);

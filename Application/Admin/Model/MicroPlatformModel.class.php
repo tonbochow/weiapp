@@ -433,14 +433,14 @@ class MicroPlatformModel extends Model {
         //先从micro_platform检索access_token 或 过期再从微信服务器获取access_token
         $platform = M('MicroPlatform');
         $plat_form = $platform->where("appid='" . $appid . "'")->find();
-        if ($plat_form['jsapi_expires'] < time()) {//已过期重新获取
+        if ($plat_form == false || $plat_form['jsapi_expires'] < time()) {//已过期重新获取
             $jsapi_ticket_info = self::curl($jsapi_ticket_url);
             $jsapi_ticket = $jsapi_ticket_info['ticket'];
             //更新micro_platform表
             $platform_data['jsapi_ticket'] = $jsapi_ticket;
             $platform_data['jsapi_expires'] = time() + $jsapi_ticket_info['expires_in'];
             $platform_data['update_time'] = time();
-            $platform->where("appid='" . $appid . "'")->save($platform_data);
+            $platform->where(array('appid' => $appid))->save($platform_data);
         } else {
             $jsapi_ticket = $plat_form['jsapi_ticket'];
         }
@@ -464,13 +464,13 @@ class MicroPlatformModel extends Model {
      * @param string 
      * $appid
      */
-    public static function getJsApiPrams($appid) {
-        $jsapi_ticked = self::getJsApiTicket();
+    public static function getJsApiPrams($appid, $appsecret) {
+        $jsapi_ticked = self::getJsApiTicket($appid, $appsecret);
         $noncestr = self::createNonceStr();
-        $time = time();
+        $time = strval(time());
         $url = get_current_url();
         $str = "jsapi_ticket=$jsapi_ticked&noncestr=$noncestr&timestamp=$time&url=$url";
-        $signature = sha1($str);
+        $signature = SHA1($str);
         return array(
             'appId' => $appid,
             'timestamp' => $time,
