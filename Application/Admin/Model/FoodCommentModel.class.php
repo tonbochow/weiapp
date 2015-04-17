@@ -73,7 +73,10 @@ class FoodCommentModel extends Model {
     }
 
     //通过food_setmenu_id 和wx_openid 获取评论
-    public static function getCommentByWxopenidFoodid($wx_openid, $food_setmenu_id) {
+    public static function getCommentByWxopenidFoodid($wx_openid, $food_setmenu_id, $order_id = '') {
+        if (!empty($order_id)) {
+            $map['order_id'] = $order_id;
+        }
         $map['wx_openid'] = $wx_openid;
         $map['food_setmenu_id'] = $food_setmenu_id;
         $map['mp_id'] = MP_ID;

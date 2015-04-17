@@ -13,7 +13,7 @@
                 <if condition="$comment.type eq 1">
                 <img src="<?php echo \Admin\Model\FoodDetailModel::getFoodPic($comment['food_setmenu_id']); ?>" alt="" id="dining_img">
                 <else />
-                <img src="" alt="" id="dining_img">
+                <img src="<?php echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuUrl($comment['food_setmenu_id']); ?>" alt="" id="dining_img">
                 </if>
                 <div class="caption">
                     <h3>{$comment.food_setmenu_name}</h3>

@@ -99,7 +99,7 @@ class FoodOrderController extends FoodBaseController {
             $food_order_confirm = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID))->save($food_order_data);
             import('Common.Extends.Weixin.Wechat');
             ob_clean();
-            $access_token = \Admin\Model\MicroPlatformModel::getAccessToken(APPID, APPSERCERT);
+            $access_token = \Admin\Model\MicroPlatformModel::getAccessToken(APPID, APPSECRET);
             $info_url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' . $access_token;
             $info_content = "您的餐单:" . $food_order['order_no'] . " 我们正在送餐中请等待!";
             $post_data = '{

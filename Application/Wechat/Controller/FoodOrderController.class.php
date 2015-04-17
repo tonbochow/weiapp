@@ -139,7 +139,7 @@ class FoodOrderController extends BaseController {
         import('Common.Extends.Weixin.WeixinAddress');
         $url = get_current_url();
         $weixinAddress = new \WeixinAddress();
-        $access_token = \Admin\Model\MicroPlatformModel::getOauthAccessToken(APPID, APPSERCERT);
+        $access_token = \Admin\Model\MicroPlatformModel::getOauthAccessToken(APPID, APPSECRET);
         $sign_info = array(
             'accesstoken' => $access_token,
             'url' => $url,
@@ -365,6 +365,7 @@ class FoodOrderController extends BaseController {
                     $order_detail_data['price'] = $detail_info['amount']; //套餐原价
                     $order_detail_data['unit'] = '套餐';
                 }
+                $order_detail_data['type'] = $car_detail['type'];
                 $order_detail_data['create_time'] = time();
                 $order_detail_data['update_time'] = time();
                 $order_detail_id = M('FoodOrderDetail')->add($order_detail_data);
@@ -571,7 +572,7 @@ class FoodOrderController extends BaseController {
             $dining_wx_openid = $dining_room['service_openid'];//餐厅前台服务号
             if(!empty($dining_wx_openid)){
                 $info_data = '订单:'.$food_order['order_no'].' 微信支付成功!请查看';
-                \Admin\Model\MicroPlatformModel::sendCustomerMessage(APPID, APPSERCERT, $dining_wx_openid, $info_data);
+                \Admin\Model\MicroPlatformModel::sendCustomerMessage(APPID, APPSECRET, $dining_wx_openid, $info_data);
             } 
             //4微信发送模版消息通知用户支付成功
             $order_detail = M('FoodOrderDetail')->where(array('order_id'=>$order_id,'mp_id'=>MP_ID,'wx_openid'=>$this->weixin_userinfo['wx_openid']))->find();
@@ -585,7 +586,7 @@ class FoodOrderController extends BaseController {
             $order_info['food_name'] = $foods_name_str;
             $order_info['amount'] = $wx_pay_amount;
             $order_info['pay_time'] = date('Y-m-d H:i:s',time());
-//            \Admin\Model\MicroPlatformModel::sendTemplateMessage(APPID, APPSERCERT, $this->weixin_userinfo['wx_openid'], $order_info);   
+//            \Admin\Model\MicroPlatformModel::sendTemplateMessage(APPID, APPSECRET, $this->weixin_userinfo['wx_openid'], $order_info);   
             
         }
 //        $foodOrderModel->commit();

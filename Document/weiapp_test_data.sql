@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50612
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50612
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-04-14 23:05:01
+Date: 2015-04-17 17:27:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1132,6 +1132,7 @@ CREATE TABLE `weiapp_food_comment` (
   `member_id` int(10) NOT NULL DEFAULT '0' COMMENT '评论用户id',
   `wx_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid',
   `mp_id` int(10) NOT NULL DEFAULT '0' COMMENT '微信公众平台id',
+  `order_id` int(10) NOT NULL DEFAULT '0' COMMENT '订单id',
   `food_setmenu_id` int(10) NOT NULL DEFAULT '0' COMMENT '评论菜品或套餐id',
   `food_setmenu_name` varchar(30) NOT NULL DEFAULT '' COMMENT '菜品或套餐名称',
   `type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '类型1菜品2套餐',
@@ -1871,7 +1872,7 @@ CREATE TABLE `weiapp_micro_platform` (
   `access_token` varchar(512) NOT NULL DEFAULT '' COMMENT '微信公众号的全局唯一票据access_token',
   `token_expire` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众号access_token有效期(过期时间)',
   `member_id` int(11) NOT NULL DEFAULT '0' COMMENT '关联用户表member的主键id(表示微信公众平台所属用户)',
-  `jsapi_ticket` varchar(256) NOT NULL DEFAULT '' COMMENT '调用微信JS接口的临时票据',
+  `jsapi_ticket` varchar(512) NOT NULL DEFAULT '' COMMENT '调用微信JS接口的临时票据',
   `jsapi_expires` int(11) NOT NULL DEFAULT '0' COMMENT '微信jsapi_tiket 失效时间',
   `is_tryed` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否试用过1试用过0未试用过',
   `is_chain` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否连锁(多个餐厅)0否1是',

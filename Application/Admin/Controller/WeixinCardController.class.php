@@ -67,14 +67,14 @@ class WeixinCardController extends FoodBaseController {
             }
             $location_list['location_list'] = $location_arr;
             //批量导入门店
-            $batch_import_diningroom = \Admin\Model\WxCardModel::batchImportDiningRoom(APPID, APPSERCERT, json_encode($location_list));
+            $batch_import_diningroom = \Admin\Model\WxCardModel::batchImportDiningRoom(APPID, APPSECRET, json_encode($location_list));
             if ($batch_import_diningroom == false) {
                 $this->error('批量导入门店失败!');
             }
             //批量拉取门店
             $get_diningroom_cond['offset'] = 0;
             $get_diningroom_cond['count'] = 0;
-            $batch_get_dining_rooms = \Admin\Model\WxCardModel::batchgetDiningRoom(APPID, APPSERCERT, $get_diningroom_cond);
+            $batch_get_dining_rooms = \Admin\Model\WxCardModel::batchgetDiningRoom(APPID, APPSECRET, $get_diningroom_cond);
             if ($batch_get_dining_rooms == false) {
                 $this->error('批量获取门店失败!');
             }
@@ -101,7 +101,7 @@ class WeixinCardController extends FoodBaseController {
         //3检测是否获取了卡劵颜色
         $wx_card_colors = M('WxCardColor')->where(array('mp_id' => MP_ID))->select();
         if ($wx_card_colors == false) {
-            $wx_card_colors = \Admin\Model\WxCardModel::getCardColor(APPID, APPSERCERT);
+            $wx_card_colors = \Admin\Model\WxCardModel::getCardColor(APPID, APPSECRET);
             foreach ($wx_card_colors as $card_color) {
                 $card_color_data[] = array(
                     'mp_id' => MP_ID,
@@ -138,7 +138,7 @@ class WeixinCardController extends FoodBaseController {
                 }
                 //上传logo图片到微信服务器
                 $upload_data['buffer'] = "@$mp_img_path";
-                $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSERCERT, $upload_data);
+                $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSECRET, $upload_data);
                 //更新公众平台
                 $platform_data['mp_img'] = '/Uploads/Mp/' . MP_ID . '/info/' . C('MP_IMG_UPLOAD')['saveName'] . '.jpg';
                 $platform_data['card_pic_url'] = $card_pic_url;
@@ -151,7 +151,7 @@ class WeixinCardController extends FoodBaseController {
                 $mp_img_path = C('WEBSITE_URL') . $mp_img;
                 //上传logo图片到微信服务器
                 $upload_data['buffer'] = "@$mp_img_path";
-                $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSERCERT, $upload_data);
+                $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSECRET, $upload_data);
                 //更新公众平台
                 $platform_data['card_pic_url'] = $card_pic_url;
                 $platform_data['update_time'] = time();
@@ -235,7 +235,7 @@ class WeixinCardController extends FoodBaseController {
                     "deal_detail" => $post_data['deal_detail'],
                 )
             );
-            $card_id = \Admin\Model\WxCardModel::createCard(APPID, APPSERCERT, $card_data);
+            $card_id = \Admin\Model\WxCardModel::createCard(APPID, APPSECRET, $card_data);
             if ($card_id == false) {
                 $this->error('生成卡劵失败', '', true);
             }
@@ -344,7 +344,7 @@ class WeixinCardController extends FoodBaseController {
                 )
             )
         );
-        $qrcode_ticket = \Admin\Model\WxCardModel::createCardQrcode(APPID, APPSERCERT, $qrcode_data);
+        $qrcode_ticket = \Admin\Model\WxCardModel::createCardQrcode(APPID, APPSECRET, $qrcode_data);
         if ($qrcode_ticket == false) {
             $this->error('获取二维码ticket失败');
         }
@@ -378,7 +378,7 @@ class WeixinCardController extends FoodBaseController {
             if (empty($card_data['card_id'])) {
                 unset($card_data['card_id']);
             }
-            $consume_card = \Admin\Model\WxCardModel::consumeCard(APPID, APPSERCERT, $card_data);
+            $consume_card = \Admin\Model\WxCardModel::consumeCard(APPID, APPSECRET, $card_data);
             if ($consume_card) {
                 $this->success('核销成功', '', true);
             }
@@ -397,7 +397,7 @@ class WeixinCardController extends FoodBaseController {
         $card_ids = array_unique($card_id_arr);
         //循环批量删除card_id
         foreach ($card_ids as $card_id) {
-            $card_del = \Admin\Model\WxCardModel::deleteCard(APPID, APPSERCERT, $card_id);
+            $card_del = \Admin\Model\WxCardModel::deleteCard(APPID, APPSECRET, $card_id);
             if ($card_del == false) {
                 $this->error($card_id . "卡劵删除失败", '', true);
             }
@@ -419,7 +419,7 @@ class WeixinCardController extends FoodBaseController {
                 $card_data['card_id'] = $card_id;
             }
             $card_data['code'] = $card_info['code'];
-            $card_unavailable = \Admin\Model\WxCardModel::setCardUnavailable(APPID, APPSERCERT, $card_data);
+            $card_unavailable = \Admin\Model\WxCardModel::setCardUnavailable(APPID, APPSECRET, $card_data);
             if ($card_unavailable == false) {
                 $this->error($card_id . "设置卡劵失效失败", '', true);
             }
@@ -435,7 +435,7 @@ class WeixinCardController extends FoodBaseController {
             $card_data = I('card_data');
             $card_data['increase_stock_value'] = isset($card_data['increase_stock_value']) ? intval($card_data['increase_stock_value']) : 0;
             $card_data['reduce_stock_value'] = isset($card_data['reduce_stock_value']) ? intval($card_data['reduce_stock_value']) : 0;
-            $modify_stock = \Admin\Model\WxCardModel::modifyCardStock(APPID, APPSERCERT, $card_data);
+            $modify_stock = \Admin\Model\WxCardModel::modifyCardStock(APPID, APPSECRET, $card_data);
             if ($modify_stock) {
                 $this->success('修改卡劵库存成功', '', true);
             }

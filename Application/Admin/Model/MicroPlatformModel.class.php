@@ -222,7 +222,7 @@ class MicroPlatformModel extends Model {
         $platform_data['appid'] = $appid;
         $platform_data['appsecret'] = $appsecret;
         $wx_platform = $wxPlatform->where($platform_data)->find();
-        if ($wx_platform['token_expire'] < time()) {//已过期重新获取
+        if ($wx_platform['access_token'] == false || $wx_platform['token_expire'] < time()) {//已过期重新获取
             $access_token_arr = self::curl($access_token_url);
             $access_token = $access_token_arr['access_token'];
             //更新weiapp_micro_platform表的access_token和token_expire
@@ -433,7 +433,7 @@ class MicroPlatformModel extends Model {
         //先从micro_platform检索access_token 或 过期再从微信服务器获取access_token
         $platform = M('MicroPlatform');
         $plat_form = $platform->where("appid='" . $appid . "'")->find();
-        if ($plat_form == false || $plat_form['jsapi_expires'] < time()) {//已过期重新获取
+        if ($plat_form['jsapi_ticket'] == false || $plat_form['jsapi_expires'] < time()) {//已过期重新获取
             $jsapi_ticket_info = self::curl($jsapi_ticket_url);
             $jsapi_ticket = $jsapi_ticket_info['ticket'];
             //更新micro_platform表

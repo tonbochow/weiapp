@@ -19,7 +19,7 @@
                             </a>
                             <else />
                             <a href="/Wechat/FoodSetmenu/view/id/{$comment.food_setmenu_id}/t/{$mp.mp_token}">
-                                <img class="media-object" src="<?php echo \Admin\Model\FoodDetailModel::getFoodPic($comment['food_setmenu_id']); ?>" id="dining_img" alt="">
+                                <img class="media-object" src="<?php echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuUrl($comment['food_setmenu_id']); ?>" id="dining_img" alt="">
                             </a>
                             </if>
                         </div>
@@ -30,8 +30,7 @@
                                 <else />
                                 <a href="/Wechat/FoodSetmenu/view/id/{$comment.food_setmenu_id}/t/{$mp.mp_token}">
                                 </if>
-                                    {$comment.food_setmenu_name} 
-                                    
+                                    {$comment.food_setmenu_name}
                                 </a>
                             </h4>
                             <p><i class="fa fa-comments"></i>:{$comment.create_time|date='Y-m-d H:i:s',###}  <?php echo \Admin\Model\FoodCommentModel::getFoodCommentStatus($comment['status']);?></p>

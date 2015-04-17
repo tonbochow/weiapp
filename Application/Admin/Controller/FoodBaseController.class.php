@@ -60,7 +60,7 @@ class FoodBaseController extends AdminController {
             define('MP_ID', $mp_id); //微信公众平台ID
             define('MP_NAME', $mp_name);
             define('APPID', $appid); //微信公众平台APPID  基本参数
-            define('APPSERCERT', $appsecret); //微信公众平台APPSERCERT 基本参数
+            define('APPSECRET', $appsecret); //微信公众平台APPSECRET 基本参数
             define("PARTNERID", $partnerid); //微信公众平台PARTNERID  微信支付必需参数
             define("PARTNERKEY", $partnerkey); //微信公众平台PARTNERKEY  微信支付必需参数
             define("APPKEY", $paysignkey); //微信公众平台APPKEY 微信支付必需参数

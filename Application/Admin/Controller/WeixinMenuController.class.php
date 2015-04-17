@@ -650,10 +650,10 @@ class WeixinMenuController extends FoodBaseController {
                         }
                     ]
                 }';
-                if (APPID == '' || APPSERCERT == '') {
-                    $this->error('微信公众平台appid或appsercert参数为空!', '', true);
+                if (APPID == '' || APPSECRET == '') {
+                    $this->error('微信公众平台appid或appsecret参数为空!', '', true);
                 }
-                $create_menu_res = \Admin\Model\MicroPlatformModel::createWeixinMenu(APPID, APPSERCERT, $menu);
+                $create_menu_res = \Admin\Model\MicroPlatformModel::createWeixinMenu(APPID, APPSECRET, $menu);
 //                $weixinMenuModel->rollback();
 //                dump($menu);exit;
 //                $this->error($create_menu_res, '', true);
@@ -739,10 +739,10 @@ class WeixinMenuController extends FoodBaseController {
                 $menu_str = substr($wx_menu_str, 0, -1);
                 $wx_menu_str = $menu_str . "]}";
             }
-            if (APPID == '' || APPSERCERT == '') {
+            if (APPID == '' || APPSECRET == '') {
                 $this->error('微信公众平台appid或appsercert参数为空!', '', true);
             }
-            $create_menu_res = \Admin\Model\MicroPlatformModel::createWeixinMenu(APPID, APPSERCERT, $wx_menu_str);
+            $create_menu_res = \Admin\Model\MicroPlatformModel::createWeixinMenu(APPID, APPSECRET, $wx_menu_str);
             if ($create_menu_res) {
                 $this->success('微信公众平台菜单创建成功!', '', true);
             }

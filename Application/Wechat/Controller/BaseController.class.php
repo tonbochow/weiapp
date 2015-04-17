@@ -43,7 +43,7 @@ class BaseController extends Controller {
         define("MP_NAME", $mp['mp_name']);
         define("SIGNTYPE", "SHA1");
         define("APPID", trim($mp['appid']));
-        define("APPSERCERT", trim($mp['appsecret']));
+        define("APPSECRET", trim($mp['appsecret']));
         define("APPKEY", trim($mp['paysignkey']));
         define("PARTNERKEY", trim($mp['partnerkey']));
         define("PARTNERID", trim($mp['partnerid']));
@@ -109,7 +109,7 @@ class BaseController extends Controller {
                 $get_code_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . APPID . '&redirect_uri=' . $current_url . '&response_type=code&scope=snsapi_base&state=1#wechat_redirect';
                 header("Location:$get_code_url");
             } else if (!empty($get_code) && ($get_state == 1)) {//微信服务器返回code和state  获取access_token凭证
-                $base_access_token_info = \Admin\Model\MicroPlatformModel::getSnsAccessTokenByCode(APPID, APPSERCERT, $get_code); //同时获取到微信用户openid
+                $base_access_token_info = \Admin\Model\MicroPlatformModel::getSnsAccessTokenByCode(APPID, APPSECRET, $get_code); //同时获取到微信用户openid
                 $wx_openid = $base_access_token_info['openid'];
                 session('temp_openid', $wx_openid); //设置临时wx_openid 微信用户不同意时用
                 if (empty($base_access_token_info['access_token'])) {//获取access_token失败(服务号未设置网页授权域名)
@@ -119,7 +119,7 @@ class BaseController extends Controller {
                 $member_weixin = \Admin\Model\MemberWeixinModel::getWeixinUserinfo($wx_openid);
                 if ($member_weixin == false) {
                     //尝试通过openid直接拉取微信用户信息(只有关注者才能拉取到)
-                    $subscribe_weixin_user = \Admin\Model\MicroPlatformModel::getWeixinUserInfoByOpenid(APPID, APPSERCERT, $wx_openid);
+                    $subscribe_weixin_user = \Admin\Model\MicroPlatformModel::getWeixinUserInfoByOpenid(APPID, APPSECRET, $wx_openid);
                     if (!empty($subscribe_weixin_user['openid'])&& $subscribe_weixin_user['subscribe']) {
                         $memberWeixinModel = D('Admin/MemberWeixin');
                         $member_weixin_data['mp_id'] = MP_ID;
@@ -143,7 +143,7 @@ class BaseController extends Controller {
                     session('wx_openid', $member_weixin['wx_openid']);
                 }
             } else if (!empty($get_code) && ($get_state == 2)) {//snsapi_userinfo模式获取微信用户详细信息
-                $userinfo_access_token_info = \Admin\Model\MicroPlatformModel::getSnsAccessTokenByCode(APPID, APPSERCERT, $get_code);
+                $userinfo_access_token_info = \Admin\Model\MicroPlatformModel::getSnsAccessTokenByCode(APPID, APPSECRET, $get_code);
                 $wx_openid = $userinfo_access_token_info['openid'];
                 if (empty($userinfo_access_token_info['access_token'])) {//获取access_token失败(服务号未设置网页授权域名)
                     $this->redirect('/Wechat/Exception/mp/mp_error/微信公众平台可能未设置网页授权域名');
@@ -164,7 +164,7 @@ class BaseController extends Controller {
                 }
                 session('wx_openid', $wx_openid);
             } else if (empty($get_code) && !empty($get_state)) {//snaapi_userinfo 用户不同意授权 仅能获取openid
-//                $base_access_token_info = \Admin\Model\MicroPlatformModel::getSnsAccessTokenByCode(APPID, APPSERCERT, I('get.code')); //同时获取到微信用户openid
+//                $base_access_token_info = \Admin\Model\MicroPlatformModel::getSnsAccessTokenByCode(APPID, APPSECRET, I('get.code')); //同时获取到微信用户openid
 //                $wx_openid = $base_access_token_info['openid'];
                 $wx_openid = session('temp_openid'); //使用临时设置的openid
                 session('temp_openid', null); //销毁临时openid

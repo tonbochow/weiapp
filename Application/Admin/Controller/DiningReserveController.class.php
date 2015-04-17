@@ -99,7 +99,7 @@ class DiningReserveController extends FoodBaseController {
                 $info_content = '恭喜您预定成功!期待您的光临！如需更多咨询可通过我们微信工作平台点击客服菜单联系客服直接对话沟通';
                 $reserves = $reserveModel->where($map)->select();
                 foreach ($reserves as $reserve) {//发送微信消息通知客户预定成功
-                    \Admin\Model\MicroPlatformModel::sendCustomerMessage(APPID, APPSERCERT, $reserve['wx_openid'], $info_content);
+                    \Admin\Model\MicroPlatformModel::sendCustomerMessage(APPID, APPSECRET, $reserve['wx_openid'], $info_content);
                 }
                 $this->success('确认用户预定成功!');
             }

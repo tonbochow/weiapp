@@ -358,6 +358,7 @@ class FoodController extends FoodBaseController {
                         $this->error('生成图片失败!', '', true);
                     }
                     //写入或更新菜品明细表
+                    $detail_map['dining_room_id'] = $food['dining_room_id'];
                     $detail_map['mp_id'] = MP_ID;
                     $detail_map['member_id'] = UID;
                     $detail_map['input_name'] = $input_name;
@@ -389,6 +390,7 @@ class FoodController extends FoodBaseController {
 //                        }else{
 //                            $save_data['default_share'] = \Admin\Model\FoodDetailModel::$STATUS_DISABLED;
 //                        }
+                        $save_data['dining_room_id'] = $food['dining_room_id'];
                         $save_data['id'] = $detail_exist['id'];
                         $save_data['mp_id'] = MP_ID;
                         $save_data['member_id'] = UID;

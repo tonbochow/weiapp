@@ -17,10 +17,16 @@
                 <if condition="$type eq 1">
                     <img src="<?php echo \Admin\Model\FoodDetailModel::getFoodPic($food['id']); ?>" alt="" id="dining_img">
                     <else />
-                    <img src="" alt="" id="dining_img">
+                    <img src="<?php echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuUrl($food['id']); ?>" alt="" id="dining_img">
                 </if>
                 <div class="caption">
-                    <h3>{$food.food_name}</h3>
+                    <h3>
+                        <if condition="$type eq 1">
+                        {$food.food_name}
+                        <else />
+                        {$food.setmenu_name}
+                        </if>
+                    </h3>
                     <p></p>
                     <p>
                     <form  novalidate  class="ng-app:weiapp_comment" ng-app="weiapp_comment" id="ng-app"  name="CommentForm" ng-controller="CommentController" ng-submit="submitForm()">
@@ -58,6 +64,7 @@
                     $scope.comment_info = {};
                     $scope.comment_info.type = {$type};
                     $scope.comment_info.food_setmenu_id = {$food_setmenu_id};
+                    $scope.comment_info.order_id = {$order_id};
                     $scope.submitForm = function() {
                         $('.submit').attr('disabled', 'true');
                         $http({

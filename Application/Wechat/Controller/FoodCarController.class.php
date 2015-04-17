@@ -104,7 +104,7 @@ class FoodCarController extends BaseController {
         import('Common.Extends.Weixin.WeixinAddress');
         $url = get_current_url();
         $weixinAddress = new \WeixinAddress();
-        $access_token_arr = \Admin\Model\MicroPlatformModel::getOauthAccessToken(APPID, APPSERCERT);
+        $access_token_arr = \Admin\Model\MicroPlatformModel::getOauthAccessToken(APPID, APPSECRET);
         $access_token = $access_token_arr['access_token'];
         $sign_url = $url.'&code='.$access_token_arr['code'].'&state='.$access_token_arr['state'];
         $sign_info = array(

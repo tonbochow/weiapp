@@ -53,22 +53,33 @@
                 <volist name="food_orders" id="food_order">
                     <div class="media" onclick="javascript:window.location.href='/Wechat/Food/view/id/{$food_order.food_id}/t/{$mp.mp_token}'">
                             <div class="media-left">
-                                    <img class="media-object" src="<?php echo \Admin\Model\FoodDetailModel::getFoodPic($food_order['food_id']); ?>" style="max-height: 150px;max-width: 150px;" id="food_img" alt="">
+                                    <img class="media-object" src="<?php
+                                         if($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD){
+                                         echo \Admin\Model\FoodDetailModel::getFoodPic($food_order['food_id']); 
+                                         }else{
+                                         echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuUrl($food_order['food_id']); 
+                                         }?>" style="max-height: 150px;max-width: 150px;" id="food_img" alt="">
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading" id="title">
-                                        <?php echo \Admin\Model\FoodModel::getFoodName($food_order['food_id']); ?>
+                                        <?php 
+                                        if($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD){
+                                        echo \Admin\Model\FoodModel::getFoodName($food_order['food_id']); 
+                                        }else{
+                                        echo \Admin\Model\FoodSetmenuModel::getFoodSetmenuName($food_order['food_id']);
+                                        }
+                                        ?>
                                 </h4>
                                 <p id="amount">单价:￥{$food_order.food_weixin_price}  数量:{$food_order.food_count}</p>
                                 <p id="order-date">{$food_order.food_real_pay_amount}</p>
                                 <?php
-                                    if(($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD && $food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) &&(\Admin\Model\FoodCommentModel::getCommentByWxopenidFoodid($this->weixin_userinfo['wx_openid']=$weixin_userinfo['wx_openid'],$food_order['food_id']) == false)){
+                                    if(($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD && $food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) &&(\Admin\Model\FoodCommentModel::getCommentByWxopenidFoodid($this->weixin_userinfo['wx_openid']=$weixin_userinfo['wx_openid'],$food_order['food_id'],$food_order['id']) == false)){
                                 ?>
-                                <a id="pay_{$food_orders.0.id}" href="/Wechat/FoodComment/create/food_setmenu_id/{$food_order.food_id}/type/{$food_order.detail_type}/t/{$mp.mp_token}" class="btn btn-warning btn-small" role="button"><i class="fa fa-comment"></i> 我要评论</a>
+                                <a id="pay_{$food_orders.0.id}" href="/Wechat/FoodComment/create/order_id/{$food_order.id}/food_setmenu_id/{$food_order.food_id}/type/{$food_order.detail_type}/t/{$mp.mp_token}" class="btn btn-warning btn-small" role="button"><i class="fa fa-comment"></i> 我要评论</a>
                                 <?php
-                                   }else if(($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_SETMENU && $food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) && ($food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) &&(\Admin\Model\FoodCommentModel::getCommentByWxopenidFoodid($this->weixin_userinfo['wx_openid']=$weixin_userinfo['wx_openid'],$food_order['food_id']) == false)){
+                                   }else if(($food_order['detail_type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_SETMENU && $food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) && ($food_orders[0]['status'] == \Admin\Model\FoodOrderModel::$STATUS_FINISHED) &&(\Admin\Model\FoodCommentModel::getCommentByWxopenidFoodid($this->weixin_userinfo['wx_openid']=$weixin_userinfo['wx_openid'],$food_order['food_id'],$food_order['id']) == false)){
                                 ?>
-                                <a id="pay_{$food_orders.0.id}" href="/Wechat/FoodComment/create/food_setmenu_id/{$food_order.food_id}/t/{$mp.mp_token}" class="btn btn-warning btn-small" role="button"><i class="fa fa-comment"></i> 我要评论</a>
+                                <a id="pay_{$food_orders.0.id}" href="/Wechat/FoodComment/create/order_id/{$food_order.id}/food_setmenu_id/{$food_order.food_id}/type/{$food_order.detail_type}/t/{$mp.mp_token}" class="btn btn-warning btn-small" role="button"><i class="fa fa-comment"></i> 我要评论</a>
                                 <?php
                                 }
                                 ?>
