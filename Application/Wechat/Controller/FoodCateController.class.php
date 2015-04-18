@@ -44,7 +44,7 @@ class FoodCateController extends BaseController {
         $this->assign('selected_dining_room_id', json_encode(null));
         $this->assign('food_cates', $food_cates);
         $this->assign('json_food_cates', json_encode($food_cates));
-        $this->meta_title = $this->mp['mp_name'] . "菜品分类";
+        $this->meta_title = $this->mp['mp_name'] . " | 菜品分类";
         $this->display('index');
     }
 

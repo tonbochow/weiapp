@@ -25,7 +25,7 @@ class MemberAddressController extends BaseController {
          
         $this->assign('page', $show);
         $this->assign('member_addrs',$member_addrs);
-        $this->meta_title = $this->mp['mp_name'] . "微信用户地址信息";
+        $this->meta_title = $this->mp['mp_name'] . " | 微信共享地址";
         $this->display('index');
     }
 

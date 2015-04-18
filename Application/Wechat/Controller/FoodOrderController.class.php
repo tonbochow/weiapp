@@ -51,7 +51,7 @@ class FoodOrderController extends BaseController {
 
         $this->assign('food_orders', $food_orders);
         $this->assign('page', $show);
-        $this->meta_title = $this->mp['mp_name'] . "订单列表";
+        $this->meta_title = $this->mp['mp_name'] . " | 订单列表";
         $this->display('index');
     }
 
@@ -82,7 +82,7 @@ class FoodOrderController extends BaseController {
 
         $this->assign('address_info', $address_info);
         $this->assign('food_orders', $food_orders);
-        $this->meta_title = $this->mp['mp_name'] . "订单详细页面";
+        $this->meta_title = $this->mp['mp_name'] . " | 订单详细页面";
         $this->display('view');
     }
 
@@ -201,7 +201,7 @@ class FoodOrderController extends BaseController {
         $this->assign('total_amount', $total_amount);
         $this->assign('car_details', $car_detail_arr);
         $this->assign('json_car_detail_arr', json_encode($car_detail_arr));
-        $this->meta_title = "购餐车预生成订单";
+        $this->meta_title = $this->mp['mp_name'] ." | 购餐车预生成订单";
         $this->display('commitorder');
     }
 
@@ -491,7 +491,7 @@ class FoodOrderController extends BaseController {
         $this->assign('food_order_ids', $food_order_ids);
         $this->assign('food_order_info', $food_order_info);
         $this->assign('jsApiParameters', $jsApiParameters);
-        $this->meta_title = $this->mp['mp_name'] . "微信支付页面";
+        $this->meta_title = $this->mp['mp_name'] . " | 微信支付";
         $this->display('pay');
     }
 

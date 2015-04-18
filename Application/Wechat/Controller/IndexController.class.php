@@ -108,7 +108,7 @@ class IndexController extends BaseController {
         $this->assign('dining_room_arr', $dining_room_arr);
         $this->assign('page', $show);
         $this->assign('foods', $foods);
-        $this->meta_title = $this->mp['mp_name'] . "菜品首页";
+        $this->meta_title = $this->mp['mp_name'] . " | 菜品首页";
         $this->display('index');
     }
 

@@ -64,7 +64,7 @@ class DiningMemberController extends FoodBaseController {
             $dining_uid = $User->register($dining_member_data['username'], $dining_member_data['password'], $dining_member_data['email']);
             if ($dining_uid <= 0) {
                 $diningMemberModel->rollback();
-                $this->error($dining_uid, '', true);
+//                $this->error($dining_uid, '', true);
                 $this->error('添加餐厅员工登录信息失败', '', true);
             }
             //2 将用户添加入微餐饮店员组

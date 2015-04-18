@@ -32,9 +32,9 @@
         // 服务器统一请求接口路径
         , serverUrl: URL + "php/controller.php"
 
-        //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
+        //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义'bold', 'italic', 'underline',  'forecolor', 'fontfamily', 
         , toolbars: [[
-            'bold', 'italic', 'underline',  'forecolor', 'fontfamily', 'emotion', 
+            'emotion',
         ]]
         ,initialFrameWidth:'100%'
         //当鼠标放在工具栏上时显示的tooltip提示,留空支持自动多语言配置，否则以配置值为准
@@ -238,7 +238,7 @@
 
         //elementPathEnabled
         //是否启用元素路径，默认是显示
-        //,elementPathEnabled : true
+        ,elementPathEnabled : false
 
         //wordCount
         //,wordCount:true          //是否开启字数统计

@@ -49,7 +49,7 @@ class FoodController extends BaseController {
         $this->assign('share_info', $share_info);
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
         $this->assign('food', $food);
-        $this->meta_title = $food['food_name'] . '详细页面';
+        $this->meta_title = $this->mp['mp_name'].' | '.$food[0]['food_name'];
         $this->display('view');
     }
 

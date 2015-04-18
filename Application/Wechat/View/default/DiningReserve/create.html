@@ -15,6 +15,13 @@
         <div class="col-xs-12">
             <div class="thumbnail">
                 <form novalidate  class="ng-app:weiapp_reserve" ng-app="weiapp_reserve" id="ng-app"  name="ReserveForm" ng-controller="ReserveController" ng-submit="submitForm()">
+                    <div class="form-group" ng-class="{'has-error' : ReserveForm.meal_time.$invalid && !ReserveForm.meal_time.$pristine}">
+                        <label for="meal_time">用餐时间(*必填)</label>
+                        <!--<input type="text" name="meal_time" id="meal_time" class="form-control" ng-model="reserve.meal_time"  ng-trim="true" ng-minlength="1" ng-maxlength="10" required id="meal_time" placeholder="请输入用餐时间">-->
+                        <input type="text" name="meal_time" ng-model="reserve.meal_time" required class="form-control text input-large time" id="meal_time"  readonly value="" placeholder="请选择用餐时间" />
+                        <p ng-show="ReserveForm.meal_time.$invalid && !ReserveForm.meal_time.$pristine" class="help-block">用餐时间必填</p>
+                    </div>
+                    
                     <div class="form-item" ng-class="{'has-error' : ReserveForm.dining_room_id.$invalid && !ReserveForm.dining_room_id.$pristine}">
                         <label class="item-label">所属餐厅<span class="check-tips">（*必填）</span></label>
                         <div class="controls">
@@ -43,19 +50,13 @@
                         <p ng-show="ReserveForm.user_num.$invalid && !ReserveForm.user_num.$pristine" class="help-block">用餐人数必填</p>
                     </div>
                     
+                    
+                    
                     <div class="form-group" ng-class="{'has-error' : ReserveForm.remark.$invalid && !ReserveForm.remark.$pristine}">
                         <label for="remark">预定描述(*必填)</label>
                         <div class="ueditor" name="remark" id="remark" config="config" ng-model="reserve.remark" ng-minlength="1" ng-trim="true" required ></div>
                         <p ng-show="ReserveForm.remark.$invalid && !ReserveForm.remark.$pristine" class="help-block">请填写预定描述</p>
                     </div>
-                    
-                    <div class="form-group" ng-class="{'has-error' : ReserveForm.meal_time.$invalid && !ReserveForm.meal_time.$pristine}">
-                        <label for="meal_time">用餐时间(*必填)</label>
-                        <!--<input type="text" name="meal_time" id="meal_time" class="form-control" ng-model="reserve.meal_time"  ng-trim="true" ng-minlength="1" ng-maxlength="10" required id="meal_time" placeholder="请输入用餐时间">-->
-                        <input type="text" name="meal_time" ng-model="reserve.meal_time" required class="form-control text input-large time" id="meal_time"  readonly value="" placeholder="请选择用餐时间" />
-                        <p ng-show="ReserveForm.meal_time.$invalid && !ReserveForm.meal_time.$pristine" class="help-block">用餐时间必填</p>
-                    </div>
-                    
                     
                     <button type="submit" class="btn btn-success btn-block submit" ng-disabled="ReserveForm.$invalid">提交预定</button>
                 </form>
@@ -83,7 +84,7 @@
             $('.time').datetimepicker({
                 format: 'yyyy-mm-dd hh:ii',
                 language:"zh-CN",
-                minView:2,
+                minView:0,
                 autoclose:true
             });
         });

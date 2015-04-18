@@ -31,7 +31,7 @@ class DiningReserveController extends BaseController {
 
         $this->assign('page', $show);
         $this->assign('reserves', $reserves);
-        $this->meta_title = $this->mp['mp_name'] . "预定";
+        $this->meta_title = $this->mp['mp_name'] . " | 预定列表";
         $this->display('index');
     }
 
@@ -58,7 +58,7 @@ class DiningReserveController extends BaseController {
         }
 
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
-        $this->meta_title = $this->mp['mp_name'] . "创建预定";
+        $this->meta_title = $this->mp['mp_name'] . " | 创建预定";
         $this->display('create');
     }
 

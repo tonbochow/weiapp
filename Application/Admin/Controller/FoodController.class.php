@@ -370,6 +370,7 @@ class FoodController extends FoodBaseController {
 //                        }else{
 //                            $add_data['default_share'] = \Admin\Model\FoodDetailModel::$STATUS_DISABLED;
 //                        }
+                        $add_data['dining_room_id'] = $food['dining_room_id'];
                         $add_data['mp_id'] = MP_ID;
                         $add_data['member_id'] = UID;
                         $add_data['input_name'] = $input_name;

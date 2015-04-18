@@ -35,7 +35,7 @@ class FoodCommentController extends BaseController {
 
         $this->assign('page', $show);
         $this->assign('comments', $comments);
-        $this->meta_title = $this->mp['mp_name'] . "评论";
+        $this->meta_title = $this->mp['mp_name'] . " | 评论列表";
         $this->display('index');
     }
 
@@ -53,7 +53,7 @@ class FoodCommentController extends BaseController {
         $comment['comment'] = htmlspecialchars_decode(stripcslashes($comment['comment']));
 
         $this->assign('comment', $comment);
-        $this->meta_title = $this->mp['mp_name'] . "评论详细";
+        $this->meta_title = $this->mp['mp_name'] . " | 评论详细";
         $this->display('view');
     }
 
@@ -133,7 +133,7 @@ class FoodCommentController extends BaseController {
         $this->assign('food_setmenu_id', $food_setmenu_id);
         $this->assign('type', $type);
         $this->assign('order_id', $order_id);
-        $this->meta_title = $this->mp['mp_name'] . "创建评论";
+        $this->meta_title = $this->mp['mp_name'] . " | 创建评论";
         $this->display('create');
     }
 

@@ -33,7 +33,7 @@ class DiningRoomController extends BaseController {
         }
 //        dump($dining_rooms);
         $this->assign('dining_rooms', $dining_rooms);
-        $this->meta_title = $dining_rooms[0]['dining_name'] . '详细页面';
+        $this->meta_title = $dining_rooms[0]['dining_name'] . ' | 详细信息页面';
         $this->display('view');
     }
 

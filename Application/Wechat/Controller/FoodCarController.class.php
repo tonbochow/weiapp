@@ -40,7 +40,7 @@ class FoodCarController extends BaseController {
         $this->assign('total_amount', $total_amount);
         $this->assign('car_details', $carDetails);
         $this->assign('json_car_details', json_encode($carDetails));
-        $this->meta_title = "购餐车详细";
+        $this->meta_title = $this->mp['mp_name'] ." | 购餐车详细";
         $this->display('index');
     }
 

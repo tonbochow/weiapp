@@ -34,7 +34,25 @@
             'onMenuShareTimeline',
             'onMenuShareAppMessage',
             'onMenuShareQQ',
-            'onMenuShareWeibo'
+            'onMenuShareWeibo',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'getNetworkType',
+            'openLocation',
+            'getLocation',
+            'showOptionMenu',
+            'hideOptionMenu',
+            'hideMenuItems',
+            'showMenuItems',
+            'hideAllNonBaseMenuItem',
+            'showAllNonBaseMenuItem',
+            'closeWindow',
+            'scanQRCode',
+            'openProductSpecificView',
+            'addCard',
+            'chooseCard',
+            'openCard',
         ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
     wx.ready(function(){
@@ -80,48 +98,52 @@
             }
           });
 
-          wx.onMenuShareQQ({
-            title: title,
-            desc: desc,
-            link: link,
-            imgUrl: imgUrl,
-            trigger: function (res) {
-      //        alert('用户点击分享到QQ');
-            },
-            complete: function (res) {
-//		  alert(JSON.stringify(res));
-            },
-            success: function (res) {
-//		  alert('已分享');
-            },
-            cancel: function (res) {
-//		  alert('已取消');
-            },
-            fail: function (res) {
-              alert(JSON.stringify(res));
-            }
-          });
+//          wx.onMenuShareQQ({
+//            title: title,
+//            desc: desc,
+//            link: link,
+//            imgUrl: imgUrl,
+//            trigger: function (res) {
+//      //        alert('用户点击分享到QQ');
+//            },
+//            complete: function (res) {
+////		  alert(JSON.stringify(res));
+//            },
+//            success: function (res) {
+////		  alert('已分享');
+//            },
+//            cancel: function (res) {
+////		  alert('已取消');
+//            },
+//            fail: function (res) {
+//              alert(JSON.stringify(res));
+//            }
+//          });
+//
+//          wx.onMenuShareWeibo({
+//            title: title,
+//            desc: desc,
+//            link: link,
+//            imgUrl: imgUrl,
+//            trigger: function (res) {
+//      //        alert('用户点击分享到微博');
+//            },
+//            complete: function (res) {
+////		  alert(JSON.stringify(res));
+//            },
+//            success: function (res) {
+////		  alert('已分享');
+//            },
+//            cancel: function (res) {
+////		  alert('已取消');
+//            },
+//            fail: function (res) {
+//              alert(JSON.stringify(res));
+//            }
+//          });
 
-          wx.onMenuShareWeibo({
-            title: title,
-            desc: desc,
-            link: link,
-            imgUrl: imgUrl,
-            trigger: function (res) {
-      //        alert('用户点击分享到微博');
-            },
-            complete: function (res) {
-//		  alert(JSON.stringify(res));
-            },
-            success: function (res) {
-//		  alert('已分享');
-            },
-            cancel: function (res) {
-//		  alert('已取消');
-            },
-            fail: function (res) {
-              alert(JSON.stringify(res));
-            }
+          wx.hideMenuItems({
+            menuList: ["menuItem:copyUrl","menuItem:originPage","menuItem:openWithQQBrowser","menuItem:openWithSafari","menuItem:share:email", "menuItem:share:qq","menuItem:share:weiboApp","menuItem:share:QZone"] 
           });
     });
     

@@ -31,7 +31,7 @@ class FoodSetmenuController extends BaseController {
         $this->assign('dining_room_arr', $dining_room_arr);
         $this->assign('page', $show);
         $this->assign('setmenus', $setmenus);
-        $this->meta_title = $this->mp['mp_name'] . "菜品套餐列表";
+        $this->meta_title = $this->mp['mp_name'] . " | 菜品套餐列表";
         $this->display('index');
     }
 
@@ -62,7 +62,7 @@ class FoodSetmenuController extends BaseController {
         
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
         $this->assign('foodsetmenu', $foodsetmenu);
-        $this->meta_title = $foodsetmenu['setmenu_name'] . '详细页面';
+        $this->meta_title = $this->mp['mp_name']. ' | 套餐详细页面';
         $this->display('view');
     }
 

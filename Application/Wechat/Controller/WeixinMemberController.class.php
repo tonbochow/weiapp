@@ -36,13 +36,14 @@ class WeixinMemberController extends BaseController {
         $this->assign('need_pay_count', $need_pay_count);
         $this->assign('delivery_count', $delivery_count);
         $this->assign('finish_count', $finish_count);
+        $this->meta_title = $this->mp['mp_name'] . " | 个人信息中心";
         $this->display('index');
     }
 
     //用户账户面板
     public function manage() {
 
-        $this->meta_title = $this->mp['mp_name'] . "微信用户账户管理面板";
+        $this->meta_title = $this->mp['mp_name'] . " | 微信用户账户管理面板";
         $this->display('manage');
     }
 
@@ -65,7 +66,7 @@ class WeixinMemberController extends BaseController {
         $member_weixin = M('MemberWeixin')->where($map)->find();
 
         $this->assign('member_weixin', empty($member_weixin) ? array() : json_encode($member_weixin));
-        $this->meta_title = $this->mp['mp_name'] . "微信用户个人信息";
+        $this->meta_title = $this->mp['mp_name'] . " | 个人信息";
         $this->display('info');
     }
 
@@ -100,7 +101,7 @@ class WeixinMemberController extends BaseController {
             $username = $user_info['username'];
         }
         $this->assign('username', $username);
-        $this->meta_title = $this->mp['mp_name'] . "微信用户绑定帐号";
+        $this->meta_title = $this->mp['mp_name'] . " | 绑定帐号";
         $this->display('bind');
     }
 
