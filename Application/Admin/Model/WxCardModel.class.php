@@ -165,11 +165,11 @@ class WxCardModel extends Model {
     public static function getCardPicUrl($appid, $appsecret, $pic_buffer) {
         $access_token = MicroPlatformModel::getAccessToken($appid, $appsecret);
         $url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" . $access_token;
-        $upload = MicroPlatformModel::curl($url, $pic_buffer);
-        if ($upload['errcode'] == 0 && $upload['errmsg'] == 'ok') {
-            return $upload[0]['url'];
+        $upload = MicroPlatformModel::media_curl($url, $pic_buffer);
+        if ($upload['errcode'] > 0) {
+            return false;
         }
-        return false;
+        return $upload['url'];
     }
 
     /**

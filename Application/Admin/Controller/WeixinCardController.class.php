@@ -67,7 +67,7 @@ class WeixinCardController extends FoodBaseController {
             }
             $location_list['location_list'] = $location_arr;
             //批量导入门店
-            $batch_import_diningroom = \Admin\Model\WxCardModel::batchImportDiningRoom(APPID, APPSECRET, json_encode($location_list));
+            $batch_import_diningroom = \Admin\Model\WxCardModel::batchImportDiningRoom(APPID, APPSECRET, $location_list);
             if ($batch_import_diningroom == false) {
                 $this->error('批量导入门店失败!');
             }
@@ -78,13 +78,14 @@ class WeixinCardController extends FoodBaseController {
             if ($batch_get_dining_rooms == false) {
                 $this->error('批量获取门店失败!');
             }
+
             foreach ($batch_get_dining_rooms as $dining_room) {
                 $wx_diningroom_data[] = array(
                     'mp_id' => MP_ID,
                     'member_id' => UID,
-                    'location_id' => $dining_room['location_id'],
-                    'business_name' => $dining_room['business_name'],
-                    'branch_name' => $dining_room['branch_name'],
+                    'location_id' => !empty($dining_room['id'])?$dining_room['id']:$dining_room['location_id'],
+                    'business_name' => !empty($dining_room['name'])?$dining_room['name']:$dining_room['business_name'],
+                    'branch_name' => !empty($dining_room['branch_name'])?$dining_room['branch_name']:'',
                     'phone' => $dining_room['phone'],
                     'address' => $dining_room['address'],
                     'longitude' => $dining_room['longitude'],
@@ -93,6 +94,7 @@ class WeixinCardController extends FoodBaseController {
                     'update_time' => time(),
                 );
             }
+
             $card_diningroom_addall = M('WxCardDiningroom')->addAll($wx_diningroom_data);
             if ($card_diningroom_addall == false) {
                 $this->error('批量添加卡劵门店失败!');
@@ -122,7 +124,7 @@ class WeixinCardController extends FoodBaseController {
     public function uploadlogo() {
         if (IS_POST) {
             $mp_img = I('post.mp_img');
-            $save_path = C('WEBSITE_URL') . '/Uploads/Mp/' . MP_ID . '/info/';
+            $save_path = C('WEBSITE_URL')  . '/Uploads/Mp/' . MP_ID . '/info/';
             if (!file_exists($save_path)) {
                 $mkdir_res = mkdir($save_path, 0777, true);
                 if (!$mkdir_res) {
@@ -137,29 +139,34 @@ class WeixinCardController extends FoodBaseController {
                     $this->error('生成微信公众平台头像图片失败!', '', true);
                 }
                 //上传logo图片到微信服务器
-                $upload_data['buffer'] = "@$mp_img_path";
+                $upload_data['media'] = "@$mp_img_path";
+                $media = "media=@".$mp_img_path;
                 $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSECRET, $upload_data);
                 //更新公众平台
                 $platform_data['mp_img'] = '/Uploads/Mp/' . MP_ID . '/info/' . C('MP_IMG_UPLOAD')['saveName'] . '.jpg';
                 $platform_data['card_pic_url'] = $card_pic_url;
                 $platform_data['update_time'] = time();
-                $platform_update = M('MicroPlatform')->where(array('id' => MP_ID))->save($platform_data);
+                $mpModel = M('MicroPlatform');
+                $platform_update = $mpModel->where(array('id' => MP_ID))->save($platform_data);
                 if ($platform_update == false) {
                     $this->error('更新微信公众平台头像或logo图片失败!', '', true);
                 }
             } else {
                 $mp_img_path = C('WEBSITE_URL') . $mp_img;
                 //上传logo图片到微信服务器
-                $upload_data['buffer'] = "@$mp_img_path";
+                $upload_data['media'] = "@$mp_img_path";
+                $media = "media=@".$mp_img_path;
                 $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSECRET, $upload_data);
                 //更新公众平台
                 $platform_data['card_pic_url'] = $card_pic_url;
                 $platform_data['update_time'] = time();
-                $platform_update = M('MicroPlatform')->where(array('id' => MP_ID))->save($platform_data);
+                $mpModel = M('MicroPlatform');
+                $platform_update = $mpModel->where(array('id' => MP_ID))->save($platform_data);
                 if ($platform_update == false) {
                     $this->error('更新微信公众平台logo图片失败!', '', true);
                 }
             }
+            $this->success('上传微信公众平台卡劵logo成功','',true);
         }
         $platform = M('MicroPlatform')->where(array('id' => MP_ID))->find();
         $card = array('mp_img' => $platform['mp_img']);
@@ -172,24 +179,22 @@ class WeixinCardController extends FoodBaseController {
     //创建卡劵
     public function add() {
         if (IS_POST) {
-            dump(I('post.'));
-            exit;
             $post_data = I('post.');
             if ($post_data['type'] == 1) {
                 if (empty($post_data['begin_timestamp']) || empty($post_data['end_timestamp'])) {
                     $this->error('固定日期开始或结束时间必填', '', true);
                 }
                 $card_date_arr = array(
-                    "type" => $post_data['type'],
-                    "begin_timestamp" => $post_data['begin_timestamp'],
-                    "end_timestamp" => $post_data['end_timestamp'],
+                    "type" => intval($post_data['type']),
+                    "begin_timestamp" => strtotime($post_data['begin_timestamp']),
+                    "end_timestamp" => strtotime($post_data['end_timestamp']),
                 );
             } else if ($post_data['type'] == 2) {
                 if (empty($post_data['fixed_begin_term']) || empty($post_data['fixed_term'])) {
                     $this->error('领取后多少天生效或有效天数必填', '', true);
                 }
                 $card_date_arr = array(
-                    "type" => $post_data['type'],
+                    "type" => intval($post_data['type']),
                     "fixed_begin_term" => $post_data['fixed_begin_term'],
                     "fixed_term" => $post_data['fixed_term'],
                 );
@@ -220,21 +225,26 @@ class WeixinCardController extends FoodBaseController {
                         "description" => $post_data['description'],
                         "date_info" => $card_date_arr,
                         "sku" => array(
-                            "quantity" => $post_data['quantity'],
+                            "quantity" => intval($post_data['stock']),
                         ),
-                        "get_limit" => $post_data['get_limit'],
+                        "get_limit" => intval($post_data['get_limit']),
                         "use_custom_code" => false,
                         "bind_openid" => false,
-                        "can_share" => isset($post_data['can_share']) ? $post_data['can_share'] : true,
-                        "can_give_friend" => isset($post_data['can_give_friend']) ? $post_data['can_give_friend'] : true,
+                        "can_share" => empty($post_data['can_share']) ? false: true,
+                        "can_give_friend" => empty($post_data['can_give_friend']) ? false : true,
                         "location_id_list" => $card_location_id_list,
-                        "url_name_type" => "URL_NAME_TYPE_RESERVATION ",
+                        "custom_url_name" => "立即使用",
                         "custom_url" => "http://www.52gdp.com",
+                        "custom_url_sub_title" => "请注意有效期",
+                        "promotion_url_name" => "更多优惠",
+                        "promotion_url" => "http://www.52gdp.com",
                         "source" => MP_NAME,
                     ),
                     "deal_detail" => $post_data['deal_detail'],
                 )
             );
+//            dump($post_data);
+           var_dump($card_data);
             $card_id = \Admin\Model\WxCardModel::createCard(APPID, APPSECRET, $card_data);
             if ($card_id == false) {
                 $this->error('生成卡劵失败', '', true);
@@ -253,7 +263,7 @@ class WeixinCardController extends FoodBaseController {
             //保存卡劵信息
         }
         //检测创建卡劵条件
-//        $this->checkcond();
+        $this->checkcond();
         $platform = M('MicroPlatform')->where(array('id' => MP_ID))->find();
         //检索卡劵类型
         $card_types = \Admin\Model\WxCardModel::getCardType(null, false);
@@ -311,7 +321,7 @@ class WeixinCardController extends FoodBaseController {
             );
         }
 
-        $card_pic_url = !empty($platform['card_pic_url']) ? $platform['card_pic_url'] : "''";
+        $card_pic_url = !empty($platform['card_pic_url']) ? "'".$platform['card_pic_url']."'" : "''";
         $this->assign('card_pic_url', $card_pic_url);
         $this->assign('type_arr', !empty($type_arr) ? json_encode($type_arr) : '');
         $this->assign('color_arr', !empty($color_arr) ? json_encode($color_arr) : '');

@@ -209,6 +209,31 @@ class MicroPlatformModel extends Model {
         curl_close($ch);
         return json_decode($contents, true);
     }
+    
+    /**
+     * 
+     * @param type $url
+     * @param type $post_data
+     * @return 多媒体图片上传
+     */
+    public static function media_curl($url, $post_data = null) {
+        $ch = curl_init();
+        $timeout = 30;
+        curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+        curl_setopt($ch, CURLOPT_URL, $url); //设置链接
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //设置是否返回信息
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)');
+        if ($post_data) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        }
+        $contents = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($contents, true);
+    }
 
     /**
      * 获取微信公众平台access_token 公众号的全局唯一票据
