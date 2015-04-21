@@ -67,25 +67,27 @@
         <div class="form-item" ng-class="{'has-error' : CardForm.deal_detail.$invalid && !CardForm.deal_detail.$pristine}">
             <label class="item-label">优惠详情<span class="check-tips">（*必填）</span></label>
             <div class="controls">
-                <div class="ueditor" config="config" ng-model="card.deal_detail" ng-minlength="1" ng-maxlength="1000" ng-trim="true" required ></div>
+                <!--<div class="ueditor" config="config" ng-model="card.deal_detail" ng-minlength="1" ng-maxlength="1000" ng-trim="true" required ></div>-->
+                <textarea cols="30" rows="4" name="deal_detail" ng-model="card.deal_detail" required ng-maxlength="1000"></textarea>
                 <p ng-show="CardForm.deal_detail.$invalid && !CardForm.deal_detail.$pristine" class="help-block">优惠详情必填</p>
             </div>
         </div>
         
         
         <div class="form-item" ng-class="{'has-error' : CardForm.description.$invalid && !CardForm.description.$pristine}">
-            <label class="item-label">使用须知<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">使用说明<span class="check-tips">（*必填 长度1000汉字）</span></label>
             <div class="controls">
-                <div class="ueditor" config="config" ng-model="card.description" ng-minlength="1"  ng-maxlength="1000" ng-trim="true" required ></div>
-                <p ng-show="CardForm.description.$invalid && !CardForm.description.$pristine" class="help-block">使用须知必填</p>
+                <!--<div class="ueditor" config="config" ng-model="card.description" ng-minlength="1"  ng-maxlength="1000" ng-trim="true" required ></div>-->
+                <textarea cols="30" rows="4" name="description" ng-model="card.description" required ng-maxlength="12"></textarea>
+                <p ng-show="CardForm.description.$invalid && !CardForm.description.$pristine" class="help-block">使用须知最多1000个汉字</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : CardForm.notice.$invalid && !CardForm.notice.$pristine}">
-            <label class="item-label">操作提示<span class="check-tips">（长度1-16 建议引导用户到店出示卡券，由店员完成核销操作）</span></label>
+            <label class="item-label">使用提醒<span class="check-tips">（*必填 长度1-12 建议引导用户到店出示卡券，由店员完成核销操作）</span></label>
             <div class="controls">
-                <input name="notice" type="text" value="" ng-model="card.notice"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,16}$/" ng-trim="true" ng-minlength="1" ng-maxlength="18" required class="form-control text input-large" id="notice" placeholder="操作提示">
-                <p ng-show="CardForm.notice.$invalid && !CardForm.notice.$pristine" class="help-block">操作提示(1-16个汉字)</p>
+                <input name="notice" type="text" value="" ng-model="card.notice"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,16}$/" ng-trim="true" ng-minlength="1" ng-maxlength="12" required class="form-control text input-large" id="notice" placeholder="操作提示">
+                <p ng-show="CardForm.notice.$invalid && !CardForm.notice.$pristine" class="help-block">操作提示(1-12个汉字)</p>
             </div>
         </div>
         
@@ -227,7 +229,7 @@
                         $('.time').datetimepicker({
                             format: 'yyyy-mm-dd hh:ii',
                             language: "zh-CN",
-                            minView: 2,
+                            minView: 0,
                             autoclose: true
                         });
                     });

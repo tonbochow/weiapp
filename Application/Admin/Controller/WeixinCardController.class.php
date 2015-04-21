@@ -83,9 +83,9 @@ class WeixinCardController extends FoodBaseController {
                 $wx_diningroom_data[] = array(
                     'mp_id' => MP_ID,
                     'member_id' => UID,
-                    'location_id' => !empty($dining_room['id'])?$dining_room['id']:$dining_room['location_id'],
-                    'business_name' => !empty($dining_room['name'])?$dining_room['name']:$dining_room['business_name'],
-                    'branch_name' => !empty($dining_room['branch_name'])?$dining_room['branch_name']:'',
+                    'location_id' => !empty($dining_room['id']) ? $dining_room['id'] : $dining_room['location_id'],
+                    'business_name' => !empty($dining_room['name']) ? $dining_room['name'] : $dining_room['business_name'],
+                    'branch_name' => !empty($dining_room['branch_name']) ? $dining_room['branch_name'] : '',
                     'phone' => $dining_room['phone'],
                     'address' => $dining_room['address'],
                     'longitude' => $dining_room['longitude'],
@@ -124,7 +124,7 @@ class WeixinCardController extends FoodBaseController {
     public function uploadlogo() {
         if (IS_POST) {
             $mp_img = I('post.mp_img');
-            $save_path = C('WEBSITE_URL')  . '/Uploads/Mp/' . MP_ID . '/info/';
+            $save_path = C('WEBSITE_URL') . '/Uploads/Mp/' . MP_ID . '/info/';
             if (!file_exists($save_path)) {
                 $mkdir_res = mkdir($save_path, 0777, true);
                 if (!$mkdir_res) {
@@ -140,7 +140,7 @@ class WeixinCardController extends FoodBaseController {
                 }
                 //上传logo图片到微信服务器
                 $upload_data['media'] = "@$mp_img_path";
-                $media = "media=@".$mp_img_path;
+                $media = "media=@" . $mp_img_path;
                 $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSECRET, $upload_data);
                 //更新公众平台
                 $platform_data['mp_img'] = '/Uploads/Mp/' . MP_ID . '/info/' . C('MP_IMG_UPLOAD')['saveName'] . '.jpg';
@@ -155,7 +155,7 @@ class WeixinCardController extends FoodBaseController {
                 $mp_img_path = C('WEBSITE_URL') . $mp_img;
                 //上传logo图片到微信服务器
                 $upload_data['media'] = "@$mp_img_path";
-                $media = "media=@".$mp_img_path;
+                $media = "media=@" . $mp_img_path;
                 $card_pic_url = \Admin\Model\WxCardModel::getCardPicUrl(APPID, APPSECRET, $upload_data);
                 //更新公众平台
                 $platform_data['card_pic_url'] = $card_pic_url;
@@ -166,7 +166,7 @@ class WeixinCardController extends FoodBaseController {
                     $this->error('更新微信公众平台logo图片失败!', '', true);
                 }
             }
-            $this->success('上传微信公众平台卡劵logo成功','',true);
+            $this->success('上传微信公众平台卡劵logo成功', '', true);
         }
         $platform = M('MicroPlatform')->where(array('id' => MP_ID))->find();
         $card = array('mp_img' => $platform['mp_img']);
@@ -189,6 +189,7 @@ class WeixinCardController extends FoodBaseController {
                     "begin_timestamp" => strtotime($post_data['begin_timestamp']),
                     "end_timestamp" => strtotime($post_data['end_timestamp']),
                 );
+                $card_date_str = '"type":' . $card_date_arr['type'] . ',"begin_timestamp":' . $card_date_arr['begin_timestamp'] . ',"end_timestamp":' . $card_date_arr['end_timestamp'];
             } else if ($post_data['type'] == 2) {
                 if (empty($post_data['fixed_begin_term']) || empty($post_data['fixed_term'])) {
                     $this->error('领取后多少天生效或有效天数必填', '', true);
@@ -198,6 +199,7 @@ class WeixinCardController extends FoodBaseController {
                     "fixed_begin_term" => $post_data['fixed_begin_term'],
                     "fixed_term" => $post_data['fixed_term'],
                 );
+                $card_date_str = '"type":' . $card_date_arr['type'] . ',"fixed_begin_term":' . $card_date_arr['fixed_begin_term'] . ',"fixed_term":' . $card_date_arr['fixed_term'];
             }
             if (empty($post_data['location_id_list'])) {
                 $card_diningrooms = M('WxCardDiningroom')->where(array('mp_id' => MP_ID))->select();
@@ -208,47 +210,88 @@ class WeixinCardController extends FoodBaseController {
                 $card_location_id_list = array($loction_id_str);
             } else {
                 $card_location_id_list = array($post_data['location_id_list']);
+                $loction_id_str = $post_data['location_id_list'];
             }
-            //构造生成卡劵的数据
-            $card_data["card"] = array(
-                "card_type" => $post_data['card_type'],
-                '"' . strtolower($post_data['card_type']) . '"' => array(
-                    "base_info" => array(
-                        "log_url" => $post_data['logo_url'],
-                        "brand_name" => MP_NAME,
-                        "code_type" => "CODE_TYPE_TEXT",
-                        "title" => $post_data['title'],
-                        "sub_title" => $post_data['sub_title'],
-                        "color" => \Admin\Model\WxCardModel::getCardColorStatus($post_data['color']),
-                        "notice" => $post_data['notice'],
-                        "service_phone" => $post_data['service_phone'],
-                        "description" => $post_data['description'],
-                        "date_info" => $card_date_arr,
-                        "sku" => array(
-                            "quantity" => intval($post_data['stock']),
-                        ),
-                        "get_limit" => intval($post_data['get_limit']),
-                        "use_custom_code" => false,
-                        "bind_openid" => false,
-                        "can_share" => empty($post_data['can_share']) ? false: true,
-                        "can_give_friend" => empty($post_data['can_give_friend']) ? false : true,
-                        "location_id_list" => $card_location_id_list,
-                        "custom_url_name" => "立即使用",
-                        "custom_url" => "http://www.52gdp.com",
-                        "custom_url_sub_title" => "请注意有效期",
-                        "promotion_url_name" => "更多优惠",
-                        "promotion_url" => "http://www.52gdp.com",
-                        "source" => MP_NAME,
-                    ),
-                    "deal_detail" => $post_data['deal_detail'],
-                )
-            );
-//            dump($post_data);
-           var_dump($card_data);
+            $can_share_str = empty($post_data['can_share']) ? 'false' : 'true';
+            $can_give_str = empty($post_data['can_give_friend']) ? 'false' : 'true';
+//            $card_data = '{"card":{
+//                "card_type" :"'. $post_data['card_type'].'","'
+//                . strtolower($post_data['card_type']) . '":{
+//                    "base_info":{
+//                        "log_url":"'. $post_data['logo_url'].'",
+//                        "brand_name":"'. MP_NAME.'",
+//                        "code_type" : "CODE_TYPE_TEXT",
+//                        "title" :"'. $post_data['title'].'",
+//                        "sub_title":"'. $post_data['sub_title'].'",
+//                        "color":"'.\Admin\Model\WxCardModel::getCardColorStatus($post_data['color']).'",
+//                        "notice":"'. $post_data['notice'].'",
+//                        "service_phone":"'. $post_data['service_phone'].'",
+//                        "description":"'.$post_data['description'].'",
+//                        "date_info":{'. $card_date_str.'},
+//                        "sku":{
+//                            "quantity" :'. intval($post_data['stock']).'
+//                        },
+//                        "get_limit":' .intval($post_data['get_limit']).',
+//                        "use_custom_code":false,
+//                        "bind_openid":false,
+//                        "can_share" :'.$can_share_str.',
+//                        "can_give_friend":'. $can_give_str .',
+//                        "location_id_list":['. $loction_id_str.'],
+//                        "custom_url_name":"立即使用",
+//                        "custom_url" : "http://www.52gdp.com",
+//                        "custom_url_sub_title" : "请注意有效期",
+//                        "promotion_url_name" : "更多优惠",
+//                        "promotion_url" : "http://www.52gdp.com",
+//                        "source" :"'. MP_NAME.'"
+//                    },
+//                    "deal_detail":"'. $post_data['deal_detail'].'"
+//                }
+//            }';
+            //微信卡劵sdk
+            import('Common.Extends.Weixin.CardSDK');
+            if ($card_date_arr['type'] == 1) {
+                $card_date_obj = new \DateInfo($card_date_arr['type'], $card_date_arr['begin_timestamp'], $card_date_arr['end_timestamp']);
+            } else {
+                $card_date_obj = new \DateInfo($card_date_arr['type'], $card_date_arr['fixed_begin_term'], $card_date_arr['fixed_term']);
+            }
+
+            $base_info = new \BaseInfo($post_data['logo_url'], MP_NAME, 0, $post_data['title'], \Admin\Model\WxCardModel::getCardColorStatus($post_data['color']), $post_data['notice'], $post_data['service_phone'], $post_data['description'], $card_date_obj, new \Sku($post_data['stock']));
+            $base_info->set_sub_title($post_data['title']);
+            $base_info->set_use_limit(1);
+            $base_info->set_get_limit(3);
+            $base_info->set_use_custom_code(false);
+            $base_info->set_bind_openid(false);
+            $base_info->set_can_share(true);
+            $base_info->set_url_name_type(1);
+            $base_info->set_custom_url("http://www.52gdp.com");
+
+            $card = new \Card($post_data['card_type'], $base_info);
+            if ($post_data['card_type'] == 'GENERAL_COUPON') {
+                $card->get_card()->set_default_detail($post_data['deal_detail']);
+            } else if ($post_data['card_type'] == 'GROUPON') {
+                $card->get_card()->set_deal_detail($post_data['deal_detail']);
+            } else if ($post_data['card_type'] == 'DISCOUNT') {
+                $card->get_card()->set_discount($post_data['deal_detail']);
+            } else if ($post_data['card_type'] == 'GIFT') {
+                $card->get_card()->set_gift($post_data['deal_detail']);
+            } else if ($post_data['card_type'] == 'CASH') {
+                $card->get_card()->set_least_cost($post_data['deal_detail']);
+            } else if ($post_data['card_type'] == 'MEMBER_CARD') {
+                $card->get_card()->set_supply_bonus($post_data['deal_detail']);
+            }
+
+            $card_data = $card->toJson();
+//            var_dump($card_data);
+//           var_dump($card_data);
             $card_id = \Admin\Model\WxCardModel::createCard(APPID, APPSECRET, $card_data);
             if ($card_id == false) {
                 $this->error('生成卡劵失败', '', true);
             }
+            $post_data['brand_name'] = MP_NAME;
+            $post_data['code_type'] = 0;
+            $post_data['begin_timestamp'] = strtotime($post_data['begin_timestamp']);
+            $post_data['end_timestamp'] = strtotime($post_data['end_timestamp']);
+            $post_data['quantity'] = $post_data['stock'];
             $post_data['card_id'] = $card_id;
             $post_data['mp_id'] = MP_ID;
             $post_data['member_id'] = UID;
@@ -321,7 +364,7 @@ class WeixinCardController extends FoodBaseController {
             );
         }
 
-        $card_pic_url = !empty($platform['card_pic_url']) ? "'".$platform['card_pic_url']."'" : "''";
+        $card_pic_url = !empty($platform['card_pic_url']) ? "'" . $platform['card_pic_url'] . "'" : "''";
         $this->assign('card_pic_url', $card_pic_url);
         $this->assign('type_arr', !empty($type_arr) ? json_encode($type_arr) : '');
         $this->assign('color_arr', !empty($color_arr) ? json_encode($color_arr) : '');
