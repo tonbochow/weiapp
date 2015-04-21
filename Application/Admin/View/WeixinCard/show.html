@@ -43,7 +43,7 @@
                 <volist name="list" id="card">
                     <tr>
                         <td><input class="ids row-selected" type="checkbox" name="card_ids[]" value="{$card.card_id}"></td>
-                        <td>{$card.card_type}</td>
+                        <td><?php echo \Admin\Model\WxCardModel::getCardType($card['card_type']);?></td>
                         <td>{$card.title}</td>
                         <td>{$card.type}</td>
                         <td>{$card.quantity}</td>

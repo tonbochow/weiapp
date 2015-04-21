@@ -235,7 +235,7 @@ class Card{  //工厂
 	}
 	function toJson()
 	{
-		return "{ \"card\":" . urldecode(json_encode($this)) . "}";
+		return "{ \"card\":" . urldecode(json_encode($this,JSON_UNESCAPED_UNICODE)) . "}";
 	}
 };
 

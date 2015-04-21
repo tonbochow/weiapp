@@ -212,41 +212,8 @@ class WeixinCardController extends FoodBaseController {
                 $card_location_id_list = array($post_data['location_id_list']);
                 $loction_id_str = $post_data['location_id_list'];
             }
-            $can_share_str = empty($post_data['can_share']) ? 'false' : 'true';
-            $can_give_str = empty($post_data['can_give_friend']) ? 'false' : 'true';
-//            $card_data = '{"card":{
-//                "card_type" :"'. $post_data['card_type'].'","'
-//                . strtolower($post_data['card_type']) . '":{
-//                    "base_info":{
-//                        "log_url":"'. $post_data['logo_url'].'",
-//                        "brand_name":"'. MP_NAME.'",
-//                        "code_type" : "CODE_TYPE_TEXT",
-//                        "title" :"'. $post_data['title'].'",
-//                        "sub_title":"'. $post_data['sub_title'].'",
-//                        "color":"'.\Admin\Model\WxCardModel::getCardColorStatus($post_data['color']).'",
-//                        "notice":"'. $post_data['notice'].'",
-//                        "service_phone":"'. $post_data['service_phone'].'",
-//                        "description":"'.$post_data['description'].'",
-//                        "date_info":{'. $card_date_str.'},
-//                        "sku":{
-//                            "quantity" :'. intval($post_data['stock']).'
-//                        },
-//                        "get_limit":' .intval($post_data['get_limit']).',
-//                        "use_custom_code":false,
-//                        "bind_openid":false,
-//                        "can_share" :'.$can_share_str.',
-//                        "can_give_friend":'. $can_give_str .',
-//                        "location_id_list":['. $loction_id_str.'],
-//                        "custom_url_name":"立即使用",
-//                        "custom_url" : "http://www.52gdp.com",
-//                        "custom_url_sub_title" : "请注意有效期",
-//                        "promotion_url_name" : "更多优惠",
-//                        "promotion_url" : "http://www.52gdp.com",
-//                        "source" :"'. MP_NAME.'"
-//                    },
-//                    "deal_detail":"'. $post_data['deal_detail'].'"
-//                }
-//            }';
+            $can_share_str = empty($post_data['can_share']) ? false : true;
+            $can_give_str = empty($post_data['can_give_friend']) ? false : true;
             //微信卡劵sdk
             import('Common.Extends.Weixin.CardSDK');
             if ($card_date_arr['type'] == 1) {
@@ -258,11 +225,12 @@ class WeixinCardController extends FoodBaseController {
             $base_info = new \BaseInfo($post_data['logo_url'], MP_NAME, 0, $post_data['title'], \Admin\Model\WxCardModel::getCardColorStatus($post_data['color']), $post_data['notice'], $post_data['service_phone'], $post_data['description'], $card_date_obj, new \Sku($post_data['stock']));
             $base_info->set_sub_title($post_data['title']);
             $base_info->set_use_limit(1);
-            $base_info->set_get_limit(3);
+            $base_info->set_get_limit(intval($post_data['get_limit']));
             $base_info->set_use_custom_code(false);
-            $base_info->set_bind_openid(false);
-            $base_info->set_can_share(true);
+            $base_info->set_bind_openid($can_give_str);
+            $base_info->set_can_share($can_share_str);
             $base_info->set_url_name_type(1);
+            $base_info->set_location_id_list($loction_id_str);
             $base_info->set_custom_url("http://www.52gdp.com");
 
             $card = new \Card($post_data['card_type'], $base_info);
@@ -281,8 +249,6 @@ class WeixinCardController extends FoodBaseController {
             }
 
             $card_data = $card->toJson();
-//            var_dump($card_data);
-//           var_dump($card_data);
             $card_id = \Admin\Model\WxCardModel::createCard(APPID, APPSECRET, $card_data);
             if ($card_id == false) {
                 $this->error('生成卡劵失败', '', true);
@@ -379,7 +345,7 @@ class WeixinCardController extends FoodBaseController {
 
     //生成推广卡劵二维码
     public function qrcode() {
-        $card_id = I('get.card_id', '', 'intval');
+        $card_id = I('get.card_id', '', '');
         $card_info = M('WxCard')->where(array('mp_id' => MP_ID, 'card_id' => $card_id))->find();
         if ($card_info == false) {
             $this->error('未检索到要要创建二维码的卡劵');
@@ -389,14 +355,41 @@ class WeixinCardController extends FoodBaseController {
             "action_info" => array(
                 "card" => array(
                     "card_id" => $card_id,
-                    "code" => '',
-                    "openid" => '',
-                    "expire_seconds" => '',
+                    "code"=>"",
+                    "openid"=>"",
+                    "expire_seconds"=>"",
                     "is_unique_code" => false,
-                    "outer_id" => 0,
+                    "outer_id" => 1
                 )
             )
         );
+//        $qrcode_data = '{
+//            "action_name":"QR_CARD",
+//            "action_info":{
+//                "card":{
+//                    "card_id":"'. $card_id.'",
+//                    "code":"",
+//                    "openid":"",
+//                    "expire_seconds":"",
+//                    "is_unique_code":false,
+//                    "outer_id":0
+//                }
+//             }
+//        }';
+//        var_dump(json_encode($qrcode_data,JSON_UNESCAPED_UNICODE));
+        $qrcode_data ='{
+       "action_name":"QR_CARD", 
+       "action_info":{ 
+            "card":{ 
+                "card_id":"p-Wvujg4pZnM93exuL4dvUhnp2kA", 
+                "code":"", 
+                "openid":"o-WvujkhZr2kYmlQVeAnNNovdO5M", 
+                "expire_seconds":"1800"， 
+                "is_unique_code":false, 
+                "outer_id": 1 
+                } 
+            } 
+       }';
         $qrcode_ticket = \Admin\Model\WxCardModel::createCardQrcode(APPID, APPSECRET, $qrcode_data);
         if ($qrcode_ticket == false) {
             $this->error('获取二维码ticket失败');
