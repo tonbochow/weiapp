@@ -32,7 +32,7 @@ class FoodOrderController extends FoodBaseController {
         /* 查询条件初始化 */
         if (DINING_ROOM_ID != '') {//连锁分店店员登录
             $map['dining_room_id'] = DINING_ROOM_ID;
-            $map['dining_member_id'] = UID;
+//            $map['dining_member_id'] = UID;
             $map['mp_id'] = MP_ID;
 //            $map['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
             $dining_room_name = \Admin\Model\DiningRoomModel::getDiningRoomName(DINING_ROOM_ID);
@@ -49,7 +49,8 @@ class FoodOrderController extends FoodBaseController {
         if ($get_pay_type) {
             $map['pay_type'] = $get_pay_type;
         }
-        $list = $this->lists('FoodOrder', $map, 'pay_type,status,id', array('status' => array('egt', -1)));
+
+        $list = $this->lists('FoodOrder', $map, 'create_time desc,pay_type,status,id', array('status' => array('egt', -1)));
         $pay_type_arr = \Admin\Model\FoodOrderModel::getFoodPayType();
         $this->assign('pay_type_arr', $pay_type_arr);
         $this->assign('select_pay_type', $get_pay_type);
@@ -128,6 +129,14 @@ class FoodOrderController extends FoodBaseController {
             $food_order = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID))->find();
             if ($food_order == false) {
                 $this->error('未检索到可确认完成的订单!', '', true);
+            }
+            $food_order_details = M('FoodOrderDetail')->where(array('order_id'=>$id,'mp_id'=>MP_ID))->select();
+            if(!empty($food_order_details)){
+                foreach($food_order_details as $detail){
+                    if($detail['type'] == \Admin\Model\FoodOrderDetailModel::$TYPE_FOOD){
+                        M('Food')->where("id=".$detail['food_id'])->setInc('sell_count',$detail['count`']);
+                    }
+                }
             }
             $food_order_data['status'] = \Admin\Model\FoodOrderModel::$STATUS_FINISHED;
             $food_order_data['update_time'] = time();

@@ -40,6 +40,9 @@
                         </volist>
                         <div class="caption">
                             <p>
+                                <input type="text" name="meal_time[{$details.0.dining_info.id}]"  required class="form-control text input-large time" id="meal_time_{$details.0.dining_info.id}"  readonly value="" placeholder="请选择用餐时间" />
+                                
+                                <input type="text" class="form-control" name="remark[{$details.0.dining_info.id}]" value="" placeholder="订单描述">
                                 <?php
                                 if($details[0]['dining_info']['type'] == \Admin\Model\DiningRoomModel::$TYPE_DINING_HOME){
                                 ?>
@@ -180,7 +183,7 @@
 
             </div>
 
-            <div class="col-xs-12">
+            <div class="col-xs-12" style="margin-bottom: 40px;">
                 <input type="hidden" name="car_id" value="{$car_id}">
                 <button type="button" class="btn btn-danger btn-block" id="commit" onclick="javascript:commit_order();"><i class="fa fa-list-alt"></i> 提交订单</button>
             </div>
@@ -190,7 +193,20 @@
 
 
 <block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <script type="text/javascript">
+        $(function(){
+            $('.time').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language:"zh-CN",
+                minView:0,
+                autoclose:true
+            });
+        });
         function get_addresinfo(dining_room_id){
             WeixinJSBridge.invoke(
                     'editAddress', <?php echo $address_sign_info; ?> ,

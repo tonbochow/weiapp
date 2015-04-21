@@ -98,10 +98,16 @@
             </td>
             </tr>
             <tr>
+                <th>用餐时间:</th>
+                <td>
+                    <if condition="$food_order.meal_time eq 0">
+                        --/--           
+                        <else />
+                        {$food_order.meal_time|date='Y-m-d H:i:s',###}
+                    </if>
+                </td>
                 <th>备注:</th>
                 <td>{$food_order.remark}</td>
-                <th></th>
-                <td></td>
                 <th></th>
                 <td></td>
             </tr>

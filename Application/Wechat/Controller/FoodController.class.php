@@ -31,6 +31,9 @@ class FoodController extends BaseController {
                 ->order('weiapp_food_detail.default_share desc')
                 ->field('weiapp_food.*,weiapp_food_detail.url,weiapp_food_detail.default_share')
                 ->select();
+        if (!empty($food)) {//菜品浏览次数自增
+            $inc = $foodModel->where("id=$id")->setInc('view_times',1);
+        }
 
         $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
         foreach ($dining_rooms as $val) {
@@ -43,13 +46,13 @@ class FoodController extends BaseController {
             'title' => $food[0]['share_title'],
             'desc' => $food[0]['share_desc'],
             'link' => get_current_url(),
-            'imgUrl' => 'http://'.$_SERVER['HTTP_HOST'].$default_pic,
+            'imgUrl' => 'http://' . $_SERVER['HTTP_HOST'] . $default_pic,
         );
 
         $this->assign('share_info', $share_info);
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
         $this->assign('food', $food);
-        $this->meta_title = $this->mp['mp_name'].' | '.$food[0]['food_name'];
+        $this->meta_title = $this->mp['mp_name'] . ' | ' . $food[0]['food_name'];
         $this->display('view');
     }
 
@@ -60,7 +63,7 @@ class FoodController extends BaseController {
             $post_dining_room_id = I('post.dining_room_id', '', 'intval');
 //            $wx_open_id = $this->weixin_userinfo['wx_openid'] = 'wx_abcdef';
             $wx_open_id = $this->weixin_userinfo['wx_openid'];
-            if($post_dining_room_id){
+            if ($post_dining_room_id) {
                 $map['dining_room_id'] = $post_dining_room_id;
             }
             $map['wx_openid'] = $wx_open_id;
