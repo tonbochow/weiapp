@@ -1,0 +1,45 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/foodorder_index.css" rel="stylesheet">
+</block>
+<block name="header">
+
+</block>
+
+<block name="body">
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12" style="padding-left:0px;padding-right:0px;color:#fff;">
+
+            <div class="list-group">
+                <volist name="cards" id="card">
+                    <a href="javascript:void();" class="list-group-item" style="background-color:{$card.color}">
+                        <div class="thumbnail" style="border:0px;background-color: {$card.color};color:#fff;">             
+                            <div class="media">
+                                <div class="media-left">
+                                    <img style="max-height: 70px;max-width: 70px;" class="img-circlet" src="{$mp.mp_img}" alt="">
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading" id="title">
+                                        <?php echo \Admin\Model\WxCardModel::getCardType($card['card_type']);?>
+                                    </h4>
+                                    <p>{$card.title}</p>
+                                </div>
+                                <div class="media-right">
+                                    <i class="fa fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p>{$card.sub_title}</p>
+                        <p>{$card.notice}</p>
+                    </a>
+                </volist>
+            </div>
+
+        </div>
+        <div class="col-xs-12" style="text-align: center;">{$page}</div>
+    </div>
+</block>
+
+<block name="script">
+
+</block>

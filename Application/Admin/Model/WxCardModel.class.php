@@ -76,7 +76,7 @@ class WxCardModel extends Model {
         }
         return $status_arr;
     }
-    
+
     //获取卡劵领取页面是否可分享
     public static function getCardShareStatus($share = null, $has_choice = true) {
         if ($has_choice) {
@@ -89,7 +89,7 @@ class WxCardModel extends Model {
         }
         return $share_arr;
     }
-    
+
     //获取卡劵领取页面是否可赠送
     public static function getCardGiveStatus($give = null, $has_choice = true) {
         if ($has_choice) {
@@ -102,14 +102,14 @@ class WxCardModel extends Model {
         }
         return $give_arr;
     }
-    
-     //根据卡劵颜色值获取卡劵颜色名
+
+    //根据卡劵颜色值获取卡劵颜色名
     public static function getCardColorStatus($value = null, $has_choice = true) {
         if ($has_choice) {
             $color_arr = array('' => '请选择');
         }
-        $colors = M('WxCardColor')->where(array('mp_id'=>MP_ID))->select();
-        foreach($colors as $color){
+        $colors = M('WxCardColor')->where(array('mp_id' => MP_ID))->select();
+        foreach ($colors as $color) {
             $color_arr[$color['value']] = $color['name'];
         }
         if ($value !== null) {
@@ -156,6 +156,13 @@ class WxCardModel extends Model {
         return $type_arr;
     }
 
+    //获取卡劵颜色
+    public static function getCardColorByName($name){
+        $card = M('WxCard')->where(array('mp_id'=>MP_ID,'name'=>$name))->find();
+        return $card['value'];
+    }
+    
+    
     /**
      * 获取商户logoURL
      * $appid 微信公众平台appid weiapp_micro_platform中唯一
@@ -271,13 +278,28 @@ class WxCardModel extends Model {
      * return ticket  返回创建卡劵ticket
      */
     public static function getApiTicket($appid, $appsecret) {
-        $access_token = MicroPlatformModel::getAccessToken($appid, $appsecret);
-        $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" . $access_token . "&type=wx_card";
-        $api_ticket = MicroPlatformModel::curl($url);
-        if ($api_ticket['errcode'] == 0 && $api_ticket['errmsg'] == 'ok') {
-            return $api_ticket['ticket'];
+        $wxPlatform = M('MicroPlatform');
+        $platform_data['appid'] = $appid;
+        $platform_data['appsecret'] = $appsecret;
+        $wx_platform = $wxPlatform->where($platform_data)->find();
+        if ($wx_platform['cardapi_ticket'] == false || $wx_platform['cardapi_expires'] < time()) {//已过期重新获取
+            $access_token = MicroPlatformModel::getAccessToken($appid, $appsecret);
+            $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" . $access_token . "&type=wx_card";
+            $api_ticket = MicroPlatformModel::curl($url);
+            if ($api_ticket['errcode'] == 0 && $api_ticket['errmsg'] == 'ok') {
+                $cardapi_ticket = $api_ticket['ticket'];
+                $cardapi_expires = $api_ticket['expires_in'];
+                //更新weiapp_micro_platform表的cardapi_ticket和cardapi_expires
+                $platform['cardapi_ticket'] = $cardapi_ticket;
+                $platform['cardapi_expires'] = time() + $cardapi_expires;
+                $platform['update_time'] = time();
+                $wxPlatform->where($platform_data)->save($platform);
+            }
+            return false;
+        } else {
+            $cardapi_ticket = $wx_platform['cardapi_ticket'];
         }
-        return false;
+        return $cardapi_ticket;
     }
 
     /**

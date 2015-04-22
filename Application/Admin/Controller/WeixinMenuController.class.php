@@ -381,18 +381,18 @@ class WeixinMenuController extends FoodBaseController {
 //                        'create_time' => time(),
 //                        'update_time' => time()
 //                    ),
-//                    array(
-//                        'mp_id' => MP_ID,
-//                        'member_id' => UID,
-//                        'menu_name' => '领取优惠券',
-//                        'menu_type' => 'view',
-//                        'menu_url' => "http://www.52gdp.com/Wechat/card/index/t/" . MP_TOKEN,
-//                        'pid' => $mid_topmenu_id,
-//                        'c_order' => 5,
-//                        'p_order' => 2,
-//                        'create_time' => time(),
-//                        'update_time' => time()
-//                    ),
+                    array(
+                        'mp_id' => MP_ID,
+                        'member_id' => UID,
+                        'menu_name' => '领取优惠券',
+                        'menu_type' => 'view',
+                        'menu_url' => "http://www.52gdp.com/Wechat/WxCard/index/t/" . MP_TOKEN,
+                        'pid' => $mid_topmenu_id,
+                        'c_order' => 5,
+                        'p_order' => 2,
+                        'create_time' => time(),
+                        'update_time' => time()
+                    ),
                 );
                 $mid_submenu_create = $weixinMenuModel->addAll($mid_submenu);
                 if ($mid_submenu_create == false) {
@@ -625,6 +625,11 @@ class WeixinMenuController extends FoodBaseController {
                                     "type":"click",
                                     "name":"客服",
                                     "key":"customer"
+                                 },
+                                 {	
+                                    "type":"view",
+                                    "name":"领取优惠劵",
+                                    "url":"'.$mid_submenu[4]['menu_url'].'"
                                  }
                             ]
                         },
