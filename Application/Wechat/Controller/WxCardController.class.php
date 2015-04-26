@@ -32,4 +32,26 @@ class WxCardController extends BaseController {
         $this->display('index');
     }
 
+    //拉取卡劵相关信息 card_id card_ext
+    public function getcard() {
+        $card_id = I('post.card_id', '', 'intval');
+        $map['id'] = $card_id;
+        $map['mp_id'] = MP_ID;
+        $wx_card = M('WxCard')->where($map)->find();
+        if ($wx_card == false) {
+            $this->error('未检索到卡劵', '', true);
+        }
+        import('Common.Extends.Weixin.CardSDK');
+        $api_ticket = \Admin\Model\WxCardModel::getApiTicket(APPID, APPSECRET);
+//        $this->success($api_ticket,'',true);
+        $timestamp = time();
+        $signatureObj = new \Signature();
+        $signatureObj->add_data($api_ticket);
+        $signatureObj->add_data($wx_card['card_id']);
+        $signatureObj->add_data($timestamp);
+        $signature =  $signatureObj->get_signature();
+        $card = '{"card_list": [{"card_id": "' . $wx_card['card_id'] . '","card_ext":"{\"code\":\"\",\"openid\":\"\",\"timestamp\":\"'.$timestamp.'\",\"signature\":\"'.$signature.'\"}"}]}';
+        $this->success($card,'',true);
+    }
+
 }

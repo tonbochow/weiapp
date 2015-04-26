@@ -294,8 +294,9 @@ class WxCardModel extends Model {
                 $platform['cardapi_expires'] = time() + $cardapi_expires;
                 $platform['update_time'] = time();
                 $wxPlatform->where($platform_data)->save($platform);
+//                return $wxPlatform->getLastSql();
             }
-            return false;
+            return $cardapi_ticket;
         } else {
             $cardapi_ticket = $wx_platform['cardapi_ticket'];
         }

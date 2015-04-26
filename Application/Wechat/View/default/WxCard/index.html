@@ -12,14 +12,14 @@
 
             <div class="list-group">
                 <volist name="cards" id="card">
-                    <a href="javascript:void();" class="list-group-item" style="background-color:{$card.color}">
+                    <a href="javascript:void();"  onclick="javascript:getCard({$card.id});" class="list-group-item" style="background-color:{$card.color}">
                         <div class="thumbnail" style="border:0px;background-color: {$card.color};color:#fff;">             
                             <div class="media">
                                 <div class="media-left">
-                                    <img style="max-height: 70px;max-width: 70px;" class="img-circlet" src="{$mp.mp_img}" alt="">
+                                    <img style="max-height: 70px;max-width: 70px;" class="img-circle" src="{$mp.mp_img}" alt="">
                                 </div>
                                 <div class="media-body">
-                                    <h4 class="media-heading" id="title">
+                                    <h4 class="media-heading" id="title" style="color:#fff;">
                                         <?php echo \Admin\Model\WxCardModel::getCardType($card['card_type']);?>
                                     </h4>
                                     <p>{$card.title}</p>
@@ -29,8 +29,8 @@
                                 </div>
                             </div>
                         </div>
-                        <p>{$card.sub_title}</p>
-                        <p>{$card.notice}</p>
+                        <p style="color:#fff;">{$card.sub_title}</p>
+                        <p style="color:#fff;">{$card.notice}</p>
                     </a>
                 </volist>
             </div>
@@ -41,5 +41,48 @@
 </block>
 
 <block name="script">
+    <script type="text/javascript">
+        function getCard(card_id) {
+            readyFunc(card_id);
+        }
+        function readyFunc(card_id) {
+//            document.querySelector('#batchAddCard[]').addEventListener('click', function(e) {
+//            alert(card_id);
+            $.ajax({
+                type: "POST",
+                url: "/Wechat/WxCard/getcard/t/{$mp.mp_token}",
+                async: false,
+                data: {'card_id': card_id},
+                dataType: "json",
+                success: function(data) {
+                    var card_info = data.info;
+//                    alert(card_info);
+                    if (data.status) {
+                        WeixinJSBridge.invoke('batchAddCard', card_info,function(res) {alert(res.err_msg)});
+                    } else {
+                        $('#dialog_content').text(data.info);
+                        $("#dialog").dialog({modal: true});
+                        setTimeout("result(" + false + ")", 1000);
+                    }
+                }
+            });
+//            WeixinJSBridge.invoke('batchAddCard', {
+//                    "card_list": [
+//                        {
+//                            "card_id": "po_2Djks4-yP5PGtgGY4GkbAIIt0",
+//                            "card_ext":
+//                                    "{\"code\":\"\",\"openid\":\"\",\"timestamp\":\"1402057159\",\"signature\":\"017bb17407c8e0058a66d72dcc61632b70f511ad\"}"
+//                        }]
+//            },
+//                    function(res) {
+//                    });
+//            });
+        }
 
+        if (typeof(WeixinJSBridge) === "undefined") {
+            document.addEventListener('WeixinJSBridgeReady', readyFunc, false);
+        } else {
+            readyFunc(card_id);
+        }
+    </script>
 </block>
