@@ -136,15 +136,16 @@ class WxCardModel extends Model {
         if ($has_choice) {
             $type_arr = array('' => '请选择');
         }
-        $type_arr[self::$GENERAL_COUPON] = '通用劵|优惠券';
-        $type_arr[self::$GROUPON] = '团购劵';
-        $type_arr[self::$DISCOUNT] = '折扣劵';
-        $type_arr[self::$GIFT] = '礼品劵';
-        $type_arr[self::$CASH] = '代金劵';
-        $type_arr[self::$MEMBER_CARD] = '会员卡';
+        $type_arr[self::$GENERAL_COUPON] = '通用劵|优惠券'; //对应 0
+        $type_arr[self::$GROUPON] = '团购劵'; //对应 1
+        $type_arr[self::$DISCOUNT] = '折扣劵'; //对应 2
+        $type_arr[self::$GIFT] = '礼品劵'; //对应 3
+        $type_arr[self::$CASH] = '代金劵'; //对应 4
+//        $type_arr[self::$MEMBER_CARD] = '会员卡';
         if (!$base) {
-            $type_arr[self::$SCENIC_TICKET] = '门票';
-            $type_arr[self::$MOVIE_TICKET] = '电影票';
+            $type_arr[self::$MEMBER_CARD] = '会员卡'; //对应 5
+            $type_arr[self::$SCENIC_TICKET] = '门票'; //对应 6
+            $type_arr[self::$MOVIE_TICKET] = '电影票'; //对应 8
             $type_arr[self::$BOARDING_PASS] = '飞机票';
             $type_arr[self::$LUCKY_MONEY] = '红包';
             $type_arr[self::$MEETING_TICKET] = '会议门票';
@@ -156,13 +157,25 @@ class WxCardModel extends Model {
         return $type_arr;
     }
 
+    //卡劵接口创建卡劵时对应卡劵数值类型
+    public static function getCardTypeNum($type) {
+        $type_arr[self::$GENERAL_COUPON] = 0;
+        $type_arr[self::$GROUPON] = 1;
+        $type_arr[self::$DISCOUNT] = 2;
+        $type_arr[self::$GIFT] = 3;
+        $type_arr[self::$CASH] = 4;
+        $type_arr[self::$MEMBER_CARD] = 5;
+        $type_arr[self::$SCENIC_TICKET] = 6;
+        $type_arr[self::$MOVIE_TICKET] = 8;
+        return $type_arr[$type];
+    }
+
     //获取卡劵颜色
-    public static function getCardColorByName($name){
-        $card = M('WxCard')->where(array('mp_id'=>MP_ID,'name'=>$name))->find();
+    public static function getCardColorByName($name) {
+        $card = M('WxCard')->where(array('mp_id' => MP_ID, 'name' => $name))->find();
         return $card['value'];
     }
-    
-    
+
     /**
      * 获取商户logoURL
      * $appid 微信公众平台appid weiapp_micro_platform中唯一

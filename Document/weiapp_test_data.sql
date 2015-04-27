@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50617
+Source Server Version : 50612
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2015-04-22 14:44:09
+Date: 2015-04-28 00:27:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5443,6 +5443,10 @@ CREATE TABLE `weiapp_wx_card` (
   `custom_url` varchar(255) NOT NULL DEFAULT '' COMMENT '商户自定义cell跳转外链的地址链接',
   `source` varchar(60) NOT NULL DEFAULT '' COMMENT '同brand_name第三方来源名',
   `deal_detail` text NOT NULL COMMENT '详细内容',
+  `gift` varchar(20) NOT NULL DEFAULT '' COMMENT '礼品劵名(劵类型为礼品劵则必填)',
+  `least_cost` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '代金劵起用金额(类型为代金劵必填)',
+  `reduce_cost` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '代金劵减免金额(劵为代金劵时必填)',
+  `discount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '折扣比例(填30就是7折劵为折扣劵时必填)',
   `status` varchar(32) NOT NULL COMMENT '卡劵状态',
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',

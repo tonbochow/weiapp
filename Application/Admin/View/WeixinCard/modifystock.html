@@ -54,7 +54,7 @@
                 var CardModule = angular.module("weiapp_card", []);
                 CardModule.controller("CardController", function($scope, $http) {
                     $scope.card = {};
-                    $scope.card.card_id={$card_id};
+                    $scope.card.card_id="{$card_id}";
                     $scope.submitForm = function() {
                         $('.submit').attr('disabled', 'true');
                         $http({

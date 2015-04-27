@@ -38,6 +38,38 @@
             </div>
         </div>
         
+        <div class="form-item" ng-class="{'has-error' : CardForm.gift.$invalid && !CardForm.gift.$pristine}">
+            <label class="item-label">礼品名<span class="check-tips">（*劵类型为礼品劵时必填 长度1-9）</span></label>
+            <div class="controls">
+                <input name="gift" type="text" value="" ng-model="card.gift"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,9}$/" ng-trim="true" ng-minlength="1" ng-maxlength="9"  class="form-control text input-large" id="gift" placeholder="礼品名">
+                <p ng-show="CardForm.gift.$invalid && !CardForm.gift.$pristine" class="help-block">礼品名(1-9个汉字)</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.least_cost.$invalid && !CardForm.least_cost.$pristine}">
+            <label class="item-label">代金劵起用金额<span class="check-tips">（*劵类型为代金劵时必填 正数）</span></label>
+            <div class="controls">
+                <input name="least_cost" type="text" value="" ng-model="card.least_cost"  ng-pattern="/^([1-9]\d*\.\d*|0\.\d*[1-9]\d*)|([1-9]\d*)$/" ng-trim="true" ng-minlength="1" ng-maxlength="9"  class="form-control text input-large" id="least_cost" placeholder="代金劵起用金额">
+                <p ng-show="CardForm.least_cost.$invalid && !CardForm.least_cost.$pristine" class="help-block">代金劵起用金额</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.reduce_cost.$invalid && !CardForm.reduce_cost.$pristine}">
+            <label class="item-label">代金劵减免金额<span class="check-tips">（*劵类型为代金劵时必填 正数）</span></label>
+            <div class="controls">
+                <input name="reduce_cost" type="text" value="" ng-model="card.reduce_cost"  ng-pattern="/^([1-9]\d*\.\d*|0\.\d*[1-9]\d*)|([1-9]\d*)$/" ng-trim="true" ng-minlength="1" ng-maxlength="9"  class="form-control text input-large" id="reduce_cost" placeholder="代金劵减免金额">
+                <p ng-show="CardForm.reduce_cost.$invalid && !CardForm.reduce_cost.$pristine" class="help-block">代金劵减免金额</p>
+            </div>
+        </div>
+        
+        <div class="form-item" ng-class="{'has-error' : CardForm.discount.$invalid && !CardForm.discount.$pristine}">
+            <label class="item-label">折扣比例(填30就是7折)<span class="check-tips">（*劵类型为折扣劵劵时必填 长度1-9）</span></label>
+            <div class="controls">
+                <input name="discount" type="text" value="" ng-model="card.discount"  ng-pattern="/^([1-9]\d*\.\d*|0\.\d*[1-9]\d*)|([1-9]\d*)$/" ng-trim="true" ng-minlength="1" ng-maxlength="9"  class="form-control text input-large" id="discount" placeholder="折扣比例">
+                <p ng-show="CardForm.discount.$invalid && !CardForm.discount.$pristine" class="help-block">折扣比例(为正数)</p>
+            </div>
+        </div>
+        
         <div class="form-item" ng-class="{'has-error' : CardForm.color.$invalid && !CardForm.color.$pristine}">
             <label class="item-label">卡劵颜色<span class="check-tips">（*必填）</span></label>
             <div class="controls">
@@ -65,7 +97,7 @@
         </div>
         
         <div class="form-item" ng-class="{'has-error' : CardForm.deal_detail.$invalid && !CardForm.deal_detail.$pristine}">
-            <label class="item-label">优惠详情<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">优惠详情<span class="check-tips">（*必填 长度1000汉字）</span></label>
             <div class="controls">
                 <!--<div class="ueditor" config="config" ng-model="card.deal_detail" ng-minlength="1" ng-maxlength="1000" ng-trim="true" required ></div>-->
                 <textarea cols="30" rows="4" name="deal_detail" ng-model="card.deal_detail" required ng-maxlength="1000"></textarea>
@@ -78,7 +110,7 @@
             <label class="item-label">使用说明<span class="check-tips">（*必填 长度1000汉字）</span></label>
             <div class="controls">
                 <!--<div class="ueditor" config="config" ng-model="card.description" ng-minlength="1"  ng-maxlength="1000" ng-trim="true" required ></div>-->
-                <textarea cols="30" rows="4" name="description" ng-model="card.description" required ng-maxlength="12"></textarea>
+                <textarea cols="30" rows="4" name="description" ng-model="card.description" required ng-maxlength="1000"></textarea>
                 <p ng-show="CardForm.description.$invalid && !CardForm.description.$pristine" class="help-block">使用须知最多1000个汉字</p>
             </div>
         </div>

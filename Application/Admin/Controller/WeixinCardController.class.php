@@ -222,9 +222,10 @@ class WeixinCardController extends FoodBaseController {
                 $card_date_obj = new \DateInfo($card_date_arr['type'], $card_date_arr['fixed_begin_term'], $card_date_arr['fixed_term']);
             }
 
+
             $base_info = new \BaseInfo($post_data['logo_url'], MP_NAME, 0, $post_data['title'], \Admin\Model\WxCardModel::getCardColorStatus($post_data['color']), $post_data['notice'], $post_data['service_phone'], $post_data['description'], $card_date_obj, new \Sku($post_data['stock']));
             $base_info->set_sub_title($post_data['title']);
-            $base_info->set_use_limit(1);
+            $base_info->set_use_limit(intval($post_data['get_limit']));
             $base_info->set_get_limit(intval($post_data['get_limit']));
             $base_info->set_use_custom_code(false);
             $base_info->set_bind_openid($can_give_str);
@@ -239,13 +240,26 @@ class WeixinCardController extends FoodBaseController {
             } else if ($post_data['card_type'] == 'GROUPON') {
                 $card->get_card()->set_deal_detail($post_data['deal_detail']);
             } else if ($post_data['card_type'] == 'DISCOUNT') {
-                $card->get_card()->set_discount($post_data['deal_detail']);
+                if (!is_numeric($post_data['discount']) || $post_data['discount'] <= 0 || $post_data['discount'] >= 100) {
+                    $this->error('折扣比例必填0-100之间', '', true);
+                }
+                $card->get_card()->set_discount($post_data['discount']);
             } else if ($post_data['card_type'] == 'GIFT') {
-                $card->get_card()->set_gift($post_data['deal_detail']);
+                if (empty($post_data['gift'])) {
+                    $this->error('礼品劵礼品名必填', '', true);
+                }
+                $card->get_card()->set_gift($post_data['gift']);
             } else if ($post_data['card_type'] == 'CASH') {
-                $card->get_card()->set_least_cost($post_data['deal_detail']);
+                if (!is_numeric($post_data['least_cost']) || empty($post_data['least_cost'])) {
+                    $this->error('代金劵起用金额必填且必须为数字', '', true);
+                }
+                if (!is_numeric($post_data['reduce_cost']) || empty($post_data['reduce_cost'])) {
+                    $this->error('代金劵减免金额必填且必须为数字', '', true);
+                }
+                $card->get_card()->set_least_cost(intval($post_data['least_cost']) * 10);
+                $card->get_card()->set_reduce_cost(intval($post_data['reduce_cost']) * 10);
             } else if ($post_data['card_type'] == 'MEMBER_CARD') {
-                $card->get_card()->set_supply_bonus($post_data['deal_detail']);
+//                $card->get_card()->set_supply_bonus($post_data['deal_detail']);
             }
 
             $card_data = $card->toJson();
@@ -261,6 +275,7 @@ class WeixinCardController extends FoodBaseController {
             $post_data['card_id'] = $card_id;
             $post_data['mp_id'] = MP_ID;
             $post_data['member_id'] = UID;
+            $post_data['status'] = \Admin\Model\WxCardModel::$CARD_STATUS_NOT_VERIFY; //默认待审核状态
             $wxCardModel = D('WxCard');
             if ($wxCardModel->create($post_data, \Admin\Model\WxCardModel::MODEL_INSERT)) {
                 $card_create = $wxCardModel->add();
@@ -355,9 +370,9 @@ class WeixinCardController extends FoodBaseController {
             "action_info" => array(
                 "card" => array(
                     "card_id" => $card_id,
-                    "code"=>"",
-                    "openid"=>"",
-                    "expire_seconds"=>"",
+                    "code" => "",
+                    "openid" => "",
+                    "expire_seconds" => "",
                     "is_unique_code" => false,
                     "outer_id" => 1
                 )
@@ -377,7 +392,7 @@ class WeixinCardController extends FoodBaseController {
 //             }
 //        }';
 //        var_dump(json_encode($qrcode_data,JSON_UNESCAPED_UNICODE));
-        $qrcode_data ='{
+        $qrcode_data = '{
        "action_name":"QR_CARD", 
        "action_info":{ 
             "card":{ 
@@ -406,7 +421,7 @@ class WeixinCardController extends FoodBaseController {
             $this->error('未检索到您要查看的卡劵');
         }
 
-        $wx_card['color'] = \Admin\Model\WxCardModel::getCardColorStatus($wx_card['color']);
+//        $wx_card['color'] = \Admin\Model\WxCardModel::getCardColorStatus($wx_card['color']);
         $this->assign('wx_card', $wx_card);
         $this->meta_title = '卡劵详细';
         $this->display('detail');
@@ -476,13 +491,21 @@ class WeixinCardController extends FoodBaseController {
     //修改卡劵库存
     public function modifystock() {
         if (IS_POST) {
-            dump(I('post.'));
-            exit;
-            $card_data = I('card_data');
+            $card_data = I('post.');
+            $card_data['card_id'] = $card_data['card_id'];
             $card_data['increase_stock_value'] = isset($card_data['increase_stock_value']) ? intval($card_data['increase_stock_value']) : 0;
             $card_data['reduce_stock_value'] = isset($card_data['reduce_stock_value']) ? intval($card_data['reduce_stock_value']) : 0;
             $modify_stock = \Admin\Model\WxCardModel::modifyCardStock(APPID, APPSECRET, $card_data);
             if ($modify_stock) {
+                $map['mp_id'] = MP_ID;
+                $map['card_id'] = $card_data['card_id'];
+                $quantity = bcsub($card_data['increase_stock_value'], $card_data['reduce_stock_value']);
+                M('WxCard')->where($map)->setInc('quantity', $quantity);
+//                if ($quantity >= 0) {
+//                    M('WxCard')->where($map)->setInc('quantity', intval($quantity));
+//                } else {
+//                    M('WxCard')->where($map)->setDec('quantity', intval($quantity));
+//                }
                 $this->success('修改卡劵库存成功', '', true);
             }
             $this->error('修改卡劵库存失败', '', true);

@@ -386,7 +386,7 @@ class WeixinMenuController extends FoodBaseController {
                         'member_id' => UID,
                         'menu_name' => '领取优惠券',
                         'menu_type' => 'view',
-                        'menu_url' => "http://www.52gdp.com/Wechat/WxCard/index/t/" . MP_TOKEN,
+                        'menu_url' => "http://www.52gdp.com/Wechat/WxCard/index?t=" . MP_TOKEN.'&wechat_card_js=1',
                         'pid' => $mid_topmenu_id,
                         'c_order' => 5,
                         'p_order' => 2,
