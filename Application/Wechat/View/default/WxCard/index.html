@@ -54,11 +54,32 @@
                 async: false,
                 data: {'card_id': card_id},
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     var card_info = data.info;
-//                    alert(card_info);
+//                    document.write(card_info);
+//                    alert(card_info.card_id);
+//                    alert(card_info.card_ext);
+                    var cardId = card_info.card_id;
+                    var cardExt = card_info.card_ext;
                     if (data.status) {
-                        WeixinJSBridge.invoke('batchAddCard', card_info,function(res) {alert(res.err_msg)});
+//                        WeixinJSBridge.invoke('batchAddCard', card_info, function (res) {
+//                            alert(res.err_msg)
+//                        });
+//                        wx.addCard(
+//                               card_info
+//                        );
+//alert(cardId);alert(cardExt);alert(typeof(cardExt));
+                        wx.addCard({
+                            cardList: [
+                                {
+                                    cardId:cardId,
+                                    cardExt:cardExt
+                                }
+                            ],
+                            success: function (res) {
+                                alert('已添加卡券：' + JSON.stringify(res.cardList));
+                            }
+                        });
                     } else {
                         $('#dialog_content').text(data.info);
                         $("#dialog").dialog({modal: true});
@@ -79,7 +100,7 @@
 //            });
         }
 
-        if (typeof(WeixinJSBridge) === "undefined") {
+        if (typeof (WeixinJSBridge) === "undefined") {
             document.addEventListener('WeixinJSBridgeReady', readyFunc, false);
         } else {
             readyFunc(card_id);

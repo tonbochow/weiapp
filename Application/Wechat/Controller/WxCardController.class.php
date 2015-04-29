@@ -46,12 +46,14 @@ class WxCardController extends BaseController {
 //        $this->success($api_ticket,'',true);
         $timestamp = time();
         $signatureObj = new \Signature();
-        $signatureObj->add_data($api_ticket);
-        $signatureObj->add_data($wx_card['card_id']);
-        $signatureObj->add_data($timestamp);
+        $signatureObj->add_data(strval($api_ticket));
+        $signatureObj->add_data(strval($wx_card['card_id']));
+        $signatureObj->add_data(strval($timestamp));
         $signature =  $signatureObj->get_signature();
-        $card = '{"card_list": [{"card_id": "' . $wx_card['card_id'] . '","card_ext":"{\"code\":\"\",\"openid\":\"\",\"timestamp\":\"'.$timestamp.'\",\"signature\":\"'.$signature.'\"}"}]}';
-        $this->success($card,'',true);
+        $card = '{cardList: [{cardId: \'' . $wx_card['card_id'] . '\',cardExt:\'{"code":"","openid":"","timestamp":"'.$timestamp.'","signature":"'.$signature.'"}\'}],success: function (res) {}}';
+        $card_info['card_id'] = $wx_card['card_id'];
+        $card_info['card_ext'] = '{"code":"","openid":"","timestamp":"'.$timestamp.'","signature":"'.$signature.'"}';
+        $this->success($card_info,'',true);
     }
 
 }
