@@ -43,16 +43,17 @@ class WxCardController extends BaseController {
         }
         import('Common.Extends.Weixin.CardSDK');
         $api_ticket = \Admin\Model\WxCardModel::getApiTicket(APPID, APPSECRET);
-//        $this->success($api_ticket,'',true);
+        $wx_openid = $this->weixin_userinfo['wx_openid'];
         $timestamp = time();
         $signatureObj = new \Signature();
         $signatureObj->add_data(strval($api_ticket));
         $signatureObj->add_data(strval($wx_card['card_id']));
         $signatureObj->add_data(strval($timestamp));
+        $signatureObj->add_data(strval($wx_openid));
         $signature =  $signatureObj->get_signature();
-        $card = '{cardList: [{cardId: \'' . $wx_card['card_id'] . '\',cardExt:\'{"code":"","openid":"","timestamp":"'.$timestamp.'","signature":"'.$signature.'"}\'}],success: function (res) {}}';
+//        $card = '{cardList: [{cardId: \'' . $wx_card['card_id'] . '\',cardExt:\'{"code":"","openid":"","timestamp":"'.$timestamp.'","signature":"'.$signature.'"}\'}],success: function (res) {}}';
         $card_info['card_id'] = $wx_card['card_id'];
-        $card_info['card_ext'] = '{"code":"","openid":"","timestamp":"'.$timestamp.'","signature":"'.$signature.'"}';
+        $card_info['card_ext'] = '{"code":"","openid":"'.$wx_openid.'","timestamp":"'.$timestamp.'","signature":"'.$signature.'"}';
         $this->success($card_info,'',true);
     }
 

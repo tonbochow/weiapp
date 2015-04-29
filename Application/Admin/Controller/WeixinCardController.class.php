@@ -232,7 +232,7 @@ class WeixinCardController extends FoodBaseController {
             $base_info->set_can_share($can_share_str);
             $base_info->set_url_name_type(1);
             $base_info->set_location_id_list($loction_id_str);
-            $base_info->set_custom_url("http://www.52gdp.com");
+            $base_info->set_custom_url("http://www.52gdp.com/Wechat/index/index/t".MP_TOKEN);
 
             $card = new \Card($post_data['card_type'], $base_info);
             if ($post_data['card_type'] == 'GENERAL_COUPON') {
@@ -396,15 +396,16 @@ class WeixinCardController extends FoodBaseController {
        "action_name":"QR_CARD", 
        "action_info":{ 
             "card":{ 
-                "card_id":"p-Wvujg4pZnM93exuL4dvUhnp2kA", 
+                "card_id":"'.$card_id.'", 
                 "code":"", 
-                "openid":"o-WvujkhZr2kYmlQVeAnNNovdO5M", 
-                "expire_seconds":"1800"， 
+                "openid":"o-WvujkhZr2kYmlQVeAnNNovdO5M",
+                "expire_seconds":""， 
                 "is_unique_code":false, 
                 "outer_id": 1 
                 } 
             } 
        }';
+//        var_dump($qrcode_data);exit;
         $qrcode_ticket = \Admin\Model\WxCardModel::createCardQrcode(APPID, APPSECRET, $qrcode_data);
         if ($qrcode_ticket == false) {
             $this->error('获取二维码ticket失败');
