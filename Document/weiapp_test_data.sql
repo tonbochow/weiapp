@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2015-04-28 00:27:31
+Date: 2015-05-04 23:32:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1377,15 +1377,14 @@ CREATE TABLE `weiapp_food_wx_notify` (
   `out_trade_no` varchar(32) NOT NULL DEFAULT '' COMMENT '主键商户系统订单号 和 food_order表out_trade_no一致',
   `wx_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid对应member表wx_openid',
   `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
-  `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
-  `trade_mode` int(11) NOT NULL DEFAULT '0' COMMENT '交易模式 1即时到账 其他保留',
-  `trade_state` int(11) NOT NULL DEFAULT '0' COMMENT '交易状态 支付结果 0成功 其他保留',
-  `pay_info` char(64) NOT NULL DEFAULT '' COMMENT '支付结果信息 支付成功是为空',
-  `partner` char(10) NOT NULL DEFAULT '' COMMENT '商户号 即partnerid 10位正整数',
+  `result_code` varchar(16) NOT NULL DEFAULT '' COMMENT '业务结果SUCCESS/FAIL',
+  `err_code` varchar(32) NOT NULL DEFAULT '' COMMENT '错误代码',
+  `err_code_des` varchar(128) NOT NULL DEFAULT '' COMMENT '错误代码描述',
+  `trade_type` varchar(16) NOT NULL DEFAULT '' COMMENT '交易类型JSAPI、NATIVE、APP',
   `bank_type` char(16) NOT NULL DEFAULT '' COMMENT '付款银行 如WX',
-  `bank_billno` char(32) NOT NULL DEFAULT '' COMMENT '银行订单号',
-  `total_fee` int(11) NOT NULL DEFAULT '0' COMMENT '支付金额单位为分',
-  `fee_type` int(11) NOT NULL DEFAULT '1' COMMENT '现金支付币种 1人民币',
+  `total_fee` int(11) NOT NULL DEFAULT '0' COMMENT '总金额单位为分',
+  `fee_type` varchar(8) NOT NULL DEFAULT '' COMMENT '货币种类CNY',
+  `cash_fee` int(11) NOT NULL DEFAULT '0' COMMENT '现金支付金额',
   `notify_id` char(128) NOT NULL DEFAULT '' COMMENT '支付结果通知id(据此查询交易结果)',
   `transaction_id` char(28) NOT NULL DEFAULT '' COMMENT '交易号',
   `attach` char(128) NOT NULL DEFAULT '' COMMENT '商户数据包',
@@ -1395,6 +1394,7 @@ CREATE TABLE `weiapp_food_wx_notify` (
   `discount` int(11) NOT NULL DEFAULT '0' COMMENT '折扣价格',
   `buyer_alias` char(64) NOT NULL DEFAULT '' COMMENT '买家别名',
   `appid` varchar(256) NOT NULL DEFAULT '' COMMENT '商户appid',
+  `mchid` varchar(128) NOT NULL DEFAULT '' COMMENT '商户号',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`out_trade_no`)
