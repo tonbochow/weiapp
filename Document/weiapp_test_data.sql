@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50612
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50612
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-05-04 23:32:04
+Date: 2015-05-05 14:26:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1382,17 +1382,16 @@ CREATE TABLE `weiapp_food_wx_notify` (
   `err_code_des` varchar(128) NOT NULL DEFAULT '' COMMENT '错误代码描述',
   `trade_type` varchar(16) NOT NULL DEFAULT '' COMMENT '交易类型JSAPI、NATIVE、APP',
   `bank_type` char(16) NOT NULL DEFAULT '' COMMENT '付款银行 如WX',
-  `total_fee` int(11) NOT NULL DEFAULT '0' COMMENT '总金额单位为分',
+  `total_fee` int(10) NOT NULL DEFAULT '0' COMMENT '总金额单位为分',
   `fee_type` varchar(8) NOT NULL DEFAULT '' COMMENT '货币种类CNY',
-  `cash_fee` int(11) NOT NULL DEFAULT '0' COMMENT '现金支付金额',
-  `notify_id` char(128) NOT NULL DEFAULT '' COMMENT '支付结果通知id(据此查询交易结果)',
-  `transaction_id` char(28) NOT NULL DEFAULT '' COMMENT '交易号',
+  `cash_fee` int(10) NOT NULL DEFAULT '0' COMMENT '现金支付金额',
+  `cash_fee_type` varchar(16) NOT NULL DEFAULT '' COMMENT '现金支付货币类型默认人民币：CNY',
+  `coupon_fee` int(10) NOT NULL DEFAULT '0' COMMENT '代金券或立减优惠金额',
+  `coupon_count` tinyint(4) NOT NULL DEFAULT '0' COMMENT '代金券或立减优惠使用数量',
+  `transaction_id` char(28) NOT NULL DEFAULT '' COMMENT '微信支付订单号',
   `attach` char(128) NOT NULL DEFAULT '' COMMENT '商户数据包',
   `time_end` int(11) NOT NULL DEFAULT '0' COMMENT '交易完成时间',
-  `transport_fee` int(11) NOT NULL DEFAULT '0' COMMENT '物流费用单位分',
   `product_fee` int(11) NOT NULL DEFAULT '0' COMMENT '物品费用单位分',
-  `discount` int(11) NOT NULL DEFAULT '0' COMMENT '折扣价格',
-  `buyer_alias` char(64) NOT NULL DEFAULT '' COMMENT '买家别名',
   `appid` varchar(256) NOT NULL DEFAULT '' COMMENT '商户appid',
   `mchid` varchar(128) NOT NULL DEFAULT '' COMMENT '商户号',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
@@ -1430,9 +1429,7 @@ CREATE TABLE `weiapp_food_wx_order` (
 DROP TABLE IF EXISTS `weiapp_food_wx_warn`;
 CREATE TABLE `weiapp_food_wx_warn` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `wx_openid` varchar(128) NOT NULL DEFAULT '' COMMENT '微信用户openid对应member表wx_openid',
   `mp_id` int(11) NOT NULL DEFAULT '0' COMMENT '微信公众平台id(对应micro_platform.id)',
-  `dining_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '餐厅id(对应dining_room.id)',
   `appid` varchar(256) NOT NULL DEFAULT '' COMMENT '微餐饮客户appid',
   `appsignature` varchar(256) NOT NULL DEFAULT '' COMMENT '微信告警签名',
   `error_type` varchar(32) NOT NULL DEFAULT '' COMMENT '错误代码',
