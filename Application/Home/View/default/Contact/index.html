@@ -1,39 +1,50 @@
 <extend name="Base/common"/>
 
 <block name="header">
-    <header class="jumbotron subhead" id="overview">
+    <header class="jumbotron subhead" id="overview" style="background-color: #fff;">
         <div class="container">
-            <h2>源自相同起点，演绎不同精彩！</h2>
+            <h2></h2>
             <p class="lead"></p>
         </div>
     </header>
 </block>
 
 <block name="body">
-    <div class="span9">
-        <!-- Contents
-        ================================================== -->
-        <section id="contents">
-            <article:list name="list" category="$category['id']" child="true">
-                <div class="">
-                    <h3><a href="{:U('Article/detail?id='.$list['id'])}">{$list.title}</a></h3>
+<!--    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <div class="col-xs-12">
+                <div class="col-xs-6"  style="height:200px;">
+                    <a href="#" class="thumbnail">
+                        <img src="/Public/img/qq_qrcode.jpg" alt="">
+                    </a>
                 </div>
-                <div>
-                    <p class="lead">{$list.description}</p>
+                <div class="col-xs-6" style="height:200px;">
+                    <a href="#" class="thumbnail">
+                        <img src="/Public/img/wechat_qrcode.jpg" alt="">
+                    </a>
                 </div>
-                <div>
-                    <span><a href="{:U('Article/detail?id='.$list['id'])}">查看全文</a></span>
-                    <span class="pull-right">
-                        <span class="author">{$list.uid|get_username}</span>
-                        <span>于 {$list.create_time|date='Y-m-d H:i',###}</span> 发表在 <span>
-                        <a href="{:U('Article/lists?category='.get_category_name($list['category_id']))}">{$list.category_id|get_category_title}</a></span> 
-                        <span>阅读( {$list.view} )</span>&nbsp;&nbsp;
-                    </span>
-                </div>
-                <hr/>
-            </article:list>
-
-        </section>
-    </div>
+            </div>
         </div>
+    </div>-->
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <div class="row featurette">
+                <div class="col-xs-5">
+                    <img class="featurette-image img-responsive" data-src="" alt="500x500" src="/Public/img/contact.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-7">
+                    <h2 class="featurette-heading">
+                        <img src="/Public/img/qq_qrcode.jpg" alt="扫码加我QQ" >&nbsp;
+                        <img src="/Public/img/wechat_qrcode.jpg" alt="扫码加我微信" ><br>
+                    </h2>
+                    <p class="lead" style="font-size:20px;">
+                        <i class="fa fa-user" style="color:green;"></i> 周先生<br>
+                        <i class="fa fa-phone" style="color:green;"></i> 15133293464<br>
+                        <i class="fa fa-qq" style="color:green;"></i> 395869430 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=395869430&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:395869430:52" alt="点击QQ联系我" title="点击QQ联系我"/></a><br>
+                        <i class="fa fa-wechat" style="color:green;"></i> chowtonbo<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </block>
