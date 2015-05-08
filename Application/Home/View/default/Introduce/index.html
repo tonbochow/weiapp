@@ -1,39 +1,244 @@
 <extend name="Base/common"/>
 
 <block name="header">
-    <header class="jumbotron subhead" id="overview">
-        <div class="container">
-            <h2>微餐饮功能简介</h2>
-            <p class="lead"></p>
-        </div>
-    </header>
+    <!--    <header class="jumbotron subhead" id="overview">
+            <div class="container">
+                <h2>微餐饮功能简介</h2>
+                <p class="lead"></p>
+            </div>
+        </header>-->
 </block>
 
 <block name="body">
-    <div class="span9">
-        <!-- Contents
-        ================================================== -->
-        <section id="contents">
-            <article:list name="list" category="$category['id']" child="true">
-                <div class="">
-                    <h3><a href="{:U('Article/detail?id='.$list['id'])}">{$list.title}</a></h3>
-                </div>
-                <div>
-                    <p class="lead">{$list.description}</p>
-                </div>
-                <div>
-                    <span><a href="{:U('Article/detail?id='.$list['id'])}">查看全文</a></span>
-                    <span class="pull-right">
-                        <span class="author">{$list.uid|get_username}</span>
-                        <span>于 {$list.create_time|date='Y-m-d H:i',###}</span> 发表在 <span>
-                        <a href="{:U('Article/lists?category='.get_category_name($list['category_id']))}">{$list.category_id|get_category_title}</a></span> 
-                        <span>阅读( {$list.view} )</span>&nbsp;&nbsp;
-                    </span>
-                </div>
-                <hr/>
-            </article:list>
+    <div class="row" style="margin-top:10px;">
+        <div class="col-xs-12">
+            <a href="#" class="thumbnail" style="border:0px;">
+                <img  src="/Public/img/canyin.png" class="img-rounded" style="max-height: 400px">
+            </a>
 
-        </section>
-    </div>
+            <hr class="featurette-divider">
+            <div class="page-header">
+                <h1><i class="fa fa-home"></i> 商家后台功能</h1>
+            </div>
+            <div class="row featurette">
+                <div class="col-xs-5" style="color:green;">
+                    <i class="fa fa-wechat fa-5x" style="font-size:20em"></i>
+                </div>
+                <div class="col-xs-7">
+                    <h2 class="featurette-heading" style="color:green;"><span class="badge fa">1</span> 微信公众平台管理<span class="text-muted"></span></h2>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-success">
+                            <h4 class="list-group-item-heading">微信公众平台信息管理:</h4>
+                            <p class="list-group-item-text">微信公众平台参数 基本信息 微信支付参数 二维码等</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">平台自定义菜单管理:</h4>
+                            <p class="list-group-item-text">可一键生成推荐菜单 一键生成自定义菜单</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">微信卡劵:</h4>
+                            <p class="list-group-item-text">创建微信代金券、折扣券、礼品券、团购券 卡券生成、下发、领取、核销券闭环</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">微信告警和维权:</h4>
+                            <p class="list-group-item-text">时刻了解微信公众平台运行情况</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+            <div class="row featurette">
+                <div class="col-xs-7">
+                    <h2 class="featurette-heading" style="color:green;"><span class="badge fa">2</span> 微餐厅 <span class="text-muted"></span></h2>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-success">
+                            <h4 class="list-group-item-heading">连锁餐厅:</h4>
+                            <p class="list-group-item-text">支持连锁餐厅,设置连锁餐厅信息</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">餐厅管理:</h4>
+                            <p class="list-group-item-text">连锁餐厅可创建多个餐厅,非连锁只能创建一个.餐厅联系方式,地图显示地理位置等</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">餐厅员工:</h4>
+                            <p class="list-group-item-text">创建餐厅员工,员工登录后台管理订单等</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-5" style="color:green;">
+                    <i class="fa fa-coffee fa-5x" style="font-size:20em"></i>
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+            <div class="row featurette">
+                <div class="col-xs-5" style="color:green;">
+                    <i class="fa fa-list-ul fa-5x" style="font-size:20em"></i>
+                </div>
+                <div class="col-xs-7">
+                    <h2 class="featurette-heading" style="color:green;"><span class="badge fa">3</span> 微菜品分类<span class="text-muted"></span></h2>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-success">
+                            <h4 class="list-group-item-heading">菜品分类管理:</h4>
+                            <p class="list-group-item-text">为餐厅创建菜品分类,编辑,启用,禁用菜品分类等</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">菜品风格管理:</h4>
+                            <p class="list-group-item-text">创建菜品风格,编辑,启用,禁用菜品分类等</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+            <div class="row featurette">
+                <div class="col-xs-7">
+                    <h2 class="featurette-heading" style="color:green;"><span class="badge fa">4</span> 微菜品 <span class="text-muted"></span></h2>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-success">
+                            <h4 class="list-group-item-heading">菜品管理:</h4>
+                            <p class="list-group-item-text">选择餐厅创建,编辑菜品,为菜品上传多张图片.自定义菜品分类标题描述及图片</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">菜品套餐管理:</h4>
+                            <p class="list-group-item-text">创建菜品套餐,添加菜品入菜品套餐,已更优惠的套餐价格吸引更多消费者</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">菜品套餐评论管理:</h4>
+                            <p class="list-group-item-text">用户菜购买餐厅菜品或套餐后,可对菜品或套餐评论,商家后台可管理评论</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-5" style="color:green;">
+                    <i class="fa fa-cutlery fa-5x" style="font-size:20em"></i>
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+            <div class="row featurette">
+                <div class="col-xs-5" style="color:green;">
+                    <i class="fa fa-list-alt fa-5x" style="font-size:20em"></i>
+                </div>
+                <div class="col-xs-7">
+                    <h2 class="featurette-heading" style="color:green;"><span class="badge fa">5</span> 微餐饮订单管理<span class="text-muted"></span></h2>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-success">
+                            <h4 class="list-group-item-heading">订单管理:</h4>
+                            <p class="list-group-item-text">查看用户已提交,微信支付或已完成的订单,确认订单完成功能.</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">客户预定管理:</h4>
+                            <p class="list-group-item-text">客户预定成功,微信推送一条消息到餐厅微信服务号,方便餐厅主动联系客户,餐厅员工可查看,确认,完成客户预定</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+            <div class="row featurette">
+                <div class="col-xs-7">
+                    <h2 class="featurette-heading" style="color:green;"><span class="badge fa">6</span> 微餐饮资金流水 <span class="text-muted"></span></h2>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-success">
+                            <h4 class="list-group-item-heading">资金流水管理:</h4>
+                            <p class="list-group-item-text">可按日期,订单号选择要查看的资金流水,可将资金流水导出为Excel</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-5" style="color:green;">
+                    <i class="fa fa-jpy fa-5x" style="font-size:20em"></i>
+                </div>
+            </div>
+
+
+
+            <hr class="featurette-divider">
+            <div class="page-header">
+                <h1><i class="fa fa-wechat"></i> 手机微信端功能</h1>
+            </div>
+            <div class="row featurette" style="text-align: center;">
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/weixin.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/first_menu.png" data-holder-rendered="true">
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="row featurette" style="text-align: center;">
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/second_menu.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/third_menu.png" data-holder-rendered="true">
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="row featurette" style="text-align: center;">
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/index.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/food_index.png" data-holder-rendered="true">
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="row featurette" style="text-align: center;">
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/food_detail.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/food_detail2.png" data-holder-rendered="true">
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="row featurette" style="text-align: center;">
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/food_category.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/dining.png" data-holder-rendered="true">
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="row featurette" style="text-align: center;">
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/dining_map.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/car.png" data-holder-rendered="true">
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="row featurette" style="text-align: center;">
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/order_submit.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/pay.png" data-holder-rendered="true">
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="row featurette" style="text-align: center;">
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/order_list.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/order_detail.png" data-holder-rendered="true">
+                </div>
+            </div>
+            <hr class="featurette-divider">
+            <div class="row featurette" style="text-align: center;">
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/user_panel.png" data-holder-rendered="true">
+                </div>
+                <div class="col-xs-6">
+                    <img class="featurette-image" data-src="" alt="500x500" src="/Public/img/wechat/yuding.png" data-holder-rendered="true">
+                </div>
+            </div>
+
+
         </div>
+    </div>
 </block>
