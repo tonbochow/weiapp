@@ -172,6 +172,48 @@ class Wechat {
     }
 
     /**
+     * 卡劵审核通过,用于子类重写
+     */
+    protected function onCardPassCheck(){
+        
+    }
+
+    /**
+     * 卡劵审核未通过,用于子类重写
+     */
+    protected function onCardNotPassCheck(){
+        
+    }
+    
+    /**
+     * 用户领取卡劵,用于子类重写
+     */
+    protected function onUserGetCard(){
+        
+    }
+    
+    /**
+     * 用户删除卡劵,用于子类重写
+     */
+    protected function onUserDelCard(){
+        
+    }
+    
+    /**
+     * 用户进入会员卡时,用户子类重写
+     */
+    protected function onUserViewCard(){
+        
+    }
+    
+    /**
+     * 用户卡劵被核销时,用于子类重写
+     */
+    protected function onUserConsumeCard(){
+        
+    }
+
+    /**
      * 用户取消关注时触发，用于子类重写
      */
     protected function onUnsubscribe() {
@@ -339,6 +381,30 @@ class Wechat {
 
                     case 'subscribe':
                         $this->onSubscribe();
+                        break;
+                    
+                    case 'card_pass_check':
+                        $this->onCardPassCheck();
+                        break;
+                    
+                    case 'card_not_pass_check':
+                        $this->onCardNotPassCheck();
+                        break;
+                    
+                    case 'user_get_card':
+                        $this->onUserGetCard();
+                        break;
+                    
+                    case 'user_del_card':
+                        $this->onUserDelCard();
+                        break;
+                    
+                    case 'user_view_card':
+                        $this->onUserViewCard();
+                        break;
+                    
+                    case 'user_consume_card':
+                        $this->onUserConsumeCard();
                         break;
 
                     case 'unsubscribe':

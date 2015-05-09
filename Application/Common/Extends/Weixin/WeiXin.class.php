@@ -14,6 +14,110 @@ class WeiXin extends Wechat {
      */
 
     /**
+     * 卡劵审核通过
+     */
+    protected function onCardPassCheck() {
+        $map['mp_id'] = $this->mp['id'];
+        $map['card_id'] = $this->getRequest('cardid');
+        $data['status'] = \Admin\Model\WxCardModel::$CARD_STATUS_VERIFY_OK;
+        $data['update_time'] = time();
+        $wxCardModel = M('WxCard');
+        $card_pass = $wxCardModel->where($map)->save($data);
+        if ($card_pass) {
+            echo 'success';
+        }
+    }
+
+    /**
+     * 卡劵审核未通过
+     */
+    protected function onCardNotPassCheck() {
+        $map['mp_id'] = $this->mp['id'];
+        $map['card_id'] = $this->getRequest('cardid');
+        $data['status'] = \Admin\Model\WxCardModel::$CARD_STATUS_VERIFY_FALL;
+        $data['update_time'] = time();
+        $wxCardModel = M('WxCard');
+        $card_not_pass = $wxCardModel->where($map)->save($data);
+        if ($card_not_pass) {
+            echo 'success';
+        }
+    }
+
+    /**
+     * 微信用户成功领取卡劵
+     */
+    protected function onUserGetCard() {
+        $cardRecordModel = M('WxCardRecord');
+        $map['mp_id'] = $this->mp['id'];
+        $map['event'] = $this->getRequest('event');
+        $map['card_id'] = $this->getRequest('cardid');
+        $map['usercard_code'] = $this->getRequest('usercardcode');
+        $map['fromusername_openid'] = $this->getRequest('fromusername'); //领取卡劵用户
+        $map['friendusername_openid'] = $this->getRequest('friendusername');
+        $map['isgive_byfriend'] = $this->getRequest('isgivebyfriend');
+        $map['outer_id'] = $this->getRequest('outerid');
+        $card_record = $cardRecordModel->where($map)->find();
+        if ($card_record != false) {//已存在则退出
+            echo '';
+            exit;
+        }
+        $map['create_time'] = time();
+        $map['update_time'] = time();
+        $card_record_id = $cardRecordModel->add($map);
+        if ($card_record_id) {
+            $card_map['mp_id'] = $this->mp['id'];
+            $card_map['card_id'] = $this->getRequest('cardid');
+            $card = M('WxCard')->where($card_map)->find();
+            $card_title = $card['title'];
+            $this->responseText('恭喜您!' . $card_title . '领取成功,请注意卡劵有效期,请尽快使用,以免过期!');
+            echo 'success';
+        }
+    }
+
+    /**
+     * 微信用户删除卡劵
+     */
+    protected function onUserDelCard() {
+        $cardRecordModel = M('WxCardRecord');
+        $map['mp_id'] = $this->mp['id'];
+        $map['event'] = $this->getRequest('event');
+        $map['card_id'] = $this->getRequest('cardid');
+        $map['usercard_code'] = $this->getRequest('usercardcode');
+        $map['fromusername_openid'] = $this->getRequest('fromusername'); //领取卡劵用户
+        $map['friendusername_openid'] = $this->getRequest('friendusername');
+        $map['isgive_byfriend'] = $this->getRequest('isgivebyfriend');
+        $map['outer_id'] = $this->getRequest('outerid');
+        $card_record = $cardRecordModel->where($map)->find();
+        if ($card_record != false) {//已存在则退出
+            echo '';
+            exit;
+        }
+        $map['create_time'] = time();
+        $map['update_time'] = time();
+        $card_record_id = $cardRecordModel->add($map);
+        if ($card_record_id) {
+            $card_map['mp_id'] = $this->mp['id'];
+            $card_map['card_id'] = $this->getRequest('cardid');
+            $card = M('WxCard')->where($card_map)->find();
+            $card_title = $card['title'];
+            $this->responseText($card_title . '删除成功,该卡劵无法再使用!');
+            echo 'success';
+        }
+    }
+
+    /**
+     * 用户卡劵被核销
+     */
+    protected function onUserConsumeCard() {
+        $map['mp_id'] = $this->mp['id'];
+        $map['card_id'] = $this->getRequest('cardid');
+        $wxCardModel = M('WxCard');
+        $card = $wxCardModel->where($map)->find();
+        $card_title = $card['title'];
+        $this->responseText($card_title . '卡劵您已使用,核销成功,请时常关注平台领取更多优惠劵!');
+    }
+
+    /**
      * 用户关注时触发，回复「欢迎关注」
      */
     protected function onSubscribe() {
