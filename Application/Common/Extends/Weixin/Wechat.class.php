@@ -28,7 +28,8 @@ class Wechat {
      * @param boolean $debug 调试模式，默认为关闭
      */
     public function __construct($token, $debug = FALSE) {
-        if (!$this->validateSignature($token)) {
+        $decrypt_token = think_decrypt($token,'@zwz@');
+        if (!$this->validateSignature($decrypt_token)) {
             exit('签名验证失败');
         }
 
@@ -61,9 +62,12 @@ class Wechat {
 //        if ($micro_platform == false) {//未检索到公众平台信息
 //            return false;
 //        }
-        $map['mp_token'] = $token;
+        $decrypt_token = think_decrypt($token,'@zwz@');
+//        $map['mp_token'] = $token;
+        $map['mp_token'] = $decrypt_token;
         $micro_platform = $microPlatformModel->where($map)->find();
-        $this->token = $token;
+        $this->token = $decrypt_token;
+//        $this->token = $token;
         $this->mp = $micro_platform; //全局初始化微信公众平台信息
     }
 

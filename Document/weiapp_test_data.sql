@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-05-05 14:26:35
+Date: 2015-05-09 15:27:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,17 +65,11 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
 -- ----------------------------
-INSERT INTO `weiapp_action_log` VALUES ('1', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-14 09:57登录了后台', '1', '1428976633');
-INSERT INTO `weiapp_action_log` VALUES ('2', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-14 10:06登录了后台', '1', '1428977211');
-INSERT INTO `weiapp_action_log` VALUES ('3', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-04-14 10:07登录了后台', '1', '1428977259');
-INSERT INTO `weiapp_action_log` VALUES ('4', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-14 10:21登录了后台', '1', '1428978103');
-INSERT INTO `weiapp_action_log` VALUES ('5', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-04-18 11:11登录了后台', '1', '1429326713');
-INSERT INTO `weiapp_action_log` VALUES ('6', '1', '3', '2130706433', 'member', '3', 'user在2015-04-18 11:36登录了后台', '1', '1429328163');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -1500,7 +1494,7 @@ CREATE TABLE `weiapp_member` (
 -- Records of weiapp_member
 -- ----------------------------
 INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '220', '117', '0', '1423289473', '2130706433', '1428977259', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '230', '147', '0', '0', '2130706433', '1429326713', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '240', '150', '0', '0', '2130706433', '1431150751', '1');
 INSERT INTO `weiapp_member` VALUES ('3', 'user', '0', '0000-00-00', '', '10', '1', '2130706433', '1429328163', '2130706433', '1429328163', '1');
 
 -- ----------------------------
@@ -1860,6 +1854,7 @@ CREATE TABLE `weiapp_micro_platform` (
   `paysignkey` varchar(256) NOT NULL DEFAULT '' COMMENT '微信支付paysignkey',
   `mp_url` varchar(256) NOT NULL DEFAULT '' COMMENT '微信公众平台接入URL',
   `mp_token` char(32) NOT NULL DEFAULT '' COMMENT '微信公众平台接入token',
+  `encrypt_mp_token` varchar(256) NOT NULL DEFAULT '' COMMENT '加密mp_token后的字符串',
   `mp_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '平台类型1服务号2订阅号3企业号',
   `mp_original_id` varchar(256) NOT NULL DEFAULT '' COMMENT '微信公众平台帐号id 如:gh_39d543344be5',
   `mp_name` varchar(60) NOT NULL DEFAULT '' COMMENT '微信公众平台名称',
@@ -1894,7 +1889,7 @@ CREATE TABLE `weiapp_micro_platform` (
 -- ----------------------------
 -- Records of weiapp_micro_platform
 -- ----------------------------
-INSERT INTO `weiapp_micro_platform` VALUES ('1', '', '', '', '20C88F5DDE9E497EB80A3FD7ECE1EF5C', '', '', '', 'local.weiapp.com/Wechat/wx/index/t/9A1425926CC04FEEAF0CA7882A2CFF5F', '9A1425926CC04FEEAF0CA7882A2CFF5F', '1', '', '', '', '', '', '', '', '0', '', '0', '2', '', '0', '', '0', '0', '0', '0', '0', '1', '0', '0.00', '1428977397', '1430273397', '1428977296', '1428977397');
+INSERT INTO `weiapp_micro_platform` VALUES ('1', '', '', '', '20C88F5DDE9E497EB80A3FD7ECE1EF5C', '', '', '', 'local.weiapp.com/Wechat/wx/index/t/9A1425926CC04FEEAF0CA7882A2CFF5F', '9A1425926CC04FEEAF0CA7882A2CFF5F', '', '1', '', '', '', '', '', '', '', '0', '', '0', '2', '', '0', '', '0', '0', '0', '0', '0', '1', '0', '0.00', '1428977397', '1430273397', '1428977296', '1428977397');
 
 -- ----------------------------
 -- Table structure for `weiapp_model`
@@ -5327,7 +5322,7 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- Records of weiapp_ucenter_member
 -- ----------------------------
 INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', '5d73a192336f4977eb6061252a35b751', 'tonbochow@qq.com', '', '1428927667', '2130706433', '1428977259', '2130706433', '1428927667', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', '5d73a192336f4977eb6061252a35b751', 'tonbochow@163.com', '', '1428927621', '2130706433', '1429326713', '2130706433', '1428927621', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', '5d73a192336f4977eb6061252a35b751', 'tonbochow@163.com', '', '1428927621', '2130706433', '1431150751', '2130706433', '1428927621', '1');
 INSERT INTO `weiapp_ucenter_member` VALUES ('3', 'user', 'e02aee9ace52823b94166d3980c70d4b', 'user@qq.com', '', '1429328145', '2130706433', '1429328163', '2130706433', '1429328145', '1');
 
 -- ----------------------------
