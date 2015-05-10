@@ -567,7 +567,8 @@ class FoodOrderController extends BaseController {
             $waterModel = M('FoodMoneyWater');
             $water_data['wx_openid'] = $this->weixin_userinfo['wx_openid'];
             $water_data['mp_id'] = MP_ID;
-            $water_data['order_no'] = \Admin\Model\FoodOrderModel::getFoodOrderNo($order_id);
+            $water_data['dining_room_id'] = $food_order['dining_room_id'];
+            $water_data['order_no'] = $food_order['order_no'];
             $water_data['amount'] = $wx_pay_amount;
             $water_data['pay_type'] = \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN;
             $water_data['create_time'] = time();
