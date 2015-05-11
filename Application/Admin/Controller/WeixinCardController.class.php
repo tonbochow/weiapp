@@ -99,6 +99,29 @@ class WeixinCardController extends FoodBaseController {
             if ($card_diningroom_addall == false) {
                 $this->error('批量添加卡劵门店失败!');
             }
+        } else {//检测是否有新添加门店若有则继续导入(还有问题待完善)
+            if (count($wx_card_diningrooms) != count($dining_rooms)) {
+                foreach ($dining_rooms as $card_diningroom) {
+                    $location_arr [] = array(
+                        'business_name' => strval(MP_NAME),
+                        'branch_name' => strval($card_diningroom['dining_name']),
+                        'province' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['province'])),
+                        'city' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['city'])),
+                        'district' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['town'])),
+                        'address' => strval($card_diningroom['address']),
+                        'telephone' => strval($card_diningroom['phone']),
+                        'category' => '餐饮',
+                        'longitude' => $card_diningroom['longitude'],
+                        'latitude' => $card_diningroom['latitude'],
+                    );
+                }
+                $location_list['location_list'] = $location_arr;
+                //批量导入门店
+                $batch_import_diningroom = \Admin\Model\WxCardModel::batchImportDiningRoom(APPID, APPSECRET, $location_list);
+                if ($batch_import_diningroom == false) {
+                    $this->error('批量导入门店失败!');
+                }
+            }
         }
         //3检测是否获取了卡劵颜色
         $wx_card_colors = M('WxCardColor')->where(array('mp_id' => MP_ID))->select();
@@ -224,7 +247,7 @@ class WeixinCardController extends FoodBaseController {
 
 
             $base_info = new \BaseInfo($post_data['logo_url'], MP_NAME, 0, $post_data['title'], \Admin\Model\WxCardModel::getCardColorStatus($post_data['color']), $post_data['notice'], $post_data['service_phone'], $post_data['description'], $card_date_obj, new \Sku($post_data['stock']));
-            $base_info->set_sub_title($post_data['title']);
+            $base_info->set_sub_title($post_data['sub_title']);
             $base_info->set_use_limit(intval($post_data['get_limit']));
             $base_info->set_get_limit(intval($post_data['get_limit']));
             $base_info->set_use_custom_code(false);
@@ -232,7 +255,7 @@ class WeixinCardController extends FoodBaseController {
             $base_info->set_can_share($can_share_str);
             $base_info->set_url_name_type(1);
             $base_info->set_location_id_list($loction_id_str);
-            $base_info->set_custom_url("http://www.52gdp.com/Wechat/index/index/t".MP_TOKEN);
+            $base_info->set_custom_url("http://www.52gdp.com/Wechat/index/index/t/" . MP_TOKEN);
 
             $card = new \Card($post_data['card_type'], $base_info);
             if ($post_data['card_type'] == 'GENERAL_COUPON') {
@@ -327,7 +350,7 @@ class WeixinCardController extends FoodBaseController {
             if (IS_CHAIN) {
                 $diningroom_arr[] = array(
                     'id' => $diningroom['location_id'],
-                    'diningroom_name' => $diningroom['branch_name'],
+                    'diningroom_name' => !empty($diningroom['branch_name']) ? $diningroom['branch_name'] : $diningroom['business_name'],
                 );
             } else {
                 $diningroom_arr[] = array(
@@ -396,7 +419,7 @@ class WeixinCardController extends FoodBaseController {
        "action_name":"QR_CARD", 
        "action_info":{ 
             "card":{ 
-                "card_id":"'.$card_id.'", 
+                "card_id":"' . $card_id . '", 
                 "code":"", 
                 "openid":"o-WvujkhZr2kYmlQVeAnNNovdO5M",
                 "expire_seconds":""， 

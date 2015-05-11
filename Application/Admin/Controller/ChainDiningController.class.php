@@ -69,6 +69,11 @@ class ChainDiningController extends FoodBaseController {
                 }
                 $chain_dining_data['carousel_thr'] = '/Uploads/Mp/' . MP_ID . '/chain_dining/' . 'carousel_thr.jpg';
             }
+            //更新该平台餐厅信息为连锁餐厅
+            $diningRoomModel = M('DiningRoom');
+            $dining_map['mp_id'] = MP_ID;
+            $dining_data['is_chain_dining'] = \Admin\Model\DiningRoomModel::$IS_CHAIN;
+            $dining_data['update_time'] = time();
             $chainDiningModel = D('ChainDining');
             if ($chainDiningModel->create($chain_dining_data)) {
                 $map['mp_id'] = MP_ID;
@@ -76,10 +81,13 @@ class ChainDiningController extends FoodBaseController {
                 $chain_dining_exist = M('ChainDining')->where($map)->find();
                 if ($chain_dining_exist == false) {
                     $chain_dining_res = $chainDiningModel->add();
+                    $dining_data['chain_dining_id'] = $chain_dining_res;
                 } else {
                     $chain_dining_res = $chainDiningModel->save();
+                    $dining_data['chain_dining_id'] = $chain_dining_exist['id'];
                 }
                 if ($chain_dining_res) {
+                    $diningRoomModel->where($dining_map)->save($dining_data);
                     $this->success('保存连锁餐厅信息成功!', '', true);
                 } else {
                     $this->error($chainDiningModel->getError(), '', true);
