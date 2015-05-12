@@ -62,7 +62,7 @@ class Wechat {
 //        if ($micro_platform == false) {//未检索到公众平台信息
 //            return false;
 //        }
-        $decrypt_token = think_decrypt($token,'@zwz@');
+//        $decrypt_token = think_decrypt($token,'@zwz@');
 //        $map['mp_token'] = $token;
         $map['mp_token'] = $decrypt_token;
         $micro_platform = $microPlatformModel->where($map)->find();

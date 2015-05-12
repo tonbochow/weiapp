@@ -230,6 +230,7 @@
                                 $('#dialog_content').text(data.info);
                                 $("#dialog").dialog({modal: true});
                                 setTimeout("result(" + data.status + ")", 1000);
+                                window.location.href='/Admin/Food/show';
                             } else {
                                 $('#dialog_content').text(data.info);
                                 $("#dialog").dialog({modal: true});

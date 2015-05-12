@@ -267,7 +267,7 @@ class WeixinCardController extends FoodBaseController {
                 foreach ($card_diningrooms as $dining_room) {
                     $dining_room_arr [] = $dining_room['location_id'];
                 }
-                $loction_id_str = implode(',', $dining_room_arr);
+                $loction_id_str = '['. implode(',', $dining_room_arr) .']';
                 $card_location_id_list = array($loction_id_str);
             } else {
                 $card_location_id_list = array($post_data['location_id_list']);

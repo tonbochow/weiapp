@@ -80,8 +80,8 @@
                                 <h4 class="media-heading" id="title">
                                     {$dining.dining_name}
                                 </h4>
-                                <p>电话:{$dining.phone}</p>
-                                <p>手机:{$dining.mobile}</p>
+                                <p>电话:{$dining.dining_phone}</p>
+                                <p>手机:{$dining.dining_mobile}</p>
                                 <p>地址:<?php  echo \Admin\Model\RegionModel::getRegionName($dining['province']).\Admin\Model\RegionModel::getRegionName($dining['city']).\Admin\Model\RegionModel::getRegionName($dining['town']);?>{$dining['address']}</p>
                             </div>
                             <div class="media-right" style="vertical-align: middle;">

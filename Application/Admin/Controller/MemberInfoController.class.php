@@ -260,7 +260,7 @@ class MemberInfoController extends AdminController {
         $token = gen_uuid();
         $encrypt_token = think_encrypt($token,'@zwz@');
         $key = gen_uuid(); //支付参数key 让商户去平台设置
-        $platform_data['mp_url'] = 'http://www.'.$_SERVER['HTTP_HOST'] . '/Wechat/wx/index/t/' . $encrypt_token;
+        $platform_data['mp_url'] = 'http://'.$_SERVER['HTTP_HOST'] . '/Wechat/wx/index/t/' . $encrypt_token;
         $platform_data['mp_token'] = $token; //token
         $platform_data['encrypt_mp_token'] = $encrypt_token;//加密token 用于微信公众平台接入 保证安全性
         $platform_data['key'] = $key;
