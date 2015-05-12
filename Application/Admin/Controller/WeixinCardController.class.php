@@ -85,7 +85,7 @@ class WeixinCardController extends FoodBaseController {
                     'member_id' => UID,
                     'location_id' => !empty($dining_room['id']) ? $dining_room['id'] : $dining_room['location_id'],
                     'business_name' => !empty($dining_room['name']) ? $dining_room['name'] : $dining_room['business_name'],
-                    'branch_name' => !empty($dining_room['branch_name']) ? $dining_room['branch_name'] : '',
+                    'branch_name' => !empty($dining_room['branch_name']) ? $dining_room['branch_name'] : $dining_room['name'],
                     'phone' => $dining_room['phone'],
                     'address' => $dining_room['address'],
                     'longitude' => $dining_room['longitude'],
@@ -99,27 +99,65 @@ class WeixinCardController extends FoodBaseController {
             if ($card_diningroom_addall == false) {
                 $this->error('批量添加卡劵门店失败!');
             }
-        } else {//检测是否有新添加门店若有则继续导入(还有问题待完善)
+        } else {//检测是否有新添加门店若有则继续导入
             if (count($wx_card_diningrooms) != count($dining_rooms)) {
                 foreach ($dining_rooms as $card_diningroom) {
-                    $location_arr [] = array(
-                        'business_name' => strval(MP_NAME),
-                        'branch_name' => strval($card_diningroom['dining_name']),
-                        'province' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['province'])),
-                        'city' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['city'])),
-                        'district' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['town'])),
-                        'address' => strval($card_diningroom['address']),
-                        'telephone' => strval($card_diningroom['phone']),
-                        'category' => '餐饮',
-                        'longitude' => $card_diningroom['longitude'],
-                        'latitude' => $card_diningroom['latitude'],
-                    );
+                    //检索是否已是批量导入过的门店
+                    $search_map['branch_name'] = $card_diningroom['dining_name'];
+//                    $search_map['phone'] = $card_diningroom['phone'];
+//                    $search_map['address'] = $card_diningroom['address'];
+//                    $search_map['longitude'] = $card_diningroom['longitude'];
+//                    $search_map['latitude'] = $card_diningroom['latitude'];
+                    $card_dining = M('WxCardDiningroom')->where($search_map)->find();
+                    if ($card_dining == false) {
+                        $location_arr [] = array(
+                            'business_name' => strval(MP_NAME),
+                            'branch_name' => strval($card_diningroom['dining_name']),
+                            'province' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['province'])),
+                            'city' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['city'])),
+                            'district' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['town'])),
+                            'address' => strval($card_diningroom['address']),
+                            'telephone' => strval($card_diningroom['phone']),
+                            'category' => '餐饮',
+                            'longitude' => $card_diningroom['longitude'],
+                            'latitude' => $card_diningroom['latitude'],
+                        );
+                    }
                 }
-                $location_list['location_list'] = $location_arr;
-                //批量导入门店
-                $batch_import_diningroom = \Admin\Model\WxCardModel::batchImportDiningRoom(APPID, APPSECRET, $location_list);
-                if ($batch_import_diningroom == false) {
-                    $this->error('批量导入门店失败!');
+                if (!empty($location_arr)) {
+                    $location_list['location_list'] = $location_arr;
+                    //批量导入门店
+                    $batch_import_diningroom = \Admin\Model\WxCardModel::batchImportDiningRoom(APPID, APPSECRET, $location_list);
+                    if ($batch_import_diningroom == false) {
+                        $this->error('批量导入门店失败!');
+                    }
+                    //批量拉取门店
+                    $get_diningroom_cond['offset'] = 0;
+                    $get_diningroom_cond['count'] = 0;
+                    $batch_get_dining_rooms = \Admin\Model\WxCardModel::batchgetDiningRoom(APPID, APPSECRET, $get_diningroom_cond);
+                    if ($batch_get_dining_rooms == false) {
+                        $this->error('批量获取门店失败!');
+                    }
+                    foreach ($batch_get_dining_rooms as $dining_room) {
+                        $wx_diningroom_data[] = array(
+                            'mp_id' => MP_ID,
+                            'member_id' => UID,
+                            'location_id' => !empty($dining_room['id']) ? $dining_room['id'] : $dining_room['location_id'],
+                            'business_name' => !empty($dining_room['name']) ? $dining_room['name'] : $dining_room['business_name'],
+                            'branch_name' => !empty($dining_room['branch_name']) ? $dining_room['branch_name'] : $dining_room['name'],
+                            'phone' => $dining_room['phone'],
+                            'address' => $dining_room['address'],
+                            'longitude' => $dining_room['longitude'],
+                            'latitude' => $dining_room['latitude'],
+                            'create_time' => time(),
+                            'update_time' => time(),
+                        );
+                    }
+                    M('WxCardDiningroom')->where(array('mp_id'=>MP_ID))->delete();
+                    $card_diningroom_addall = M('WxCardDiningroom')->addAll($wx_diningroom_data);
+                    if ($card_diningroom_addall == false) {
+                        $this->error('批量添加卡劵门店失败!');
+                    }
                 }
             }
         }

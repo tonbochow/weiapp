@@ -25,7 +25,17 @@ class WxCardController extends BaseController {
         $Page = new \BootstrapPage($card_count, $page_num);
         $show = $Page->show();
         $cards = $wxCardModel->where($map)->order('create_time desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
-
+        $signPackage = \Admin\Model\MicroPlatformModel::getJsApiPrams(APPID, APPSECRET);
+        $this->assign('signPackage', $signPackage);
+        //设置微信默认分享设置
+        $share_info = array(
+            'title' => MP_NAME,
+            'desc' =>  MP_NAME.' 发放优惠劵了!超值优惠!小伙伴们快来领取吧!' ,
+            'link' => get_current_url(),
+            'imgUrl' => 'http://' . $_SERVER['HTTP_HOST'] . $this->mp['mp_img'],
+        );
+        $this->assign('share_info', $share_info);
+        
         $this->assign('page', $show);
         $this->assign('cards', $cards);
         $this->meta_title = $this->mp['mp_name'] . " | 卡劵";
