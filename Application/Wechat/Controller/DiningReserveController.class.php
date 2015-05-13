@@ -47,6 +47,14 @@ class DiningReserveController extends BaseController {
             if ($reserveModel->create($reserve_data, \Admin\Model\DiningReserveModel::MODEL_INSERT)) {
                 $reserve_id = $reserveModel->add();
                 if ($reserve_id) {
+                    $dining_room_id = $reserve_data['dining_room_id'];
+                    $dining_room = M('DiningRoom')->where(array('id'=>$dining_room_id))->find();
+                    $wechat_name = $dining_room['wechat_name'];
+                    $dining_member = M('MemberWeixin')->where(array('wechat_name'=>$wechat_name))->find();
+                    if (!empty($dining_member['wx_openid'])) {
+                        $info_data = '有客户预定请查看';
+                        \Admin\Model\MicroPlatformModel::sendCustomerMessage(APPID, APPSECRET, $dining_member['wx_openid'], $info_data);
+                    }
                     $this->success('创建预定成功', '', true);
                 }
             }

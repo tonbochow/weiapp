@@ -74,7 +74,7 @@ class FoodWaterController extends FoodBaseController {
         if($data == false){
             $this->error('根据您的检索条件暂无资金流水记录!');
         }
-        import('Common.Extends.phpexcel.PHPExcel');
+        import('Common.Extends.PHPExcel.PHPExcel');
         $resultPHPExcel = new \PHPExcel();
         $resultPHPExcel->getActiveSheet()->setCellValue('A1', '餐厅');
         $resultPHPExcel->getActiveSheet()->setCellValue('B1', '订单号');
@@ -91,7 +91,7 @@ class FoodWaterController extends FoodBaseController {
             $i ++;
         }
         //设置导出文件名 
-        $outputFileName = 'total.xls';
+        $outputFileName =  date('Y-m-d', time()) . '_' . rand().'.xls';
         $xlsWriter = new \PHPExcel_Writer_Excel5($resultPHPExcel);
         ob_start();
         ob_flush();

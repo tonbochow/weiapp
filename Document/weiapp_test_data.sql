@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50617
+Source Server Version : 50612
 Source Host           : localhost:3306
 Source Database       : weiapp
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2015-05-09 15:27:00
+Date: 2015-05-13 22:31:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,11 +65,16 @@ CREATE TABLE `weiapp_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of weiapp_action_log
 -- ----------------------------
+INSERT INTO `weiapp_action_log` VALUES ('1', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-05-09 20:25登录了后台', '1', '1431174338');
+INSERT INTO `weiapp_action_log` VALUES ('2', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-05-09 20:26登录了后台', '1', '1431174416');
+INSERT INTO `weiapp_action_log` VALUES ('3', '1', '1', '2130706433', 'member', '1', 'admin_wangzi在2015-05-09 22:43登录了后台', '1', '1431182591');
+INSERT INTO `weiapp_action_log` VALUES ('4', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-05-09 22:57登录了后台', '1', '1431183468');
+INSERT INTO `weiapp_action_log` VALUES ('5', '1', '2', '2130706433', 'member', '2', 'tonbochow在2015-05-10 11:00登录了后台', '1', '1431226808');
 
 -- ----------------------------
 -- Table structure for `weiapp_addons`
@@ -1217,10 +1222,12 @@ CREATE TABLE `weiapp_food_order` (
   `address_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户收货地址id对应food_address表id',
   `out_trade_no` varchar(32) NOT NULL DEFAULT '' COMMENT '微信或支付宝交易订单号',
   `is_printed` tinyint(1) NOT NULL DEFAULT '0' COMMENT '订单是否已打印0未打印1已打印',
+  `meal_time` int(11) NOT NULL DEFAULT '0' COMMENT '用餐时间',
   `remark` varchar(256) NOT NULL DEFAULT '' COMMENT '订单备注',
   `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '单据状态-1取消1已提交2待送餐已支付3送餐中4完成',
   `pay_time` int(11) NOT NULL DEFAULT '0' COMMENT '支付时间',
   `delivery_time` int(11) NOT NULL DEFAULT '0' COMMENT '送餐时间',
+  `finish_member_id` int(11) NOT NULL DEFAULT '0' COMMENT '完成订单用户member_id(商家管理员或店员)',
   `finish_time` int(11) NOT NULL DEFAULT '0' COMMENT '完成时间',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
@@ -1493,8 +1500,8 @@ CREATE TABLE `weiapp_member` (
 -- ----------------------------
 -- Records of weiapp_member
 -- ----------------------------
-INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '220', '117', '0', '1423289473', '2130706433', '1428977259', '1');
-INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '240', '150', '0', '0', '2130706433', '1431150751', '1');
+INSERT INTO `weiapp_member` VALUES ('1', 'admin_wangzi', '0', '0000-00-00', '', '230', '119', '0', '1423289473', '2130706433', '1431182591', '1');
+INSERT INTO `weiapp_member` VALUES ('2', 'tonbochow', '0', '0000-00-00', '', '250', '153', '0', '0', '2130706433', '1431226808', '1');
 INSERT INTO `weiapp_member` VALUES ('3', 'user', '0', '0000-00-00', '', '10', '1', '2130706433', '1429328163', '2130706433', '1429328163', '1');
 
 -- ----------------------------
@@ -5321,8 +5328,8 @@ CREATE TABLE `weiapp_ucenter_member` (
 -- ----------------------------
 -- Records of weiapp_ucenter_member
 -- ----------------------------
-INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', '5d73a192336f4977eb6061252a35b751', 'tonbochow@qq.com', '', '1428927667', '2130706433', '1428977259', '2130706433', '1428927667', '1');
-INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', '5d73a192336f4977eb6061252a35b751', 'tonbochow@163.com', '', '1428927621', '2130706433', '1431150751', '2130706433', '1428927621', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('1', 'admin_wangzi', '5d73a192336f4977eb6061252a35b751', 'tonbochow@qq.com', '', '1428927667', '2130706433', '1431182591', '2130706433', '1428927667', '1');
+INSERT INTO `weiapp_ucenter_member` VALUES ('2', 'tonbochow', '5d73a192336f4977eb6061252a35b751', 'tonbochow@163.com', '', '1428927621', '2130706433', '1431226808', '2130706433', '1428927621', '1');
 INSERT INTO `weiapp_ucenter_member` VALUES ('3', 'user', 'e02aee9ace52823b94166d3980c70d4b', 'user@qq.com', '', '1429328145', '2130706433', '1429328163', '2130706433', '1429328145', '1');
 
 -- ----------------------------

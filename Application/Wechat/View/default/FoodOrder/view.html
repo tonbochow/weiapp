@@ -19,7 +19,7 @@
                             <?php
                             if($food_orders[0]['pay_type'] == \Admin\Model\FoodOrderModel::$PAY_TYPE_WEIXIN && $food_orders[0]['status'] >= \Admin\Model\FoodOrderModel::$STATUS_WXPAYED){
                             ?>
-                            <p>微信单号 : {$food_orders.0.out_trade_no}</p>
+                            <p>商户单号 : {$food_orders.0.out_trade_no}</p>
                             <?php
                             }
                             ?>

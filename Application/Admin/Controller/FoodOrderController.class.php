@@ -140,6 +140,7 @@ class FoodOrderController extends FoodBaseController {
             }
             $food_order_data['status'] = \Admin\Model\FoodOrderModel::$STATUS_FINISHED;
             $food_order_data['update_time'] = time();
+            $food_order_data['finish_member_id'] = UID;
             $food_order_data['finish_time'] = time();
             $food_order_finish = M('FoodOrder')->where(array('id' => $id, 'mp_id' => MP_ID))->save($food_order_data);
             if ($food_order_finish) {

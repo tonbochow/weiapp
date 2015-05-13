@@ -67,6 +67,11 @@ class DiningMemberController extends FoodBaseController {
 //                $this->error($dining_uid, '', true);
                 $this->error('添加餐厅员工登录信息失败', '', true);
             }
+            $user_data = array('uid' => $dining_uid, 'nickname' => $dining_member_data['username'], 'status' => 1);
+            $member_id = M('Member')->add($user_data);
+            if ($member_id == false) {
+                $this->error('添加餐厅员工信息失败', '', true);
+            }
             //2 将用户添加入微餐饮店员组
             $authGroupModel = M('AuthGroup');
             $group = $authGroupModel->where(array('description' => 'food_member'))->find();

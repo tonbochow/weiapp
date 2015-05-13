@@ -556,6 +556,7 @@ class FoodOrderController extends BaseController {
         foreach ($food_orderIds_arr as $order_id) {
             $food_order = $foodOrderModel->where(array('id' => $order_id))->find();
             //1更新订单状态
+            $order_data['out_trade_no'] = $out_trade_no;//更新下商户单号(多个订单单独支付的情况)
             $order_data['status'] = \Admin\Model\FoodOrderModel::$STATUS_WXPAYED;
             $order_data['update_time'] = time();
             $food_save = $foodOrderModel->where(array('id' => $order_id, 'mp_id' => MP_ID, 'wx_openid' => $this->weixin_userinfo['wx_openid']))->save($order_data);
