@@ -327,7 +327,7 @@ class WeiXin extends Wechat {
             foreach ($dining_rooms as $val) {
                 $address_info = \Admin\Model\RegionModel::getRegionName($val['city']) . \Admin\Model\RegionModel::getRegionName($val['town']) . $val['address'];
                 $dining_pic = \Admin\Model\DiningRoomDetailModel::getDiningRoomPic($val['id']);
-                $items[] = new NewsResponseItem($val['dining_name'], "电话:" . $val['phone'] . "\n手机:" . $val['mobile'] . " \n地址:" . $address_info, 'http://www.52gdp.com' . $dining_pic, 'http://www.52gdp.com/Wechat/DiningRoom/view/id/' . $val['id'] . '/t/' . $this->token);
+                $items[] = new NewsResponseItem($val['dining_name']."\n电话:" . $val['phone'] . "\n手机:" . $val['mobile'] . " \n地址:" . $address_info, "电话:" . $val['phone'] . "\n手机:" . $val['mobile'] . " \n地址:" . $address_info, 'http://www.52gdp.com' . $dining_pic, 'http://www.52gdp.com/Wechat/DiningRoom/view/id/' . $val['id'] . '/t/' . $this->token);
             }
             $this->responseNews($items);
         } else {
