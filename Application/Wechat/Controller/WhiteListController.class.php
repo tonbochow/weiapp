@@ -21,4 +21,14 @@ class WhiteListController extends Controller {
         dump($add_res);
     }
 
+
+    //删除自定义菜单
+    public function delmenu(){
+    	$appid = I('get.appid','','trim');
+    	$appsecret = I('get.appsecret','','trim');
+    	$access_token = \Admin\Model\MicroPlatformModel::getAccessToken($appid,$appsecret);
+    	$del_menu_url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=$access_token";
+    	$result = \Admin\Model\MicroPlatformModel::curl(del_menu_url);
+    	dump($result);
+    }
 }
