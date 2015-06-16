@@ -577,6 +577,7 @@ class WeixinCardController extends FoodBaseController {
         if ($card_info == false) {
             $this->error('修改库存的卡劵不存在');
         }
+        $this->assign('card_info',$card_info);
         $this->assign('card_id', $card_id);
         $this->meta_title = '设置卡劵库存';
         $this->display('modifystock');

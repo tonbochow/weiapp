@@ -19,6 +19,10 @@ class WxCardController extends BaseController {
         $wxCardModel = M('WxCard');
 //        $map['status'] = \Admin\Model\WxCardModel::$CARD_STATUS_VERIFY_OK;
         $map['mp_id'] = MP_ID;
+        $card_id = I('get.id','','intval');
+        if($card_id){
+            $map['id'] = $card_id;
+        }
         $card_count = $wxCardModel->where($map)->count();
         $page_num = 10;
         import('Common.Extends.Page.BootstrapPage');
