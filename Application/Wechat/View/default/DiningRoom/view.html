@@ -10,7 +10,7 @@
 </block>
 
 <block name="body">
-    <div id="dialog" title="餐厅" style="display:none;">
+    <div id="dialog" title="门店" style="display:none;">
         <p id="dialog_content"></p>
     </div>
 
@@ -25,7 +25,7 @@
                                 <a href="{$vo.url}" data-lightbox="image-1" data-title="{$dining_rooms[0].dining_name}图片">
                               <img src="{$vo.url}" alt="">
                                 </a>
-                              <p class="caption">餐厅图片</p>
+                              <p class="caption">门店图片</p>
                             </li>
                       </volist>
                   </ul>
@@ -40,7 +40,7 @@
                         </li>
                         <li class="list-group-item">
                             <i class="fa fa-tag" style="color:green"></i>
-                            餐厅支持:<?php echo \Admin\Model\DiningRoomModel::getDiningRoomType($dining_rooms[0]['type']); ?>
+                            门店支持:<?php echo \Admin\Model\DiningRoomModel::getDiningRoomType($dining_rooms[0]['type']); ?>
                         </li>
                         <?php
                             if($dining_rooms[0]['type'] != \Admin\Model\DiningRoomModel::$TYPE_DINING){

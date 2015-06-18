@@ -40,7 +40,7 @@ class FoodCarController extends BaseController {
         $this->assign('total_amount', $total_amount);
         $this->assign('car_details', $carDetails);
         $this->assign('json_car_details', json_encode($carDetails));
-        $this->meta_title = $this->mp['mp_name'] ." | 购餐车详细";
+        $this->meta_title = $this->mp['mp_name'] ." | 美食篮详细";
         $this->display('index');
     }
 
@@ -149,7 +149,7 @@ class FoodCarController extends BaseController {
         }
         
         if ($car_details == false) {
-            $this->error('购餐车无菜品或套餐');
+            $this->error('美食篮无美食或套餐');
         }
         $total_amount = 0;
         foreach ($car_details as $key => $detail) {
@@ -168,7 +168,7 @@ class FoodCarController extends BaseController {
         $this->assign('total_amount', $total_amount);
         $this->assign('car_details', $car_detail_arr);
         $this->assign('json_car_detail_arr', json_encode($car_detail_arr));
-        $this->meta_title = "购餐车预生成订单";
+        $this->meta_title = "美食篮预生成订单";
         $this->display('commitorder');
     }
 

@@ -26,7 +26,7 @@ class DiningRoomController extends BaseController {
                 ->field('weiapp_dining_room.*,weiapp_dining_room_detail.url')
                 ->select();
         if ($dining_rooms == false) {
-            $this->error('未检索到餐厅信息');
+            $this->error('未检索到门店信息');
         }
         foreach ($dining_rooms as $key => $dining_room) {
             $dining_rooms[$key]['description'] = htmlspecialchars_decode(stripslashes($dining_room['description']));

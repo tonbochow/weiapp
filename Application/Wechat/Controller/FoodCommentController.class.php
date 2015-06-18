@@ -7,7 +7,7 @@
 namespace Wechat\Controller;
 
 /**
- * 微信端用户菜品评论控制器
+ * 微信端用户美食评论控制器
  */
 class FoodCommentController extends BaseController {
 
@@ -64,9 +64,9 @@ class FoodCommentController extends BaseController {
         $type = I('request.type', '', 'intval');
         if (!$food_setmenu_id) {
             if (IS_POST) {
-                $this->error('请选择要评论的菜品或套餐', '', true);
+                $this->error('请选择要评论的美食或套餐', '', true);
             }
-            $this->error('请选择要评论的菜品或套餐');
+            $this->error('请选择要评论的美食或套餐');
         }
         $map['food_setmenu_id'] = $food_setmenu_id;
         $map['type'] = $type;

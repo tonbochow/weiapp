@@ -16,7 +16,7 @@
                 <volist name="car_details" id="details">
                     <div class="thumbnail">
                         <div class="caption">
-                            <h4>餐厅:{$details.0.dining_info.dining_name}</h4>
+                            <h4>门店:{$details.0.dining_info.dining_name}</h4>
                             送餐费:{$details.0.dining_info.delivery_fee}
                         </div>
                         <volist name="details" id="detail">
@@ -175,7 +175,7 @@
 
 
                 <div class="thumbnail">
-                    <i class="fa fa-money"></i> 总餐费:<span style="color:red;">￥{$total_amount}</span>
+                    <i class="fa fa-money"></i> 总费用:<span style="color:red;">￥{$total_amount}</span>
                 </div>
 
             </div>
@@ -263,7 +263,7 @@
             });
         }
 
-        function select_type(type, dining_room_id) {/*type:2餐厅用餐 3配送到家*/
+        function select_type(type, dining_room_id) {/*type:2门店用餐 3配送到家*/
             if (type == 1) {
                 $('#address_' + dining_room_id).css('display', 'none');
             } else if (type == 2) {

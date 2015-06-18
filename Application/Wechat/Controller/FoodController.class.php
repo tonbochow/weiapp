@@ -7,17 +7,17 @@
 namespace Wechat\Controller;
 
 /**
- * 微信端菜品控制器
+ * 微信端美食控制器
  */
 class FoodController extends BaseController {
 
-    //菜品列表
+    //美食列表
     public function index() {
 
         $this->display('index');
     }
 
-    //菜品详细页面
+    //美食详细页面
     public function view() {
         $foodModel = M('Food');
         $id = I('get.id', '', 'intval');
@@ -31,7 +31,7 @@ class FoodController extends BaseController {
                 ->order('weiapp_food_detail.default_share desc')
                 ->field('weiapp_food.*,weiapp_food_detail.url,weiapp_food_detail.default_share')
                 ->select();
-        if (!empty($food)) {//菜品浏览次数自增
+        if (!empty($food)) {//美食浏览次数自增
             $inc = $foodModel->where("id=$id")->setInc('view_times',1);
         }
 
@@ -41,7 +41,7 @@ class FoodController extends BaseController {
         }
 
         $default_pic = \Admin\Model\FoodDetailModel::getFoodPic($food[0]['id']);
-        //菜品详细页面微信分享设置
+        //美食详细页面微信分享设置
         $share_info = array(
             'title' => $food[0]['share_title'],
             'desc' => $food[0]['share_desc'],
@@ -56,7 +56,7 @@ class FoodController extends BaseController {
         $this->display('view');
     }
 
-    //菜品添加到购物车
+    //美食添加到美食篮
     public function addcar() {
         if (IS_POST) {
             $food_id = I('post.id', '', 'intval');
@@ -72,7 +72,7 @@ class FoodController extends BaseController {
             $map['type'] = \Wechat\Model\FoodCarDetailModel::$TYPE_FOOD;
             $food_car_detail = M('FoodCarDetail')->where($map)->find();
             if ($food_car_detail) {
-                $this->error('已加入购餐车', '', true);
+                $this->error('已加入美食篮', '', true);
             }
 
             $foodCarModel = D('FoodCar');
@@ -80,7 +80,7 @@ class FoodController extends BaseController {
             $car_map['wx_openid'] = $wx_open_id;
             $car_map['mp_id'] = MP_ID;
             $food_car = M('FoodCar')->where($car_map)->find();
-            if ($food_car == false) {//购餐车主表插入
+            if ($food_car == false) {//美食篮主表插入
                 $food_car_data['mp_id'] = MP_ID;
                 $food_car_data['wx_openid'] = $wx_open_id;
                 if ($foodCarModel->create($food_car_data, \Wechat\Model\FoodCarModel::MODEL_INSERT)) {
@@ -125,7 +125,7 @@ class FoodController extends BaseController {
                 $this->error($foodCarDetailModel->getError(), '', true);
             }
             $foodCarModel->commit();
-            $this->success('加入购餐车成功', '', true);
+            $this->success('加入美食篮成功', '', true);
         }
     }
 

@@ -7,7 +7,7 @@
 </block>
 
 <block name="body">
-    <div id="dialog" title="加入购餐车" style="display:none;">
+    <div id="dialog" title="加入美食篮" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     
@@ -24,14 +24,14 @@
                 <li>
                     <a href="/Wechat/Index/index/is_promotion/true/t/{$mp.mp_token}">
                         <i class="fa fa-long-arrow-down fa-3x" style="color:#77cbf0"></i>
-                        <p>促销菜品</p>
+                        <p>促销美食</p>
                     </a>
                 </li>
 
                 <li>
                     <a href="/Wechat/Index/index/is_hot/true/t/{$mp.mp_token}">
                         <i class="fa fa-thumbs-up fa-3x" style="color:#ff8885"></i>
-                        <p>热销菜品</p>
+                        <p>热销美食</p>
                     </a>
                 </li>
                 
@@ -69,9 +69,9 @@
                             </p>
                             <p style="text-align:center;">
                                 <if condition="$setmenu.dining_room_id eq 0">
-                                <a href="#"  data-toggle="modal" data-target="#exampleModal_{$setmenu.id}" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                                <a href="#"  data-toggle="modal" data-target="#exampleModal_{$setmenu.id}" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入美食篮</a>
                                 <else />
-                                <a href="#"  onclick="javascript:addCar({$setmenu.id})" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入餐车</a>
+                                <a href="#"  onclick="javascript:addCar({$setmenu.id})" class="btn btn-success btn-sm" role="button"><i class="fa fa-shopping-cart"></i> 加入美食篮</a>
                                 </if>
                                 <a href="/Wechat/FoodSetmenu/view/id/{$setmenu.id}/t/{$mp.mp_token}" class="btn btn-success btn-sm" role="button"><i class="fa fa-search-plus"></i> 查看</a>
                             </p>
@@ -102,7 +102,7 @@
                 </div>
             </volist>
             <else />
-            <div class="col-xs-12" style="text-align: center;">本店即将上线菜品套餐,请稍等待...</div>
+            <div class="col-xs-12" style="text-align: center;">本店即将上线美食套餐,请稍等待...</div>
         </if>
         <div class="col-xs-12" style="text-align: center;">{$page}</div>
     </div>
@@ -113,7 +113,7 @@
     <script type="text/javascript">
         <?php
              foreach($setmenus as $key=>$setmenu){
-                 echo "$('#exampleModal_".$setmenu['id']."').on('show.bs.modal', function(event) {var button = $(event.relatedTarget);var recipient = button.data('whatever');var modal = $(this);modal.find('.modal-title_".$setmenu['id']."').text('请选择用餐或配送餐厅');modal.find('.modal-body_".$setmenu['id']." input').val(recipient);});";
+                 echo "$('#exampleModal_".$setmenu['id']."').on('show.bs.modal', function(event) {var button = $(event.relatedTarget);var recipient = button.data('whatever');var modal = $(this);modal.find('.modal-title_".$setmenu['id']."').text('请选择用餐或配送门店');modal.find('.modal-body_".$setmenu['id']." input').val(recipient);});";
              }
         ?>
 

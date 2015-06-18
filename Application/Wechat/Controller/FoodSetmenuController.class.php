@@ -7,11 +7,11 @@
 namespace Wechat\Controller;
 
 /**
- * 微信端 菜品套餐控制器
+ * 微信端 美食套餐控制器
  */
 class FoodSetmenuController extends BaseController {
 
-    //菜品套餐列表
+    //美食套餐列表
     public function index() {
         $foodSetmenuModel = M('FoodSetmenu');
         $map['mp_id'] = MP_ID;
@@ -31,11 +31,11 @@ class FoodSetmenuController extends BaseController {
         $this->assign('dining_room_arr', $dining_room_arr);
         $this->assign('page', $show);
         $this->assign('setmenus', $setmenus);
-        $this->meta_title = $this->mp['mp_name'] . " | 菜品套餐列表";
+        $this->meta_title = $this->mp['mp_name'] . " | 美食套餐列表";
         $this->display('index');
     }
 
-    //菜品套餐详细页面
+    //美食套餐详细页面
     public function view() {
         $foodSetmenuModel = M('FoodSetmenu');
         $id = I('get.id', '', 'intval');
@@ -66,7 +66,7 @@ class FoodSetmenuController extends BaseController {
         $this->display('view');
     }
 
-    //菜品套餐添加到购物车
+    //美食套餐添加到购物车
     public function addcar() {
         if (IS_POST) {
             $setmenu_id = I('post.id', '', 'intval');
@@ -82,7 +82,7 @@ class FoodSetmenuController extends BaseController {
             $map['type'] = \Wechat\Model\FoodCarDetailModel::$TYPE_SETMENU;
             $food_car_detail = M('FoodCarDetail')->where($map)->find();
             if ($food_car_detail) {
-                $this->error('已加入购餐车', '', true);
+                $this->error('已加入美食篮', '', true);
             }
 
             $foodCarModel = D('FoodCar');
@@ -90,7 +90,7 @@ class FoodSetmenuController extends BaseController {
             $car_map['wx_openid'] = $wx_open_id;
             $car_map['mp_id'] = MP_ID;
             $food_car = M('FoodCar')->where($car_map)->find();
-            if ($food_car == false) {//购餐车主表插入
+            if ($food_car == false) {//美食篮主表插入
                 $food_car_data['mp_id'] = MP_ID;
                 $food_car_data['wx_openid'] = $wx_open_id;
                 if ($foodCarModel->create($food_car_data, \Wechat\Model\FoodCarModel::MODEL_INSERT)) {
@@ -110,7 +110,7 @@ class FoodSetmenuController extends BaseController {
             if (intval($setmenu_info['dining_room_id']) == 0) {
                 $dining_room_id = I('post.dining_room_id');
                 if (intval($dining_room_id) == 0) {
-                    $this->error('请先选择用餐或配送餐厅', '', true);
+                    $this->error('请先选择用餐或配送门店', '', true);
                 }
             }
             $car_detail_data['mp_id'] = MP_ID;
@@ -135,7 +135,7 @@ class FoodSetmenuController extends BaseController {
                 $this->error($foodCarDetailModel->getError(), '', true);
             }
             $foodCarModel->commit();
-            $this->success('加入购餐车成功', '', true);
+            $this->success('加入美食篮成功', '', true);
         }
     }
 }

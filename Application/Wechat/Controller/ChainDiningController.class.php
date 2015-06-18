@@ -27,7 +27,7 @@ class ChainDiningController extends BaseController {
                     ->select();
 
             if ($chain_dining == false) {
-                $this->error('未检索到连锁餐厅信息');
+                $this->error('未检索到连锁门店信息');
             }
             foreach ($chain_dining as $key => $chain) {
                 $chain_dining[$key]['description'] = htmlspecialchars_decode(stripslashes($chain['description']));
@@ -48,7 +48,7 @@ class ChainDiningController extends BaseController {
                     ->field('weiapp_dining_room.*,weiapp_dining_room_detail.url')
                     ->select();
             if ($dining_rooms == false) {
-                $this->error('未检索到餐厅信息');
+                $this->error('未检索到门店信息');
             }
             foreach ($dining_rooms as $key => $dining_room) {
                 $dining_rooms[$key]['description'] = htmlspecialchars_decode(stripslashes($dining_room['description']));
