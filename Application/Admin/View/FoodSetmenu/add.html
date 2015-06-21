@@ -6,37 +6,37 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>创建餐厅菜品套餐</h2>
+        <h2>创建门店美食套餐</h2>
     </div>
 
-    <div id="dialog" title="餐厅菜品套餐" style="display:none;">
+    <div id="dialog" title="门店美食套餐" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food_setmenu" ng-app="weiapp_food_setmenu" id="ng-app"  name="FoodSetmenuForm" ng-controller="FoodSetmenuController" ng-submit="submitForm()">
         <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.dining_room_id.$invalid && !FoodSetmenuForm.dining_room_id.$pristine}">
-            <label class="item-label">所属餐厅<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">所属门店<span class="check-tips">（*必填）</span></label>
             <div class="controls">
                 <select class="form-control" name="dining_room_id" required ng-model="food_setmenu.dining_room_id" ng-change="select_dining(food_setmenu.dining_room_id)" ng-options="m.id as m.dining_name for m in food_setmenu.dining_room_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="FoodSetmenuForm.dining_room_id.$invalid && !FoodSetmenuForm.dining_room_id.$pristine" class="help-block">请选择所属餐厅</p>
+                <p ng-show="FoodSetmenuForm.dining_room_id.$invalid && !FoodSetmenuForm.dining_room_id.$pristine" class="help-block">请选择所属门店</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.setmenu_name.$invalid && !FoodSetmenuForm.setmenu_name.$pristine}">
-            <label class="item-label">菜品套餐名<span class="check-tips">（*必填:最大长度30）</span></label>
+            <label class="item-label">美食套餐名<span class="check-tips">（*必填:最大长度30）</span></label>
             <div class="controls">
-                <input name="setmenu_name" type="text" value="" ng-model="food_setmenu.setmenu_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="30" required class="form-control text input-large" id="setmenu_name" placeholder="餐厅菜品套餐名">
-                <p ng-show="FoodSetmenuForm.setmenu_name.$invalid && !FoodSetmenuForm.setmenu_name.$pristine" class="help-block">餐厅菜品套餐名(长度1-30)</p>
+                <input name="setmenu_name" type="text" value="" ng-model="food_setmenu.setmenu_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="30" required class="form-control text input-large" id="setmenu_name" placeholder="门店美食套餐名">
+                <p ng-show="FoodSetmenuForm.setmenu_name.$invalid && !FoodSetmenuForm.setmenu_name.$pristine" class="help-block">门店美食套餐名(长度1-30)</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.description.$invalid && !FoodSetmenuForm.description.$pristine}">
-            <label class="item-label">菜品套餐描述<span class="check-tips">（*必填:最大长度256）</span></label>
+            <label class="item-label">美食套餐描述<span class="check-tips">（*必填:最大长度256）</span></label>
             <div class="controls">
-                <!--<input name="description" type="text" value="" ng-model="food_setmenu.description"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="description" placeholder="餐厅菜品套餐描述">-->
+                <!--<input name="description" type="text" value="" ng-model="food_setmenu.description"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="description" placeholder="门店美食套餐描述">-->
                 <div class="ueditor" config="config" ng-model="food_setmenu.description" ng-minlength="1" ng-trim="true" required ></div>
-                <p ng-show="FoodSetmenuForm.description.$invalid && !FoodSetmenuForm.description.$pristine" class="help-block">餐厅菜品套餐描述(长度1-256)</p>
+                <p ng-show="FoodSetmenuForm.description.$invalid && !FoodSetmenuForm.description.$pristine" class="help-block">门店美食套餐描述(长度1-256)</p>
             </div>
         </div>
         
@@ -51,25 +51,25 @@
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.setmenu_money.$invalid && !FoodSetmenuForm.setmenu_money.$pristine}">
-            <label class="item-label">菜品套餐优惠价<span class="check-tips">（不填写则优惠价格为所有菜品价格总和）</span></label>
+            <label class="item-label">美食套餐优惠价<span class="check-tips">（不填写则优惠价格为所有美食价格总和）</span></label>
             <div class="controls">
-                <input name="setmenu_money" type="text" value="" ng-model="food_setmenu.setmenu_money"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="setmenu_money" placeholder="餐厅菜品套餐优惠价">
-                <p ng-show="FoodSetmenuForm.setmenu_money.$invalid && !FoodSetmenuForm.setmenu_money.$pristine" class="help-block">餐厅菜品套餐优惠价</p>
+                <input name="setmenu_money" type="text" value="" ng-model="food_setmenu.setmenu_money"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="10"  class="form-control text input-large" id="setmenu_money" placeholder="门店美食套餐优惠价">
+                <p ng-show="FoodSetmenuForm.setmenu_money.$invalid && !FoodSetmenuForm.setmenu_money.$pristine" class="help-block">门店美食套餐优惠价</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.url.$invalid && !FoodSetmenuForm.url.$pristine}">
-            <label class="item-label">菜品套餐图片<span class="check-tips"></span></label>
+            <label class="item-label">美食套餐图片<span class="check-tips"></span></label>
             <div class="controls">
                 <img src="" id="pic_img" style="max-width: 300px;"><br>
-                <input type="file" title="选择菜品套餐图片"   multiple="true" class="btn btn-success"  name="file_img" id="file_img" accept="image/gif,image/jpeg,image/png,image/jpg">
+                <input type="file" title="选择美食套餐图片"   multiple="true" class="btn btn-success"  name="file_img" id="file_img" accept="image/gif,image/jpeg,image/png,image/jpg">
                 <input type="hidden" id="url" name="url" value="" ng-model="food_setmenu.url">
-                <p ng-show="FoodSetmenuForm.url.$invalid && !FoodSetmenuForm.url.$pristine" class="help-block">菜品套餐图片</p>
+                <p ng-show="FoodSetmenuForm.url.$invalid && !FoodSetmenuForm.url.$pristine" class="help-block">美食套餐图片</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.share_title.$invalid && !FoodSetmenuForm.share_title.$pristine}">
-            <label class="item-label">微信朋友圈分享显示标题<span class="check-tips">（默认分享标题为菜品名称）</span></label>
+            <label class="item-label">微信朋友圈分享显示标题<span class="check-tips">（默认分享标题为美食名称）</span></label>
             <div class="controls">
                 <input name="share_title" type="text" value="" ng-model="food_setmenu.share_title"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,60}$/" ng-trim="true" ng-minlength="1" ng-maxlength="60" class="form-control text input-large" id="share_title" placeholder="微信朋友圈分享显示标题">
                 <p ng-show="FoodSetmenuForm.share_title.$invalid && !FoodSetmenuForm.share_title.$pristine" class="help-block">微信朋友圈分享显示标题(长度1-60)</p>
@@ -78,7 +78,7 @@
         
         
         <div class="form-item" ng-class="{'has-error' : FoodSetmenuForm.share_desc.$invalid && !FoodSetmenuForm.share_desc.$pristine}">
-            <label class="item-label">微信朋友圈分享显示描述<span class="check-tips">（默认分享标题为菜品名称）</span></label>
+            <label class="item-label">微信朋友圈分享显示描述<span class="check-tips">（默认分享标题为美食名称）</span></label>
             <div class="controls">
                 <input name="share_desc" type="text" value="" ng-model="food_setmenu.share_desc"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,128}$/" ng-trim="true" ng-minlength="1" ng-maxlength="128" class="form-control text input-large" id="share_desc" placeholder="微信朋友圈分享显示描述">
                 <p ng-show="FoodSetmenuForm.share_desc.$invalid && !FoodSetmenuForm.share_desc.$pristine" class="help-block">微信朋友圈分享显示描述(长度1-128)</p>

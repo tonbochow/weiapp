@@ -2,14 +2,14 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>餐厅列表</h2>
+        <h2>门店列表</h2>
     </div>
 
     <div class="cf">
         <?php
             if((IS_CHAIN && $dining_room_num <10)|| empty($list)){
         ?>
-        <a class="btn" href="{:U('DiningRoom/add')}">创建餐厅</a>
+        <a class="btn" href="{:U('DiningRoom/add')}">创建门店</a>
         <?php
         }
         ?>
@@ -19,7 +19,7 @@
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
-                <input type="text" name="dining_name" class="search-input" value="{:I('dining_name')}" placeholder="请输入餐厅名">
+                <input type="text" name="dining_name" class="search-input" value="{:I('dining_name')}" placeholder="请输入门店名">
                 <a class="sch-btn" href="javascript:;" id="search" url="{:U('DiningRoom/show')}"><i class="btn-search"></i></a>
             </div>
         </div>
@@ -33,10 +33,10 @@
                         <input class="checkbox check-all" type="checkbox">
                     </th>
                     <!--<th>ID</th>-->
-                    <th>所属餐厅</th>
-                    <th>餐厅名</th>
-                    <th>餐厅负责人</th>
-                    <th>餐厅电话</th>
+                    <th>所属门店</th>
+                    <th>门店名</th>
+                    <th>门店负责人</th>
+                    <th>门店电话</th>
                     <th>详细地址</th>
                     <th>状态</th>
                     <th>创建时间</th>
@@ -66,7 +66,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="9" class="text-center">您未创建餐厅 </td>
+                <td colspan="9" class="text-center">您未创建门店 </td>
             </notempty>
             </tbody>
         </table>

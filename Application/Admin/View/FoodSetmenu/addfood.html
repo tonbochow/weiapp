@@ -6,18 +6,18 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>{$food_setmenu.setmenu_name} | 添加菜品</h2>
+        <h2>{$food_setmenu.setmenu_name} | 添加美食</h2>
     </div>
     <h5>推广链接:<span style="color:red;">http://www.52gdp.com/Wechat/FoodSetmenu/view/t/{$mp.mp_token}/id/{$food_setmenu.id}</span></h5><br>
 
     <div class="cf">
-        <button class="btn ajax-post" url="/Admin/FoodSetmenu/addfood/setmenu_id/{$food_setmenu.id}" target-form="ids">添加菜品入套餐</button>
+        <button class="btn ajax-post" url="/Admin/FoodSetmenu/addfood/setmenu_id/{$food_setmenu.id}" target-form="ids">添加美食入套餐</button>
 
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
                 <input type="hidden" name="id" class="search-input" value="{$food_setmenu.id}" />
-                <input type="text" name="food_name" class="search-input" value="{:I('food_name')}" placeholder="请输入菜品名">
+                <input type="text" name="food_name" class="search-input" value="{:I('food_name')}" placeholder="请输入美食名">
                 <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodSetmenu/addfood')}"><i class="btn-search"></i></a>
             </div>
         </div>
@@ -30,8 +30,8 @@
                     <th class="row-selected">
                         <input class="checkbox check-all" type="checkbox">
                     </th>
-                    <th>菜品名</th>
-                    <th>菜品微信价</th>
+                    <th>美食名</th>
+                    <th>美食微信价</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +44,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="3" class="text-center">未检索到您要添加入套餐的菜品 </td>
+                <td colspan="3" class="text-center">未检索到您要添加入套餐的美食 </td>
             </notempty>
             </tbody>
         </table>

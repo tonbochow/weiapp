@@ -8,7 +8,7 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮微信公众平台 | 客户预定控制器
+ * 微美食微信公众平台 | 客户预定控制器
  */
 class DiningReserveController extends FoodBaseController {
 
@@ -20,7 +20,7 @@ class DiningReserveController extends FoodBaseController {
         }
         $list = $this->lists('DiningReserve', $map, 'mp_id,status,id');
         $this->assign('list', $list);
-        $this->meta_title = '微餐饮客户预定列表';
+        $this->meta_title = '微美食客户预定列表';
         $this->display('index');
     }
 

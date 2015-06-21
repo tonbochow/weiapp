@@ -10,11 +10,11 @@ namespace Admin\Controller;
 use User\Api\UserApi;
 
 /**
- * 微餐饮微信公众平台 | 餐厅员工控制器
+ * 微美食微信公众平台 | 门店员工控制器
  */
 class DiningMemberController extends FoodBaseController {
 
-    //餐厅员工列表(后台管理员)
+    //门店员工列表(后台管理员)
     public function index() {
         $get_real_name = I('get.real_name');
         if (!empty($get_real_name)) {
@@ -22,11 +22,11 @@ class DiningMemberController extends FoodBaseController {
         }
         $list = $this->lists('DiningMember', $map, 'mp_id,member_id,status');
         $this->assign('list', $list);
-        $this->meta_title = '微餐饮餐厅员工列表';
+        $this->meta_title = '微美食门店员工列表';
         $this->display('index');
     }
 
-    //餐厅员工列表(前台面向商家)
+    //门店员工列表(前台面向商家)
     public function show() {
         $map['mp_id'] = MP_ID;
         $get_real_name = I('get.real_name');
@@ -35,19 +35,19 @@ class DiningMemberController extends FoodBaseController {
         }
         $list = $this->lists('DiningMember', $map, 'status,member_id');
         $this->assign('list', $list);
-        $this->meta_title = '餐厅员工列表';
+        $this->meta_title = '门店员工列表';
         $this->display('show');
     }
 
-    //创建餐厅员工(前台面向商家) 一个餐厅可以创建多个员工
+    //创建门店员工(前台面向商家) 一个门店可以创建多个员工
     public function add() {
-        //检索所有连锁餐厅
+        //检索所有连锁门店
         $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
         if (empty($dining_rooms)) {
             if (IS_POST) {
-                $this->error('请先创建餐厅!', '', true);
+                $this->error('请先创建门店!', '', true);
             } else {
-                $this->error('请先创建餐厅!');
+                $this->error('请先创建门店!');
             }
         }
         foreach ($dining_rooms as $val) {
@@ -65,14 +65,14 @@ class DiningMemberController extends FoodBaseController {
             if ($dining_uid <= 0) {
                 $diningMemberModel->rollback();
 //                $this->error($dining_uid, '', true);
-                $this->error('添加餐厅员工登录信息失败', '', true);
+                $this->error('添加门店员工登录信息失败', '', true);
             }
             $user_data = array('uid' => $dining_uid, 'nickname' => $dining_member_data['username'], 'status' => 1);
             $member_id = M('Member')->add($user_data);
             if ($member_id == false) {
-                $this->error('添加餐厅员工信息失败', '', true);
+                $this->error('添加门店员工信息失败', '', true);
             }
-            //2 将用户添加入微餐饮店员组
+            //2 将用户添加入微美食店员组
             $authGroupModel = M('AuthGroup');
             $group = $authGroupModel->where(array('description' => 'food_member'))->find();
             $access_data['uid'] = $dining_uid;
@@ -81,9 +81,9 @@ class DiningMemberController extends FoodBaseController {
             $group_access_add = $authGroupAccessModel->add($access_data);
             if ($group_access_add == false) {
                 $diningMemberModel->rollback();
-                $this->error('添加用户到微餐饮店员组失败!', '', true);
+                $this->error('添加用户到微美食店员组失败!', '', true);
             }
-            //3 保存餐厅员工信息
+            //3 保存门店员工信息
             unset($dining_member_data['username']);
             unset($dining_member_data['password']);
             unset($dining_member_data['email']);
@@ -97,22 +97,22 @@ class DiningMemberController extends FoodBaseController {
                 $dining_member_res = $diningMemberModel->add();
                 if ($dining_member_res) {
                     $diningMemberModel->commit();
-                    $this->success('保存餐厅员工信息成功!', '', true);
+                    $this->success('保存门店员工信息成功!', '', true);
                 } else {
                     $diningMemberModel->rollback();
                     $this->error($diningMemberModel->getError(), '', true);
                 }
             } else {
                 $diningMemberModel->rollback();
-                $this->error('保存餐厅员工信息失败!', '', true);
+                $this->error('保存门店员工信息失败!', '', true);
             }
         }
 
-        $this->meta_title = '创建餐厅员工';
+        $this->meta_title = '创建门店员工';
         $this->display('add');
     }
 
-    //编辑餐厅员工(前台面向商家)
+    //编辑门店员工(前台面向商家)
     public function edit() {
         if (IS_POST) {
             $dining_member_data = I('post.');
@@ -121,12 +121,12 @@ class DiningMemberController extends FoodBaseController {
             if ($diningMemberModel->create($dining_member_data)) {
                 $dining_member_edit = $diningMemberModel->save();
                 if ($dining_member_edit) {
-                    $this->success('保存餐厅员工成功', '', true);
+                    $this->success('保存门店员工成功', '', true);
                 } else {
                     $this->error($diningMemberModel->getError(), '', true);
                 }
             } else {
-                $this->error('餐厅员工编辑失败!', '', true);
+                $this->error('门店员工编辑失败!', '', true);
             }
         }
         $id = intval(I('get.id', '', 'trim'));
@@ -135,10 +135,10 @@ class DiningMemberController extends FoodBaseController {
         $map['mp_id'] = MP_ID;
         $dining_member = $diningMemberModel->where($map)->find();
         if ($dining_member == false) {
-            $this->error('未检索到您要编辑的餐厅员工信息!');
+            $this->error('未检索到您要编辑的门店员工信息!');
         }
 
-        //检索所有连锁餐厅
+        //检索所有连锁门店
         $dining_rooms = \Admin\Model\DiningMemberModel::getDiningRooms();
         foreach ($dining_rooms as $val) {
             $dining_room_arr[] = array('id' => $val['id'], 'dining_name' => $val['dining_name']);
@@ -147,11 +147,11 @@ class DiningMemberController extends FoodBaseController {
         $this->assign('selected_dining_room_id', json_encode($dining_member['dining_room_id']));
         $this->assign('dining_member', $dining_member);
         $this->assign('json_dining_member', json_encode($dining_member));
-        $this->meta_title = '编辑餐厅员工';
+        $this->meta_title = '编辑门店员工';
         $this->display('edit');
     }
 
-    //启用餐厅员工(前台面向商家)
+    //启用门店员工(前台面向商家)
     public function enable() {
         $diningmember_id_arr = I('post.id');
         if (empty($diningmember_id_arr)) {
@@ -166,12 +166,12 @@ class DiningMemberController extends FoodBaseController {
         $diningmember_data['update_time'] = time();
         $diningmember_enable = $DiningMemberModel->where($map)->save($diningmember_data);
         if ($diningmember_enable) {
-            $this->success('启用餐厅员工成功!');
+            $this->success('启用门店员工成功!');
         }
-        $this->error('启用餐厅员工失败!');
+        $this->error('启用门店员工失败!');
     }
 
-    //禁用餐厅员工(前台面向商家)
+    //禁用门店员工(前台面向商家)
     public function disable() {
         $diningmember_id_arr = I('post.id');
         if (empty($diningmember_id_arr)) {
@@ -186,9 +186,9 @@ class DiningMemberController extends FoodBaseController {
         $diningmember_data['update_time'] = time();
         $diningmember_disable = $DiningMemberModel->where($map)->save($diningmember_data);
         if ($diningmember_disable) {
-            $this->success('禁用餐厅用户成功!');
+            $this->success('禁用门店用户成功!');
         }
-        $this->error('禁用餐厅用户失败!');
+        $this->error('禁用门店用户失败!');
     }
 
 }

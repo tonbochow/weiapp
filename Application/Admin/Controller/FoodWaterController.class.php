@@ -8,7 +8,7 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮公众平台 | 资金流水控制器
+ * 微美食公众平台 | 资金流水控制器
  */
 class FoodWaterController extends FoodBaseController {
 
@@ -76,7 +76,7 @@ class FoodWaterController extends FoodBaseController {
         }
         import('Common.Extends.PHPExcel.PHPExcel');
         $resultPHPExcel = new \PHPExcel();
-        $resultPHPExcel->getActiveSheet()->setCellValue('A1', '餐厅');
+        $resultPHPExcel->getActiveSheet()->setCellValue('A1', '门店');
         $resultPHPExcel->getActiveSheet()->setCellValue('B1', '订单号');
         $resultPHPExcel->getActiveSheet()->setCellValue('C1', '金额');
         $resultPHPExcel->getActiveSheet()->setCellValue('D1', '平台帐号金额');
@@ -133,7 +133,7 @@ class FoodWaterController extends FoodBaseController {
 //            $data = M('FoodMoneyWater')->where($map)->select();
 //            import('Common.Extends.phpexcel.PHPExcel');
 //            $resultPHPExcel = new \PHPExcel();
-//            $resultPHPExcel->getActiveSheet()->setCellValue('A1', '餐厅');
+//            $resultPHPExcel->getActiveSheet()->setCellValue('A1', '门店');
 //            $resultPHPExcel->getActiveSheet()->setCellValue('B1', '订单号');
 //            $resultPHPExcel->getActiveSheet()->setCellValue('C1', '金额');
 //            $resultPHPExcel->getActiveSheet()->setCellValue('D1', '平台帐号金额');

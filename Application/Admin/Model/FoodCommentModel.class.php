@@ -5,7 +5,7 @@
 // +----------------------------------------------------------------------
 // | Author: tonbochow <tonbochow@qq.com>
 // | date  : 2015-03-02
-// | 微信用户菜品或套餐评论模型
+// | 微信用户美食或套餐评论模型
 // +----------------------------------------------------------------------
 
 namespace Admin\Model;
@@ -16,14 +16,14 @@ class FoodCommentModel extends Model {
 
     public static $STATUS_ENABLE = 1; //显示
     public static $STATUS_DISABLE = 0; //隐藏
-    public static $TYPE_FOOD = 1; //菜品
+    public static $TYPE_FOOD = 1; //美食
     public static $TYPE_SETMENU = 2; //套餐
 
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('wx_openid', 'require', '微信用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('food_setmenu_id', 'require', '菜品或套餐id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('food_setmenu_id', 'require', '美食或套餐id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('comment', 'require', '评论内容不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
@@ -51,7 +51,7 @@ class FoodCommentModel extends Model {
         if ($has_choice) {
             $type_arr = array('' => '请选择');
         }
-        $type_arr[self::$TYPE_FOOD] = '菜品';
+        $type_arr[self::$TYPE_FOOD] = '美食';
         $type_arr[self::$TYPE_SETMENU] = '套餐';
         if ($type !== null) {
             return $type_arr[$type];

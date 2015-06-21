@@ -8,7 +8,7 @@
 namespace Admin\Controller;
 
 /**
- * 后台微餐饮申请试用控制器
+ * 后台微美食申请试用控制器
  */
 class MemberInfoController extends AdminController {
 
@@ -163,7 +163,7 @@ class MemberInfoController extends AdminController {
         $map['member_id'] = array('in', $member_ids_str);
         $memberInfoModel = M('MemberInfo');
         $memberInfoModel->startTrans();
-        //1把用户加入到微应用组(餐饮组)
+        //1把用户加入到微应用组(美食组)
         $authGroupAccessModel = M('AuthGroupAccess');
         $access_res = $authGroupAccessModel->addAll($access_data);
         if ($access_res == false) {

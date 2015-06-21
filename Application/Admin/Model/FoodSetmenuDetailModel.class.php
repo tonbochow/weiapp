@@ -12,7 +12,7 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮餐厅菜品套餐明细模型
+ * 美食门店美食套餐明细模型
  */
 class FoodSetmenuDetailModel extends Model {
 
@@ -22,9 +22,9 @@ class FoodSetmenuDetailModel extends Model {
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('setmenu_id', 'require', '菜品套餐id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('food_id', 'require', '菜品id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('food_name', 'require', '菜品名不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('setmenu_id', 'require', '美食套餐id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('food_id', 'require', '美食id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('food_name', 'require', '美食名不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
@@ -34,7 +34,7 @@ class FoodSetmenuDetailModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-    //获取菜品套餐明细状态
+    //获取美食套餐明细状态
     public static function getFoodSetmenuDetailStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');

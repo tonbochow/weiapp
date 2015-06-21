@@ -7,7 +7,7 @@
 namespace Admin\Controller;
 
 /**
- * 连锁餐厅信息控制器
+ * 连锁门店信息控制器
  */
 class DiningController extends FoodBaseController {
     

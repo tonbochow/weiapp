@@ -12,7 +12,7 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮餐厅菜品分类模型
+ * 美食门店美食分类模型
  */
 class FoodCategoryModel extends Model {
 
@@ -22,9 +22,9 @@ class FoodCategoryModel extends Model {
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('member_id', 'require', '餐厅用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('dining_room_id', 'require', '餐厅ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('cate_name', 'require', '菜品分类不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('member_id', 'require', '门店用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('dining_room_id', 'require', '门店ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('cate_name', 'require', '美食分类不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
@@ -34,7 +34,7 @@ class FoodCategoryModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-    //获取菜品分类状态
+    //获取美食分类状态
     public static function getFoodCategoryStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
@@ -47,7 +47,7 @@ class FoodCategoryModel extends Model {
         return $status_arr;
     }
 
-    //获取菜品分类名
+    //获取美食分类名
     public static function getFoodCategoryName($id) {
         $food_category = M('FoodCategory')->where(array('id' => $id))->find();
         return $food_category['cate_name'];

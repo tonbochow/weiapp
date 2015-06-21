@@ -6,117 +6,117 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>创建餐厅菜品(带*并标注的为必填项)</h2>
+        <h2>创建门店美食(带*并标注的为必填项)</h2>
     </div>
 
-    <div id="dialog" title="餐厅菜品" style="display:none;">
+    <div id="dialog" title="门店美食" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food" ng-app="weiapp_food" id="ng-app"  name="FoodForm" ng-controller="FoodController" ng-submit="submitForm()">
         <div class="form-item" ng-class="{'has-error' : FoodForm.food_name.$invalid && !FoodForm.food_name.$pristine}">
-            <label class="item-label">菜品名<span class="check-tips">（*必填:最大长度30）</span></label>
+            <label class="item-label">美食名<span class="check-tips">（*必填:最大长度30）</span></label>
             <div class="controls">
-                <input name="food_name" type="text" value="" ng-model="food.food_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="food_name" placeholder="餐厅菜品名">
-                <p ng-show="FoodForm.food_name.$invalid && !FoodForm.food_name.$pristine" class="help-block">餐厅菜品名(长度1-30)</p>
+                <input name="food_name" type="text" value="" ng-model="food.food_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="food_name" placeholder="门店美食名">
+                <p ng-show="FoodForm.food_name.$invalid && !FoodForm.food_name.$pristine" class="help-block">门店美食名(长度1-30)</p>
             </div>
         </div>
 
         <div class="form-item" ng-class="{'has-error' : FoodForm.dining_room_id.$invalid && !FoodForm.dining_room_id.$pristine}">
-            <label class="item-label">所属餐厅<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">所属门店<span class="check-tips">（*必填）</span></label>
             <div class="controls">
                 <select class="form-control" name="dining_room_id" required ng-model="food.dining_room_id" ng-change="select_dining(food.dining_room_id)" ng-options="m.id as m.dining_name for m in food.dining_room_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="FoodForm.dining_room_id.$invalid && !FoodForm.dining_room_id.$pristine" class="help-block">请选择所属餐厅</p>
+                <p ng-show="FoodForm.dining_room_id.$invalid && !FoodForm.dining_room_id.$pristine" class="help-block">请选择所属门店</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.cate_id.$invalid && !FoodForm.cate_id.$pristine}">
-            <label class="item-label">所属菜品分类<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">所属美食分类<span class="check-tips">（*必填）</span></label>
             <div class="controls">
                 <select class="form-control" name="cate_id" required ng-model="food.cate_id" ng-options="m.id as m.cate_name for m in food.cate_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="FoodForm.cate_id.$invalid && !FoodForm.cate_id.$pristine" class="help-block">请选择所属菜品分类</p>
+                <p ng-show="FoodForm.cate_id.$invalid && !FoodForm.cate_id.$pristine" class="help-block">请选择所属美食分类</p>
             </div>
         </div>
 
         <div class="form-item" ng-class="{'has-error' : FoodForm.price.$invalid && !FoodForm.price.$pristine}">
-            <label class="item-label">菜品原价<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">美食原价<span class="check-tips">（*必填）</span></label>
             <div class="controls">
-                <input name="price" type="text" value="" ng-model="food.price"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="price" placeholder="菜品原价">
-                <p ng-show="FoodForm.price.$invalid && !FoodForm.price.$pristine" class="help-block">餐厅菜品原价应为数字</p>
+                <input name="price" type="text" value="" ng-model="food.price"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="price" placeholder="美食原价">
+                <p ng-show="FoodForm.price.$invalid && !FoodForm.price.$pristine" class="help-block">门店美食原价应为数字</p>
             </div>
         </div>
 
         <div class="form-item" ng-class="{'has-error' : FoodForm.weixin_price.$invalid && !FoodForm.weixin_price.$pristine}">
-            <label class="item-label">菜品微信销售价格<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">美食微信销售价格<span class="check-tips">（*必填）</span></label>
             <div class="controls">
-                <input name="weixin_price" type="text" value="" ng-model="food.weixin_price"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="weixin_price" placeholder="菜品微信销售价格">
-                <p ng-show="FoodForm.weixin_price.$invalid && !FoodForm.weixin_price.$pristine" class="help-block">菜品微信销售价格应为数字</p>
+                <input name="weixin_price" type="text" value="" ng-model="food.weixin_price"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="weixin_price" placeholder="美食微信销售价格">
+                <p ng-show="FoodForm.weixin_price.$invalid && !FoodForm.weixin_price.$pristine" class="help-block">美食微信销售价格应为数字</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.cost_price.$invalid && !FoodForm.cost_price.$pristine}">
-            <label class="item-label">菜品成本价格<span class="check-tips"></span></label>
+            <label class="item-label">美食成本价格<span class="check-tips"></span></label>
             <div class="controls">
-                <input name="cost_price" type="text" value="" ng-model="food.cost_price"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="20"  class="form-control text input-large" id="weixin_price" placeholder="菜品成本价格">
+                <input name="cost_price" type="text" value="" ng-model="food.cost_price"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="20"  class="form-control text input-large" id="weixin_price" placeholder="美食成本价格">
                 <p ng-show="FoodForm.cost_price.$invalid && !FoodForm.cost_price.$pristine" class="help-block">微信成本价应为数字</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.unit.$invalid && !FoodForm.unit.$pristine}">
-            <label class="item-label">菜品单位<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">美食单位<span class="check-tips">（*必填）</span></label>
             <div class="controls">
-                <input name="unit" type="text" value="" ng-model="food.unit"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required class="form-control text input-large" id="unit" placeholder="菜品单位">
-                <p ng-show="FoodForm.unit.$invalid && !FoodForm.unit.$pristine" class="help-block">菜品单位必填</p>
+                <input name="unit" type="text" value="" ng-model="food.unit"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required class="form-control text input-large" id="unit" placeholder="美食单位">
+                <p ng-show="FoodForm.unit.$invalid && !FoodForm.unit.$pristine" class="help-block">美食单位必填</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.stock.$invalid && !FoodForm.stock.$pristine}">
-            <label class="item-label">菜品库存<span class="check-tips">(不填为填则默认库存不限制)</span></label>
+            <label class="item-label">美食库存<span class="check-tips">(不填为填则默认库存不限制)</span></label>
             <div class="controls">
-                <input name="stock" type="text" value="" ng-model="food.stock"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="20"  class="form-control text input-large" id="stock" placeholder="菜品库存">
-                <p ng-show="FoodForm.stock.$invalid && !FoodForm.stock.$pristine" class="help-block">菜品库存应为数字</p>
+                <input name="stock" type="text" value="" ng-model="food.stock"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="20"  class="form-control text input-large" id="stock" placeholder="美食库存">
+                <p ng-show="FoodForm.stock.$invalid && !FoodForm.stock.$pristine" class="help-block">美食库存应为数字</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.description.$invalid && !FoodForm.description.$pristine}">
-            <label class="item-label">菜品描述<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">美食描述<span class="check-tips">（*必填）</span></label>
             <div class="controls">
-                <!--<input name="unit" type="text" value="" ng-model="food.unit"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required class="form-control text input-large" id="unit" placeholder="菜品单位">-->
+                <!--<input name="unit" type="text" value="" ng-model="food.unit"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required class="form-control text input-large" id="unit" placeholder="美食单位">-->
                 <div class="ueditor" config="config" ng-model="food.description" ng-minlength="1" ng-trim="true" required ></div>
-                <p ng-show="FoodForm.description.$invalid && !FoodForm.description.$pristine" class="help-block">菜品描述必填</p>
+                <p ng-show="FoodForm.description.$invalid && !FoodForm.description.$pristine" class="help-block">美食描述必填</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.is_hot.$invalid && !FoodForm.is_hot.$pristine}">
-            <label class="item-label">是否热销菜品<span class="check-tips">(默认为非热销商品)</span></label>
+            <label class="item-label">是否热销美食<span class="check-tips">(默认为非热销商品)</span></label>
             <div class="controls">
                 <select class="form-control" name="is_hot"  ng-model="food.is_hot" ng-options="m.id as m.hot_name for m in food.hot_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="FoodForm.is_hot.$invalid && !FoodForm.is_hot.$pristine" class="help-block">请选择是否热销菜品</p>
+                <p ng-show="FoodForm.is_hot.$invalid && !FoodForm.is_hot.$pristine" class="help-block">请选择是否热销美食</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.is_promotion.$invalid && !FoodForm.is_promotion.$pristine}">
-            <label class="item-label">是否促销菜品<span class="check-tips">(默认为非促销商品)</span></label>
+            <label class="item-label">是否促销美食<span class="check-tips">(默认为非促销商品)</span></label>
             <div class="controls">
                 <select class="form-control" name="is_promotion"  ng-model="food.is_promotion" ng-options="m.id as m.promotion_name for m in food.promotion_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="FoodForm.is_promotion.$invalid && !FoodForm.is_promotion.$pristine" class="help-block">请选择是否促销菜品</p>
+                <p ng-show="FoodForm.is_promotion.$invalid && !FoodForm.is_promotion.$pristine" class="help-block">请选择是否促销美食</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.style_id.$invalid && !FoodForm.style_id.$pristine}">
-            <label class="item-label">菜品风格<span class="check-tips"></span></label>
+            <label class="item-label">美食风格<span class="check-tips"></span></label>
             <div class="controls">
                 <select class="form-control" name="style_id"  ng-model="food.style_id" ng-options="m.id as m.food_style_name for m in food.food_styles_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="FoodForm.style_id.$invalid && !FoodForm.style_id.$pristine" class="help-block">请选择菜品风格</p>
+                <p ng-show="FoodForm.style_id.$invalid && !FoodForm.style_id.$pristine" class="help-block">请选择美食风格</p>
             </div>
         </div>
         
@@ -141,17 +141,17 @@
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.status.$invalid && !FoodForm.status.$pristine}">
-            <label class="item-label">菜品状态<span class="check-tips">(默认为菜品状态为上架)</span></label>
+            <label class="item-label">美食状态<span class="check-tips">(默认为美食状态为上架)</span></label>
             <div class="controls">
                 <select class="form-control" name="status"  ng-model="food.status" ng-options="m.id as m.status_name for m in food.status_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="FoodForm.status.$invalid && !FoodForm.status.$pristine" class="help-block">请选择菜品状态</p>
+                <p ng-show="FoodForm.status.$invalid && !FoodForm.status.$pristine" class="help-block">请选择美食状态</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.share_title.$invalid && !FoodForm.share_title.$pristine}">
-            <label class="item-label">微信朋友圈分享显示标题<span class="check-tips">（默认分享标题为菜品名称）</span></label>
+            <label class="item-label">微信朋友圈分享显示标题<span class="check-tips">（默认分享标题为美食名称）</span></label>
             <div class="controls">
                 <input name="share_title" type="text" value="" ng-model="food.share_title"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,60}$/" ng-trim="true" ng-minlength="1" ng-maxlength="60" class="form-control text input-large" id="share_title" placeholder="微信朋友圈分享显示标题">
                 <p ng-show="FoodForm.share_title.$invalid && !FoodForm.share_title.$pristine" class="help-block">微信朋友圈分享显示标题(长度1-60)</p>
@@ -160,7 +160,7 @@
         
         
         <div class="form-item" ng-class="{'has-error' : FoodForm.share_desc.$invalid && !FoodForm.share_desc.$pristine}">
-            <label class="item-label">微信朋友圈分享显示描述<span class="check-tips">（默认分享标题为菜品名称）</span></label>
+            <label class="item-label">微信朋友圈分享显示描述<span class="check-tips">（默认分享标题为美食名称）</span></label>
             <div class="controls">
                 <input name="share_desc" type="text" value="" ng-model="food.share_desc"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,128}$/" ng-trim="true" ng-minlength="1" ng-maxlength="128" class="form-control text input-large" id="share_desc" placeholder="微信朋友圈分享显示描述">
                 <p ng-show="FoodForm.share_desc.$invalid && !FoodForm.share_desc.$pristine" class="help-block">微信朋友圈分享显示描述(长度1-128)</p>

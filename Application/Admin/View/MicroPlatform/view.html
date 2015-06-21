@@ -45,7 +45,7 @@
         </div>
 
         <div class="form-item" ng-class="{'has-error' : MemberInfoForm.app_type.$invalid && !MemberInfoForm.app_type.$pristine}">
-            <label class="item-label">应用类型<span class="check-tips">（如:餐饮 摄影 商城）</span></label>
+            <label class="item-label">应用类型<span class="check-tips">（如:美食 摄影 商城）</span></label>
             <div class="controls">
                 <select class="form-control" name="app_type" required ng-model="member_info.app_type" ng-options="m.id as m.app_type for m in member_info.app_type_arr">
                     <option value="">请选择</option>

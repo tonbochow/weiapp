@@ -6,9 +6,9 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>微餐饮公众平台信息</h2>
+        <h2>微美食公众平台信息</h2>
     </div>
-    <div id="dialog" title="微餐饮公众平台信息" style="display:none;">
+    <div id="dialog" title="微美食公众平台信息" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" enctype="multipart/form-data" class="ng-app:weiapp_mp" ng-app="weiapp_mp" id="ng-app" name="MpForm" ng-controller="MpController" ng-submit="submitForm()">
@@ -111,20 +111,20 @@
         </div>
         
 <!--        <div class="form-item" ng-class="{'has-error' : MpForm.is_chain.$invalid && !MpForm.is_chain.$pristine}">
-            <label class="item-label">连锁餐厅<span class="check-tips">（是否连锁）</span></label>
+            <label class="item-label">连锁门店<span class="check-tips">（是否连锁）</span></label>
             <div class="controls">
                 <select class="form-control" name="is_chain" required ng-model="platform.is_chain" ng-options="m.id as m.is_chain for m in platform.is_chain_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="MpForm.is_chain.$invalid && !MpForm.is_chain.$pristine" class="help-block">请选择是否连锁餐厅</p>
+                <p ng-show="MpForm.is_chain.$invalid && !MpForm.is_chain.$pristine" class="help-block">请选择是否连锁门店</p>
             </div>
         </div>-->
         
 <!--        <div class="form-item" ng-class="{'has-error' : MpForm.chain_num.$invalid && !MpForm.chain_num.$pristine}">
-            <label class="item-label">连锁餐厅个数<span class="check-tips">（非连锁餐厅不用填写|非必填项）</span></label>
+            <label class="item-label">连锁门店个数<span class="check-tips">（非连锁门店不用填写|非必填项）</span></label>
             <div class="controls">
-                <input name="chain_num" type="text" value="{$micro_platform.chain_num}" ng-model="platform.chain_num"  ng-pattern="/^[\d]+$/" ng-trim="true" ng-minlength="1" ng-maxlength="256"  class="form-control text input-large" id="chain_num" placeholder="连锁餐厅个数">
-                <p ng-show="MpForm.chain_num.$invalid && !MpForm.chain_num.$pristine" class="help-block">连锁餐厅个数为正整数</p>
+                <input name="chain_num" type="text" value="{$micro_platform.chain_num}" ng-model="platform.chain_num"  ng-pattern="/^[\d]+$/" ng-trim="true" ng-minlength="1" ng-maxlength="256"  class="form-control text input-large" id="chain_num" placeholder="连锁门店个数">
+                <p ng-show="MpForm.chain_num.$invalid && !MpForm.chain_num.$pristine" class="help-block">连锁门店个数为正整数</p>
             </div>
         </div>-->
         

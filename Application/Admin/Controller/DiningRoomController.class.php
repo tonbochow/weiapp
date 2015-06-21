@@ -10,11 +10,11 @@ namespace Admin\Controller;
 //use User\Api\UserApi;
 
 /**
- * 微餐饮微信公众平台 | 餐厅控制器
+ * 微美食微信公众平台 | 门店控制器
  */
 class DiningRoomController extends FoodBaseController {
 
-    //餐厅列表(后台管理员)
+    //门店列表(后台管理员)
     public function index() {
         $get_dining_name = I('get.dining_name');
         if (!empty($get_dining_name)) {
@@ -22,11 +22,11 @@ class DiningRoomController extends FoodBaseController {
         }
         $list = $this->lists('DiningRoom', $map, 'mp_id,status,id');
         $this->assign('list', $list);
-        $this->meta_title = '微餐饮餐厅列表';
+        $this->meta_title = '微美食门店列表';
         $this->display('index');
     }
 
-    //餐厅列表(前台面向商家)
+    //门店列表(前台面向商家)
     public function show() {
         $map['mp_id'] = MP_ID;
         $get_dining_name = I('get.dining_name');
@@ -37,33 +37,33 @@ class DiningRoomController extends FoodBaseController {
         $dining_room_num = count($list);
         $this->assign('dining_room_num', $dining_room_num);
         $this->assign('list', $list);
-        $this->meta_title = '餐厅列表';
+        $this->meta_title = '门店列表';
         $this->display('show');
     }
 
-    //创建餐厅(前台面向商家) 非连锁只能创建一个 连锁可以创建多个
+    //创建门店(前台面向商家) 非连锁只能创建一个 连锁可以创建多个
     public function add() {
         $dining_room_num = M('DiningRoom')->where(array('mp_id' => MP_ID, 'member_id' => UID))->count();
-        if (IS_CHAIN) {//若为连锁餐厅 检查是否已创建了连锁餐厅信息
+        if (IS_CHAIN) {//若为连锁门店 检查是否已创建了连锁门店信息
             $chain_dining = M('ChainDining')->where(array('mp_id' => MP_ID))->find();
             if ($chain_dining == false) {
                 if (IS_POST) {
-                    $this->error('请先创建连锁餐厅信息!', '/Admin/ChainDining/info', true);
+                    $this->error('请先创建连锁门店信息!', '/Admin/ChainDining/info', true);
                 }
-                $this->error('请先创建连锁餐厅信息!', '/Admin/ChainDining/info');
+                $this->error('请先创建连锁门店信息!', '/Admin/ChainDining/info');
             }
             if ($dining_room_num >= 10) {
                 if (IS_POST) {
-                    $this->error('连锁餐厅最多允许创建10个餐厅!', '/Admin/DiningRoom/show', true);
+                    $this->error('连锁门店最多允许创建10个门店!', '/Admin/DiningRoom/show', true);
                 }
-                $this->error('连锁餐厅最多允许创建10个餐厅!', '/Admin/DiningRoom/show');
+                $this->error('连锁门店最多允许创建10个门店!', '/Admin/DiningRoom/show');
             }
         } else {
             if ($dining_room_num > 1) {
                 if (IS_POST) {
-                    $this->error('非连锁餐厅最多允许创建1个餐厅!', '/Admin/DiningRoom/show', true);
+                    $this->error('非连锁门店最多允许创建1个门店!', '/Admin/DiningRoom/show', true);
                 }
-                $this->error('非连锁餐厅最多允许创建1个餐厅!', '/Admin/DiningRoom/show');
+                $this->error('非连锁门店最多允许创建1个门店!', '/Admin/DiningRoom/show');
             }
         }
         
@@ -89,7 +89,7 @@ class DiningRoomController extends FoodBaseController {
 //                $diningRoomModel->rollback();
 //                $this->error($this->showRegError($dining_uid));
 //            }
-//            //2 将用户添加入微餐饮店员组
+//            //2 将用户添加入微美食店员组
 //            $authGroupModel = M('AuthGroup');
 //            $group = $authGroupModel->where(array('description' => 'food_member'))->find();
 //            $access_data['uid'] = $dining_uid;
@@ -98,9 +98,9 @@ class DiningRoomController extends FoodBaseController {
 //            $group_access_add = $authGroupAccessModel->add($access_data);
 //            if ($group_access_add == false) {
 //                $diningRoomModel->rollback();
-//                $this->error('添加用户到微餐饮店员组失败!', '', true);
+//                $this->error('添加用户到微美食店员组失败!', '', true);
 //            }
-//            //3 保存餐厅信息
+//            //3 保存门店信息
 //            unset($dining_room_data['username']);
 //            unset($dining_room_data['password']);
 //            unset($dining_room_data['email']);
@@ -128,14 +128,14 @@ class DiningRoomController extends FoodBaseController {
                 $dining_room_res = $diningRoomModel->add();
                 if ($dining_room_res) {
                     $diningRoomModel->commit();
-                    $this->success('保存餐厅信息成功!', '', true);
+                    $this->success('保存门店信息成功!', '', true);
                 } else {
                     $diningRoomModel->rollback();
                     $this->error($diningRoomModel->getError(), '', true);
                 }
             } else {
                 $diningRoomModel->rollback();
-                $this->error('保存餐厅信息失败!', '', true);
+                $this->error('保存门店信息失败!', '', true);
             }
         }
         //省市县设置
@@ -143,7 +143,7 @@ class DiningRoomController extends FoodBaseController {
         $province = $region_model->getRegion(86);
         $this->assign('province', $province);
         $this->assign('json_dining', json_encode(null));
-        $this->meta_title = '创建餐厅';
+        $this->meta_title = '创建门店';
         $this->display('add');
     }
 
@@ -155,7 +155,7 @@ class DiningRoomController extends FoodBaseController {
         echo json_encode($list);
     }
 
-    //编辑餐厅(前台面向商家)
+    //编辑门店(前台面向商家)
     public function edit() {
         if (IS_POST) {
             $dining_room_data = I('post.');
@@ -178,12 +178,12 @@ class DiningRoomController extends FoodBaseController {
             if ($diningRoomModel->create($dining_room_data)) {
                 $dining_room_edit = $diningRoomModel->save();
                 if ($dining_room_edit) {
-                    $this->success('保存餐厅成功', '', true);
+                    $this->success('保存门店成功', '', true);
                 } else {
                     $this->error($diningRoomModel->getError(), '', true);
                 }
             } else {
-                $this->error('餐厅编辑失败!', '', true);
+                $this->error('门店编辑失败!', '', true);
             }
         }
         $id = intval(I('get.id', '', 'trim'));
@@ -193,7 +193,7 @@ class DiningRoomController extends FoodBaseController {
         $map['mp_id'] = MP_ID;
         $dining_room = $diningRoomModel->where($map)->find();
         if ($dining_room == false) {
-            $this->error('未检索到您要编辑的餐厅信息!');
+            $this->error('未检索到您要编辑的门店信息!');
         }
         $dining_room['description'] = htmlspecialchars_decode(stripslashes($dining_room['description']));
         
@@ -218,11 +218,11 @@ class DiningRoomController extends FoodBaseController {
 
         $this->assign('dining_room', $dining_room);
         $this->assign('json_dining', json_encode($dining_room));
-        $this->meta_title = '编辑餐厅';
+        $this->meta_title = '编辑门店';
         $this->display('edit');
     }
 
-    //编辑餐厅详细(图片设置)
+    //编辑门店详细(图片设置)
     public function detail() {
         if (IS_POST) {
             $detail_data = I('post.');
@@ -232,7 +232,7 @@ class DiningRoomController extends FoodBaseController {
             $map['member_id'] = UID;
             $dining_room = M('DiningRoom')->where($map)->find();
             if ($dining_room == false) {
-                $this->error('未检索到您要添加图片的餐厅信息!', '', true);
+                $this->error('未检索到您要添加图片的门店信息!', '', true);
             }
             $save_path = C('WEBSITE_URL') . '/Uploads/Mp/' . MP_ID . '/dining_room/' . $dining_room_id . '/';
             if (!file_exists($save_path)) {
@@ -251,7 +251,7 @@ class DiningRoomController extends FoodBaseController {
                     if ($create_pic == false) {
                         $this->error('生成图片失败!', '', true);
                     }
-                    //写入或更新餐厅明细表
+                    //写入或更新门店明细表
                     $detail_map['mp_id'] = MP_ID;
                     $detail_map['member_id'] = UID;
                     $detail_map['input_name'] = $input_name;
@@ -270,7 +270,7 @@ class DiningRoomController extends FoodBaseController {
                                 $this->error($detailModel->getError(), '', true);
                             }
                         } else {
-                            $this->error('保存餐厅图片失败!');
+                            $this->error('保存门店图片失败!');
                         }
                     } else {//更新明细表
                         $save_data['id'] = $detail_exist['id'];
@@ -286,12 +286,12 @@ class DiningRoomController extends FoodBaseController {
                                 $this->error($detailModel->getError(), '', true);
                             }
                         } else {
-                            $this->error('更新餐厅图片失败!');
+                            $this->error('更新门店图片失败!');
                         }
                     }
                 }
             }
-            $this->success('保存餐厅图片成功!', '', true);
+            $this->success('保存门店图片成功!', '', true);
         }
         $id = intval(I('get.id', '', 'trim'));
         $map['id'] = $id;
@@ -299,9 +299,9 @@ class DiningRoomController extends FoodBaseController {
         $map['member_id'] = UID;
         $dining_room = M('DiningRoom')->where($map)->find();
         if ($dining_room == false) {
-            $this->error('未检索到您要添加图片的餐厅信息!');
+            $this->error('未检索到您要添加图片的门店信息!');
         }
-        //检索餐厅明细信息
+        //检索门店明细信息
         $detail_info['id'] = $id;
         $dining_room_details = M('DiningRoomDetail')->where(array('mp_id' => MP_ID, 'member_id' => UID, 'dining_room_id' => $id))->select();
         if ($dining_room_details != false) {
@@ -314,11 +314,11 @@ class DiningRoomController extends FoodBaseController {
         $this->assign('detail_info', $detail_info);
         $this->assign('json_detail', json_encode($detail_info));
         $this->assign('dining_room', $dining_room);
-        $this->meta_title = '餐厅图片添加(详细设置)';
+        $this->meta_title = '门店图片添加(详细设置)';
         $this->display('detail');
     }
 
-    //启用餐厅(前台面向商家)
+    //启用门店(前台面向商家)
     public function enable() {
         $diningroom_id_arr = I('post.id');
         if (empty($diningroom_id_arr)) {
@@ -333,12 +333,12 @@ class DiningRoomController extends FoodBaseController {
         $diningroom_data['update_time'] = time();
         $diningroom_enable = $DiningRoomModel->where($map)->save($diningroom_data);
         if ($diningroom_enable) {
-            $this->success('启用餐厅成功!');
+            $this->success('启用门店成功!');
         }
-        $this->error('启用餐厅失败!');
+        $this->error('启用门店失败!');
     }
 
-    //禁用餐厅(前台面向商家)
+    //禁用门店(前台面向商家)
     public function disable() {
         $diningroom_id_arr = I('post.id');
         if (empty($diningroom_id_arr)) {
@@ -353,9 +353,9 @@ class DiningRoomController extends FoodBaseController {
         $diningroom_data['update_time'] = time();
         $diningroom_disable = $DiningRoomModel->where($map)->save($diningroom_data);
         if ($diningroom_disable) {
-            $this->success('禁用餐厅成功!');
+            $this->success('禁用门店成功!');
         }
-        $this->error('禁用餐厅失败!');
+        $this->error('禁用门店失败!');
     }
 
 }

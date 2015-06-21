@@ -12,7 +12,7 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮订单模型
+ * 美食订单模型
  */
 class FoodOrderModel extends Model {
 
@@ -21,7 +21,7 @@ class FoodOrderModel extends Model {
     public static $STATUS_WXPAYED = 2; //订单状态 已支付待送餐
     public static $STATUS_DELIVERY = 3; //订单状态 送餐中
     public static $STATUS_FINISHED = 4; //订单状态 已完成
-    public static $TYPE_DINING_ROOM = 1; //订单类型 0 到餐厅用餐
+    public static $TYPE_DINING_ROOM = 1; //订单类型 0 到门店用餐
     public static $TYPE_DELIVERY_HOME = 2; //订单类型 1 送餐到家
     public static $PAY_TYPE_WEIXIN = 1; //支付类型:微信支付
     public static $PAY_TYPE_ZHIFUBAO = 2; //支付类型:支付宝支付
@@ -34,7 +34,7 @@ class FoodOrderModel extends Model {
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('member_id', 'require', '下单用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('menu_name', 'require', '微信菜单名称不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('dining_room_id', 'require', '下单餐厅id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('dining_room_id', 'require', '下单门店id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('order_no', 'require', '订单编号order_no不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('type', 'require', '订单类型类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('pay_type', 'require', '订单支付类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
@@ -83,7 +83,7 @@ class FoodOrderModel extends Model {
         if ($has_choice) {
             $type_arr = array('' => '请选择');
         }
-        $type_arr[self::$TYPE_DINING_ROOM] = '到餐厅用餐';
+        $type_arr[self::$TYPE_DINING_ROOM] = '到门店用餐';
         $type_arr[self::$TYPE_DELIVERY_HOME] = '送餐到家';
         if ($type !== null) {
             return $type_arr[$type];

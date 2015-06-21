@@ -12,7 +12,7 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮连锁餐厅信息模型
+ * 美食连锁门店信息模型
  */
 class ChainDiningModel extends Model {
 
@@ -22,13 +22,13 @@ class ChainDiningModel extends Model {
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('member_id', 'require', '连锁餐厅负责人id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('chain_dining_name', 'require', '连锁餐厅名称不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('member_id', 'require', '连锁门店负责人id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('chain_dining_name', 'require', '连锁门店名称不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('mobile', '/^1\d{10}$/', '手机号码不符要求', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('description', 'require', '连锁餐厅简介不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-//        array('carousel_fir', 'require', '连锁餐厅第一张轮播不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-//        array('carousel_sec', 'require', '连锁餐厅第二张轮播不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-//        array('carousel_thr', 'require', '连锁餐厅第三张轮播不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('description', 'require', '连锁门店简介不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+//        array('carousel_fir', 'require', '连锁门店第一张轮播不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+//        array('carousel_sec', 'require', '连锁门店第二张轮播不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+//        array('carousel_thr', 'require', '连锁门店第三张轮播不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('mp_original_id', 'require', '微信公众平台原始ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('mp_original_id', '/^[a-zA-Z_]\w{1,256}$/', '微信公众平台原始ID以字母或下划线开头', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('mp_wxcode', 'require', '微信公众平台微信号不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
@@ -52,7 +52,7 @@ class ChainDiningModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-    //获取连锁餐厅信息状态
+    //获取连锁门店信息状态
     public static function getChainDiningStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
@@ -65,13 +65,13 @@ class ChainDiningModel extends Model {
         return $status_arr;
     }
 
-    //通过mp_id获取连锁餐厅名称
+    //通过mp_id获取连锁门店名称
     public static function getChainDiningNameByMpId($mp_id) {
         $chain_dining = M('ChainDining')->where(array('mp_id' => $mp_id))->find();
         return $chain_dining['chain_dining_name'];
     }
 
-    //通过id获取连锁餐厅名称
+    //通过id获取连锁门店名称
     public static function getChainDiningNameById($id) {
         $chain_dining = M('ChainDining')->where(array('id' => $id))->find();
         return $chain_dining['chain_dining_name'];

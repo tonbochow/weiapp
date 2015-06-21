@@ -8,11 +8,11 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮微信公众平台 | 菜品套餐控制器
+ * 微美食微信公众平台 | 美食套餐控制器
  */
 class FoodSetmenuController extends FoodBaseController {
 
-    //餐厅菜品风格列表(后台管理员)
+    //门店美食风格列表(后台管理员)
     public function index() {
         $get_setmenu_name = I('get.setmenu_name');
         if (!empty($get_setmenu_name)) {
@@ -20,11 +20,11 @@ class FoodSetmenuController extends FoodBaseController {
         }
         $list = $this->lists('FoodSetmenu', $map, 'mp_id,status,id');
         $this->assign('list', $list);
-        $this->meta_title = '微餐饮菜品套餐列表';
+        $this->meta_title = '微美食美食套餐列表';
         $this->display('index');
     }
 
-    //餐厅菜品套餐列表(前台面向商家)
+    //门店美食套餐列表(前台面向商家)
     public function show() {
         $map['mp_id'] = MP_ID;
         $get_setmenu_name = I('get.setmenu_name');
@@ -33,25 +33,25 @@ class FoodSetmenuController extends FoodBaseController {
         }
         $list = $this->lists('FoodSetmenu', $map, 'status,id');
         $this->assign('list', $list);
-        $this->meta_title = '餐厅菜品套餐列表';
+        $this->meta_title = '门店美食套餐列表';
         $this->display('show');
     }
 
-    //创建餐厅菜品套餐(前台面向商家)
+    //创建门店美食套餐(前台面向商家)
     public function add() {
-        //检索是否添加了菜品
+        //检索是否添加了美食
         $food = M('Food')->where(array('mp_id' => MP_ID, 'status' => \Admin\Model\FoodModel::$STATUS_ENABLED))->select();
         if (empty($food)) {
             if (IS_POST) {
-                $this->error('请先创建菜品!', '', true);
+                $this->error('请先创建美食!', '', true);
             } else {
-                $this->error('请先创建菜品!');
+                $this->error('请先创建美食!');
             }
         }
         if (IS_POST) {
             $food_setmenu_data = I('post.');
             if (empty($food_setmenu_data['url'])) {
-                $this->error('请上传一张菜品套餐图片', '', true);
+                $this->error('请上传一张美食套餐图片', '', true);
             }
 //            $setmenu_pic = $food_setmenu_data['url'];
 //            unset($food_setmenu_data['url']);
@@ -72,7 +72,7 @@ class FoodSetmenuController extends FoodBaseController {
             }
             $food_setmenu_data['url'] = $final_url;
             $foodSetmenuModel = D('FoodSetmenu');
-            //保存餐厅菜品套餐
+            //保存门店美食套餐
             $food_setmenu_data['mp_id'] = MP_ID;
             $food_setmenu_data['member_id'] = UID;
             $food_setmenu_data['share_title'] = !empty($food_setmenu_data['share_title']) ? $food_setmenu_data['share_title'] : $food_setmenu_data['setmenu_name`'];
@@ -80,13 +80,13 @@ class FoodSetmenuController extends FoodBaseController {
             if ($foodSetmenuModel->create($food_setmenu_data, \Admin\Model\FoodSetmenuModel::MODEL_INSERT)) {
                 $food_setmenu_add = $foodSetmenuModel->add();
                 if ($food_setmenu_add) {
-                    $this->success('保存餐厅菜品套餐成功!', '', true);
+                    $this->success('保存门店美食套餐成功!', '', true);
                 }
             }
             @unlink(C('WEBSITE_URL') . $final_url);
             $this->error($foodSetmenuModel->getError(), '', true);
         }
-        //检索餐厅
+        //检索门店
         if (IS_CHAIN) {
             $dining_room_arr[] = array('id' => '0', 'dining_name' => '所有门店通用');
         }
@@ -104,11 +104,11 @@ class FoodSetmenuController extends FoodBaseController {
 
         $this->assign('card_arr', json_encode($arr_card));
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
-        $this->meta_title = '创建餐厅菜品套餐';
+        $this->meta_title = '创建门店美食套餐';
         $this->display('add');
     }
 
-    //编辑餐厅菜品套餐(前台面向商家)
+    //编辑门店美食套餐(前台面向商家)
     public function edit() {
 
         $id = intval(I('request.id', '', 'trim'));
@@ -118,9 +118,9 @@ class FoodSetmenuController extends FoodBaseController {
         $food_setmenu = $foodSetmenuModel->where($map)->find();
         if ($food_setmenu == false) {
             if (IS_POST) {
-                $this->error('未检索到您要编辑的餐厅菜品套餐!', '', true);
+                $this->error('未检索到您要编辑的门店美食套餐!', '', true);
             } else {
-                $this->error('未检索到您要编辑的餐厅菜品套餐!');
+                $this->error('未检索到您要编辑的门店美食套餐!');
             }
         }
         if (IS_POST) {
@@ -153,13 +153,13 @@ class FoodSetmenuController extends FoodBaseController {
             if ($foodSetmenuModel->create($food_setmenu_data, \Admin\Model\FoodSetmenuModel::MODEL_UPDATE)) {
                 $food_setmenu_edit = $foodSetmenuModel->save();
                 if ($food_setmenu_edit) {
-                    $this->success('保存餐厅菜品套餐成功', '', true);
+                    $this->success('保存门店美食套餐成功', '', true);
                 }
             }
             $this->error($foodSetmenuModel->getError(), '', true);
         }
 
-        //检索餐厅
+        //检索门店
         if (IS_CHAIN) {
             $dining_room_arr[] = array('id' => '0', 'dining_name' => '所有门店通用');
         }
@@ -180,24 +180,24 @@ class FoodSetmenuController extends FoodBaseController {
         $this->assign('dining_room_arr', json_encode($dining_room_arr));
         $this->assign('food_setmenu', $food_setmenu);
         $this->assign('json_food_setmenu', json_encode($food_setmenu));
-        $this->meta_title = '编辑餐厅菜品套餐';
+        $this->meta_title = '编辑门店美食套餐';
         $this->display('edit');
     }
 
-    //添加餐厅菜品明细(面向前台商家)
+    //添加门店美食明细(面向前台商家)
     public function addfood() {
-        if (IS_POST) { //添加菜品入套餐
+        if (IS_POST) { //添加美食入套餐
             $setmenu_id = I('get.setmenu_id');
             $map['id'] = $setmenu_id;
             $map['mp_id'] = MP_ID;
             $foodSetmenuModel = M('FoodSetmenu');
             $food_setmenu = $foodSetmenuModel->where($map)->find();
             if ($food_setmenu == false) {
-                $this->error('未检索到您要添加菜品的套餐');
+                $this->error('未检索到您要添加美食的套餐');
             }
             $food_id_arr = I('post.id');
             if (empty($food_id_arr)) {
-                $this->error('请选择要加入套餐的菜品!');
+                $this->error('请选择要加入套餐的美食!');
             }
             $food_ids = array_unique($food_id_arr);
             $food_ids_str = is_array($food_ids) ? implode(',', $food_ids) : $food_ids;
@@ -209,7 +209,7 @@ class FoodSetmenuController extends FoodBaseController {
             $total_amount = $food_setmenu['setmenu_money'];
             $setmenuDetailModel = D('FoodSetmenuDetail');
             $setmenuDetailModel->startTrans();
-            foreach ($foods as $food) {//添加菜品如套餐
+            foreach ($foods as $food) {//添加美食如套餐
                 $detail_data['setmenu_id'] = $setmenu_id;
                 $detail_data['mp_id'] = MP_ID;
                 $detail_data['food_id'] = $food['id'];
@@ -240,7 +240,7 @@ class FoodSetmenuController extends FoodBaseController {
             $setmenu_save = $foodSetmenuModel->where(array('id' => $setmenu_id))->save($setmenu_data);
             if ($setmenu_save) {
                 $setmenuDetailModel->commit();
-                $this->success('添加菜品入套餐成功!', '', true);
+                $this->success('添加美食入套餐成功!', '', true);
             }
             $setmenuDetailModel->rollback();
             $this->error($foodSetmenuModel->getError(), '', true);
@@ -251,9 +251,9 @@ class FoodSetmenuController extends FoodBaseController {
         $foodSetmenuModel = M('FoodSetmenu');
         $food_setmenu = $foodSetmenuModel->where($map)->find();
         if ($food_setmenu == false) {
-            $this->error('未检索到您要编辑的菜品套餐');
+            $this->error('未检索到您要编辑的美食套餐');
         }
-        //检索菜品
+        //检索美食
         $get_food_name = I('get.food_name');
         if (!empty($get_food_name)) {
             $food_map['food_name'] = array('like', '%' . (string) I('food_name') . '%');
@@ -266,11 +266,11 @@ class FoodSetmenuController extends FoodBaseController {
         $this->assign('list', $list);
 
         $this->assign('food_setmenu', $food_setmenu);
-        $this->meta_title = '添加菜品入套餐';
+        $this->meta_title = '添加美食入套餐';
         $this->display('addfood');
     }
 
-    //编辑餐厅菜品明细(面向前台商家)
+    //编辑门店美食明细(面向前台商家)
     public function editfood() {
         if (IS_POST) {
             $setmenu_id = I('post.setmenu_id');
@@ -284,15 +284,15 @@ class FoodSetmenuController extends FoodBaseController {
             $detail_save = $setmenuDetailModel->where(array('id' => I('post.id'), 'mp_id' => MP_ID))->save($detail_data);
             if ($detail_save == false) {
                 $setmenuDetailModel->rollback();
-                $this->error('保存菜品明细失败', '', true);
+                $this->error('保存美食明细失败', '', true);
             }
             $save_setmenu_money = $this->updateSetmenuMoney($setmenu_id);
             if ($save_setmenu_money) {
                 $setmenuDetailModel->commit();
-                $this->success('保存菜品明细成功', '', true);
+                $this->success('保存美食明细成功', '', true);
             }
             $setmenuDetailModel->rollback();
-            $this->error('保存菜品明细失败!', '', true);
+            $this->error('保存美食明细失败!', '', true);
         }
         $id = I('get.id', '', 'trim');
         $map['id'] = $id;
@@ -305,18 +305,18 @@ class FoodSetmenuController extends FoodBaseController {
 
         $this->assign('setmenu_detail', $setmenu_detail);
         $this->assign('json_setmenu_detail', json_encode($setmenu_detail));
-        $this->meta_title = '编辑菜品套餐明细';
+        $this->meta_title = '编辑美食套餐明细';
         $this->display('editfood');
     }
 
-    //查看菜品套餐(面向前台商家)
+    //查看美食套餐(面向前台商家)
     public function view() {
         $id = I('get.id');
         $map['id'] = $id;
         $map['mp_id'] = MP_ID;
         $food_setmenu = M('FoodSetmenu')->where($map)->find();
         if ($food_setmenu == false) {
-            $this->error('未检索到您要查看的菜品套餐');
+            $this->error('未检索到您要查看的美食套餐');
         }
 
         $detail_map['mp_id'] = MP_ID;
@@ -326,11 +326,11 @@ class FoodSetmenuController extends FoodBaseController {
         $this->assign('list', $list);
 
         $this->assign('food_setmenu', $food_setmenu);
-        $this->meta_title = '查看菜品套餐';
+        $this->meta_title = '查看美食套餐';
         $this->display('view');
     }
 
-    //上架餐厅菜品套餐(面向前台商家)
+    //上架门店美食套餐(面向前台商家)
     public function up() {
         $food_setmenu_id_arr = I('post.id');
         if (empty($food_setmenu_id_arr)) {
@@ -345,12 +345,12 @@ class FoodSetmenuController extends FoodBaseController {
         $food_setmenu_data['update_time'] = time();
         $food_setmenu_enable = $foodSetmenuModel->where($map)->save($food_setmenu_data);
         if ($food_setmenu_enable) {
-            $this->success('上架餐厅菜品套餐成功!');
+            $this->success('上架门店美食套餐成功!');
         }
-        $this->error('上架餐厅菜品套餐失败!');
+        $this->error('上架门店美食套餐失败!');
     }
 
-    //下架餐厅菜品套餐(面向前台商家)
+    //下架门店美食套餐(面向前台商家)
     public function down() {
         $food_setmenu_id_arr = I('post.id');
         if (empty($food_setmenu_id_arr)) {
@@ -365,9 +365,9 @@ class FoodSetmenuController extends FoodBaseController {
         $food_setmenu_data['update_time'] = time();
         $food_setmenu_disable = $foodSetmenuModel->where($map)->save($food_setmenu_data);
         if ($food_setmenu_disable) {
-            $this->success('下架餐厅菜品套餐成功!');
+            $this->success('下架门店美食套餐成功!');
         }
-        $this->error('下架餐厅菜品套餐失败!');
+        $this->error('下架门店美食套餐失败!');
     }
 
     //更新套餐金额 $setmenu_id 套餐id
@@ -386,7 +386,7 @@ class FoodSetmenuController extends FoodBaseController {
         return $setmenu_save;
     }
 
-    //启用餐厅菜品明细(前台面向商家)
+    //启用门店美食明细(前台面向商家)
     public function enable() {
         $setmenu_detail_id_arr = I('post.id');
         if (empty($setmenu_detail_id_arr)) {
@@ -415,7 +415,7 @@ class FoodSetmenuController extends FoodBaseController {
         $this->error('在套餐中启用失败!');
     }
 
-    //禁用餐厅菜品明细(前台面向商家)
+    //禁用门店美食明细(前台面向商家)
     public function disable() {
         $setmenu_detail_id_arr = I('post.id');
         if (empty($setmenu_detail_id_arr)) {

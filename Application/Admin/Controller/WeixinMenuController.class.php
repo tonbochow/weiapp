@@ -8,7 +8,7 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮公众平台菜单控制器
+ * 微美食公众平台菜单控制器
  */
 class WeixinMenuController extends FoodBaseController {
 
@@ -28,7 +28,7 @@ class WeixinMenuController extends FoodBaseController {
         $this->display('index');
     }
 
-    //微餐饮公众平台微信菜单(前台)
+    //微美食公众平台微信菜单(前台)
     public function food() {
         /* 查询条件初始化 */
         $map = array('member_id' => UID, 'mp_id' => '');
@@ -39,7 +39,7 @@ class WeixinMenuController extends FoodBaseController {
         $list = $this->lists('WeixinMenu', $map, 'status,id');
 
         $this->assign('list', $list);
-        $this->meta_title = '微餐饮公众平台微信菜单';
+        $this->meta_title = '微美食公众平台微信菜单';
         $this->display('food');
     }
 
@@ -74,7 +74,7 @@ class WeixinMenuController extends FoodBaseController {
             $menu_type_arr[] = array('id' => $id, 'menu_type' => $val);
         }
         $this->assign('menu_type_arr', json_encode($menu_type_arr));
-        $this->meta_title = '创建微餐饮公众平台一级菜单';
+        $this->meta_title = '创建微美食公众平台一级菜单';
         $this->display('add');
     }
 
@@ -115,7 +115,7 @@ class WeixinMenuController extends FoodBaseController {
         }
         $this->assign('pid', $pid);
         $this->assign('menu_type_arr', json_encode($menu_type_arr));
-        $this->meta_title = '创建微餐饮公众平台子菜单';
+        $this->meta_title = '创建微美食公众平台子菜单';
         $this->display('addsubmenu');
     }
 
@@ -152,7 +152,7 @@ class WeixinMenuController extends FoodBaseController {
         $this->assign('menu_type_arr', json_encode($menu_type_arr));
         $this->assign('weixin_menu', $weixin_menu);
         $this->assign('json_weixin_menu', json_encode($weixin_menu));
-        $this->meta_title = '编辑微餐饮公众平台菜单';
+        $this->meta_title = '编辑微美食公众平台菜单';
         $this->display('edit');
     }
 
@@ -227,7 +227,7 @@ class WeixinMenuController extends FoodBaseController {
                 $left_topmenu = array(
                     'mp_id' => MP_ID,
                     'member_id' => UID,
-                    'menu_name' => '点菜*预定',
+                    'menu_name' => '美食*预定',
                     'menu_type' => 'click',
                     'p_order' => 1,
                     'create_time' => time(),
@@ -242,7 +242,7 @@ class WeixinMenuController extends FoodBaseController {
                     array(
                         'mp_id' => MP_ID,
                         'member_id' => UID,
-                        'menu_name' => '全部菜品',
+                        'menu_name' => '全部美食',
                         'menu_type' => 'view',
                         'menu_url' => "http://www.52gdp.com/Wechat/index/index/t/" . MP_TOKEN,
                         'pid' => $left_topmenu_id,
@@ -254,7 +254,7 @@ class WeixinMenuController extends FoodBaseController {
                     array(
                         'mp_id' => MP_ID,
                         'member_id' => UID,
-                        'menu_name' => '热销菜品',
+                        'menu_name' => '热销美食',
                         'menu_type' => 'view',
                         'menu_url' => "http://www.52gdp.com/Wechat/index/index/t/" . MP_TOKEN.'/is_hot/1',
                         'pid' => $left_topmenu_id,
@@ -266,7 +266,7 @@ class WeixinMenuController extends FoodBaseController {
 //                    array(
 //                        'mp_id' => MP_ID,
 //                        'member_id' => UID,
-//                        'menu_name' => '特色菜品',
+//                        'menu_name' => '特色美食',
 //                        'menu_type' => 'view',
 //                        'menu_url' => "http://www.52gdp.com/Wechat/index/index/t/" . MP_TOKEN.'/',
 //                        'pid' => $left_topmenu_id,
@@ -350,7 +350,7 @@ class WeixinMenuController extends FoodBaseController {
                     array(
                         'mp_id' => MP_ID,
                         'member_id' => UID,
-                        'menu_name' => '餐厅浏览',
+                        'menu_name' => '门店浏览',
                         'menu_type' => 'view',
                         'menu_key' => '',
                         'menu_url' => "http://www.52gdp.com/Wechat/ChainDining/view/t/" . MP_TOKEN,
@@ -489,21 +489,21 @@ class WeixinMenuController extends FoodBaseController {
 //                $menu = '{
 //                    "button":[
 //                        {
-//                            "name":"点菜*预定",
+//                            "name":"美食*预定",
 //                            "sub_button":[
 //                                {	
 //                                    "type":"view",
-//                                    "name":"全部菜品",
+//                                    "name":"全部美食",
 //                                    "url":"' . $left_submenu[0]['menu_url'] . '"
 //                                 },
 //                                 {	
 //                                    "type":"view",
-//                                    "name":"热销菜品",
+//                                    "name":"热销美食",
 //                                    "url":"' . $left_submenu[1]['menu_url'] . '"
 //                                 },
 //                                 {	
 //                                    "type":"view",
-//                                    "name":"特色菜品",
+//                                    "name":"特色美食",
 //                                    "url":"' . $left_submenu[2]['menu_url'] . '"
 //                                 },
 //                                 {
@@ -533,7 +533,7 @@ class WeixinMenuController extends FoodBaseController {
 //                                 },
 //                                 {	
 //                                    "type":"click",
-//                                    "name":"餐厅浏览",
+//                                    "name":"门店浏览",
 //                                    "key":"dining"
 //                                 },
 //                                 {
@@ -584,16 +584,16 @@ class WeixinMenuController extends FoodBaseController {
                 $menu = '{
                     "button":[
                         {
-                            "name":"点菜*预定",
+                            "name":"美食*预定",
                             "sub_button":[
                                 {	
                                     "type":"view",
-                                    "name":"全部菜品",
+                                    "name":"全部美食",
                                     "url":"' . $left_submenu[0]['menu_url'] . '"
                                  },
                                  {	
                                     "type":"view",
-                                    "name":"热销菜品",
+                                    "name":"热销美食",
                                     "url":"' . $left_submenu[1]['menu_url'] . '"
                                  },
                                  {
@@ -623,7 +623,7 @@ class WeixinMenuController extends FoodBaseController {
                                  },
                                  {	
                                     "type":"view",
-                                    "name":"餐厅浏览",
+                                    "name":"门店浏览",
                                     "url":"'.$mid_submenu[2]['menu_url'].'"
                                  },
                                  {	

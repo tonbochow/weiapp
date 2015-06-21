@@ -21,8 +21,8 @@ class MicroPlatformModel extends Model {
     public static $MP_TYPE_SERVICE = 1; //微信工作平台类型：服务号
     public static $MP_TYPE_SUBSCRIBE = 2; //微信工作平台类型：订阅号
     public static $MP_TYPE_COMPANY = 3; //微信工作平台类型：企业号
-    public static $APP_TYPE_FOOD = 1; //微应用类型1餐饮
-    public static $APP_NAME_FOOD = 'food'; //餐饮
+    public static $APP_TYPE_FOOD = 1; //微应用类型1美食
+    public static $APP_NAME_FOOD = 'food'; //美食
     public static $APP_NAME_PHOTO = 'photo'; //摄影
     public static $APP_TYPE_PHOTO = 2; //微应用类型2摄影
     public static $APP_TYPE_KTV = 3; //微应用ktv
@@ -55,7 +55,7 @@ class MicroPlatformModel extends Model {
         array('partnerkey', '', 'partnerkey已经存在！', 0, 'unique'),
         array('paysignkey', '/^\w{1,256}$/', 'paysignkey以字母数字或下划线开头最大长度256', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
         array('paysignkey', '', 'paysignkey已经存在！', 0, 'unique'),
-        array('chain_num', '/^[\d]+$/', '连锁餐厅数量只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('chain_num', '/^[\d]+$/', '连锁门店数量只能填正整数', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        //array('link_id', 'url', '外链格式不正确', self::VALUE_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('description', '1,140', '简介长度不能超过140个字符', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
 //        array('category_id', 'require', '分类不能为空', self::MUST_VALIDATE, 'regex', self::MODEL_INSERT),
@@ -115,7 +115,7 @@ class MicroPlatformModel extends Model {
         if ($has_choice) {
             $app_type_arr = array('' => '请选择');
         }
-        $app_type_arr[self::$APP_TYPE_FOOD] = '餐饮';
+        $app_type_arr[self::$APP_TYPE_FOOD] = '美食';
         $app_type_arr[self::$APP_TYPE_PHOTO] = '摄影';
         if ($appType !== null) {
             return $app_type_arr[$appType];

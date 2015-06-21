@@ -8,12 +8,12 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮公众平台 | 连锁餐厅控制器
+ * 微美食公众平台 | 连锁门店控制器
  */
 class ChainDiningController extends FoodBaseController {
 
     /**
-     * 连锁餐厅管理(后台管理员)
+     * 连锁门店管理(后台管理员)
      */
     public function index() {
         $get_chain_dining_name = I('get.chain_dining_name');
@@ -22,14 +22,14 @@ class ChainDiningController extends FoodBaseController {
         }
         $list = $this->lists('ChainDining', $map, 'mp_id,status,id');
         $this->assign('list', $list);
-        $this->meta_title = '微餐饮连锁餐厅列表';
+        $this->meta_title = '微美食连锁门店列表';
         $this->display('index');
     }
 
-    //连锁餐厅信息设置(前台面向商家)
+    //连锁门店信息设置(前台面向商家)
     public function info() {
         if (!IS_CHAIN) {
-            $this->error('您不是连锁餐厅请直接创建餐厅信息即可!');
+            $this->error('您不是连锁门店请直接创建门店信息即可!');
         }
         if (IS_POST) {
             $chain_dining_data = I('post.');
@@ -47,7 +47,7 @@ class ChainDiningController extends FoodBaseController {
                 $carousel_fir_tmp = base64_decode($chain_dining_data['carousel_fir']);
                 $create_carousel_fir = file_put_contents($carousel_fir_path, $carousel_fir_tmp);
                 if ($create_carousel_fir == false) {
-                    $this->error('生成连锁餐厅第一张轮播图片失败!', '', true);
+                    $this->error('生成连锁门店第一张轮播图片失败!', '', true);
                 }
                 $chain_dining_data['carousel_fir'] = '/Uploads/Mp/' . MP_ID . '/chain_dining/' . 'carousel_fir.jpg';
             }
@@ -56,7 +56,7 @@ class ChainDiningController extends FoodBaseController {
                 $carousel_sec_tmp = base64_decode($chain_dining_data['carousel_sec']);
                 $create_carousel_sec = file_put_contents($carousel_sec_path, $carousel_sec_tmp);
                 if ($create_carousel_sec == false) {
-                    $this->error('生成连锁餐厅第二张轮播图片失败!', '', true);
+                    $this->error('生成连锁门店第二张轮播图片失败!', '', true);
                 }
                 $chain_dining_data['carousel_sec'] = '/Uploads/Mp/' . MP_ID . '/chain_dining/' . 'carousel_sec.jpg';
             }
@@ -65,11 +65,11 @@ class ChainDiningController extends FoodBaseController {
                 $carousel_thr_tmp = base64_decode($chain_dining_data['carousel_thr']);
                 $create_carousel_thr = file_put_contents($carousel_thr_path, $carousel_thr_tmp);
                 if ($create_carousel_thr == false) {
-                    $this->error('生成连锁餐厅第三张轮播图片失败!', '', true);
+                    $this->error('生成连锁门店第三张轮播图片失败!', '', true);
                 }
                 $chain_dining_data['carousel_thr'] = '/Uploads/Mp/' . MP_ID . '/chain_dining/' . 'carousel_thr.jpg';
             }
-            //更新该平台餐厅信息为连锁餐厅
+            //更新该平台门店信息为连锁门店
             $diningRoomModel = M('DiningRoom');
             $dining_map['mp_id'] = MP_ID;
             $dining_data['is_chain_dining'] = \Admin\Model\DiningRoomModel::$IS_CHAIN;
@@ -88,13 +88,13 @@ class ChainDiningController extends FoodBaseController {
                 }
                 if ($chain_dining_res) {
                     $diningRoomModel->where($dining_map)->save($dining_data);
-                    $this->success('保存连锁餐厅信息成功!', '', true);
+                    $this->success('保存连锁门店信息成功!', '', true);
                 } else {
                     $this->error($chainDiningModel->getError(), '', true);
                 }
-                $this->error('保存连锁餐厅信息失败!', '', true);
+                $this->error('保存连锁门店信息失败!', '', true);
             } else {
-                $this->error('连锁餐厅数据创建失败!', '', true);
+                $this->error('连锁门店数据创建失败!', '', true);
             }
         }
         $chainDiningModel = M('ChainDining');
@@ -105,7 +105,7 @@ class ChainDiningController extends FoodBaseController {
 
         $this->assign('chain_dining', $chain_dining);
         $this->assign('json_chain_dining', json_encode($chain_dining));
-        $this->meta_title = '连锁餐厅信息设置';
+        $this->meta_title = '连锁门店信息设置';
         $this->display('info');
     }
 

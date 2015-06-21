@@ -2,18 +2,18 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>餐厅菜品风格列表</h2>
+        <h2>门店美食风格列表</h2>
     </div>
 
     <div class="cf">
-        <a class="btn" href="{:U('FoodStyle/add')}">创建餐厅菜品风格</a>
+        <a class="btn" href="{:U('FoodStyle/add')}">创建门店美食风格</a>
         <button class="btn ajax-post" url="{:U('FoodStyle/enable')}" target-form="ids">启 用</button>
         <button class="btn ajax-post" url="{:U('FoodStyle/disable')}" target-form="ids">禁 用</button>
 
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
-                <input type="text" name="name" class="search-input" value="{:I('name')}" placeholder="请输入菜品风格名">
+                <input type="text" name="name" class="search-input" value="{:I('name')}" placeholder="请输入美食风格名">
                 <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodStyle/show')}"><i class="btn-search"></i></a>
             </div>
         </div>
@@ -56,7 +56,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="6" class="text-center">您未创建餐厅菜品风格 </td>
+                <td colspan="6" class="text-center">您未创建门店美食风格 </td>
             </notempty>
             </tbody>
         </table>

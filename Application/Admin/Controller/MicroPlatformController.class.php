@@ -8,12 +8,12 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮公众平台控制器
+ * 微美食公众平台控制器
  */
 class MicroPlatformController extends FoodBaseController {
 
     /**
-     * 餐饮管理(后台)
+     * 美食管理(后台)
      */
     public function index() {
         $get_mp_name = I('get.mp_name');
@@ -29,7 +29,7 @@ class MicroPlatformController extends FoodBaseController {
     }
 
     /**
-     * 微餐饮公众平台详细页面(后台)
+     * 微美食公众平台详细页面(后台)
      */
     public function detail() {
         $id = I('get.id', '', 'intval');
@@ -41,7 +41,7 @@ class MicroPlatformController extends FoodBaseController {
     }
 
     /**
-     * 微餐饮公众平台编辑页面(后台)
+     * 微美食公众平台编辑页面(后台)
      */
     public function edit() {
         if (IS_POST) {
@@ -68,7 +68,7 @@ class MicroPlatformController extends FoodBaseController {
     }
 
     /**
-     * 微餐饮公众平台启用公众平台(后台)
+     * 微美食公众平台启用公众平台(后台)
      */
     public function enable() {
         $platform_id_arr = I('post.id');
@@ -89,7 +89,7 @@ class MicroPlatformController extends FoodBaseController {
     }
 
     /**
-     * 微餐饮公众平台禁用公众平台(后台)
+     * 微美食公众平台禁用公众平台(后台)
      */
     public function disable() {
         $platform_id_arr = I('post.id');
@@ -110,7 +110,7 @@ class MicroPlatformController extends FoodBaseController {
     }
 
     /**
-     * 微餐饮公众平台设为连锁(后台)
+     * 微美食公众平台设为连锁(后台)
      */
     public function chain() {
         $platform_id_arr = I('post.id');
@@ -131,7 +131,7 @@ class MicroPlatformController extends FoodBaseController {
     }
 
     /**
-     * 微餐饮公众平台设为非连锁(后台)
+     * 微美食公众平台设为非连锁(后台)
      */
     public function notchain() {
         $platform_id_arr = I('post.id');
@@ -151,7 +151,7 @@ class MicroPlatformController extends FoodBaseController {
         $this->error('设为非连锁失败!');
     }
 
-    //微餐饮公众平台(前台)
+    //微美食公众平台(前台)
     public function food() {
         if (IS_POST) {
             $micro_platform_data = I('post.');
@@ -221,7 +221,7 @@ class MicroPlatformController extends FoodBaseController {
         $this->assign('selected_is_chain', isset($micro_platform['is_chain']) ? $micro_platform['is_chain'] : \Admin\Model\MicroPlatformModel::$NOT_CHAIN);
         $this->assign('micro_platform', $micro_platform);
         $this->assign('json_micro_platform', !is_null($micro_platform) ? json_encode($micro_platform) : json_encode(array()));
-        $this->meta_title = '微餐饮公众平台';
+        $this->meta_title = '微美食公众平台';
         $this->display('food');
     }
 

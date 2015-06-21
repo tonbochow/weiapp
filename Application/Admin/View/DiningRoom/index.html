@@ -2,7 +2,7 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>微餐饮餐厅列表</h2>
+        <h2>微美食门店列表</h2>
     </div>
 
     <div class="cf">
@@ -12,7 +12,7 @@
         <!-- 高级搜索 -->
                 <div class="search-form fr cf">
                     <div class="sleft">
-                        <input type="text" name="dining_name" class="search-input" value="{:I('dining_name')}" placeholder="请输入微餐饮餐厅名称">
+                        <input type="text" name="dining_name" class="search-input" value="{:I('dining_name')}" placeholder="请输入微美食门店名称">
                         <a class="sch-btn" href="javascript:;" id="search" url="{:U('DiningRoom/index')}"><i class="btn-search"></i></a>
                     </div>
                 </div>
@@ -23,9 +23,9 @@
             <thead>
                 <tr>
                     <th>微信平台</th>
-                    <th>餐厅名</th>
-                    <th>连锁餐厅</th>
-                    <th>连锁餐厅名</th>
+                    <th>门店名</th>
+                    <th>连锁门店</th>
+                    <th>连锁门店名</th>
                     <th>地址</th>
                     <th>状态</th>
                     <th>创建时间</th>
@@ -71,7 +71,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="6" class="text-center">未检索微餐饮连锁餐厅信息</td>
+                <td colspan="6" class="text-center">未检索微美食连锁门店信息</td>
             </notempty>
             </tbody>
         </table>

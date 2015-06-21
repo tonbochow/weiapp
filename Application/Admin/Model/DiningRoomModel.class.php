@@ -12,7 +12,7 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮连锁餐厅分店模型
+ * 美食连锁门店分店模型
  */
 class DiningRoomModel extends Model {
 
@@ -20,8 +20,8 @@ class DiningRoomModel extends Model {
     public static $STATUS_ENABLED = 1; //状态 启用
     public static $IS_CHAIN = 1; //连锁
     public static $NOT_CHAIN = 0; //非连锁
-    public static $TYPE_DINING_HOME = 3; //餐厅用餐和配送到家同时支持
-    public static $TYPE_DINING = 1; //仅支持到餐厅用餐
+    public static $TYPE_DINING_HOME = 3; //门店用餐和配送到家同时支持
+    public static $TYPE_DINING = 1; //仅支持到门店用餐
     public static $TYPE_HOME = 2; //仅支持配送到家
     public static $PAY_TYPE_WEIXIN = 1; //支付类型:微信支付
     public static $PAY_TYPE_ZHIFUBAO = 2; //支付类型:支付宝支付
@@ -32,9 +32,9 @@ class DiningRoomModel extends Model {
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
 //        array('member_id', 'require', '下单用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('dining_name', 'require', '餐厅名称不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('dining_header', 'require', '餐厅负责人不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('description', 'require', '餐厅描述不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('dining_name', 'require', '门店名称不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('dining_header', 'require', '门店负责人不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('description', 'require', '门店描述不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('type', 'require', '订单类型类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('pay_type', 'require', '订单支付类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
@@ -46,7 +46,7 @@ class DiningRoomModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-    //获取餐厅分店状态
+    //获取门店分店状态
     public static function getDiningRoomStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
@@ -59,13 +59,13 @@ class DiningRoomModel extends Model {
         return $status_arr;
     }
 
-    //获取餐厅名称
+    //获取门店名称
     public static function getDiningRoomName($id) {
         $dining_room = M('DiningRoom')->where(array('id' => $id))->find();
         return $dining_room['dining_name'];
     }
 
-    //获取所有餐厅拼接的名称
+    //获取所有门店拼接的名称
     public static function getAllDiningRoomNames() {
         $dining_rooms = M('DiningRoom')->where(array('mp_id' => MP_ID))->select();
         if (empty($dining_rooms)) {
@@ -78,7 +78,7 @@ class DiningRoomModel extends Model {
         return $dining_room_str;
     }
 
-    //获取餐厅是否连锁
+    //获取门店是否连锁
     public static function getDiningRoomChain($chain = null, $has_choice = true) {
         if ($has_choice) {
             $chain_arr = array('' => '请选择');
@@ -91,13 +91,13 @@ class DiningRoomModel extends Model {
         return $chain_arr;
     }
 
-    //获取餐厅类型
+    //获取门店类型
     public static function getDiningRoomType($type = null, $has_choice = true) {
         if ($has_choice) {
             $type_arr = array('' => '请选择');
         }
-        $type_arr[self::$TYPE_DINING_HOME] = '餐厅用餐和配送到家';
-        $type_arr[self::$TYPE_DINING] = '餐厅用餐';
+        $type_arr[self::$TYPE_DINING_HOME] = '门店用餐和配送到家';
+        $type_arr[self::$TYPE_DINING] = '门店用餐';
         $type_arr[self::$TYPE_HOME] = '配送到家';
         if ($type !== null) {
             return $type_arr[$type];
@@ -105,12 +105,12 @@ class DiningRoomModel extends Model {
         return $type_arr;
     }
     
-    //微信用户选择餐厅类型
+    //微信用户选择门店类型
     public static function getWeixinDiningRoomType($type = null, $has_choice = true){
         if ($has_choice) {
             $type_arr = array('' => '请选择');
         }
-        $type_arr[self::$TYPE_DINING] = '餐厅用餐';
+        $type_arr[self::$TYPE_DINING] = '门店用餐';
         $type_arr[self::$TYPE_HOME] = '配送到家';
         if ($type !== null) {
             return $type_arr[$type];
@@ -118,7 +118,7 @@ class DiningRoomModel extends Model {
         return $type_arr;
     }
     
-    //获取餐厅支付类型
+    //获取门店支付类型
     public static function getDiningRoomPayType($type = null, $has_choice = true, $zfb = false) {
         if ($has_choice) {
             $type_arr = array('' => '请选择');
@@ -135,7 +135,7 @@ class DiningRoomModel extends Model {
         return $type_arr;
     }
     
-    //微信用户选择餐厅支付类型
+    //微信用户选择门店支付类型
     public static function getWeixinDiningRoomPayType($type = null, $has_choice = true, $zfb = false){
         if ($has_choice) {
             $type_arr = array('' => '请选择');

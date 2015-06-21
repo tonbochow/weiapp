@@ -2,7 +2,7 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>微餐饮菜品套餐列表</h2>
+        <h2>微美食美食套餐列表</h2>
     </div>
 
     <div class="cf">
@@ -12,7 +12,7 @@
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
-                <input type="text" name="setmenu_name" class="search-input" value="{:I('setmenu_name')}" placeholder="请输入菜品套餐名称">
+                <input type="text" name="setmenu_name" class="search-input" value="{:I('setmenu_name')}" placeholder="请输入美食套餐名称">
                 <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodSetmenu/index')}"><i class="btn-search"></i></a>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <thead>
                 <tr>
                     <th>微信平台</th>
-                    <th>餐厅名</th>
+                    <th>门店名</th>
                     <th>套餐名</th>
                     <th>套餐原价</th>
                     <th>套餐优惠价</th>
@@ -63,7 +63,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="7" class="text-center">未检索到菜品套餐信息</td>
+                <td colspan="7" class="text-center">未检索到美食套餐信息</td>
             </notempty>
             </tbody>
         </table>

@@ -12,7 +12,7 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮 微信卡劵模型
+ * 美食 微信卡劵模型
  */
 class WxCardModel extends Model {
 

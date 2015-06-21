@@ -6,18 +6,18 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>创建餐厅员工</h2>
+        <h2>创建门店员工</h2>
     </div>
 
-    <div id="dialog" title="创建餐厅员工" style="display:none;">
+    <div id="dialog" title="创建门店员工" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_dining" ng-app="weiapp_dining" id="ng-app"  name="DiningMemberForm" ng-controller="DiningMemberController" ng-submit="submitForm()">
         <div class="form-item" ng-class="{'has-error' : DiningMemberForm.username.$invalid && !DiningMemberForm.username.$pristine}">
             <label class="item-label">员工登录用户名<span class="check-tips">（*必填:最大长度16 重要登录后台连锁分店用户名）</span></label>
             <div class="controls">
-                <input name="username" type="text" value="" ng-model="dining_member.username"  ng-pattern="/^[a-zA-z_]+\w{1,16}$/" ng-trim="true" ng-minlength="1" ng-maxlength="16" required class="form-control text input-large" id="username" placeholder="连锁餐厅后台员工登录用户名">
-                <p ng-show="DiningMemberForm.username.$invalid && !DiningMemberForm.username.$pristine" class="help-block">连锁餐厅后台登录用户名(长度1-16)</p>
+                <input name="username" type="text" value="" ng-model="dining_member.username"  ng-pattern="/^[a-zA-z_]+\w{1,16}$/" ng-trim="true" ng-minlength="1" ng-maxlength="16" required class="form-control text input-large" id="username" placeholder="连锁门店后台员工登录用户名">
+                <p ng-show="DiningMemberForm.username.$invalid && !DiningMemberForm.username.$pristine" class="help-block">连锁门店后台登录用户名(长度1-16)</p>
             </div>
         </div>
         
@@ -38,12 +38,12 @@
         </div>
         
         <div class="form-item" ng-class="{'has-error' : DiningMemberForm.dining_room_id.$invalid && !DiningMemberForm.dining_room_id.$pristine}">
-            <label class="item-label">所属餐厅<span class="check-tips">（将用户归为餐厅员工）</span></label>
+            <label class="item-label">所属门店<span class="check-tips">（将用户归为门店员工）</span></label>
             <div class="controls">
                 <select class="form-control" name="dining_room_id" required ng-model="dining_member.dining_room_id" ng-options="m.id as m.dining_name for m in dining_member.dining_room_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="DiningMemberForm.dining_room_id.$invalid && !DiningMemberForm.dining_room_id.$pristine" class="help-block">请选择所属餐厅</p>
+                <p ng-show="DiningMemberForm.dining_room_id.$invalid && !DiningMemberForm.dining_room_id.$pristine" class="help-block">请选择所属门店</p>
             </div>
         </div>
 

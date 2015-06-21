@@ -12,7 +12,7 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮餐厅菜品套餐模型
+ * 美食门店美食套餐模型
  */
 class FoodSetmenuModel extends Model {
 
@@ -24,9 +24,9 @@ class FoodSetmenuModel extends Model {
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('member_id', 'require', '餐厅用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('setmenu_name', 'require', '菜品套餐名不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('setmenu_money', '/^\d+(\.\d+)?$/', '菜品套餐优惠价为数字', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('member_id', 'require', '门店用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('setmenu_name', 'require', '美食套餐名不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('setmenu_money', '/^\d+(\.\d+)?$/', '美食套餐优惠价为数字', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
@@ -36,7 +36,7 @@ class FoodSetmenuModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-    //获取菜品套餐状态
+    //获取美食套餐状态
     public static function getFoodSetmenuStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
@@ -49,7 +49,7 @@ class FoodSetmenuModel extends Model {
         return $status_arr;
     }
 
-    //获取菜品套餐使用卡劵状态
+    //获取美食套餐使用卡劵状态
     public static function getFoodSetmenuCard($card = null, $has_choice = true) {
         if ($has_choice) {
             $card_arr = array('' => '请选择');
@@ -62,13 +62,13 @@ class FoodSetmenuModel extends Model {
         return $card_arr;
     }
 
-    //获取菜品套餐名
+    //获取美食套餐名
     public static function getFoodSetmenuName($id) {
         $food_setmenu = M('FoodSetmenu')->where(array('id' => $id))->find();
         return $food_setmenu['setmenu_name'];
     }
 
-    //获取菜品套餐默认图片
+    //获取美食套餐默认图片
     public static function getFoodSetmenuUrl($id) {
         $food_setmenu =  M('FoodSetmenu')->where(array('id' => $id))->field('url')->find();
         return $food_setmenu['url'];

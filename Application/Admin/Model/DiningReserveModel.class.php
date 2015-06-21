@@ -12,7 +12,7 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 微餐饮客户预定模型
+ * 微美食客户预定模型
  */
 class DiningReserveModel extends Model {
 
@@ -25,7 +25,7 @@ class DiningReserveModel extends Model {
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('dining_room_id', 'require', '餐厅id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('dining_room_id', 'require', '门店id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('user_name', 'require', '联系人不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('user_num', '/^[1-9]\d*$/', '用餐人数应为正整数', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('mobile', 'require', '联系人手机号不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),

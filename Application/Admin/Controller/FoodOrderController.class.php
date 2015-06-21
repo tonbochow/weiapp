@@ -8,7 +8,7 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮公众平台 | 订单控制器
+ * 微美食公众平台 | 订单控制器
  */
 class FoodOrderController extends FoodBaseController {
 
@@ -22,7 +22,7 @@ class FoodOrderController extends FoodBaseController {
         }
         $list = $this->lists('FoodOrder', $map, 'mp_id,status,id');
         $this->assign('list', $list);
-        $this->meta_title = '微餐饮订单列表';
+        $this->meta_title = '微美食订单列表';
         $this->display('index');
     }
 
@@ -153,7 +153,7 @@ class FoodOrderController extends FoodBaseController {
         $this->display('wxpayview');
     }
 
-    //微餐饮订单打印页面
+    //微美食订单打印页面
     public function orderprint() {
         if (I('post.print')) {
             $id = I('post.id');

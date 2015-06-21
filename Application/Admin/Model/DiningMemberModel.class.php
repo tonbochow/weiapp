@@ -12,20 +12,20 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮餐厅店员模型
+ * 美食门店店员模型
  */
 class DiningMemberModel extends Model {
 
     public static $STATUS_DISABLED = 0; //状态 禁用
     public static $STATUS_ENABLED = 1; //状态 启用
     public static $ROLE_STAFF = 1; //员工
-    public static $ROLE_MANAGER = 0; //餐厅经理
+    public static $ROLE_MANAGER = 0; //门店经理
 
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('member_id', 'require', '餐厅用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('dining_room_id', 'require', '餐厅ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('member_id', 'require', '门店用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('dining_room_id', 'require', '门店ID不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
         array('pay_type', 'require', '订单支付类型为必选', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
@@ -36,7 +36,7 @@ class DiningMemberModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-    //获取餐厅员工状态
+    //获取门店员工状态
     public static function getDiningMemberStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
@@ -49,7 +49,7 @@ class DiningMemberModel extends Model {
         return $status_arr;
     }
 
-    //获取餐厅员工角色
+    //获取门店员工角色
     public static function getDiningMemberRoleType($role, $has_choice = true) {
         if ($has_choice) {
             $role_arr = array('' => '请选择');
@@ -62,13 +62,13 @@ class DiningMemberModel extends Model {
         return $role_arr;
     }
 
-    //获取餐厅名称
+    //获取门店名称
     public static function getDiningRoomName($id) {
         $dining_room = M('DiningRoom')->where(array('id' => $id))->find();
         return $dining_room['dining_name'];
     }
 
-    //获取餐厅列表
+    //获取门店列表
     public static function getDiningRooms() {
         $dining_rooms = M('DiningRoom')->where(array('mp_id' => MP_ID))->select();
         return $dining_rooms;

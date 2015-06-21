@@ -6,28 +6,28 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>创建餐厅菜品分类</h2>
+        <h2>创建门店美食分类</h2>
     </div>
 
-    <div id="dialog" title="餐厅菜品分类" style="display:none;">
+    <div id="dialog" title="门店美食分类" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food_cate" ng-app="weiapp_food_cate" id="ng-app"  name="FoodCateForm" ng-controller="FoodCateController" ng-submit="submitForm()">
         <div class="form-item" ng-class="{'has-error' : FoodCateForm.cate_name.$invalid && !FoodCateForm.cate_name.$pristine}">
-            <label class="item-label">菜品分类名<span class="check-tips">（*必填:最大长度20）</span></label>
+            <label class="item-label">美食分类名<span class="check-tips">（*必填:最大长度20）</span></label>
             <div class="controls">
-                <input name="菜品分类名" type="text" value="" ng-model="food_cate.cate_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,20}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="cate_name" placeholder="餐厅菜品分类名">
-                <p ng-show="FoodCateForm.cate_name.$invalid && !FoodCateForm.cate_name.$pristine" class="help-block">餐厅菜品分类名(长度1-20)</p>
+                <input name="美食分类名" type="text" value="" ng-model="food_cate.cate_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,20}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="cate_name" placeholder="门店美食分类名">
+                <p ng-show="FoodCateForm.cate_name.$invalid && !FoodCateForm.cate_name.$pristine" class="help-block">门店美食分类名(长度1-20)</p>
             </div>
         </div>
 
         <div class="form-item" ng-class="{'has-error' : FoodCateForm.dining_room_id.$invalid && !FoodCateForm.dining_room_id.$pristine}">
-            <label class="item-label">所属餐厅<span class="check-tips">（*必须）</span></label>
+            <label class="item-label">所属门店<span class="check-tips">（*必须）</span></label>
             <div class="controls">
                 <select class="form-control" name="dining_room_id" required ng-model="food_cate.dining_room_id" ng-options="m.id as m.dining_name for m in food_cate.dining_room_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="FoodCateForm.dining_room_id.$invalid && !FoodCateForm.dining_room_id.$pristine" class="help-block">请选择所属餐厅</p>
+                <p ng-show="FoodCateForm.dining_room_id.$invalid && !FoodCateForm.dining_room_id.$pristine" class="help-block">请选择所属门店</p>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
             <label class="item-label">排序<span class="check-tips"></span></label>
             <div class="controls">
                 <input name="sort" type="text" value="" ng-model="food_cate.sort"  ng-pattern="/^[1-9]\d*$/" ng-trim="true" ng-minlength="1" ng-maxlength="16"  class="form-control text input-large" id="sort" placeholder="分类排序">
-                <p ng-show="FoodCateForm.sort.$invalid && !FoodCateForm.sort.$pristine" class="help-block">菜品分类排序</p>
+                <p ng-show="FoodCateForm.sort.$invalid && !FoodCateForm.sort.$pristine" class="help-block">美食分类排序</p>
             </div>
         </div>
 

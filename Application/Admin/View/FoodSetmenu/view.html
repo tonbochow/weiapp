@@ -2,7 +2,7 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>菜品套餐明细</h2>
+        <h2>美食套餐明细</h2>
     </div>
     <h5>推广链接:<span style="color:red;">http://www.52gdp.com/Wechat/FoodSetmenu/view/t/{$mp.mp_token}/id/{$food_setmenu.id}</span></h5>
 
@@ -11,7 +11,7 @@
             <tbody>
             <thead>
                 <tr>
-                    <th>所属餐厅</th>
+                    <th>所属门店</th>
                     <th>套餐名</th>
                     <th>总金额</th>
                     <th>套餐优惠价</th>
@@ -77,7 +77,7 @@
         <!-- 高级搜索 -->
         <!--        <div class="search-form fr cf">
                     <div class="sleft">
-                        <input type="text" name="setmenu_name" class="search-input" value="{:I('setmenu_name')}" placeholder="请输入菜品套餐名">
+                        <input type="text" name="setmenu_name" class="search-input" value="{:I('setmenu_name')}" placeholder="请输入美食套餐名">
                         <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodSetmenu/show')}"><i class="btn-search"></i></a>
                     </div>
                 </div>-->
@@ -91,10 +91,10 @@
                         <input class="checkbox check-all" type="checkbox">
                     </th>
                     <th>所属套餐</th>
-                    <th>菜品名</th>
-                    <th>菜品微信价</th>
-                    <th>菜品数量</th>
-                    <th>菜品金额</th>
+                    <th>美食名</th>
+                    <th>美食微信价</th>
+                    <th>美食数量</th>
+                    <th>美食金额</th>
                     <th>状态</th>
                     <th>创建时间</th>
                     <th>操作</th>
@@ -128,7 +128,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="9" class="text-center">您未添加菜品入套餐</td>
+                <td colspan="9" class="text-center">您未添加美食入套餐</td>
             </notempty>
             </tbody>
         </table>

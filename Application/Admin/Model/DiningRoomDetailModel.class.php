@@ -12,7 +12,7 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮连锁餐厅分店明细模型
+ * 美食连锁门店分店明细模型
  */
 class DiningRoomDetailModel extends Model {
 
@@ -32,7 +32,7 @@ class DiningRoomDetailModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-    //获取餐厅分店状态
+    //获取门店分店状态
     public static function getDiningRoomDetailStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
@@ -45,7 +45,7 @@ class DiningRoomDetailModel extends Model {
         return $status_arr;
     }
 
-    //获取一张餐厅展示图片
+    //获取一张门店展示图片
     public static function getDiningRoomPic($dining_room_id){
         $map['dining_room_id'] = $dining_room_id;
         $map['status'] = self::$STATUS_ENABLED;

@@ -2,18 +2,18 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>餐厅菜品分类列表</h2>
+        <h2>门店美食分类列表</h2>
     </div>
 
     <div class="cf">
-        <a class="btn" href="{:U('FoodCategory/add')}">创建餐厅菜品分类</a>
+        <a class="btn" href="{:U('FoodCategory/add')}">创建门店美食分类</a>
         <button class="btn ajax-post" url="{:U('FoodCategory/enable')}" target-form="ids">启 用</button>
         <button class="btn ajax-post" url="{:U('FoodCategory/disable')}" target-form="ids">禁 用</button>
 
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
-                <input type="text" name="cate_name" class="search-input" value="{:I('cate_name')}" placeholder="请输入菜品分类名">
+                <input type="text" name="cate_name" class="search-input" value="{:I('cate_name')}" placeholder="请输入美食分类名">
                 <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodCategory/show')}"><i class="btn-search"></i></a>
             </div>
         </div>
@@ -26,7 +26,7 @@
                     <th class="row-selected">
                         <input class="checkbox check-all" type="checkbox">
                     </th>
-                    <th>所属餐厅</th>
+                    <th>所属门店</th>
                     <th>分类名</th>
                     <th>上级分类</th>
                     <th>排序</th>
@@ -64,7 +64,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="8" class="text-center">您未创建餐厅菜品分类 </td>
+                <td colspan="8" class="text-center">您未创建门店美食分类 </td>
             </notempty>
             </tbody>
         </table>

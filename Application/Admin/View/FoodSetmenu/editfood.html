@@ -6,10 +6,10 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>编辑菜品套餐明细</h2>
+        <h2>编辑美食套餐明细</h2>
     </div>
 
-    <div id="dialog" title="菜品套餐明细" style="display:none;">
+    <div id="dialog" title="美食套餐明细" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_setmenu_detail" ng-app="weiapp_setmenu_detail" id="ng-app"  name="SetmenuDetailForm" ng-controller="SetmenuDetailController" ng-submit="submitForm()">
@@ -23,29 +23,29 @@
         </div>
         
         <div class="form-item">
-            <label class="item-label">菜品名<span class="check-tips"></span></label>
+            <label class="item-label">美食名<span class="check-tips"></span></label>
             <div class="controls">
                {$setmenu_detail.food_name}
             </div>
         </div>
         
         <div class="form-item">
-            <label class="item-label">菜品微信价格<span class="check-tips"></span></label>
+            <label class="item-label">美食微信价格<span class="check-tips"></span></label>
             <div class="controls">
                {$setmenu_detail.weixin_price}
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : SetmenuDetailForm.count.$invalid && !SetmenuDetailForm.count.$pristine}">
-            <label class="item-label">菜品数量<span class="check-tips"></span></label>
+            <label class="item-label">美食数量<span class="check-tips"></span></label>
             <div class="controls">
-                <input name="count" type="text" value="" ng-model="setmenu_detail.count"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required class="form-control text input-large" id="count" placeholder="菜品数量">
-                <p ng-show="SetmenuDetailForm.setmenu_money.$invalid && !SetmenuDetailForm.setmenu_money.$pristine" class="help-block">餐厅菜品套餐优惠价</p>
+                <input name="count" type="text" value="" ng-model="setmenu_detail.count"  ng-pattern="/^\d+(\.\d+)?$/" ng-trim="true" ng-minlength="1" ng-maxlength="10" required class="form-control text input-large" id="count" placeholder="美食数量">
+                <p ng-show="SetmenuDetailForm.setmenu_money.$invalid && !SetmenuDetailForm.setmenu_money.$pristine" class="help-block">门店美食套餐优惠价</p>
             </div>
         </div>
         
         <div class="form-item">
-            <label class="item-label">菜品价格<span class="check-tips"></span></label>
+            <label class="item-label">美食价格<span class="check-tips"></span></label>
             <div class="controls">
                 <!--<input type="text" name="amount" ng-model="setmenu_detail.amount" readonly value="" />-->
                 {{setmenu_detail.count*setmenu_detail.weixin_price}}
@@ -53,7 +53,7 @@
         </div>
 
         <div class="form-item">
-            <label class="item-label">套餐菜品明细状态<span class="check-tips"></span></label>
+            <label class="item-label">套餐美食明细状态<span class="check-tips"></span></label>
             <div class="controls">
                 <?php
                 echo \Admin\Model\FoodSetmenuDetailModel::getFoodSetmenuDetailStatus($setmenu_detail['status']);

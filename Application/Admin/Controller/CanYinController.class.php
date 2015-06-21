@@ -16,7 +16,7 @@ class CanYinController extends AdminController {
      */
     public function index(){
 
-        $this->meta_title = '微餐饮';
+        $this->meta_title = '微美食';
         $this->display('index');
     }
     

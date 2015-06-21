@@ -2,7 +2,7 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>微餐饮菜品分类列表</h2>
+        <h2>微美食美食分类列表</h2>
     </div>
 
     <div class="cf">
@@ -12,7 +12,7 @@
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
-                <input type="text" name="cate_name" class="search-input" value="{:I('cate_name')}" placeholder="请输入微餐饮菜品分类名称">
+                <input type="text" name="cate_name" class="search-input" value="{:I('cate_name')}" placeholder="请输入微美食美食分类名称">
                 <a class="sch-btn" href="javascript:;" id="search" url="{:U('FoodCategory/index')}"><i class="btn-search"></i></a>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <thead>
                 <tr>
                     <th>微信平台</th>
-                    <th>餐厅名</th>
+                    <th>门店名</th>
                     <th>分类名</th>
                     <th>排序</th>
                     <th>状态</th>
@@ -63,7 +63,7 @@
                     </tr>
                 </volist>
                 <else/>
-                <td colspan="6" class="text-center">未检索微餐饮餐厅员工信息</td>
+                <td colspan="6" class="text-center">未检索微美食门店员工信息</td>
             </notempty>
             </tbody>
         </table>

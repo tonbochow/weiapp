@@ -14,13 +14,13 @@
             <div>
                 <p>
                     1.菜单类型为click推荐key值:<br>
-                       &nbsp;&nbsp;food  返回结果：图文模式10条菜品<br>
-                       &nbsp;&nbsp;cheap 返回结果：图文模式10条促销菜品<br>
-                       &nbsp;&nbsp;hot   返回结果：图文模式10条热销菜品<br>
-                       &nbsp;&nbsp;dining   返回结果：图文模式餐厅介绍<br>
-                       &nbsp;&nbsp;contact   返回结果：图文模式餐厅联系方式<br>
+                       &nbsp;&nbsp;food  返回结果：图文模式10条美食<br>
+                       &nbsp;&nbsp;cheap 返回结果：图文模式10条促销美食<br>
+                       &nbsp;&nbsp;hot   返回结果：图文模式10条热销美食<br>
+                       &nbsp;&nbsp;dining   返回结果：图文模式门店介绍<br>
+                       &nbsp;&nbsp;contact   返回结果：图文模式门店联系方式<br>
                     2.菜单类型为view推荐url值:<br>
-                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/food/list 跳转到餐厅菜品列表主页<br>
+                       &nbsp;&nbsp;http://www.52gdp.com/Mobile/food/list 跳转到门店美食列表主页<br>
                        &nbsp;&nbsp;http://www.52gdp.com/Mobile/User/panel 跳转到用户个人中心<br>
                        &nbsp;&nbsp;http://www.52gdp.com/Mobile/FoodCar/index 跳转到用户购餐车页面<br>
                 </p>
@@ -60,7 +60,7 @@
         </div>
         
         <div class="form-item" ng-show="click_flag" ng-class="{'has-error' : WxmenuForm.menu_key.$invalid && !WxmenuForm.menu_key.$pristine}">
-            <label class="item-label">click菜单类型对应的key值<span class="check-tips">（例如food 点击回复10个图文模式菜品）</span></label>
+            <label class="item-label">click菜单类型对应的key值<span class="check-tips">（例如food 点击回复10个图文模式美食）</span></label>
             <div class="controls" ng-if="click_flag">
                 <input name="menu_key" type="text" value="" ng-model="wxmenu.menu_key" required  ng-pattern="/^[a-z]{1,32}$/" ng-trim="true" ng-minlength="1" ng-maxlength="32"  class="form-control text input-large" id="menu_key" placeholder="click菜单类型对应的key值">
                 <p ng-show="WxmenuForm.menu_key.$invalid && !WxmenuForm.menu_key.$pristine" class="help-block">click菜单类型对应的key值(长度1-32)</p>

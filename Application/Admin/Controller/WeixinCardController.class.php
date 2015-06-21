@@ -8,7 +8,7 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮公众平台 | 微信卡劵控制器
+ * 微美食公众平台 | 微信卡劵控制器
  */
 class WeixinCardController extends FoodBaseController {
 
@@ -18,7 +18,7 @@ class WeixinCardController extends FoodBaseController {
     public function index() {
         $list = $this->lists('WxCard', '', 'mp_id,id');
         $this->assign('list', $list);
-        $this->meta_title = '微餐饮卡劵管理';
+        $this->meta_title = '微美食卡劵管理';
         $this->display('index');
     }
 
@@ -60,7 +60,7 @@ class WeixinCardController extends FoodBaseController {
                     'district' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['town'])),
                     'address' => strval($card_diningroom['address']),
                     'telephone' => strval($card_diningroom['phone']),
-                    'category' => '餐饮',
+                    'category' => '美食',
                     'longitude' => $card_diningroom['longitude'],
                     'latitude' => $card_diningroom['latitude'],
                 );
@@ -118,7 +118,7 @@ class WeixinCardController extends FoodBaseController {
                             'district' => strval(\Admin\Model\RegionModel::getRegionName($card_diningroom['town'])),
                             'address' => strval($card_diningroom['address']),
                             'telephone' => strval($card_diningroom['phone']),
-                            'category' => '餐饮',
+                            'category' => '美食',
                             'longitude' => $card_diningroom['longitude'],
                             'latitude' => $card_diningroom['latitude'],
                         );

@@ -5,7 +5,7 @@
 // +----------------------------------------------------------------------
 // | Author: tonbochow <tonbochow@qq.com>
 // | date  : 2015-03-18
-// | 餐饮餐厅菜品明细模型
+// | 美食门店美食明细模型
 // +----------------------------------------------------------------------
 
 namespace Admin\Model;
@@ -22,9 +22,9 @@ class FoodDetailModel extends Model {
     /* 自动验证规则 */
     protected $_validate = array(
         array('mp_id', 'require', '微信公众号平台id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('member_id', 'require', '餐厅用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('url', 'require', '菜品明细url不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
-        array('input_name', 'require', '菜品表达字段名次不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('member_id', 'require', '门店用户id不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('url', 'require', '美食明细url不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
+        array('input_name', 'require', '美食表达字段名次不能为空', self::EXISTS_VALIDATE, 'regex', self::MODEL_BOTH),
     );
 
     /* 自动完成规则 */
@@ -34,7 +34,7 @@ class FoodDetailModel extends Model {
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );
 
-    //获取菜品状态
+    //获取美食状态
     public static function getFoodDetailStatus($status = null, $has_choice = true) {
         if ($has_choice) {
             $status_arr = array('' => '请选择');
@@ -47,7 +47,7 @@ class FoodDetailModel extends Model {
         return $status_arr;
     }
 
-    //获取一张菜品默认图片
+    //获取一张美食默认图片
     public static function getFoodPic($food_id) {
         $map['food_id'] = $food_id;
         $map['mp_id'] = MP_ID;

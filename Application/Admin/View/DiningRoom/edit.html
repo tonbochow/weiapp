@@ -6,18 +6,18 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>编辑餐厅</h2>
+        <h2>编辑门店</h2>
     </div>
 
-    <div id="dialog" title="编辑餐厅" style="display:none;">
+    <div id="dialog" title="编辑门店" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_dining" ng-app="weiapp_dining" id="ng-app"  name="DiningForm" ng-controller="DiningController" ng-submit="submitForm()">
         <div class="form-item" ng-class="{'has-error' : DiningForm.dining_name.$invalid && !DiningForm.dining_name.$pristine}">
-            <label class="item-label">餐厅名称<span class="check-tips">（*必填:最大长度30）</span></label>
+            <label class="item-label">门店名称<span class="check-tips">（*必填:最大长度30）</span></label>
             <div class="controls">
-                <input name="dining_name" type="text" value="" ng-model="dining.dining_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="30" required class="form-control text input-large" id="dining_name" placeholder="餐厅名称">
-                <p ng-show="DiningForm.dining_name.$invalid && !DiningForm.dining_name.$pristine" class="help-block">餐厅名称(长度1-30)</p>
+                <input name="dining_name" type="text" value="" ng-model="dining.dining_name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="30" required class="form-control text input-large" id="dining_name" placeholder="门店名称">
+                <p ng-show="DiningForm.dining_name.$invalid && !DiningForm.dining_name.$pristine" class="help-block">门店名称(长度1-30)</p>
             </div>
         </div>
         
@@ -25,62 +25,62 @@
             <label class="item-label">前台客服微信号<span class="check-tips">（请先用该微信号关注公众平台服务号=>个人中心=>账户管理=>个人信息保存微信号  客户下订单会发送到该微信号）</span></label>
             <div class="controls">
                 <input name="wechat_name" type="text" value="" ng-model="dining.wechat_name"  ng-pattern="/^\w{1,32}$/" ng-trim="true" ng-minlength="1" ng-maxlength="32" class="form-control text input-large" id="wechat_name" placeholder="前台客服微信号">
-                <p ng-show="DiningForm.wechat_name.$invalid && !DiningForm.wechat_name.$pristine" class="help-block">餐厅负责人(长度1-20)</p>
+                <p ng-show="DiningForm.wechat_name.$invalid && !DiningForm.wechat_name.$pristine" class="help-block">门店负责人(长度1-20)</p>
             </div>
         </div>
         
         <div class="form-item" ng-class="{'has-error' : DiningForm.dining_header.$invalid && !DiningForm.dining_header.$pristine}">
-            <label class="item-label">餐厅负责人<span class="check-tips">（*必填:最大长度20）</span></label>
+            <label class="item-label">门店负责人<span class="check-tips">（*必填:最大长度20）</span></label>
             <div class="controls">
-                <input name="dining_header" type="text" value="" ng-model="dining.dining_header"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="dining_header" placeholder="餐厅负责人">
-                <p ng-show="DiningForm.dining_header.$invalid && !DiningForm.dining_header.$pristine" class="help-block">餐厅负责人(长度1-20)</p>
+                <input name="dining_header" type="text" value="" ng-model="dining.dining_header"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,30}$/" ng-trim="true" ng-minlength="1" ng-maxlength="20" required class="form-control text input-large" id="dining_header" placeholder="门店负责人">
+                <p ng-show="DiningForm.dining_header.$invalid && !DiningForm.dining_header.$pristine" class="help-block">门店负责人(长度1-20)</p>
             </div>
         </div>
 
         <div class="form-item" ng-class="{'has-error' : DiningForm.phone.$invalid && !DiningForm.phone.$pristine}">
-            <label class="item-label">餐厅电话<span class="check-tips">(例如:0312-1234567)</span></label>
+            <label class="item-label">门店电话<span class="check-tips">(例如:0312-1234567)</span></label>
             <div class="controls">
-                <input name="phone" type="text" value="" ng-model="dining.phone"  ng-pattern="/^(\d{3}-|\d{4}-)?(\d{8}|\d{7})?$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="phone" placeholder="餐厅电话">
-                <p ng-show="DiningForm.phone.$invalid && !DiningForm.phone.$pristine" class="help-block">餐厅电话</p>
+                <input name="phone" type="text" value="" ng-model="dining.phone"  ng-pattern="/^(\d{3}-|\d{4}-)?(\d{8}|\d{7})?$/" ng-trim="true" ng-minlength="1" ng-maxlength="15"  class="form-control text input-large" id="phone" placeholder="门店电话">
+                <p ng-show="DiningForm.phone.$invalid && !DiningForm.phone.$pristine" class="help-block">门店电话</p>
             </div>
         </div>
 
 
         <div class="form-item" ng-class="{'has-error' : DiningForm.mobile.$invalid && !DiningForm.mobile.$pristine}">
-            <label class="item-label">餐厅手机<span class="check-tips"></span></label>
+            <label class="item-label">门店手机<span class="check-tips"></span></label>
             <div class="controls">
-                <input name="mobile" type="text" value="" ng-model="dining.mobile"  ng-pattern="/^1\d{10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="11"  class="form-control text input-large" id="mobile" placeholder="餐厅手机">
-                <p ng-show="DiningForm.mobile.$invalid && !DiningForm.mobile.$pristine" class="help-block">餐厅手机</p>
+                <input name="mobile" type="text" value="" ng-model="dining.mobile"  ng-pattern="/^1\d{10}$/" ng-trim="true" ng-minlength="1" ng-maxlength="11"  class="form-control text input-large" id="mobile" placeholder="门店手机">
+                <p ng-show="DiningForm.mobile.$invalid && !DiningForm.mobile.$pristine" class="help-block">门店手机</p>
             </div>
         </div>
 
         <div class="form-item" ng-class="{'has-error' : DiningForm.type.$invalid && !DiningForm.type.$pristine}">
-            <label class="item-label">餐厅类型<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">门店类型<span class="check-tips">（*必填）</span></label>
             <div class="controls">
                 <select class="form-control" name="type"  ng-model="dining.type" ng-options="m.id as m.dining_type for m in dining.dining_type_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="DiningForm.type.$invalid && !DiningForm.type.$pristine" class="help-block">请选择正确的餐厅类型</p>
+                <p ng-show="DiningForm.type.$invalid && !DiningForm.type.$pristine" class="help-block">请选择正确的门店类型</p>
             </div>
         </div>
 
         <div class="form-item" ng-class="{'has-error' : DiningForm.pay_type.$invalid && !DiningForm.pay_type.$pristine}">
-            <label class="item-label">餐厅支付类型<span class="check-tips">（*必填 默认微信支付）</span></label>
+            <label class="item-label">门店支付类型<span class="check-tips">（*必填 默认微信支付）</span></label>
             <div class="controls">
                 <select class="form-control" name="pay_type"  ng-model="dining.pay_type" ng-options="m.id as m.dining_pay_type for m in dining.dining_pay_type_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="DiningForm.pay_type.$invalid && !DiningForm.pay_type.$pristine" class="help-block">请选择正确的餐厅支付类型</p>
+                <p ng-show="DiningForm.pay_type.$invalid && !DiningForm.pay_type.$pristine" class="help-block">请选择正确的门店支付类型</p>
             </div>
         </div>
 
         <div class="form-item"  ng-class="{'has-error' : DiningForm.description.$invalid && !DiningForm.description.$pristine}">
-            <label class="item-label">餐厅描述<span class="check-tips">（*必填）</span></label>
+            <label class="item-label">门店描述<span class="check-tips">（*必填）</span></label>
             <div class="controls">
                 
                  <div class="ueditor" config="config" ng-model="dining.description" ng-minlength="1" ng-trim="true" required ></div>
-                <!--<input name="description" type="text" value="" ng-model="chain.description"   ng-trim="true" ng-minlength="1"   class="form-control text input-large" required id="description" placeholder="连锁餐厅描述">-->
-                <p ng-show="DiningForm.description.$invalid && !DiningForm.description.$pristine" class="help-block">餐厅描述</p>
+                <!--<input name="description" type="text" value="" ng-model="chain.description"   ng-trim="true" ng-minlength="1"   class="form-control text input-large" required id="description" placeholder="连锁门店描述">-->
+                <p ng-show="DiningForm.description.$invalid && !DiningForm.description.$pristine" class="help-block">门店描述</p>
             </div>
         </div>
         

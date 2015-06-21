@@ -8,7 +8,7 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮微信公众平台 | 微信用户菜品套餐评论控制器
+ * 微美食微信公众平台 | 微信用户美食套餐评论控制器
  */
 class FoodCommentController extends FoodBaseController {
 
@@ -20,11 +20,11 @@ class FoodCommentController extends FoodBaseController {
         }
         $list = $this->lists('FoodComment', $map, 'mp_id,status');
         $this->assign('list', $list);
-        $this->meta_title = '微餐饮微信用户评论列表';
+        $this->meta_title = '微美食微信用户评论列表';
         $this->display('index');
     }
 
-    //微信用户菜品套餐评论(前台面向商家)
+    //微信用户美食套餐评论(前台面向商家)
     public function show() {
         $map['mp_id'] = MP_ID;
         $get_comment = I('get.comment');
@@ -38,7 +38,7 @@ class FoodCommentController extends FoodBaseController {
             }
         }
         $this->assign('list', $list);
-        $this->meta_title = '微信用户菜品套餐评论';
+        $this->meta_title = '微信用户美食套餐评论';
         $this->display('show');
     }
 
@@ -90,12 +90,12 @@ class FoodCommentController extends FoodBaseController {
         $map['mp_id'] = MP_ID;
         $comment = $commentModel->where($map)->find();
         if($comment == false){
-            $this->error('未检索到菜品或套餐评论');
+            $this->error('未检索到美食或套餐评论');
         }
         $comment['comment'] = htmlspecialchars_decode(stripcslashes($comment['comment']));
 
         $this->assign('comment', $comment);
-        $this->meta_title = '微信用户菜品套餐评论详细';
+        $this->meta_title = '微信用户美食套餐评论详细';
         $this->display('detail');
     }
 

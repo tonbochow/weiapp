@@ -12,11 +12,11 @@ namespace Admin\Model;
 use Think\Model;
 
 /**
- * 餐饮订单明细模型
+ * 美食订单明细模型
  */
 class FoodOrderDetailModel extends Model {
 
-    public static $TYPE_FOOD = 1; //菜品
+    public static $TYPE_FOOD = 1; //美食
     public static $TYPE_SETMENU = 2; //套餐
 
     /* 自动验证规则 */
@@ -37,7 +37,7 @@ class FoodOrderDetailModel extends Model {
         if ($has_choice) {
             $type_arr = array('' => '请选择');
         }
-        $type_arr[self::$TYPE_FOOD] = '菜品';
+        $type_arr[self::$TYPE_FOOD] = '美食';
         $type_arr[self::$TYPE_SETMENU] = '套餐';
         if ($type !== null) {
             return $type_arr[$type];

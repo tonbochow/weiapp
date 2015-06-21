@@ -6,21 +6,21 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>编辑餐厅员工</h2>
+        <h2>编辑门店员工</h2>
     </div>
 
-    <div id="dialog" title="编辑餐厅员工" style="display:none;">
+    <div id="dialog" title="编辑门店员工" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_dining" ng-app="weiapp_dining" id="ng-app"  name="DiningMemberForm" ng-controller="DiningMemberController" ng-submit="submitForm()">
         
         <div class="form-item" ng-class="{'has-error' : DiningMemberForm.dining_room_id.$invalid && !DiningMemberForm.dining_room_id.$pristine}">
-            <label class="item-label">所属餐厅<span class="check-tips">（将用户归为餐厅员工）</span></label>
+            <label class="item-label">所属门店<span class="check-tips">（将用户归为门店员工）</span></label>
             <div class="controls">
                 <select class="form-control" name="dining_room_id" required ng-model="dining_member.dining_room_id" ng-options="m.id as m.dining_name for m in dining_member.dining_room_arr">
                     <option value="">请选择</option>
                 </select>
-                <p ng-show="DiningMemberForm.dining_room_id.$invalid && !DiningMemberForm.dining_room_id.$pristine" class="help-block">请选择所属餐厅</p>
+                <p ng-show="DiningMemberForm.dining_room_id.$invalid && !DiningMemberForm.dining_room_id.$pristine" class="help-block">请选择所属门店</p>
             </div>
         </div>
 

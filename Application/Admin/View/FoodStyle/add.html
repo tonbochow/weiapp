@@ -6,18 +6,18 @@
 
 <block name="body">
     <div class="main-title">
-        <h2>创建餐厅菜品风格</h2>
+        <h2>创建门店美食风格</h2>
     </div>
 
-    <div id="dialog" title="餐厅菜品风格" style="display:none;">
+    <div id="dialog" title="门店美食风格" style="display:none;">
         <p id="dialog_content"></p>
     </div>
     <form  novalidate  class="form-horizontal" class="ng-app:weiapp_food_style" ng-app="weiapp_food_style" id="ng-app"  name="FoodStyleForm" ng-controller="FoodStyleController" ng-submit="submitForm()">
         <div class="form-item" ng-class="{'has-error' : FoodStyleForm.name.$invalid && !FoodStyleForm.name.$pristine}">
-            <label class="item-label">菜品风格内容<span class="check-tips">（*必填:最大长度256）</span></label>
+            <label class="item-label">美食风格内容<span class="check-tips">（*必填:最大长度256）</span></label>
             <div class="controls">
-                <input name="name" type="text" value="" ng-model="food_style.name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="name" placeholder="餐厅菜品风格内容">
-                <p ng-show="FoodStyleForm.name.$invalid && !FoodStyleForm.name.$pristine" class="help-block">餐厅菜品风格内容(长度1-256)</p>
+                <input name="name" type="text" value="" ng-model="food_style.name"  ng-pattern="/^[\u0391-\uFFE5]|\w{1,256}$/" ng-trim="true" ng-minlength="1" ng-maxlength="256" required class="form-control text input-large" id="name" placeholder="门店美食风格内容">
+                <p ng-show="FoodStyleForm.name.$invalid && !FoodStyleForm.name.$pristine" class="help-block">门店美食风格内容(长度1-256)</p>
             </div>
         </div>
 

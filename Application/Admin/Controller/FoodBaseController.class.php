@@ -8,17 +8,17 @@
 namespace Admin\Controller;
 
 /**
- * 微餐饮基类控制器
+ * 微美食基类控制器
  */
 class FoodBaseController extends AdminController {
 
     protected function _initialize() {
         parent::_initialize();
         if (!is_administrator()) {
-            //微餐饮管理员登录获取微信公众平台信息
+            //微美食管理员登录获取微信公众平台信息
             $micro_platform = $this->getMpFoodManager();
             if ($micro_platform == false) {
-                //微餐饮店员登录获取微信公众平台信息
+                //微美食店员登录获取微信公众平台信息
                 $micro_platform = $this->getMpDiningMember();
                 if (!empty($micro_platform)) {
                     $this->checkMicroPlatformRequire($micro_platform, false);
@@ -41,7 +41,7 @@ class FoodBaseController extends AdminController {
             $mp_token = !empty($micro_platform['mp_token']) ? trim($micro_platform['mp_token']) : '';
             $support_wxpay = !empty($micro_platform['support_wxpay']) ? trim($micro_platform['support_wxpay']) : '';
             $is_chain = !empty($micro_platform['is_chain']) ? true : false;
-            define('IS_CHAIN', $is_chain); //餐厅是否连锁
+            define('IS_CHAIN', $is_chain); //门店是否连锁
             define('MP_ID', $mp_id); //微信公众平台ID
             define('MP_NAME', $mp_name);
             define('APPID', $appid); //微信公众平台APPID  基本参数
@@ -57,7 +57,7 @@ class FoodBaseController extends AdminController {
 
     /**
      * 检测当前登录用户的微信公众平台是否满足条件
-     * $cond true:微餐饮管理员  false:微餐饮店员
+     * $cond true:微美食管理员  false:微美食店员
      */
     protected function checkMicroPlatformRequire($micro_platform, $cond) {
         if ($cond) {
@@ -92,7 +92,7 @@ class FoodBaseController extends AdminController {
     }
 
     /**
-     * 检测微餐饮管理员登录获取微信公众平台信息
+     * 检测微美食管理员登录获取微信公众平台信息
      */
     protected function getMpFoodManager() {
         $microPlatformModel = M('MicroPlatform');
@@ -106,11 +106,11 @@ class FoodBaseController extends AdminController {
     }
 
     /**
-     * 检测微餐饮店员登录获取微信公众平台信息
+     * 检测微美食店员登录获取微信公众平台信息
      */
     protected function getMpDiningMember() {
         $diningMemberModel = M('DiningMember');
-        $map['member_id'] = UID; //餐饮店员
+        $map['member_id'] = UID; //美食店员
         $map['status'] = \Admin\Model\DiningMemberModel::$STATUS_ENABLED;
         $dining_member = $diningMemberModel->where($map)->find();
         if ($dining_member == false) {
