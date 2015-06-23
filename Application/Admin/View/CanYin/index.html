@@ -1,20 +1,51 @@
 <extend name="Public/base"/>
 
 <block name="style">
-    <link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-    <link href="__CSS__/bootstrap_form.css" rel="stylesheet">
+    <link href="__STATIC__/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="__STATIC__/jquery-ui/jquery-ui.min.css" rel="stylesheet">-->
+    <!--<link href="__CSS__/bootstrap_form.css" rel="stylesheet">-->
+    <link href="/Public/Wechat/css/common.css" rel="stylesheet">
 </block>
 
 <block name="body">
     <div class="main-title">
         <h2>微美食</h2>
     </div>
-
-    <form  novalidate  class="form-horizontal" enctype="multipart/form-data" class="ng-app:weiapp_mp" ng-app="weiapp_mp" id="ng-app" name="MpForm" ng-controller="MpController" ng-submit="submitForm()">
-        
-    </form>
+    <div class="container-span">
+        <div class="row" style="margin-top:10px;">
+            <div class="col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="panel-title">公众平台详细情况如下<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+                    </div>
+                    <div class="panel-body">
+                        <h3><a href="/Admin/foodOrder/show">订单</a></h3>
+                        <p>
+                            订单总数量:{$order_total}<br>
+                            已提交订单数量:{$commit_orders_num}<br>
+                            已微信支付订单数量:{$wxpay_orders_num}<br>
+                            已完成订单数量:{$finish_orders_num}<br>
+                        </p>
+                        <h3><a href="/Admin/DiningRoom/show">门店</a></h3>
+                        <p>
+                            门店总数量:{$total_dinings}<br>
+                            营业中门店数量:{$used_num}<br>
+                            停业门店数量:{$unuse_num}<br>
+                        </p>
+                        <h3><a href="/Admin/Food/show">美食</a></h3>
+                        <p>
+                            美食总数量:{$food_total}<br>
+                            上架美食数量:{$online_num}<br>
+                            下架美食数量:{$offline_num}<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </block>
 
 <block name="script">
-   
+
 </block>
