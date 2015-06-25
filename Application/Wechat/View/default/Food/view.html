@@ -37,7 +37,19 @@
                             <i class="fa fa-thumbs-o-up" style="color:green"></i>
                             销售数量:{$food[0]['sell_count']}
                         </li>
+                        <if condition="$food[0].dining_room_id gt '0'">   
+                        <?php
+                           if($food[0]['dining_room_id'] > 0){
+                        ?>
                         <a href="/Wechat/DiningRoom/view/t/{$mp.mp_token}/id/{$food[0].dining_room_id}">
+                        <?php
+                        }else{
+                        ?>
+                        <a href="/Wechat/ChainDining/view/t/{$mp.mp_token}"> 
+                        <?php
+                        }
+                        ?>
+                        </if>
                             <li class="list-group-item">
                                 <i class="fa fa-map-marker" style="color:green"></i>
                                 <span class="badge" style="background:green">
