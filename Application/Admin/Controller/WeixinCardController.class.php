@@ -421,7 +421,7 @@ class WeixinCardController extends FoodBaseController {
 
     //生成推广卡劵二维码
     public function qrcode() {
-        $card_id = I('get.card_id', '', '');
+        $card_id = I('get.card_id', '', 'trim');
         $card_info = M('WxCard')->where(array('mp_id' => MP_ID, 'card_id' => $card_id))->find();
         if ($card_info == false) {
             $this->error('未检索到要要创建二维码的卡劵');
@@ -430,7 +430,7 @@ class WeixinCardController extends FoodBaseController {
             "action_name" => "QR_CARD",
             "action_info" => array(
                 "card" => array(
-                    "card_id" => $card_id,
+                    "card_id" => "$card_id",
                     "code" => "",
                     "openid" => "",
                     "expire_seconds" => "",
@@ -453,19 +453,19 @@ class WeixinCardController extends FoodBaseController {
 //             }
 //        }';
 //        var_dump(json_encode($qrcode_data,JSON_UNESCAPED_UNICODE));
-        $qrcode_data = '{
-       "action_name":"QR_CARD", 
-       "action_info":{ 
-            "card":{ 
-                "card_id":"' . $card_id . '", 
-                "code":"", 
-                "openid":"o-WvujkhZr2kYmlQVeAnNNovdO5M",
-                "expire_seconds":""， 
-                "is_unique_code":false, 
-                "outer_id": 1 
-                } 
-            } 
-       }';
+       //  $qrcode_data = '{
+       // "action_name":"QR_CARD", 
+       // "action_info":{ 
+       //      "card":{ 
+       //          "card_id":"' . $card_id . '", 
+       //          "code":"", 
+       //          "openid":"",
+       //          "expire_seconds":""， 
+       //          "is_unique_code":false, 
+       //          "outer_id": 1 
+       //          } 
+       //      } 
+       // }';
 //        var_dump($qrcode_data);exit;
         $qrcode_ticket = \Admin\Model\WxCardModel::createCardQrcode(APPID, APPSECRET, $qrcode_data);
         if ($qrcode_ticket == false) {

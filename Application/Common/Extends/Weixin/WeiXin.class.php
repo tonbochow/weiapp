@@ -142,7 +142,7 @@ class WeiXin extends Wechat {
         }
 
         $items = array(
-            new NewsResponseItem('欢迎关注' . $this->mp['mp_name'] . ',发送语音搜索试试!如需咨询在线客服请输入 客服 ！', '发送语音搜索试试!如需咨询在线客服请输入 客服 ', 'http://www.52gdp.com' . $this->mp['back_img'], 'http://www.52gdp.com/wechat/index/index/t/' . $this->token),
+            new NewsResponseItem('欢迎关注' . $this->mp['mp_name'] . ',发送语音搜索您喜欢的美食!可点击客服菜单在线微信咨询 ！', '发送语音搜索您喜欢的美食!可点击客服菜单在线微信咨询 ！', 'http://www.52gdp.com' . $this->mp['back_img'], 'http://www.52gdp.com/wechat/index/index/t/' . $this->token),
 //            new NewsResponseItem('福利第二波！首次参与完成问卷调查即可再送百元红包！', '首次参与完成问卷调查即可再送百元红包！', 'http://www.lingou.com/Public/Mobile/images/red_envelope.jpg', 'http://www.lingou.com/mobile/Member/question'),
         );
         $this->responseNews($items);
